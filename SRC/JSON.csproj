@@ -10,8 +10,8 @@
 		<LangVersion>12</LangVersion>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<AssemblyName>Solti.Utils.JSON</AssemblyName>
-		<RootNamespace>Solti.Utils.JSON</RootNamespace>
+		<AssemblyName>Solti.Utils.Json</AssemblyName>
+		<RootNamespace>Solti.Utils.Json</RootNamespace>
 		<NuGetAudit>true</NuGetAudit>
 		<NuGetAuditLevel>moderate</NuGetAuditLevel>
 		<NuGetAuditMode>all</NuGetAuditMode>

@@ -51,19 +51,6 @@ namespace Solti.Utils.JSON
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private JsonTokens ConsumeAndValidate(ITextReader input, IJsonReaderContext context, JsonTokens expected)
-        {
-            JsonTokens got = Consume(input, context);
-            if (!expected.HasFlag(got))
-                //
-                // Concatenation of "exptected" flags are done by the system
-                // 
-
-                throw new FormatException(string.Format(MALFORMED_INPUT, expected, got, input.Row, input.Column));
-            return got;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Malformed(string type, ITextReader reader) => throw new FormatException(string.Format(MALFORMED, type, reader.Row, reader.Column));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -89,6 +76,19 @@ namespace Solti.Utils.JSON
         {
             Span<char> buffer = context.GetBuffer(len);
             return buffer.Slice(0, input.PeekText(buffer));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private JsonTokens ConsumeAndValidate(ITextReader input, IJsonReaderContext context, JsonTokens expected)
+        {
+            JsonTokens got = Consume(input, context);
+            if (!expected.HasFlag(got))
+                //
+                // Concatenation of "exptected" flags are done by the system
+                // 
+
+                throw new FormatException(string.Format(MALFORMED_INPUT, expected, got, input.Row, input.Column));
+            return got;
         }
 
         /// <summary>
@@ -142,6 +142,9 @@ namespace Solti.Utils.JSON
         #region Internal
         internal ReadOnlySpan<char> ParseString(ITextReader input, IJsonReaderContext context, char quote, int initialBufferSize = 128 /*for debug*/)
         {
+            ConsumeAndValidate(input, context, quote is '"' ? JsonTokens.DoubleQuote : JsonTokens.SingleQuote);
+            input.Advance(1);
+
             for (int bufferSize = initialBufferSize, parsed = 0; ; bufferSize *= 2)
             {
                 Span<char>
