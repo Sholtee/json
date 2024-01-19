@@ -120,7 +120,7 @@ namespace Solti.Utils.Json
                 '}' => JsonTokens.CurlyClose,
                 '[' => JsonTokens.SquaredOpen,
                 ']' => JsonTokens.SquaredClose,
-                ',' => JsonTokens.CurlyOpen,
+                ',' => JsonTokens.Comma,
                 ':' => JsonTokens.Colon,
                 '"' => JsonTokens.DoubleQuote,
                 '\'' when Flags.HasFlag(JsonReaderFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,

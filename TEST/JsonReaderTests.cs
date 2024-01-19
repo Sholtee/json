@@ -3,7 +3,9 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 
 using Moq;
@@ -105,5 +107,45 @@ namespace Solti.Utils.Json.Tests
 
         [TestCaseSource(nameof(SkipSpaces_ShouldMaintainThePosition_Params))]
         public void SkipSpaces_ShouldMaintainThePositionInMultipleIterations(string input, int rows) => SkipSpaces_ShouldMaintainThePosition(input, rows, 32);
+
+        public static IEnumerable<object[]> Consume_ShouldReturnTheCurrectToken_Params
+        {
+            get
+            {
+                foreach (JsonTokens token in Enum.GetValues(typeof(JsonTokens)))
+                {
+                    foreach (MemberInfo member in typeof(JsonTokens).GetMember(token.ToString()))
+                    {
+                        TokenValueAttribute? val = member.GetCustomAttribute<TokenValueAttribute>();
+                        if (val is not null)
+                        {
+                            if (val.IsLiteral)
+                            {
+                                yield return new object[] { val.Value.ToUpper(), token, val.RequiredFlag | JsonReaderFlags.CaseInsensitive };
+                                yield return new object[] { val.Value.ToUpper(), JsonTokens.Unknown, val.RequiredFlag };
+                            }
+                            yield return new object[] { val.Value, token, val.RequiredFlag };
+
+                            if (val.IsLiteral)
+                            {
+                                yield return new object[] { $" {val.Value}", token, val.RequiredFlag | JsonReaderFlags.CaseInsensitive };
+                                yield return new object[] { $" {val.Value.ToUpper()}", JsonTokens.Unknown, val.RequiredFlag };
+                            }
+                            yield return new object[] { $" {val.Value}", token, val.RequiredFlag };
+                        }
+                    }
+                }
+            }
+        }
+
+        [TestCaseSource(nameof(Consume_ShouldReturnTheCurrectToken_Params))]
+        public void Consume_ShouldReturnTheCurrectToken(string input, object expected, JsonReaderFlags flags)
+        {
+            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
+            ITextReader content = new StringReader(input);
+
+            JsonReader rdr = new(flags, int.MaxValue);
+            Assert.That(rdr.Consume(content, mockContext.Object), Is.EqualTo(expected));
+        }
     }
 }
