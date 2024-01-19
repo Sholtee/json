@@ -61,20 +61,20 @@ namespace Solti.Utils.JSON.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Malformed {0} found in {1} (row), {2} (column)..
+        /// </summary>
+        internal static string MALFORMED {
+            get {
+                return ResourceManager.GetString("MALFORMED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid input. Expected &quot;{0}&quot;, found &quot;{1}&quot; in {2} (row), {3} (column)..
         /// </summary>
         internal static string MALFORMED_INPUT {
             get {
                 return ResourceManager.GetString("MALFORMED_INPUT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid number found in {0} (row), {1} (column)..
-        /// </summary>
-        internal static string MALFORMED_NUMBER {
-            get {
-                return ResourceManager.GetString("MALFORMED_NUMBER", resourceCulture);
             }
         }
         

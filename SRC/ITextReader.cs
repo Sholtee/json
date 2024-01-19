@@ -15,8 +15,8 @@ namespace Solti.Utils.JSON
         /// <summary>
         /// Reads the specific amount of characters from the underlying text source.
         /// </summary>
-        /// <remarks>If there is no enough data in the underlying text source to satisfy the request, the length of returned buffer may be less then <paramref name="count"/>.</remarks>
-        Span<char> PeekText(int count);
+        /// <remarks>If there is no enough data in the underlying text source to satisfy the request, the length of returned data may be less then <paramref name="count"/>.</remarks>
+        int PeekText(Span<char> buffer);
 
         /// <summary>
         /// Gets the character which the reader is positioned on.
@@ -26,7 +26,7 @@ namespace Solti.Utils.JSON
         /// <summary>
         /// Advances the reader by maximum <paramref name="count"/> characters
         /// </summary>
-        void Skip(int count);
+        void Advance(int count);
 
         /// <summary>
         /// Returns how many characters are left in the underlying text source.

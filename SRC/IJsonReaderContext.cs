@@ -15,9 +15,10 @@ namespace Solti.Utils.JSON
         void ThrowIfCancellationRequested();
 
         /// <summary>
-        /// Notifies the implementor about state change (when processing a nested property)
+        /// Notifies the state machine if a new property is being parsed.
         /// </summary>
-        void PushState(ReadOnlySpan<char> property, StringComparison comparison);
+        /// <remarks>If the method returns false then the property value won't be parsed and <see cref="PopState"/> won't be called</remarks>
+        bool PushState(ReadOnlySpan<char> property, StringComparison comparison);
 
         /// <summary>
         /// Reverts the actual state (triggered after a nested property parsed successfully).
@@ -25,25 +26,24 @@ namespace Solti.Utils.JSON
         void PopState();
 
         /// <summary>
-        /// Creates a new list object taking the actual state into account.
+        /// Creates a raw list or object according to the actual state.
         /// </summary>
-        object CreateList();
+        object CreateRawObject();
 
         /// <summary>
-        /// Extends the given list.
+        /// Updates the given <paramref name="obj"/> according to the actual state. <paramref name="obj"/> must be created by the <see cref="CreateRawObject"/> method.
         /// </summary>
-        /// <remarks>This method may throw for instance if the <paramref name="value"/> is incompatible.</remarks>
-        void PushItem(object list, object? value);
+        void SetValue(object obj, object? value);
 
         /// <summary>
-        /// Creates a new object taking the actual state into account.
+        /// Updates the given <paramref name="obj"/> according to the actual state. <paramref name="obj"/> must be created by the <see cref="CreateRawObject"/> method.
         /// </summary>
-        object CreateObject();
+        void SetValue(object obj, ReadOnlySpan<char> value);
 
         /// <summary>
-        /// Sets the given property.
+        /// Gets the memory block in a given <paramref name="length"/>.
         /// </summary>
-        /// <remarks>This method may throw for instance if the <paramref name="value"/> is incompatible.</remarks>
-        void SetProperty(object obj, ReadOnlySpan<char> property, object? value);
+        /// <remarks>The implementation should use the same memory block to solve all the requests so the returned buffer can be resized by calling <see cref="GetBuffer(int)"/> again.</remarks>
+        Span<char> GetBuffer(int length);
     }
 }

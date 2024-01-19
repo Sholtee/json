@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MALFORMED" xml:space="preserve">
+    <value>Malformed {0} found in {1} (row), {2} (column).</value>
+  </data>
   <data name="MALFORMED_INPUT" xml:space="preserve">
     <value>Invalid input. Expected "{0}", found "{1}" in {2} (row), {3} (column).</value>
-  </data>
-  <data name="MALFORMED_NUMBER" xml:space="preserve">
-    <value>Invalid number found in {0} (row), {1} (column).</value>
   </data>
   <data name="MAX_DEPTH_REACHED" xml:space="preserve">
     <value>Max depth reached.</value>
