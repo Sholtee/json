@@ -146,6 +146,9 @@ namespace Solti.Utils.Json.Tests
                     }
                     yield return new object[] { $" {token.Value.Value}", token.Key, token.Value.RequiredFlags };
                 }
+
+                yield return new object[] { $"-", JsonTokens.Number, JsonReaderFlags.None };
+                yield return new object[] { $"5", JsonTokens.Number, JsonReaderFlags.None };
             }
         }
 
@@ -157,6 +160,39 @@ namespace Solti.Utils.Json.Tests
 
             JsonReader rdr = new(flags, int.MaxValue);
             Assert.That(rdr.Consume(content, mockContext.Object), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void Consume_ShouldRejectPartialLiterals([Values("nul", "tru", "fal")] string input )
+        {
+            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
+            ITextReader content = new StringReader(input);
+
+            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
+            Assert.That(rdr.Consume(content, mockContext.Object), Is.EqualTo(JsonTokens.Unknown));
+        }
+
+        [Test]
+        public void ConsumeAndValidate_ShouldValidateTheReturnedToken()
+        {
+            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
+            ITextReader content = new StringReader("{");
+
+            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
+            Assert.That(rdr.ConsumeAndValidate(content, mockContext.Object, JsonTokens.Eof | JsonTokens.CurlyOpen), Is.EqualTo(JsonTokens.CurlyOpen));
+
+            //Assert.Throws<FormatException>(() => rdr.ConsumeAndValidate(content, mockContext.Object, JsonTokens.Eof));
+
+            try
+            {
+                rdr.ConsumeAndValidate(content, mockContext.Object, JsonTokens.Eof);
+            }
+            catch (FormatException)
+            {
+                return;
+            }
+
+            Assert.Fail("ConsumeAndValidate didn't throw");
         }
     }
 }
