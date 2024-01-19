@@ -15,6 +15,8 @@ namespace Solti.Utils.Json.Tests
 {
     using Internals;
 
+    using JsonTokenValue = (bool IsLiteral, string Value, JsonReaderFlags RequiredFlags);
+
     [TestFixture]
     public class JsonReaderTests
     {
@@ -112,28 +114,37 @@ namespace Solti.Utils.Json.Tests
         {
             get
             {
-                foreach (JsonTokens token in Enum.GetValues(typeof(JsonTokens)))
+                Dictionary<JsonTokens, JsonTokenValue> tokens = new()
                 {
-                    foreach (MemberInfo member in typeof(JsonTokens).GetMember(token.ToString()))
-                    {
-                        TokenValueAttribute? val = member.GetCustomAttribute<TokenValueAttribute>();
-                        if (val is not null)
-                        {
-                            if (val.IsLiteral)
-                            {
-                                yield return new object[] { val.Value.ToUpper(), token, val.RequiredFlag | JsonReaderFlags.CaseInsensitive };
-                                yield return new object[] { val.Value.ToUpper(), JsonTokens.Unknown, val.RequiredFlag };
-                            }
-                            yield return new object[] { val.Value, token, val.RequiredFlag };
+                    { JsonTokens.Comma, (IsLiteral: false, ",", JsonReaderFlags.None) },
+                    { JsonTokens.DoubleSlash, (IsLiteral: false, "//", JsonReaderFlags.AllowComments) },
+                    { JsonTokens.CurlyOpen, (IsLiteral: false, "{", JsonReaderFlags.None) },
+                    { JsonTokens.CurlyClose, (IsLiteral: false, "}", JsonReaderFlags.None) },
+                    { JsonTokens.SquaredOpen, (IsLiteral: false, "[", JsonReaderFlags.None) },
+                    { JsonTokens.SquaredClose, (IsLiteral: false, "]", JsonReaderFlags.None) },
+                    { JsonTokens.Colon, (IsLiteral: false, ":", JsonReaderFlags.None) },
+                    { JsonTokens.SingleQuote, (IsLiteral: false, "'", JsonReaderFlags.AllowSingleQuotedStrings) },
+                    { JsonTokens.DoubleQuote, (IsLiteral: false, "\"", JsonReaderFlags.None) },
+                    { JsonTokens.True, (IsLiteral: true, "true", JsonReaderFlags.None) },
+                    { JsonTokens.False, (IsLiteral: true, "false", JsonReaderFlags.None) },
+                    { JsonTokens.Null, (IsLiteral: true, "null", JsonReaderFlags.None) }
+                };
 
-                            if (val.IsLiteral)
-                            {
-                                yield return new object[] { $" {val.Value}", token, val.RequiredFlag | JsonReaderFlags.CaseInsensitive };
-                                yield return new object[] { $" {val.Value.ToUpper()}", JsonTokens.Unknown, val.RequiredFlag };
-                            }
-                            yield return new object[] { $" {val.Value}", token, val.RequiredFlag };
-                        }
+                foreach (KeyValuePair<JsonTokens, JsonTokenValue> token in tokens)
+                {
+                    if (token.Value.IsLiteral)
+                    {
+                        yield return new object[] { token.Value.Value.ToUpper(), token.Key, token.Value.RequiredFlags | JsonReaderFlags.CaseInsensitive };
+                        yield return new object[] { token.Value.Value.ToUpper(), JsonTokens.Unknown, token.Value.RequiredFlags };
                     }
+                    yield return new object[] { token.Value.Value, token.Key, token.Value.RequiredFlags };
+
+                    if (token.Value.IsLiteral)
+                    {
+                        yield return new object[] { $" {token.Value.Value.ToUpper()}", token.Key, token.Value.RequiredFlags | JsonReaderFlags.CaseInsensitive };
+                        yield return new object[] { $" {token.Value.Value.ToUpper()}", JsonTokens.Unknown, token.Value.RequiredFlags };
+                    }
+                    yield return new object[] { $" {token.Value.Value}", token.Key, token.Value.RequiredFlags };
                 }
             }
         }
