@@ -45,5 +45,9 @@ namespace Solti.Utils.JSON
         /// </summary>
         /// <remarks>The implementation should use the same memory block to solve all the requests so the returned buffer can be resized by calling <see cref="GetBuffer(int)"/> again.</remarks>
         Span<char> GetBuffer(int length);
+
+        int Row { get; set; }
+
+        int Column { get; set; }
     }
 }

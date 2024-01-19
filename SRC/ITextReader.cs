@@ -31,16 +31,6 @@ namespace Solti.Utils.JSON
         /// <summary>
         /// Returns how many characters are left in the underlying text source.
         /// </summary>
-        long CharsLeft { get; }
-
-        /// <summary>
-        /// Which row is the reader positioned on?
-        /// </summary>
-        long Row { get; }
-
-        /// <summary>
-        /// Which column is the reader positioned on?
-        /// </summary>
-        long Column { get; }
+        int CharsLeft { get; }
     }
 }
