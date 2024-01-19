@@ -1,10 +1,15 @@
-﻿using System;
+﻿/********************************************************************************
+* JsonReader.cs                                                                 *
+*                                                                               *
+* Author: Denes Solti                                                           *
+********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
-namespace Solti.Utils.JSON
+namespace Solti.Utils.Json
 {
     using static Properties.Resources;
 
@@ -51,7 +56,8 @@ namespace Solti.Utils.JSON
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Malformed(string type, ITextReader reader) => throw new FormatException(string.Format(MALFORMED, type, reader.Row, reader.Column));
+        private static void MalformedValue(string type, string reason, IJsonReaderContext context) =>
+            throw new FormatException(string.Format(MALFORMED, type, context.Row, context.Column, reason));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void SkipSpaces(ITextReader input, IJsonReaderContext context)
@@ -63,6 +69,12 @@ namespace Solti.Utils.JSON
                 int skip;
                 for (skip = 0; skip < read && char.IsWhiteSpace(buffer[skip]); skip++)
                 {
+                    if (buffer[skip] is '\n')
+                    {
+                        context.Row++;
+                        context.Column = 0;
+                    }
+                    else context.Column++;
                 }
 
                 input.Advance(skip);
@@ -87,7 +99,7 @@ namespace Solti.Utils.JSON
                 // Concatenation of "exptected" flags are done by the system
                 // 
 
-                throw new FormatException(string.Format(MALFORMED_INPUT, expected, got, input.Row, input.Column));
+                throw new FormatException(string.Format(MALFORMED_INPUT, expected, got, context.Row, context.Column));
             return got;
         }
 
@@ -162,7 +174,7 @@ namespace Solti.Utils.JSON
 
                 int returned = input.PeekText(span);
                 if (returned is 0)
-                    Malformed("string", input);
+                    MalformedValue("string", "unterminated string", context);
 
                 for (int i = 0; i < returned; i++)
                 {
@@ -174,6 +186,13 @@ namespace Solti.Utils.JSON
                         //
 
                         return buffer.Slice(parsed);
+
+                    if (char.IsWhiteSpace(c) && c is not ' ')
+                        //
+                        // Unexpected white space
+                        //
+
+                        MalformedValue("string", "unexpected white space", context);
 
                     if (c == '\\')
                     {
@@ -191,7 +210,7 @@ namespace Solti.Utils.JSON
                             // Unterminated string -> Error
                             //
                         
-                            Malformed("string", input);
+                            MalformedValue("string", "unterminated string", context);
                         }
 
                         c = span[i];
@@ -226,7 +245,7 @@ namespace Solti.Utils.JSON
                                 // Unterminated HEX digits
                                 //
 
-                                Malformed("string", input);
+                                MalformedValue("string", "missing HEX digits", context);
                             }
 
                             bool validHex = ushort.TryParse
@@ -245,7 +264,7 @@ namespace Solti.Utils.JSON
                                 // Malformed HEX digits
                                 //
 
-                                Malformed("string", input);
+                                MalformedValue("string", "not a HEX", context);
 
                             input.Advance(4);
                             span[parsed++] = (char) chr;
@@ -257,10 +276,8 @@ namespace Solti.Utils.JSON
                             //
 
                             input.Advance(i);
-                            Malformed("string", input);
+                            MalformedValue("string", "unknown control character", context);
                         }
-
-
                     }
                     else
                         span[parsed++] = span[i];
@@ -336,7 +353,7 @@ namespace Solti.Utils.JSON
             }
 
             if (result is null)
-                Malformed("number", input);
+                MalformedValue("number", "not a number", context);
 
             //
             // Advance the reader if everything was all right
@@ -361,7 +378,7 @@ namespace Solti.Utils.JSON
                 {
                     input.Advance(1);
                     if (Consume(input, context) is JsonTokens.SquaredClose && !Flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
-                        Malformed("list", input);
+                        MalformedValue("list", "trailing comma not allowed", context);
                 }
             }
 
@@ -382,7 +399,7 @@ namespace Solti.Utils.JSON
                 int lineEnd = buffer.IndexOf('\n');
                 if (lineEnd >= 0)
                 {
-                    input.Advance(lineEnd + 1);
+                    input.Advance(lineEnd);
                     break;
                 }
 

@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.JSON
+namespace Solti.Utils.Json
 {
     public class StringReader(string str): ITextReader
     {

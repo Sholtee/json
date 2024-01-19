@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.JSON
+namespace Solti.Utils.Json
 {
     /// <summary>
     /// Specifies the contract of text readers.

@@ -61,7 +61,7 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Malformed {0} found in {1} (row), {2} (column)..
+        ///   Looks up a localized string similar to Malformed {0} found in {1} (row), {2} (column). Reason: &quot;{3}&quot;.
         /// </summary>
         internal static string MALFORMED {
             get {

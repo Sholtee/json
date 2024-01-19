@@ -5,7 +5,7 @@
 ********************************************************************************/
 using System;
 
-namespace Solti.Utils.JSON
+namespace Solti.Utils.Json
 {
     /// <summary>
     /// Contains flags for fine-tuning the JSON parser.
