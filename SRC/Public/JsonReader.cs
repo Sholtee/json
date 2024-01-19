@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json
 {
+    using Internals;
     using static Properties.Resources;
 
     /// <summary>
@@ -21,26 +22,6 @@ namespace Solti.Utils.Json
     public readonly ref struct JsonReader(JsonReaderFlags flags, int maxDepth)
     {
         #region Private
-        [Flags]
-        private enum JsonTokens
-        {
-            Unknown = 0,
-            Eof = 1 << 0,
-            DoubleSlash = 1 << 1,
-            CurlyOpen = 1 << 2,
-            CurlyClose = 1 << 3,
-            SquaredOpen = 1 << 4,
-            SquaredClose = 1 << 5,
-            Colon = 1 << 6,
-            Comma = 1 << 7,
-            SingleQuote = 1 << 8,
-            DoubleQuote = 1 << 9,
-            Number = 1 << 10,
-            True = 1 << 11,
-            False = 1 << 12,
-            Null = 1 << 13
-        }
-
         private readonly ReadOnlySpan<char>
             TRUE = "true".AsSpan(),
             FALSE = "false".AsSpan(),
@@ -60,9 +41,34 @@ namespace Solti.Utils.Json
             throw new FormatException(string.Format(MALFORMED, type, context.Row, context.Column, reason));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void SkipSpaces(ITextReader input, IJsonReaderContext context)
+        private static ReadOnlySpan<char> PeekText(ITextReader input, IJsonReaderContext context, int len)
         {
-            Span<char> buffer = context.GetBuffer(32);
+            Span<char> buffer = context.GetBuffer(len);
+            return buffer.Slice(0, input.PeekText(buffer));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if !NETSTANDARD2_1_OR_GREATER
+        unsafe
+#endif
+        private static string ConvertString(ReadOnlySpan<char> chars)
+        {
+#if NETSTANDARD2_1_OR_GREATER
+            return  new string(chars);
+#else
+            fixed (char* ptr = chars)
+            {
+                return new string(ptr, 0, chars.Length);
+            }
+#endif
+        }
+        #endregion
+
+        #region Internal
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void SkipSpaces(ITextReader input, IJsonReaderContext context, int bufferSize = 32 /*for tests*/)
+        {
+            Span<char> buffer = context.GetBuffer(bufferSize);
 
             for (int read; (read = input.PeekText(buffer)) > 0;)
             {
@@ -84,14 +90,7 @@ namespace Solti.Utils.Json
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ReadOnlySpan<char> PeekText(ITextReader input, IJsonReaderContext context, int len)
-        {
-            Span<char> buffer = context.GetBuffer(len);
-            return buffer.Slice(0, input.PeekText(buffer));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private JsonTokens ConsumeAndValidate(ITextReader input, IJsonReaderContext context, JsonTokens expected)
+        internal JsonTokens ConsumeAndValidate(ITextReader input, IJsonReaderContext context, JsonTokens expected)
         {
             JsonTokens got = Consume(input, context);
             if (!expected.HasFlag(got))
@@ -107,7 +106,7 @@ namespace Solti.Utils.Json
         /// Consumes the current token which the reader is positioned on.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private JsonTokens Consume(ITextReader input, IJsonReaderContext context)
+        internal JsonTokens Consume(ITextReader input, IJsonReaderContext context)
         {
             SkipSpaces(input, context);
 
@@ -134,24 +133,6 @@ namespace Solti.Utils.Json
             };
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#if !NETSTANDARD2_1_OR_GREATER
-        unsafe
-#endif
-        private static string ConvertString(ReadOnlySpan<char> chars)
-        {
-#if NETSTANDARD2_1_OR_GREATER
-            return  new string(chars);
-#else
-            fixed (char* ptr = chars)
-            {
-                return new string(ptr, 0, chars.Length);
-            }
-#endif
-        }
-        #endregion
-
-        #region Internal
         internal ReadOnlySpan<char> ParseString(ITextReader input, IJsonReaderContext context, char quote, int initialBufferSize = 128 /*for debug*/)
         {
             ConsumeAndValidate(input, context, quote is '"' ? JsonTokens.DoubleQuote : JsonTokens.SingleQuote);
