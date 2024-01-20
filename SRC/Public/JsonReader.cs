@@ -37,30 +37,23 @@ namespace Solti.Utils.Json
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void ThrowFormatException(string msg, IJsonReaderContext context)
+        {
+            FormatException ex = new(msg);
+            ex.Data["row"] = context.Row;
+            ex.Data["column"] = context.Column;
+            throw ex;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void MalformedValue(string type, string reason, IJsonReaderContext context) =>
-            throw new FormatException(string.Format(MALFORMED, type, context.Row, context.Column, reason));
+            ThrowFormatException(string.Format(MALFORMED, type, context.Row, context.Column, reason), context);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ReadOnlySpan<char> PeekText(ITextReader input, IJsonReaderContext context, int len)
         {
             Span<char> buffer = context.GetBuffer(len);
             return buffer.Slice(0, input.PeekText(buffer));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#if !NETSTANDARD2_1_OR_GREATER
-        unsafe
-#endif
-        private static string ConvertString(ReadOnlySpan<char> chars)
-        {
-#if NETSTANDARD2_1_OR_GREATER
-            return  new string(chars);
-#else
-            fixed (char* ptr = chars)
-            {
-                return new string(ptr, 0, chars.Length);
-            }
-#endif
         }
         #endregion
 
@@ -96,9 +89,9 @@ namespace Solti.Utils.Json
             if (!expected.HasFlag(got))
                 //
                 // Concatenation of "exptected" flags are done by the system
-                // 
+                //
 
-                throw new FormatException(string.Format(MALFORMED_INPUT, expected, got, context.Row, context.Column));
+                ThrowFormatException(string.Format(MALFORMED_INPUT, expected, got, context.Row, context.Column), context);
             return got;
         }
 
@@ -157,65 +150,61 @@ namespace Solti.Utils.Json
                 if (returned is 0)
                     MalformedValue("string", "unterminated string", context);
 
-                for (int i = 0; i < returned; i++)
+                int i;
+                for (i = 0; i < returned; i++)
                 {
                     char c = span[i];
 
                     if (c == quote)
+                    {
                         //
                         // We reached the end of the string
                         //
 
-                        return buffer.Slice(parsed);
+                        input.Advance(i + 1);
+                        return buffer.Slice(0, parsed);
+                    }
 
                     if (char.IsWhiteSpace(c) && c is not ' ')
+                    {
                         //
                         // Unexpected white space
                         //
 
+                        input.Advance(i + 1);
                         MalformedValue("string", "unexpected white space", context);
+                    }
 
                     if (c == '\\')
                     {
-                        if (++i == returned)
-                        {
-                            input.Advance(returned);
-                            if (input.CharsLeft > 0)
-                                //
-                                // We ran out of the characters but there are more
-                                //
-
-                                break;
-
+                        if (i + 1 == returned)
                             //
-                            // Unterminated string -> Error
+                            // We ran out of the characters but there are more
                             //
-                        
-                            MalformedValue("string", "unterminated string", context);
-                        }
 
-                        c = span[i];
+                            break;
+
+                        c = span[++i];
 
                         if (c == quote || c == '\\')
-                            span[parsed++] = c;
+                            buffer[parsed++] = c;
                         else if (c == 'b')
-                            span[parsed++] = '\b';
+                            buffer[parsed++] = '\b';
                         else if (c == 't')
-                            span[parsed++] = '\t';
+                            buffer[parsed++] = '\t';
                         else if (c == 'n')
-                            span[parsed++] = '\n';
+                            buffer[parsed++] = '\n';
                         else if (c == 'r')
-                            span[parsed++] = '\r';
+                            buffer[parsed++] = '\r';
                         else if (c == 'u')
                         {
-                            input.Advance(i);
                             if (returned - i < 4)
                             {
                                 //
                                 // We need 4 hex digits
                                 //
 
-                                if (input.CharsLeft > 3)
+                                if (input.CharsLeft - i > 3)
                                     //
                                     // We ran out of the characters but there are more
                                     //
@@ -226,15 +215,16 @@ namespace Solti.Utils.Json
                                 // Unterminated HEX digits
                                 //
 
+                                input.Advance(i);
                                 MalformedValue("string", "missing HEX digits", context);
                             }
 
                             bool validHex = ushort.TryParse
                             (
 #if NETSTANDARD2_1_OR_GREATER
-                                span.Slice(i + 1, 4),
+                                span.Slice(i, 4),
 #else
-                                ConvertString(span.Slice(i + 1, 4)),
+                                span.Slice(i, 4).AsString(),
 #endif
                                 NumberStyles.HexNumber,
                                 null,
@@ -247,8 +237,8 @@ namespace Solti.Utils.Json
 
                                 MalformedValue("string", "not a HEX", context);
 
-                            input.Advance(4);
-                            span[parsed++] = (char) chr;
+                            i += 4;
+                            buffer[parsed++] = (char) chr;
                         }
                         else
                         {
@@ -261,8 +251,10 @@ namespace Solti.Utils.Json
                         }
                     }
                     else
-                        span[parsed++] = span[i];
+                        buffer[parsed++] = span[i];
                 }
+
+                input.Advance(i);
             }
         }
 
@@ -319,7 +311,7 @@ namespace Solti.Utils.Json
 #if NETSTANDARD2_1_OR_GREATER
                 if (double.TryParse(buffer, NumberStyles.Float, CultureInfo.InvariantCulture, out double ret))
 #else
-                if (double.TryParse(ConvertString(buffer), NumberStyles.Float, CultureInfo.InvariantCulture, out double ret))
+                if (double.TryParse(buffer.AsString(), NumberStyles.Float, CultureInfo.InvariantCulture, out double ret))
 #endif
                     result = ret;
             }
@@ -328,7 +320,7 @@ namespace Solti.Utils.Json
 #if NETSTANDARD2_1_OR_GREATER
                 if (long.TryParse(buffer, NumberStyles.Number, CultureInfo.InvariantCulture, out long ret))
 #else
-                if (long.TryParse(ConvertString(buffer), NumberStyles.Number, CultureInfo.InvariantCulture, out long ret))
+                if (long.TryParse(buffer.AsString(), NumberStyles.Number, CultureInfo.InvariantCulture, out long ret))
 #endif
                     result = ret;
             }
@@ -414,9 +406,9 @@ namespace Solti.Utils.Json
                     case JsonTokens.SquaredOpen:
                         return ParseList(input, context, Deeper(currentDepth));
                     case JsonTokens.SingleQuote:
-                        return ConvertString(ParseString(input, context, '\''));
+                        return ParseString(input, context, '\'').AsString();
                     case JsonTokens.DoubleQuote:
-                        return ConvertString(ParseString(input, context, '"'));
+                        return ParseString(input, context, '"').AsString();
                     case JsonTokens.DoubleSlash:
                         ParseComment(input, context);
                         continue;

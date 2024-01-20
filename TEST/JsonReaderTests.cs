@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading;
 
 using Moq;
@@ -108,7 +107,7 @@ namespace Solti.Utils.Json.Tests
         public void SkipSpaces_ShouldMaintainThePosition(string input, int rows) => SkipSpaces_ShouldMaintainThePosition(input, rows, 32);
 
         [TestCaseSource(nameof(SkipSpaces_ShouldMaintainThePosition_Params))]
-        public void SkipSpaces_ShouldMaintainThePositionInMultipleIterations(string input, int rows) => SkipSpaces_ShouldMaintainThePosition(input, rows, 32);
+        public void SkipSpaces_ShouldMaintainThePositionInMultipleIterations(string input, int rows) => SkipSpaces_ShouldMaintainThePosition(input, rows, 1);
 
         public static IEnumerable<object[]> Consume_ShouldReturnTheCurrectToken_Params
         {
@@ -193,6 +192,90 @@ namespace Solti.Utils.Json.Tests
             }
 
             Assert.Fail("ConsumeAndValidate didn't throw");
+        }
+
+        public static IEnumerable<object[]> ParseString_ShouldParseSingleStrings_Params
+        {
+            get
+            {
+                yield return new object[] { "\"\"", '"', "" };
+                yield return new object[] { "''", '\'', "" };
+                yield return new object[] { "\"cica\"", '"', "cica" };
+                yield return new object[] { "'cica'", '\'', "cica" };
+                yield return new object[] { "\"cica mica\"", '"', "cica mica" };
+                yield return new object[] { "'cica mica'", '\'', "cica mica" };
+            }
+        }
+
+        private static void ParseString_ShouldParseSingleStrings(string input, char terminating, string expected, int bufferSize)
+        {
+            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
+            ITextReader content = new StringReader(input);
+
+            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
+            Assert.That(rdr.ParseString(content, mockContext.Object, terminating, bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(content.CharsLeft, Is.EqualTo(0));
+        }
+
+        [TestCaseSource(nameof(ParseString_ShouldParseSingleStrings_Params))]
+        public void ParseString_ShouldParseSingleStrings(string input, char terminating, string expected) =>
+            ParseString_ShouldParseSingleStrings(input, terminating, expected, 128);
+
+        [TestCaseSource(nameof(ParseString_ShouldParseSingleStrings_Params))]
+        public void ParseString_ShouldParseSingleStringsInMultipleIterations(string input, char terminating, string expected) =>
+            ParseString_ShouldParseSingleStrings(input, terminating, expected, 1);
+
+        public static IEnumerable<object[]> ParseString_ShouldProcessSingleControlCharacters_Params
+        {
+            get
+            {
+                foreach ((char Escape, char Value) in new (char Escape, char Value)[] { ('t', '\t'), ('b', '\b'), ('r', '\r'), ('n', '\n'), ('\\', '\\'), ('"', '"') })
+                {
+                    yield return new object[] { $"\"\\{Escape}\"", $"{Value}" };
+                    yield return new object[] { $"\"\\{Escape}suffix\"", $"{Value}suffix" };
+                    yield return new object[] { $"\"prefix\\{Escape}\"", $"prefix{Value}" };
+                    yield return new object[] { $"\"prefix\\{Escape}suffix\"", $"prefix{Value}suffix" };
+                    yield return new object[] { $"\"has \\{Escape} space\"", $"has {Value} space" };
+
+                    yield return new object[] { $"\"\\{Escape}\\{Escape}\"", $"{Value}{Value}" };
+                    yield return new object[] { $"\"\\{Escape}\\{Escape}suffix\"", $"{Value}{Value}suffix" };
+                    yield return new object[] { $"\"prefix\\{Escape}\\{Escape}\"", $"prefix{Value}{Value}" };
+                    yield return new object[] { $"\"prefix\\{Escape}\\{Escape}suffix\"", $"prefix{Value}{Value}suffix" };
+                    yield return new object[] { $"\"has \\{Escape}\\{Escape} space\"", $"has {Value}{Value} space" };
+                }
+            }
+        }
+
+        private static void ParseString_ShouldProcessSingleControlCharacters(string input, string expected, int bufferSize)
+        {
+            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
+            ITextReader content = new StringReader(input);
+
+            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
+            Assert.That(rdr.ParseString(content, mockContext.Object, '"', bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(content.CharsLeft, Is.EqualTo(0));
+        }
+
+        [TestCaseSource(nameof(ParseString_ShouldProcessSingleControlCharacters_Params))]
+        public void ParseString_ShouldProcessSingleControlCharacters(string input, string expected) =>
+            ParseString_ShouldProcessSingleControlCharacters(input, expected, 128);
+
+        [TestCaseSource(nameof(ParseString_ShouldProcessSingleControlCharacters_Params))]
+        public void ParseString_ShouldProcessSingleControlCharactersInMultipleIterations(string input, string expected) =>
+            ParseString_ShouldProcessSingleControlCharacters(input, expected, 1);
+
+        [Test]
+        public void ParseString_ShouldThrowOnUnknownControlCharacter()
+        { 
+        }
+
+        private static void ParseString_ShouldThrowOnUnescapedSpace(string input, string expected, int position)
+        {
+        }
+
+        [Test]
+        public void ParseStringShouldThrowOnUnterminatedString([Values] string input, [Values(1, 128)] int bufferSize)
+        {
         }
     }
 }
