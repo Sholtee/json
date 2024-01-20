@@ -162,7 +162,7 @@ namespace Solti.Utils.Json.Tests
         }
 
         [Test]
-        public void Consume_ShouldRejectPartialLiterals([Values("nul", "tru", "fal")] string input )
+        public void Consume_ShouldRejectPartialLiterals([Values("nul", "tru", "fal")] string input)
         {
             Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
             ITextReader content = new StringReader(input);
@@ -180,18 +180,7 @@ namespace Solti.Utils.Json.Tests
             JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
             Assert.That(rdr.ConsumeAndValidate(content, mockContext.Object, JsonTokens.Eof | JsonTokens.CurlyOpen), Is.EqualTo(JsonTokens.CurlyOpen));
 
-            //Assert.Throws<FormatException>(() => rdr.ConsumeAndValidate(content, mockContext.Object, JsonTokens.Eof));
-
-            try
-            {
-                rdr.ConsumeAndValidate(content, mockContext.Object, JsonTokens.Eof);
-            }
-            catch (FormatException)
-            {
-                return;
-            }
-
-            Assert.Fail("ConsumeAndValidate didn't throw");
+            Assert.Throws<FormatException>(() => rdr.ConsumeAndValidate(content, mockContext.Object, JsonTokens.Eof));
         }
 
         public static IEnumerable<object[]> ParseString_ShouldParseSingleStrings_Params
@@ -265,8 +254,14 @@ namespace Solti.Utils.Json.Tests
             ParseString_ShouldProcessSingleControlCharacters(input, expected, 1);
 
         [Test]
-        public void ParseString_ShouldThrowOnUnknownControlCharacter()
-        { 
+        public void ParseString_ShouldThrowOnUnknownControlCharacter([Values("\"\\x\"", "\"\\\t\"", "\"prefix\\x\"", "\"\\\tsuffix\"")] string input)
+        {
+            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
+            ITextReader content = new StringReader(input);
+
+            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
+
+            Assert.Throws<FormatException>(() => rdr.ParseString(content, mockContext.Object, '"'));
         }
 
         private static void ParseString_ShouldThrowOnUnescapedSpace(string input, string expected, int position)
@@ -274,8 +269,14 @@ namespace Solti.Utils.Json.Tests
         }
 
         [Test]
-        public void ParseStringShouldThrowOnUnterminatedString([Values] string input, [Values(1, 128)] int bufferSize)
+        public void ParseStringShouldThrowOnUnterminatedString([Values("\"", "\"cica", "\"cica\t", /*"\"\\\"",*/ "\"\\")] string input, [Values(1, 128)] int bufferSize)
         {
+            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
+            ITextReader content = new StringReader(input);
+
+            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
+
+            Assert.Throws<FormatException>(() => rdr.ParseString(content, mockContext.Object, '"', bufferSize));
         }
     }
 }

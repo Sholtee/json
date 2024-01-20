@@ -19,14 +19,14 @@ namespace Solti.Utils.Json
     /// </summary>
     /// <param name="flags"></param>
     /// <param name="maxDepth"></param>
-    public readonly ref struct JsonReader(JsonReaderFlags flags, int maxDepth)
+    public sealed class JsonReader(JsonReaderFlags flags, int maxDepth)
     {
         #region Private
-        private readonly ReadOnlySpan<char>
-            TRUE = "true".AsSpan(),
-            FALSE = "false".AsSpan(),
-            NULL = "null".AsSpan(),
-            DOUBLE_SLASH = "//".AsSpan();
+        private static readonly string
+            TRUE = "true",
+            FALSE = "false",
+            NULL = "null",
+            DOUBLE_SLASH = "//";
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int Deeper(int currentDepth)
@@ -117,10 +117,10 @@ namespace Solti.Utils.Json
                 ':' => JsonTokens.Colon,
                 '"' => JsonTokens.DoubleQuote,
                 '\'' when Flags.HasFlag(JsonReaderFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
-                '/' when Flags.HasFlag(JsonReaderFlags.AllowComments) && DOUBLE_SLASH.Equals(PeekText(input, context, DOUBLE_SLASH.Length), comparison) => JsonTokens.DoubleSlash,
-                't' or 'T' when TRUE.Equals(PeekText(input, context, TRUE.Length), comparison) => JsonTokens.True,
-                'f' or 'F' when FALSE.Equals(PeekText(input, context, FALSE.Length), comparison) => JsonTokens.False,
-                'n' or 'N' when NULL.Equals(PeekText(input, context, NULL.Length), comparison) => JsonTokens.Null,
+                '/' when Flags.HasFlag(JsonReaderFlags.AllowComments) && PeekText(input, context, DOUBLE_SLASH.Length).Equals(DOUBLE_SLASH.AsSpan(), comparison) => JsonTokens.DoubleSlash,
+                't' or 'T' when PeekText(input, context, TRUE.Length).Equals(TRUE.AsSpan(), comparison) => JsonTokens.True,
+                'f' or 'F' when PeekText(input, context, FALSE.Length).Equals(FALSE.AsSpan(), comparison) => JsonTokens.False,
+                'n' or 'N' when PeekText(input, context, NULL.Length).Equals(NULL.AsSpan(), comparison) => JsonTokens.Null,
                 '-' or (>= '0' and <= '9') => JsonTokens.Number,
                 _ => JsonTokens.Unknown
             };
@@ -162,6 +162,7 @@ namespace Solti.Utils.Json
                         //
 
                         input.Advance(i + 1);
+
                         return buffer.Slice(0, parsed);
                     }
 
@@ -178,11 +179,16 @@ namespace Solti.Utils.Json
                     if (c == '\\')
                     {
                         if (i + 1 == returned)
+                        {
+                            if (input.CharsLeft is 1)
+                                i++;  // avoid infinite loop 
+
                             //
                             // We ran out of the characters but there are more
                             //
 
                             break;
+                        }
 
                         c = span[++i];
 
