@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 using Moq;
 using NUnit.Framework;
@@ -19,6 +18,14 @@ namespace Solti.Utils.Json.Tests
     [TestFixture]
     public class JsonReaderTests
     {
+        private static JsonReader CreateReader(string input, out ITextReader reader, out Mock<JsonReaderContextBase> mockContext, JsonReaderFlags flags = JsonReaderFlags.None)
+        {
+            mockContext = new(MockBehavior.Loose);
+            reader = new StringReader(input);
+
+            return new JsonReader(reader, mockContext.Object, flags, int.MaxValue);
+        }
+
         public static IEnumerable<object[]> SkipSpaces_ShouldSkipWhiteSpaces_Params
         {
             get
@@ -38,10 +45,9 @@ namespace Solti.Utils.Json.Tests
 
         private static void SkipSpaces_ShouldSkipWhiteSpaces(string input, int shouldSkip, int bufferSize)
         {
-            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
-            ITextReader content = new StringReader(input);
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
+            rdr.SkipSpaces(bufferSize);
 
-            JsonReader.SkipSpaces(content, mockContext.Object, bufferSize);
             Assert.That(content.CharsLeft, Is.EqualTo(input.Length - shouldSkip));
         }
 
@@ -73,25 +79,13 @@ namespace Solti.Utils.Json.Tests
             }
         }
 
-        private static void SkipSpaces_ShouldMaintainThePosition(string input, int rows, int bufferSize)
+        private static void SkipSpaces_ShouldMaintainTheRowIndex(string input, int rows, int bufferSize)
         {
-            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
-            mockContext
-                .SetupGet(c => c.Row)
-                .CallBase();
-            mockContext
-                .SetupSet(c => c.Row = It.IsAny<int>())
-                .CallBase();
-            mockContext
-                .SetupGet(c => c.Column)
-                .CallBase();
-            mockContext
-                .SetupSet(c => c.Column = It.IsAny<int>())
-                .CallBase();
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
-            for (ITextReader content = new StringReader(input); content.CharsLeft > 0;)
+            for (; content.CharsLeft > 0;)
             {
-                JsonReader.SkipSpaces(content, mockContext.Object, bufferSize);
+                rdr.SkipSpaces(bufferSize);
 
                 while (content.PeekChar(out char chr) && !char.IsWhiteSpace(chr))
                 {
@@ -99,15 +93,14 @@ namespace Solti.Utils.Json.Tests
                 }
             }
 
-            Assert.That(mockContext.Object.Row, Is.EqualTo(rows));
-            mockContext.VerifySet(c => c.Row = It.IsAny<int>(), Times.Exactly(rows));
+            Assert.That(rdr.Row, Is.EqualTo(rows));
         }
 
         [TestCaseSource(nameof(SkipSpaces_ShouldMaintainThePosition_Params))]
-        public void SkipSpaces_ShouldMaintainThePosition(string input, int rows) => SkipSpaces_ShouldMaintainThePosition(input, rows, 32);
+        public void SkipSpaces_ShouldMaintainTheRowIndex(string input, int rows) => SkipSpaces_ShouldMaintainTheRowIndex(input, rows, 32);
 
         [TestCaseSource(nameof(SkipSpaces_ShouldMaintainThePosition_Params))]
-        public void SkipSpaces_ShouldMaintainThePositionInMultipleIterations(string input, int rows) => SkipSpaces_ShouldMaintainThePosition(input, rows, 1);
+        public void SkipSpaces_ShouldMaintainTheRowIndexInMultipleIterations(string input, int rows) => SkipSpaces_ShouldMaintainTheRowIndex(input, rows, 1);
 
         public static IEnumerable<object[]> Consume_ShouldReturnTheCurrectToken_Params
         {
@@ -154,33 +147,26 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(Consume_ShouldReturnTheCurrectToken_Params))]
         public void Consume_ShouldReturnTheCurrectToken(string input, object expected, JsonReaderFlags flags)
         {
-            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
-            ITextReader content = new StringReader(input);
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _, flags);
 
-            JsonReader rdr = new(flags, int.MaxValue);
-            Assert.That(rdr.Consume(content, mockContext.Object), Is.EqualTo(expected));
+            Assert.That(rdr.Consume(), Is.EqualTo(expected));
         }
 
         [Test]
         public void Consume_ShouldRejectPartialLiterals([Values("nul", "tru", "fal")] string input)
         {
-            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
-            ITextReader content = new StringReader(input);
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
-            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
-            Assert.That(rdr.Consume(content, mockContext.Object), Is.EqualTo(JsonTokens.Unknown));
+            Assert.That(rdr.Consume(), Is.EqualTo(JsonTokens.Unknown));
         }
 
         [Test]
         public void ConsumeAndValidate_ShouldValidateTheReturnedToken()
         {
-            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
-            ITextReader content = new StringReader("{");
+            JsonReader rdr = CreateReader("{", out ITextReader content, out _);
 
-            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
-            Assert.That(rdr.ConsumeAndValidate(content, mockContext.Object, JsonTokens.Eof | JsonTokens.CurlyOpen), Is.EqualTo(JsonTokens.CurlyOpen));
-
-            Assert.Throws<FormatException>(() => rdr.ConsumeAndValidate(content, mockContext.Object, JsonTokens.Eof));
+            Assert.That(rdr.ConsumeAndValidate(JsonTokens.Eof | JsonTokens.CurlyOpen), Is.EqualTo(JsonTokens.CurlyOpen));
+            Assert.Throws<FormatException>(() => rdr.ConsumeAndValidate(JsonTokens.Eof));
         }
 
         public static IEnumerable<object[]> ParseString_ShouldParseSingleStrings_Params
@@ -198,11 +184,9 @@ namespace Solti.Utils.Json.Tests
 
         private static void ParseString_ShouldParseSingleStrings(string input, char terminating, string expected, int bufferSize)
         {
-            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
-            ITextReader content = new StringReader(input);
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _, JsonReaderFlags.AllowSingleQuotedStrings);
 
-            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
-            Assert.That(rdr.ParseString(content, mockContext.Object, terminating, bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(rdr.ParseString(terminating, bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
@@ -237,11 +221,9 @@ namespace Solti.Utils.Json.Tests
 
         private static void ParseString_ShouldProcessSingleControlCharacters(string input, string expected, int bufferSize)
         {
-            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
-            ITextReader content = new StringReader(input);
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
-            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
-            Assert.That(rdr.ParseString(content, mockContext.Object, '"', bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(rdr.ParseString('"', bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
@@ -256,27 +238,49 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void ParseString_ShouldThrowOnUnknownControlCharacter([Values("\"\\x\"", "\"\\\t\"", "\"prefix\\x\"", "\"\\\tsuffix\"")] string input)
         {
-            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
-            ITextReader content = new StringReader(input);
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
-            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
-
-            Assert.Throws<FormatException>(() => rdr.ParseString(content, mockContext.Object, '"'));
+            Assert.Throws<FormatException>(() => rdr.ParseString('"'));
         }
 
-        private static void ParseString_ShouldThrowOnUnescapedSpace(string input, string expected, int position)
+        public static IEnumerable<object[]> ParseString_ShouldThrowOnUnescapedSpace_Params
         {
+            get
+            {
+                foreach (char chr in new char[] { '\t', '\r', '\n' })
+                {
+                    yield return new object[] { $"\"{chr}\"", 1 };
+                    yield return new object[] { $"\"prefix{chr}\"", 7 };
+                    yield return new object[] { $"\"{chr}suffix\"", 1 };
+                    yield return new object[] { $"\"prefix{chr}suffix\"", 7 };
+                }
+            }
         }
+
+        private static void ParseString_ShouldThrowOnUnescapedSpace(string input, int position, int bufferSize)
+        {
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
+
+            FormatException ex = Assert.Throws<FormatException>(() => rdr.ParseString('"', bufferSize))!;
+            Assert.That(ex.Data.Contains("column"));
+            Assert.That(ex.Data["row"], Is.EqualTo(0));
+            Assert.That(ex.Data["column"], Is.EqualTo(position));
+        }
+
+        [TestCaseSource(nameof(ParseString_ShouldThrowOnUnescapedSpace_Params))]
+        public void ParseString_ShouldThrowOnUnescapedSpace(string input, int position) =>
+            ParseString_ShouldThrowOnUnescapedSpace(input, position, 128);
+
+        [TestCaseSource(nameof(ParseString_ShouldThrowOnUnescapedSpace_Params))]
+        public void ParseString_ShouldThrowOnUnescapedSpaceInMultipleIterations(string input, int position) =>
+            ParseString_ShouldThrowOnUnescapedSpace(input, position, 1);
 
         [Test]
         public void ParseStringShouldThrowOnUnterminatedString([Values("\"", "\"cica", "\"cica\t", /*"\"\\\"",*/ "\"\\")] string input, [Values(1, 128)] int bufferSize)
         {
-            Mock<JsonReaderContextBase> mockContext = new(MockBehavior.Loose, CancellationToken.None);
-            ITextReader content = new StringReader(input);
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
-            JsonReader rdr = new(JsonReaderFlags.None, int.MaxValue);
-
-            Assert.Throws<FormatException>(() => rdr.ParseString(content, mockContext.Object, '"', bufferSize));
+            Assert.Throws<FormatException>(() => rdr.ParseString('"', bufferSize));
         }
     }
 }

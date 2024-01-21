@@ -5,21 +5,22 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Threading;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.Json
 {
     using Internals;
+
     using static Properties.Resources;
 
     /// <summary>
-    /// 
+    /// Represents a low-level JSON reader.
     /// </summary>
-    /// <param name="flags"></param>
-    /// <param name="maxDepth"></param>
-    public sealed class JsonReader(JsonReaderFlags flags, int maxDepth)
+    public sealed class JsonReader(ITextReader input, IJsonReaderContext context, JsonReaderFlags flags, int maxDepth)
     {
         #region Private
         private static readonly string
@@ -28,40 +29,85 @@ namespace Solti.Utils.Json
             NULL = "null",
             DOUBLE_SLASH = "//";
 
+        private char[] FBuffer = [];
+
+        /// <summary>
+        /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int Deeper(int currentDepth)
         {
-            if (++currentDepth > MaxDepth)
+            if (++currentDepth > maxDepth)
                 throw new InvalidOperationException(MAX_DEPTH_REACHED);
             return currentDepth;
         }
 
+        /// <summary>
+        /// Throws a <see cref="FormatException"/>. The exception being thrown is augmented by the actual row and column count.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ThrowFormatException(string msg, IJsonReaderContext context)
+        private void ThrowFormatException(string msg)
         {
             FormatException ex = new(msg);
-            ex.Data["row"] = context.Row;
-            ex.Data["column"] = context.Column;
+            ex.Data["row"] = Row;
+            ex.Data["column"] = Column;
             throw ex;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void MalformedValue(string type, string reason, IJsonReaderContext context) =>
-            ThrowFormatException(string.Format(MALFORMED, type, context.Row, context.Column, reason), context);
+        private void MalformedValue(string type, string reason) => ThrowFormatException
+        (
+            string.Format(MALFORMED, type, Row, Column, reason)
+        );
 
+        /// <summary>
+        /// Gets maximum <paramref name="len"/> character(s) from the input without advancing the reader.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ReadOnlySpan<char> PeekText(ITextReader input, IJsonReaderContext context, int len)
+        private ReadOnlySpan<char> PeekText(int len)
         {
-            Span<char> buffer = context.GetBuffer(len);
+            Span<char> buffer = GetBuffer(len);
             return buffer.Slice(0, input.PeekText(buffer));
+        }
+
+        /// <summary>
+        /// Advances the underlying <see cref="ITextReader"/>. It assumes that the row remains the same.
+        /// </summary>
+        /// <param name="len"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void Advance(int len)
+        {
+            Assert(len >= 0, "Cannot advance in negative direction");
+            Assert(len <= input.CharsLeft, "Cannot advance more characters than we have");
+
+            input.Advance(len);
+            Column += len;
+        }
+
+        /// <summary>
+        /// Creates a view to the underlying buffer.
+        /// </summary>
+        /// <remarks>The method resizes the underlying buffer if necessary.</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Span<char> GetBuffer(int length)
+        {
+            Assert(length >= 0, "Buffer size must be greater or equal to 0");
+
+            if (length > FBuffer.Length)
+                Array.Resize(ref FBuffer, length);
+
+            return FBuffer.AsSpan(0, length);
         }
         #endregion
 
         #region Internal
+        /// <summary>
+        /// Trims all the leading whitespaces maintaining the row and column count.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void SkipSpaces(ITextReader input, IJsonReaderContext context, int bufferSize = 32 /*for tests*/)
+        internal void SkipSpaces(int bufferSize = 32 /*for tests*/)
         {
-            Span<char> buffer = context.GetBuffer(bufferSize);
+            Span<char> buffer = GetBuffer(bufferSize);
 
             for (int read; (read = input.PeekText(buffer)) > 0;)
             {
@@ -70,10 +116,10 @@ namespace Solti.Utils.Json
                 {
                     if (buffer[skip] is '\n')
                     {
-                        context.Row++;
-                        context.Column = 0;
+                        Row++;
+                        Column = 0;
                     }
-                    else context.Column++;
+                    else Column++;
                 }
 
                 input.Advance(skip);
@@ -82,16 +128,19 @@ namespace Solti.Utils.Json
             }
         }
 
+        /// <summary>
+        /// Consumes the current token which the reader is positioned on. Throws a <see cref="FormatException"/> if the token is not in the given range.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal JsonTokens ConsumeAndValidate(ITextReader input, IJsonReaderContext context, JsonTokens expected)
+        internal JsonTokens ConsumeAndValidate(JsonTokens expected)
         {
-            JsonTokens got = Consume(input, context);
-            if (!expected.HasFlag(got))
+            JsonTokens got = Consume();
+            if (!expected.HasFlag(got) || got is JsonTokens.Unknown)
                 //
                 // Concatenation of "exptected" flags are done by the system
                 //
 
-                ThrowFormatException(string.Format(MALFORMED_INPUT, expected, got, context.Row, context.Column), context);
+                ThrowFormatException(string.Format(MALFORMED_INPUT, expected, got, Row, Column));
             return got;
         }
 
@@ -99,11 +148,11 @@ namespace Solti.Utils.Json
         /// Consumes the current token which the reader is positioned on.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal JsonTokens Consume(ITextReader input, IJsonReaderContext context)
+        internal JsonTokens Consume()
         {
-            SkipSpaces(input, context);
+            SkipSpaces();
 
-            StringComparison comparison = Flags.HasFlag(JsonReaderFlags.CaseInsensitive)
+            StringComparison comparison = flags.HasFlag(JsonReaderFlags.CaseInsensitive)
                 ? StringComparison.OrdinalIgnoreCase
                 : StringComparison.Ordinal;
 
@@ -116,19 +165,19 @@ namespace Solti.Utils.Json
                 ',' => JsonTokens.Comma,
                 ':' => JsonTokens.Colon,
                 '"' => JsonTokens.DoubleQuote,
-                '\'' when Flags.HasFlag(JsonReaderFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
-                '/' when Flags.HasFlag(JsonReaderFlags.AllowComments) && PeekText(input, context, DOUBLE_SLASH.Length).Equals(DOUBLE_SLASH.AsSpan(), comparison) => JsonTokens.DoubleSlash,
-                't' or 'T' when PeekText(input, context, TRUE.Length).Equals(TRUE.AsSpan(), comparison) => JsonTokens.True,
-                'f' or 'F' when PeekText(input, context, FALSE.Length).Equals(FALSE.AsSpan(), comparison) => JsonTokens.False,
-                'n' or 'N' when PeekText(input, context, NULL.Length).Equals(NULL.AsSpan(), comparison) => JsonTokens.Null,
+                '\'' when flags.HasFlag(JsonReaderFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
+                '/' when flags.HasFlag(JsonReaderFlags.AllowComments) && PeekText(DOUBLE_SLASH.Length).Equals(DOUBLE_SLASH.AsSpan(), comparison) => JsonTokens.DoubleSlash,
+                't' or 'T' when PeekText(TRUE.Length).Equals(TRUE.AsSpan(), comparison) => JsonTokens.True,
+                'f' or 'F' when PeekText(FALSE.Length).Equals(FALSE.AsSpan(), comparison) => JsonTokens.False,
+                'n' or 'N' when PeekText(NULL.Length).Equals(NULL.AsSpan(), comparison) => JsonTokens.Null,
                 '-' or (>= '0' and <= '9') => JsonTokens.Number,
                 _ => JsonTokens.Unknown
             };
         }
 
-        internal ReadOnlySpan<char> ParseString(ITextReader input, IJsonReaderContext context, char quote, int initialBufferSize = 128 /*for debug*/)
+        internal ReadOnlySpan<char> ParseString(char quote, int initialBufferSize = 128 /*for debug*/)
         {
-            ConsumeAndValidate(input, context, quote is '"' ? JsonTokens.DoubleQuote : JsonTokens.SingleQuote);
+            ConsumeAndValidate(quote is '"' ? JsonTokens.DoubleQuote : JsonTokens.SingleQuote);
             input.Advance(1);
 
             for (int bufferSize = initialBufferSize, parsed = 0; ; bufferSize *= 2)
@@ -138,7 +187,7 @@ namespace Solti.Utils.Json
                     // Increase the buffer size
                     //
 
-                    buffer = context.GetBuffer(bufferSize),
+                    buffer = GetBuffer(bufferSize),
 
                     //
                     // Create a new "working view" to keep the previously parsed characters untouched
@@ -148,7 +197,7 @@ namespace Solti.Utils.Json
 
                 int returned = input.PeekText(span);
                 if (returned is 0)
-                    MalformedValue("string", "unterminated string", context);
+                    MalformedValue("string", "unterminated string");
 
                 int i;
                 for (i = 0; i < returned; i++)
@@ -161,8 +210,7 @@ namespace Solti.Utils.Json
                         // We reached the end of the string
                         //
 
-                        input.Advance(i + 1);
-
+                        Advance(i + 1);
                         return buffer.Slice(0, parsed);
                     }
 
@@ -172,8 +220,8 @@ namespace Solti.Utils.Json
                         // Unexpected white space
                         //
 
-                        input.Advance(i + 1);
-                        MalformedValue("string", "unexpected white space", context);
+                        Advance(i + 1);
+                        MalformedValue("string", "unexpected white space");
                     }
 
                     if (c == '\\')
@@ -221,8 +269,8 @@ namespace Solti.Utils.Json
                                 // Unterminated HEX digits
                                 //
 
-                                input.Advance(i);
-                                MalformedValue("string", "missing HEX digits", context);
+                                Advance(i);
+                                MalformedValue("string", "missing HEX digits");
                             }
 
                             bool validHex = ushort.TryParse
@@ -241,7 +289,7 @@ namespace Solti.Utils.Json
                                 // Malformed HEX digits
                                 //
 
-                                MalformedValue("string", "not a HEX", context);
+                                MalformedValue("string", "not a HEX");
 
                             i += 4;
                             buffer[parsed++] = (char) chr;
@@ -252,15 +300,15 @@ namespace Solti.Utils.Json
                             // Unknown control character -> Error
                             //
 
-                            input.Advance(i);
-                            MalformedValue("string", "unknown control character", context);
+                            Advance(i);
+                            MalformedValue("string", "unknown control character");
                         }
                     }
                     else
                         buffer[parsed++] = span[i];
                 }
 
-                input.Advance(i);
+                Advance(i);
             }
         }
 
@@ -271,7 +319,7 @@ namespace Solti.Utils.Json
         // d) 1E+2
         //
 
-        internal object ParseNumber(ITextReader input, IJsonReaderContext context)
+        internal object ParseNumber()
         {
             Span<char> buffer;
             bool isFloating = false;
@@ -282,7 +330,7 @@ namespace Solti.Utils.Json
 
             for (int bufferSize = 16, parsed = 0; ; bufferSize *= 2)
             {
-                buffer = context.GetBuffer(bufferSize);
+                buffer = GetBuffer(bufferSize);
                 int returned = input.PeekText(buffer);
 
                 for (; parsed < returned; parsed++)
@@ -332,63 +380,63 @@ namespace Solti.Utils.Json
             }
 
             if (result is null)
-                MalformedValue("number", "not a number", context);
+                MalformedValue("number", "not a number");
 
             //
             // Advance the reader if everything was all right
             //
 
-            input.Advance(buffer.Length);
+            Advance(buffer.Length);
             return result!;
         }
 
-        internal object ParseList(ITextReader input, IJsonReaderContext context, int currentDepth)
+        internal object ParseList(int currentDepth, in CancellationToken cancellation)
         {
-            ConsumeAndValidate(input, context, JsonTokens.SquaredOpen);
-            input.Advance(1);
+            ConsumeAndValidate(JsonTokens.SquaredOpen);
+            Advance(1);
 
             object result = context.CreateRawObject();
 
-            while (Consume(input, context) is not JsonTokens.SquaredClose)
+            while (Consume() is not JsonTokens.SquaredClose)
             {
-                context.SetValue(result, Parse(input, context, currentDepth));
+                context.SetValue(result, Parse(currentDepth, cancellation));
 
-                if (ConsumeAndValidate(input, context, JsonTokens.SquaredClose | JsonTokens.Comma) is JsonTokens.Comma)
+                if (ConsumeAndValidate(JsonTokens.SquaredClose | JsonTokens.Comma) is JsonTokens.Comma)
                 {
-                    input.Advance(1);
-                    if (Consume(input, context) is JsonTokens.SquaredClose && !Flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
-                        MalformedValue("list", "trailing comma not allowed", context);
+                    Advance(1);
+                    if (Consume() is JsonTokens.SquaredClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
+                        MalformedValue("list", "trailing comma not allowed");
                 }
             }
 
-            input.Advance(1);
+            Advance(1);
 
             return result;
         }
 
-        internal object ParseObject(ITextReader input, IJsonReaderContext context, int currentDepth)
+        internal object ParseObject(int currentDepth, in CancellationToken cancellation)
         {
             return new Dictionary<string, object?>();
         }
 
-        internal void ParseComment(ITextReader input, IJsonReaderContext context)
+        internal void ParseComment()
         {           
-            for (ReadOnlySpan<char> buffer; !(buffer = PeekText(input, context, 32)).IsEmpty;)
+            for (ReadOnlySpan<char> buffer; !(buffer = PeekText(32)).IsEmpty;)
             {
                 int lineEnd = buffer.IndexOf('\n');
                 if (lineEnd >= 0)
                 {
-                    input.Advance(lineEnd);
+                    Advance(lineEnd);
                     break;
                 }
 
-                input.Advance(buffer.Length);
+                Advance(buffer.Length);
             }
 
             // TODO: introduce a flag if we want to pass the read comment to the context
         }
 
-        internal object? Parse(ITextReader input, IJsonReaderContext context, int currentDepth)
+        internal object? Parse(int currentDepth, in CancellationToken cancellation)
         {
             const JsonTokens EXPECTED =
                 JsonTokens.CurlyOpen |
@@ -401,25 +449,25 @@ namespace Solti.Utils.Json
                 JsonTokens.False |
                 JsonTokens.Null;
 
-            context.ThrowIfCancellationRequested();
+            cancellation.ThrowIfCancellationRequested();
 
             for (;;)
             {
-                switch (ConsumeAndValidate(input, context, EXPECTED)) 
+                switch (ConsumeAndValidate(EXPECTED)) 
                 {
                     case JsonTokens.CurlyOpen:
-                        return ParseObject(input, context, Deeper(currentDepth));
+                        return ParseObject(Deeper(currentDepth), cancellation);
                     case JsonTokens.SquaredOpen:
-                        return ParseList(input, context, Deeper(currentDepth));
+                        return ParseList(Deeper(currentDepth), cancellation);
                     case JsonTokens.SingleQuote:
-                        return ParseString(input, context, '\'').AsString();
+                        return ParseString('\'').AsString();
                     case JsonTokens.DoubleQuote:
-                        return ParseString(input, context, '"').AsString();
+                        return ParseString('"').AsString();
                     case JsonTokens.DoubleSlash:
-                        ParseComment(input, context);
+                        ParseComment();
                         continue;
                     case JsonTokens.Number:
-                        return ParseNumber(input, context);
+                        return ParseNumber();
                     case JsonTokens.True:
                         input.Advance(TRUE.Length);
                         return true;
@@ -430,27 +478,36 @@ namespace Solti.Utils.Json
                         input.Advance(NULL.Length);
                         return null;
                     default:
-                        Debug.Fail("We must not get here. Review the EXPECTED constant and the ConsumeAndValidate() method");
+                        Fail("Unexpected token has been returned");
                         return null!;
                 };
             }
         }
 #endregion
 
-        public int MaxDepth { get; } = maxDepth;
+        /// <summary>
+        /// Gets the current row which is the reader is positioned on
+        /// </summary>
+        public int Row { get; private set; }
 
-        public JsonReaderFlags Flags { get; } = flags;
+        /// <summary>
+        /// Gets the current column which is the reader is positioned on
+        /// </summary>
+        public int Column { get; private set; }
 
-        public object? Parse(ITextReader input, IJsonReaderContext context)
+        /// <summary>
+        /// Parses the <see cref="input"/>
+        /// </summary>
+        public object? Parse(in CancellationToken cancellation)
         {
-            object? result = Parse(input, context, 0);
+            object? result = Parse(0, cancellation);
 
             //
             // Parse trailing comments properly.
             //
 
-            while(ConsumeAndValidate(input, context, JsonTokens.Eof | JsonTokens.DoubleSlash) is JsonTokens.DoubleSlash)
-                ParseComment(input, context);
+            while(ConsumeAndValidate(JsonTokens.Eof | JsonTokens.DoubleSlash) is JsonTokens.DoubleSlash)
+                ParseComment();
 
             return result;
         }
