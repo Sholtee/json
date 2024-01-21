@@ -290,11 +290,11 @@ namespace Solti.Utils.Json.Tests
 
                 foreach (string input in inputs)
                 {
-                    yield return new object[] { $"//{input}", input, JsonTokens.Eof };
-                    yield return new object[] { $"//{input}\n", input, JsonTokens.Eof };
-                    yield return new object[] { $"//{input}\r\n", input, JsonTokens.Eof };
-                    yield return new object[] { $"//{input}\n{{", input, JsonTokens.CurlyOpen };
-                    yield return new object[] { $"//{input}\r\n{{", input, JsonTokens.CurlyOpen };
+                    yield return new object[] { $"//{input}", input, 0 };
+                    yield return new object[] { $"//{input}\n", input, 0 };
+                    yield return new object[] { $"//{input}\r\n", input, 0 };
+                    yield return new object[] { $"//{input}\n{{", input, 1 };
+                    yield return new object[] { $"//{input}\r\n{{", input, 1 };
                 }
             }
         }
@@ -314,23 +314,24 @@ namespace Solti.Utils.Json.Tests
             public void SetValue(object obj, ReadOnlySpan<char> value) => throw new NotImplementedException();
         }
 
-        private static void ParseComment_ShouldConsumeComments(string input, string expected, object nextToken, int bufferSize)
+        private static void ParseComment_ShouldConsumeComments(string input, string expected, int charsLeft, int bufferSize)
         {
             CommentParserContext commentParserContext = new();
+            ITextReader content = new StringReader(input);
 
-            JsonReader rdr = new(new StringReader(input), commentParserContext, JsonReaderFlags.AllowComments, int.MaxValue);
+            JsonReader rdr = new(content, commentParserContext, JsonReaderFlags.AllowComments, int.MaxValue);
 
             Assert.DoesNotThrow(() => rdr.ParseComment(bufferSize));
             Assert.That(commentParserContext.LastComment, Is.EqualTo(expected));
-            Assert.That(rdr.Consume(), Is.EqualTo(nextToken));
+            Assert.That(content.CharsLeft, Is.EqualTo(charsLeft));
         }
 
         [TestCaseSource(nameof(ParseComment_ShouldConsumeComments_Params))]
-        public void ParseComment_ShouldConsumeComments(string input, string expected, object nextToken) =>
-            ParseComment_ShouldConsumeComments(input, expected, nextToken, 32);
+        public void ParseComment_ShouldConsumeComments(string input, string expected, int charsLeft) =>
+            ParseComment_ShouldConsumeComments(input, expected, charsLeft, 32);
 
         [TestCaseSource(nameof(ParseComment_ShouldConsumeComments_Params))]
-        public void ParseComment_ShouldConsumeCommentsInMultipleIterations(string input, string expected, object nextToken) =>
-            ParseComment_ShouldConsumeComments(input, expected, nextToken, 1);
+        public void ParseComment_ShouldConsumeCommentsInMultipleIterations(string input, string expected, int charsLeft) =>
+            ParseComment_ShouldConsumeComments(input, expected, charsLeft, 1);
     }
 }
