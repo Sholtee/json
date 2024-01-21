@@ -12,13 +12,12 @@ using NUnit.Framework;
 namespace Solti.Utils.Json.Tests
 {
     using Internals;
-
     using JsonTokenValue = (bool IsLiteral, string Value, JsonReaderFlags RequiredFlags);
 
     [TestFixture]
     public class JsonReaderTests
     {
-        private static JsonReader CreateReader(string input, out ITextReader reader, out Mock<JsonReaderContextBase> mockContext, JsonReaderFlags flags = JsonReaderFlags.None)
+        private static JsonReader CreateReader(string input, out ITextReader reader, out Mock<IJsonReaderContext> mockContext, JsonReaderFlags flags = JsonReaderFlags.None)
         {
             mockContext = new(MockBehavior.Loose);
             reader = new StringReader(input);
@@ -276,11 +275,62 @@ namespace Solti.Utils.Json.Tests
             ParseString_ShouldThrowOnUnescapedSpace(input, position, 1);
 
         [Test]
-        public void ParseStringShouldThrowOnUnterminatedString([Values("\"", "\"cica", "\"cica\t", /*"\"\\\"",*/ "\"\\")] string input, [Values(1, 128)] int bufferSize)
+        public void ParseString_ShouldThrowOnUnterminatedString([Values("\"", "\"cica", "\"cica\t", /*"\"\\\"",*/ "\"\\")] string input, [Values(1, 128)] int bufferSize)
         {
             JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
             Assert.Throws<FormatException>(() => rdr.ParseString('"', bufferSize));
         }
+
+        public static IEnumerable<object[]> ParseComment_ShouldConsumeComments_Params
+        {
+            get
+            {
+                string[] inputs = ["", "cica"];
+
+                foreach (string input in inputs)
+                {
+                    yield return new object[] { $"//{input}", input, JsonTokens.Eof };
+                    yield return new object[] { $"//{input}\n", input, JsonTokens.Eof };
+                    yield return new object[] { $"//{input}\r\n", input, JsonTokens.Eof };
+                    yield return new object[] { $"//{input}\n{{", input, JsonTokens.CurlyOpen };
+                    yield return new object[] { $"//{input}\r\n{{", input, JsonTokens.CurlyOpen };
+                }
+            }
+        }
+
+        //
+        // Cannot mock methods having Span<T> parameter
+        //
+
+        private sealed class CommentParserContext : IJsonReaderContext
+        {
+            public string LastComment { get; private set; } = null!;
+            public void CommentParsed(ReadOnlySpan<char> value) => LastComment  = value.AsString();
+            public object CreateRawObject() => throw new NotImplementedException();
+            public void PopState() => throw new NotImplementedException();
+            public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
+            public void SetValue(object obj, object? value) => throw new NotImplementedException();
+            public void SetValue(object obj, ReadOnlySpan<char> value) => throw new NotImplementedException();
+        }
+
+        private static void ParseComment_ShouldConsumeComments(string input, string expected, object nextToken, int bufferSize)
+        {
+            CommentParserContext commentParserContext = new();
+
+            JsonReader rdr = new(new StringReader(input), commentParserContext, JsonReaderFlags.AllowComments, int.MaxValue);
+
+            Assert.DoesNotThrow(() => rdr.ParseComment(bufferSize));
+            Assert.That(commentParserContext.LastComment, Is.EqualTo(expected));
+            Assert.That(rdr.Consume(), Is.EqualTo(nextToken));
+        }
+
+        [TestCaseSource(nameof(ParseComment_ShouldConsumeComments_Params))]
+        public void ParseComment_ShouldConsumeComments(string input, string expected, object nextToken) =>
+            ParseComment_ShouldConsumeComments(input, expected, nextToken, 32);
+
+        [TestCaseSource(nameof(ParseComment_ShouldConsumeComments_Params))]
+        public void ParseComment_ShouldConsumeCommentsInMultipleIterations(string input, string expected, object nextToken) =>
+            ParseComment_ShouldConsumeComments(input, expected, nextToken, 1);
     }
 }

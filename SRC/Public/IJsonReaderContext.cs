@@ -21,6 +21,12 @@ namespace Solti.Utils.Json
         void PopState();
 
         /// <summary>
+        /// Method to be called when a comment section has been parsed successfully.
+        /// </summary>
+        /// <remarks>This method gets invoked only when the <see cref="JsonReaderFlags.AllowComments"/> flag is set.</remarks>
+        void CommentParsed(ReadOnlySpan<char> value);
+
+        /// <summary>
         /// Creates a raw list or object according to the actual state.
         /// </summary>
         object CreateRawObject();

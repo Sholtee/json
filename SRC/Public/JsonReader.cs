@@ -419,21 +419,51 @@ namespace Solti.Utils.Json
             return new Dictionary<string, object?>();
         }
 
-        internal void ParseComment()
-        {           
-            for (ReadOnlySpan<char> buffer; !(buffer = PeekText(32)).IsEmpty;)
+        internal void ParseComment(int initialBufferSize = 32 /*for debug*/)
+        {
+            ConsumeAndValidate(JsonTokens.DoubleSlash);
+            input.Advance(2);
+
+            Span<char> buffer;
+
+            int parsed = 0;
+            for (int bufferSize = initialBufferSize; ; bufferSize *= 2)
             {
-                int lineEnd = buffer.IndexOf('\n');
+                //
+                // Increase the buffer size
+                //
+
+                buffer = GetBuffer(bufferSize);
+
+                //
+                // Create a new "working view" to keep the previously parsed characters untouched
+                // 
+
+                Span<char> span = buffer.Slice(parsed);
+
+                int returned = input.PeekText(span);
+                if (returned is 0)
+                    break;
+
+                int lineEnd = span.Slice(0, returned).IndexOf('\n');
                 if (lineEnd >= 0)
                 {
-                    Advance(lineEnd);
+                    Advance(lineEnd + 1);
+                    parsed += lineEnd + 1;
                     break;
                 }
 
-                Advance(buffer.Length);
+                Advance(returned);
+                parsed += returned;
             }
 
-            // TODO: introduce a flag if we want to pass the read comment to the context
+            if (parsed > 0 && buffer[parsed - 1] is '\n')
+                parsed--;
+
+            if (parsed > 0 && buffer[parsed - 1] is '\r')
+                parsed--;
+
+            context.CommentParsed(buffer.Slice(0, parsed));
         }
 
         internal object? Parse(int currentDepth, in CancellationToken cancellation)
