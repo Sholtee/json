@@ -282,6 +282,69 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<FormatException>(() => rdr.ParseString('"', bufferSize));
         }
 
+        public static IEnumerable<object[]> ParseString_ShouldParseEscapedUnicodeCharacters_Params
+        {
+            get
+            {
+                yield return new object[] { "\"\\u00E1\"", "á" };
+                yield return new object[] { "\"\\u00E1bc\"", "ábc" };
+                yield return new object[] { "\"cb\\u00E1\"", "cbá" };
+                yield return new object[] { "\"123\\u00E1bc\"", "123ábc" };
+                yield return new object[] { "\"\\uD83D\\uDE01\"", "😁" };
+            }
+        }
+
+        private static void ParseString_ShouldParseEscapedUnicodeCharacters(string input, string expected, int bufferSize)
+        {
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
+
+            Assert.That(rdr.ParseString('"', bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(content.CharsLeft, Is.EqualTo(0));
+        }
+
+        [TestCaseSource(nameof(ParseString_ShouldParseEscapedUnicodeCharacters_Params))]
+        public void ParseString_ShouldParseEscapedUnicodeCharacters(string input, string expected) =>
+            ParseString_ShouldParseEscapedUnicodeCharacters(input, expected, 128);
+
+        [TestCaseSource(nameof(ParseString_ShouldParseEscapedUnicodeCharacters_Params))]
+        public void ParseString_ShouldParseEscapedUnicodeCharactersInMultipleIterations(string input, string expected) =>
+            ParseString_ShouldParseEscapedUnicodeCharacters(input, expected, 1);
+
+        public static IEnumerable<object[]> ParseString_ShouldThrowOnInvalidHex_Params
+        {
+            get
+            {
+                // invalid
+                yield return new object[] { "\"\\uX0E1\"", 2 };
+                yield return new object[] { "\"\\u0XE1bc\"", 2 };
+                yield return new object[] { "\"cb\\u00X1\"", 4 };
+                yield return new object[] { "\"123\\u00EXbc\"", 5 };
+                yield return new object[] { "\"\\uD83D\\uD 01\"", 8 };
+
+                // unterminated
+                yield return new object[] { "\"\\u00E\"", 2 };
+                yield return new object[] { "\"\\u00E", 2 };
+                yield return new object[] { "\"cb\\u00E\"", 4 };
+                yield return new object[] { "\"cb\\u00E", 4 };
+            }
+        }
+
+        private static void ParseString_ShouldThrowOnInvalidHex(string input, int col, int bufferSize)
+        {
+            JsonReader rdr = CreateReader(input, out _, out _);
+            
+            Assert.Throws<FormatException>(() => rdr.ParseString('"', bufferSize));
+            Assert.That(rdr.Column, Is.EqualTo(col));
+        }
+
+        [TestCaseSource(nameof(ParseString_ShouldThrowOnInvalidHex_Params))]
+        public void ParseString_ShouldThrowOnInvalidHex(string input, int col) =>
+            ParseString_ShouldThrowOnInvalidHex(input, col, 128);
+
+        [TestCaseSource(nameof(ParseString_ShouldThrowOnInvalidHex_Params))]
+        public void ParseString_ShouldThrowOnInvalidHexInMultipleIterations(string input, int col) =>
+            ParseString_ShouldThrowOnInvalidHex(input, col, 1);
+
         public static IEnumerable<object[]> ParseComment_ShouldConsumeComments_Params
         {
             get

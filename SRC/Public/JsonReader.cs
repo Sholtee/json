@@ -252,46 +252,69 @@ namespace Solti.Utils.Json
                             buffer[parsed++] = '\r';
                         else if (c == 'u')
                         {
-                            if (returned - i < 4)
+                            if (returned - i <= 4)
                             {
                                 //
                                 // We need 4 hex digits
                                 //
 
-                                if (input.CharsLeft - i > 3)
+                                if (input.CharsLeft - i > 4)
+                                {
                                     //
                                     // We ran out of the characters but there are more
                                     //
 
+                                    i--;
                                     break;
+                                }
 
                                 //
                                 // Unterminated HEX digits
                                 //
 
-                                Advance(i);
+                                Advance(i + 1);
                                 MalformedValue("string", "missing HEX digits");
                             }
 
-                            bool validHex = ushort.TryParse
+                            //
+                            // Jump to the first HEX digit
+                            //
+
+                            i++;
+
+                            if 
                             (
+                                !ushort.TryParse
+                                (
 #if NETSTANDARD2_1_OR_GREATER
-                                span.Slice(i, 4),
+                                    span.Slice(i, 4),
 #else
-                                span.Slice(i, 4).AsString(),
+                                    span.Slice(i, 4).AsString(),
 #endif
-                                NumberStyles.HexNumber,
-                                null,
-                                out ushort chr
-                            );
-                            if (!validHex)
+                                    NumberStyles.HexNumber,
+                                    null,
+                                    out ushort chr
+                                )
+                            )
+                            {
                                 //
                                 // Malformed HEX digits
                                 //
 
+                                Advance(i);
                                 MalformedValue("string", "not a HEX");
+                            }
 
-                            i += 4;
+                            //
+                            // Jump to the last HEX digit
+                            //
+
+                            i += 3;
+
+                            //
+                            // Already unicode so no Encoding.GetChars() call required
+                            //
+
                             buffer[parsed++] = (char) chr;
                         }
                         else
