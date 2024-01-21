@@ -396,5 +396,64 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(ParseComment_ShouldConsumeComments_Params))]
         public void ParseComment_ShouldConsumeCommentsInMultipleIterations(string input, string expected, int charsLeft) =>
             ParseComment_ShouldConsumeComments(input, expected, charsLeft, 1);
+
+        public static IEnumerable<object[]> ParseNumber_ShouldReturnTheAppropriateValue_Params
+        {
+            get
+            {
+                yield return new object[] { "0", (long) 0, 0 };
+                yield return new object[] { "1", (long) 1, 0 };
+                yield return new object[] { "100", (long) 100, 0 };
+                yield return new object[] { "100.0", (double) 100.0, 0 };
+                yield return new object[] { "1.0E+2", (double) 100.0, 0 };
+                yield return new object[] { "1.0E-2", (double) 0.01, 0 };
+                yield return new object[] { "1E+2", (double) 100.0, 0 };
+                yield return new object[] { "1E-2", (double) 0.01, 0 };
+                yield return new object[] { "-0", (long) 0, 0 };
+                yield return new object[] { "-1", (long) -1, 0 };
+                yield return new object[] { "-100", (long) -100, 0 };
+                yield return new object[] { "-100.0", (double) -100.0, 0 };
+                yield return new object[] { "-1.0E+2", (double) -100.0, 0 };
+                yield return new object[] { "-1.0E-2", (double) -0.01, 0 };
+                yield return new object[] { "-1E+2", (double) -100.0, 0 };
+                yield return new object[] { "-1E-2", (double) -0.01, 0 };
+
+                yield return new object[] { "0,", (long) 0, 1 };
+                yield return new object[] { "1,", (long) 1, 1 };
+                yield return new object[] { "100,", (long) 100, 1 };
+                yield return new object[] { "100.0,", (double) 100.0, 1 };
+                yield return new object[] { "1.0E+2,", (double) 100.0, 1 };
+                yield return new object[] { "1.0E-2,", (double) 0.01, 1 };
+                yield return new object[] { "1E+2,", (double) 100.0, 1 };
+                yield return new object[] { "1E-2,", (double) 0.01, 1 };
+                yield return new object[] { "-0,", (long) 0, 1 };
+                yield return new object[] { "-1,", (long) -1, 1 };
+                yield return new object[] { "-100,", (long) -100, 1 };
+                yield return new object[] { "-100.0,", (double) -100.0, 1 };
+                yield return new object[] { "-1.0E+2,", (double) -100.0, 1 };
+                yield return new object[] { "-1.0E-2,", (double) -0.01, 1 };
+                yield return new object[] { "-1E+2,", (double) -100.0, 1 };
+                yield return new object[] { "-1E-2,", (double) -0.01, 1 };
+            }
+        }
+
+        private static void ParseNumber_ShouldReturnTheAppropriateValue(string input, object expected, int charsLeft, int bufferSize)
+        {
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
+
+            object result = rdr.ParseNumber(bufferSize);
+
+            Assert.That(result.GetType(), Is.EqualTo(expected.GetType()));
+            Assert.That(result, Is.EqualTo(expected).Within(expected is double ? 0.1 : 0).Percent);
+            Assert.That(content.CharsLeft, Is.EqualTo(charsLeft));
+        }
+
+        [TestCaseSource(nameof(ParseNumber_ShouldReturnTheAppropriateValue_Params))]
+        public void ParseNumber_ShouldReturnTheAppropriateValue(string input, object expected, int charsLeft) =>
+            ParseNumber_ShouldReturnTheAppropriateValue(input, expected, charsLeft, 16);
+
+        [TestCaseSource(nameof(ParseNumber_ShouldReturnTheAppropriateValue_Params))]
+        public void ParseNumber_ShouldReturnTheAppropriateValueInMultipleIterations(string input, object expected, int charsLeft) =>
+            ParseNumber_ShouldReturnTheAppropriateValue(input, expected, charsLeft, 1);
     }
 }

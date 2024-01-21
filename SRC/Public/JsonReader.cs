@@ -338,8 +338,10 @@ namespace Solti.Utils.Json
         // d) 1E+2
         //
 
-        internal object ParseNumber()
+        internal object ParseNumber(int initialBufferSize = 16 /*for debug*/)
         {
+            ConsumeAndValidate(JsonTokens.Number);
+
             Span<char> buffer;
             bool isFloating = false;
 
@@ -347,7 +349,8 @@ namespace Solti.Utils.Json
             // Copy all promising chars
             //
 
-            for (int bufferSize = 16, parsed = 0; ; bufferSize *= 2)
+            int parsed = 0;
+            for (int bufferSize = initialBufferSize; ; bufferSize *= 2)
             {
                 buffer = GetBuffer(bufferSize);
                 int returned = input.PeekText(buffer);
@@ -357,15 +360,10 @@ namespace Solti.Utils.Json
                     char chr = buffer[parsed];
 
                     if (chr is '.' || char.ToLower(chr) is 'e')
-                    {
                         isFloating = true;
-                    }
 
                     else if ((chr is < '0' or > '9') && chr is not '+' && chr is not '-')
-                    {
-                        buffer = buffer.Slice(0, parsed);
                         goto parse;
-                    }
                 }
 
                 if (input.CharsLeft == parsed)
@@ -377,6 +375,7 @@ namespace Solti.Utils.Json
             //
 
             parse:
+            buffer = buffer.Slice(0, parsed);
             object? result = null;
 
             if (isFloating)
@@ -405,7 +404,7 @@ namespace Solti.Utils.Json
             // Advance the reader if everything was all right
             //
 
-            Advance(buffer.Length);
+            Advance(parsed);
             return result!;
         }
 
