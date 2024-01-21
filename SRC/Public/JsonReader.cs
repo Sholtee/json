@@ -252,13 +252,15 @@ namespace Solti.Utils.Json
                             buffer[parsed++] = '\r';
                         else if (c == 'u')
                         {
-                            if (returned - i <= 4)
+                            const int HEX_LEN = 4;
+
+                            if (returned - i <= HEX_LEN)
                             {
                                 //
                                 // We need 4 hex digits
                                 //
 
-                                if (input.CharsLeft - i > 4)
+                                if (input.CharsLeft - i > HEX_LEN)
                                 {
                                     //
                                     // We ran out of the characters but there are more
@@ -276,20 +278,14 @@ namespace Solti.Utils.Json
                                 MalformedValue("string", "missing HEX digits");
                             }
 
-                            //
-                            // Jump to the first HEX digit
-                            //
-
-                            i++;
-
                             if 
                             (
                                 !ushort.TryParse
                                 (
 #if NETSTANDARD2_1_OR_GREATER
-                                    span.Slice(i, 4),
+                                    span.Slice(i + 1, HEX_LEN),
 #else
-                                    span.Slice(i, 4).AsString(),
+                                    span.Slice(i + 1, HEX_LEN).AsString(),
 #endif
                                     NumberStyles.HexNumber,
                                     null,
@@ -301,7 +297,7 @@ namespace Solti.Utils.Json
                                 // Malformed HEX digits
                                 //
 
-                                Advance(i);
+                                Advance(i + 1);
                                 MalformedValue("string", "not a HEX");
                             }
 
@@ -309,7 +305,7 @@ namespace Solti.Utils.Json
                             // Jump to the last HEX digit
                             //
 
-                            i += 3;
+                            i += HEX_LEN;
 
                             //
                             // Already unicode so no Encoding.GetChars() call required
