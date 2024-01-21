@@ -455,5 +455,12 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(ParseNumber_ShouldReturnTheAppropriateValue_Params))]
         public void ParseNumber_ShouldReturnTheAppropriateValueInMultipleIterations(string input, object expected, int charsLeft) =>
             ParseNumber_ShouldReturnTheAppropriateValue(input, expected, charsLeft, 1);
+
+        [Test]
+        public void ParseNumber_ShouldThrowOnInvalidValue([Values("1E-")] string input, [Values(1, 16)] int bufferSize)
+        {
+            JsonReader rdr = CreateReader(input, out _, out _);
+            Assert.Throws<FormatException>(() => rdr.ParseNumber(bufferSize));
+        }
     }
 }
