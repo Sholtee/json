@@ -333,7 +333,7 @@ namespace Solti.Utils.Json.Tests
         private static void ParseString_ShouldThrowOnInvalidHex(string input, int col, int bufferSize)
         {
             JsonReader rdr = CreateReader(input, out _, out _);
-            
+
             Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize));
             Assert.That(rdr.Column, Is.EqualTo(col));
         }
@@ -370,7 +370,7 @@ namespace Solti.Utils.Json.Tests
         private sealed class CommentParserContext : IJsonReaderContext
         {
             public string LastComment { get; private set; } = null!;
-            public void CommentParsed(ReadOnlySpan<char> value) => LastComment  = value.AsString();
+            public void CommentParsed(ReadOnlySpan<char> value) => LastComment = value.AsString();
             public object CreateRawObject(ObjectKind objectKind) => throw new NotImplementedException();
             public void PopState() => throw new NotImplementedException();
             public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
@@ -402,39 +402,39 @@ namespace Solti.Utils.Json.Tests
         {
             get
             {
-                yield return new object[] { "0", (long) 0, 0 };
-                yield return new object[] { "1", (long) 1, 0 };
-                yield return new object[] { "100", (long) 100, 0 };
-                yield return new object[] { "100.0", (double) 100.0, 0 };
-                yield return new object[] { "1.0E+2", (double) 100.0, 0 };
-                yield return new object[] { "1.0E-2", (double) 0.01, 0 };
-                yield return new object[] { "1E+2", (double) 100.0, 0 };
-                yield return new object[] { "1E-2", (double) 0.01, 0 };
-                yield return new object[] { "-0", (long) 0, 0 };
-                yield return new object[] { "-1", (long) -1, 0 };
-                yield return new object[] { "-100", (long) -100, 0 };
-                yield return new object[] { "-100.0", (double) -100.0, 0 };
-                yield return new object[] { "-1.0E+2", (double) -100.0, 0 };
-                yield return new object[] { "-1.0E-2", (double) -0.01, 0 };
-                yield return new object[] { "-1E+2", (double) -100.0, 0 };
-                yield return new object[] { "-1E-2", (double) -0.01, 0 };
+                yield return new object[] { "0", (long)0, 0 };
+                yield return new object[] { "1", (long)1, 0 };
+                yield return new object[] { "100", (long)100, 0 };
+                yield return new object[] { "100.0", (double)100.0, 0 };
+                yield return new object[] { "1.0E+2", (double)100.0, 0 };
+                yield return new object[] { "1.0E-2", (double)0.01, 0 };
+                yield return new object[] { "1E+2", (double)100.0, 0 };
+                yield return new object[] { "1E-2", (double)0.01, 0 };
+                yield return new object[] { "-0", (long)0, 0 };
+                yield return new object[] { "-1", (long)-1, 0 };
+                yield return new object[] { "-100", (long)-100, 0 };
+                yield return new object[] { "-100.0", (double)-100.0, 0 };
+                yield return new object[] { "-1.0E+2", (double)-100.0, 0 };
+                yield return new object[] { "-1.0E-2", (double)-0.01, 0 };
+                yield return new object[] { "-1E+2", (double)-100.0, 0 };
+                yield return new object[] { "-1E-2", (double)-0.01, 0 };
 
-                yield return new object[] { "0,", (long) 0, 1 };
-                yield return new object[] { "1,", (long) 1, 1 };
-                yield return new object[] { "100,", (long) 100, 1 };
-                yield return new object[] { "100.0,", (double) 100.0, 1 };
-                yield return new object[] { "1.0E+2,", (double) 100.0, 1 };
-                yield return new object[] { "1.0E-2,", (double) 0.01, 1 };
-                yield return new object[] { "1E+2,", (double) 100.0, 1 };
-                yield return new object[] { "1E-2,", (double) 0.01, 1 };
-                yield return new object[] { "-0,", (long) 0, 1 };
-                yield return new object[] { "-1,", (long) -1, 1 };
-                yield return new object[] { "-100,", (long) -100, 1 };
-                yield return new object[] { "-100.0,", (double) -100.0, 1 };
-                yield return new object[] { "-1.0E+2,", (double) -100.0, 1 };
-                yield return new object[] { "-1.0E-2,", (double) -0.01, 1 };
-                yield return new object[] { "-1E+2,", (double) -100.0, 1 };
-                yield return new object[] { "-1E-2,", (double) -0.01, 1 };
+                yield return new object[] { "0,", (long)0, 1 };
+                yield return new object[] { "1,", (long)1, 1 };
+                yield return new object[] { "100,", (long)100, 1 };
+                yield return new object[] { "100.0,", (double)100.0, 1 };
+                yield return new object[] { "1.0E+2,", (double)100.0, 1 };
+                yield return new object[] { "1.0E-2,", (double)0.01, 1 };
+                yield return new object[] { "1E+2,", (double)100.0, 1 };
+                yield return new object[] { "1E-2,", (double)0.01, 1 };
+                yield return new object[] { "-0,", (long)0, 1 };
+                yield return new object[] { "-1,", (long)-1, 1 };
+                yield return new object[] { "-100,", (long)-100, 1 };
+                yield return new object[] { "-100.0,", (double)-100.0, 1 };
+                yield return new object[] { "-1.0E+2,", (double)-100.0, 1 };
+                yield return new object[] { "-1.0E-2,", (double)-0.01, 1 };
+                yield return new object[] { "-1E+2,", (double)-100.0, 1 };
+                yield return new object[] { "-1E-2,", (double)-0.01, 1 };
             }
         }
 
@@ -474,8 +474,8 @@ namespace Solti.Utils.Json.Tests
             public object CreateRawObject(ObjectKind objectKind) => new List<object?>();
             public void PopState() => throw new NotImplementedException();
             public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
-            public void SetValue(object obj, object? value) => ((List<object?>) obj).Add(value);
-            public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>) obj).Add(value.ToString());
+            public void SetValue(object obj, object? value) => ((List<object?>)obj).Add(value);
+            public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>)obj).Add(value.ToString());
         }
 
         [TestCase("[", JsonReaderFlags.None, 1)]
@@ -493,6 +493,42 @@ namespace Solti.Utils.Json.Tests
 
             Assert.Throws<FormatException>(() => rdr.ParseList(0, default));
             Assert.That(rdr.Column, Is.EqualTo(errorPos));
+        }
+
+        [TestCase("true", JsonReaderFlags.None, true)]
+        [TestCase("false", JsonReaderFlags.None, false)]
+        [TestCase("null", JsonReaderFlags.None, null)]
+        [TestCase("True", JsonReaderFlags.CaseInsensitive, true)]
+        [TestCase("False", JsonReaderFlags.CaseInsensitive, false)]
+        [TestCase("Null", JsonReaderFlags.CaseInsensitive, null)]
+        public void Parse_ShouldParseLiterals(string input, JsonReaderFlags flags, object expected)
+        {
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _, flags);
+
+            Assert.That(rdr.Parse(default), Is.EqualTo(expected));
+            Assert.That(content.CharsLeft, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Parse_ShouldBeCaseSensitiveByDefault()
+        {
+            JsonReader rdr = CreateReader("Null", out ITextReader content, out _);
+            Assert.Throws<FormatException>(() => rdr.Parse(default));
+            Assert.That(content.CharsLeft, Is.EqualTo(4));
+        }
+
+        [TestCase("\"cica\"", "cica")]
+        [TestCase("1986", 1986)]
+        [TestCase("  \"cica\"", "cica")]
+        [TestCase("  1986", 1986)]
+        [TestCase("  \"cica\"  ", "cica")]
+        [TestCase("  1986  ", 1986)]
+        public void Parse_ShouldParseValues(string input, object expected)
+        {
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
+
+            Assert.That(rdr.Parse(default), Is.EqualTo(expected));
+            Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
     }
 }
