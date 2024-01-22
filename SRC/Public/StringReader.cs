@@ -11,9 +11,7 @@ namespace Solti.Utils.Json
     {
         private int FPosition = 0;
 
-        private readonly string FUnderlyingString = str ?? throw new ArgumentNullException(nameof(str));
-
-        public int CharsLeft => FUnderlyingString.Length - FPosition;
+        public int CharsLeft => str.Length - FPosition;
 
         public void Advance(int count)
         {
@@ -25,9 +23,9 @@ namespace Solti.Utils.Json
 
         public bool PeekChar(out char chr)
         {
-            if (FPosition < FUnderlyingString.Length)
+            if (FPosition < str.Length)
             {
-                chr = FUnderlyingString[FPosition];
+                chr = str[FPosition];
                 return true;
             }
 
@@ -37,7 +35,7 @@ namespace Solti.Utils.Json
 
         public int PeekText(Span<char> buffer)
         {
-            ReadOnlySpan<char> span = FUnderlyingString.AsSpan(FPosition, Math.Min(buffer.Length, CharsLeft));
+            ReadOnlySpan<char> span = str.AsSpan(FPosition, Math.Min(buffer.Length, CharsLeft));
             span.CopyTo(buffer);
             return span.Length;
         }
