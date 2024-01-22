@@ -179,7 +179,7 @@ namespace Solti.Utils.Json
         {
             ConsumeAndValidate(JsonTokens.DoubleQuote | JsonTokens.SingleQuote);
             input.PeekChar(out char quote);
-            input.Advance(1);
+            Advance(1);
 
             for (int bufferSize = initialBufferSize, parsed = 0; ; bufferSize *= 2)
             {
@@ -544,13 +544,13 @@ namespace Solti.Utils.Json
                     case JsonTokens.Number:
                         return ParseNumber();
                     case JsonTokens.True:
-                        input.Advance(TRUE.Length);
+                        Advance(TRUE.Length);
                         return true;
                     case JsonTokens.False:
-                        input.Advance(FALSE.Length);
+                        Advance(FALSE.Length);
                         return false;
                     case JsonTokens.Null:
-                        input.Advance(NULL.Length);
+                        Advance(NULL.Length);
                         return null;
                     default:
                         Fail("Unexpected token has been returned");

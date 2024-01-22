@@ -12,6 +12,7 @@ using NUnit.Framework;
 namespace Solti.Utils.Json.Tests
 {
     using Internals;
+
     using JsonTokenValue = (bool IsLiteral, string Value, JsonReaderFlags RequiredFlags);
 
     [TestFixture]
@@ -248,10 +249,10 @@ namespace Solti.Utils.Json.Tests
             {
                 foreach (char chr in new char[] { '\t', '\r', '\n' })
                 {
-                    yield return new object[] { $"\"{chr}\"", 1 };
-                    yield return new object[] { $"\"prefix{chr}\"", 7 };
-                    yield return new object[] { $"\"{chr}suffix\"", 1 };
-                    yield return new object[] { $"\"prefix{chr}suffix\"", 7 };
+                    yield return new object[] { $"\"{chr}\"", 2 };
+                    yield return new object[] { $"\"prefix{chr}\"", 8 };
+                    yield return new object[] { $"\"{chr}suffix\"", 2 };
+                    yield return new object[] { $"\"prefix{chr}suffix\"", 8 };
                 }
             }
         }
@@ -315,17 +316,17 @@ namespace Solti.Utils.Json.Tests
             get
             {
                 // invalid
-                yield return new object[] { "\"\\uX0E1\"", 2 };
-                yield return new object[] { "\"\\u0XE1bc\"", 2 };
-                yield return new object[] { "\"cb\\u00X1\"", 4 };
-                yield return new object[] { "\"123\\u00EXbc\"", 5 };
-                yield return new object[] { "\"\\uD83D\\uD 01\"", 8 };
+                yield return new object[] { "\"\\uX0E1\"", 3 };
+                yield return new object[] { "\"\\u0XE1bc\"", 3 };
+                yield return new object[] { "\"cb\\u00X1\"", 5 };
+                yield return new object[] { "\"123\\u00EXbc\"", 6 };
+                yield return new object[] { "\"\\uD83D\\uD 01\"", 9 };
 
                 // unterminated
-                yield return new object[] { "\"\\u00E\"", 2 };
-                yield return new object[] { "\"\\u00E", 2 };
-                yield return new object[] { "\"cb\\u00E\"", 4 };
-                yield return new object[] { "\"cb\\u00E", 4 };
+                yield return new object[] { "\"\\u00E\"", 3 };
+                yield return new object[] { "\"\\u00E", 3 };
+                yield return new object[] { "\"cb\\u00E\"", 5 };
+                yield return new object[] { "\"cb\\u00E", 5 };
             }
         }
 
@@ -461,6 +462,37 @@ namespace Solti.Utils.Json.Tests
         {
             JsonReader rdr = CreateReader(input, out _, out _);
             Assert.Throws<FormatException>(() => rdr.ParseNumber(bufferSize));
+        }
+
+        //
+        // Cannot mock methods having Span<T> parameter
+        //
+
+        private sealed class ListParserContext : IJsonReaderContext
+        {
+            public void CommentParsed(ReadOnlySpan<char> value) => throw new NotImplementedException();
+            public object CreateRawObject(ObjectKind objectKind) => new List<object?>();
+            public void PopState() => throw new NotImplementedException();
+            public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
+            public void SetValue(object obj, object? value) => ((List<object?>) obj).Add(value);
+            public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>) obj).Add(value.ToString());
+        }
+
+        [TestCase("[", JsonReaderFlags.None, 1)]
+        [TestCase("[,]", JsonReaderFlags.None, 1)]
+        [TestCase("[x]", JsonReaderFlags.None, 1)]
+        [TestCase("[\"cica\"", JsonReaderFlags.None, 7)]
+        [TestCase("[\"cica\",]", JsonReaderFlags.None, 8)]
+        [TestCase("[\"cica\", x]", JsonReaderFlags.None, 9)]
+        [TestCase("[\"cica\", \"mica\"", JsonReaderFlags.None, 15)]
+        [TestCase("[\"cica\", \"mica\",]", JsonReaderFlags.None, 16)]
+        [TestCase("[\"cica\", \"mica\", x]", JsonReaderFlags.None, 17)]
+        public void ParseList_ShouldThrowOnInvalidList(string input, JsonReaderFlags flags, int errorPos)
+        {
+            JsonReader rdr = new(new StringReader(input), new ListParserContext(), flags, int.MaxValue);
+
+            Assert.Throws<FormatException>(() => rdr.ParseList(0, default));
+            Assert.That(rdr.Column, Is.EqualTo(errorPos));
         }
     }
 }
