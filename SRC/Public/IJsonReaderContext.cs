@@ -7,6 +7,12 @@ using System;
 
 namespace Solti.Utils.Json
 {
+    public enum ObjectKind
+    {
+        List,
+        Object
+    }
+
     public interface IJsonReaderContext
     {
         /// <summary>
@@ -29,15 +35,15 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Creates a raw list or object according to the actual state.
         /// </summary>
-        object CreateRawObject();
+        object CreateRawObject(ObjectKind objectKind);
 
         /// <summary>
-        /// Updates the given <paramref name="obj"/> according to the actual state. <paramref name="obj"/> must be created by the <see cref="CreateRawObject"/> method.
+        /// Updates the given <paramref name="obj"/> according to the actual state. <paramref name="obj"/> must be created by the <see cref="CreateRawObject(ObjectKind)"/> method.
         /// </summary>
         void SetValue(object obj, object? value);
 
         /// <summary>
-        /// Updates the given <paramref name="obj"/> according to the actual state. <paramref name="obj"/> must be created by the <see cref="CreateRawObject"/> method.
+        /// Updates the given <paramref name="obj"/> according to the actual state. <paramref name="obj"/> must be created by the <see cref="CreateRawObject(ObjectKind)"/> method.
         /// </summary>
         void SetValue(object obj, ReadOnlySpan<char> value);
     }

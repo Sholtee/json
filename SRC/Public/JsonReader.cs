@@ -175,9 +175,10 @@ namespace Solti.Utils.Json
             };
         }
 
-        internal ReadOnlySpan<char> ParseString(char quote, int initialBufferSize = 128 /*for debug*/)
+        internal ReadOnlySpan<char> ParseString(int initialBufferSize = 128 /*for debug*/)
         {
-            ConsumeAndValidate(quote is '"' ? JsonTokens.DoubleQuote : JsonTokens.SingleQuote);
+            ConsumeAndValidate(JsonTokens.DoubleQuote | JsonTokens.SingleQuote);
+            input.PeekChar(out char quote);
             input.Advance(1);
 
             for (int bufferSize = initialBufferSize, parsed = 0; ; bufferSize *= 2)
@@ -413,11 +414,18 @@ namespace Solti.Utils.Json
             ConsumeAndValidate(JsonTokens.SquaredOpen);
             Advance(1);
 
-            object result = context.CreateRawObject();
+            object result = context.CreateRawObject(ObjectKind.List);
 
-            while (Consume() is not JsonTokens.SquaredClose)
+            for (JsonTokens token; (token = Consume()) is not JsonTokens.SquaredClose;)
             {
-                context.SetValue(result, Parse(currentDepth, cancellation));
+                //
+                // Due to performance considerations strings have their own SetValue() method
+                // 
+
+                if (token is JsonTokens.DoubleQuote || token is JsonTokens.SingleQuote)
+                    context.SetValue(result, ParseString());
+                else 
+                    context.SetValue(result, Parse(currentDepth, cancellation));
 
                 if (ConsumeAndValidate(JsonTokens.SquaredClose | JsonTokens.Comma) is JsonTokens.Comma)
                 {
@@ -507,10 +515,8 @@ namespace Solti.Utils.Json
                         return ParseObject(Deeper(currentDepth), cancellation);
                     case JsonTokens.SquaredOpen:
                         return ParseList(Deeper(currentDepth), cancellation);
-                    case JsonTokens.SingleQuote:
-                        return ParseString('\'').AsString();
-                    case JsonTokens.DoubleQuote:
-                        return ParseString('"').AsString();
+                    case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
+                        return ParseString().AsString();                   
                     case JsonTokens.DoubleSlash:
                         ParseComment();
                         continue;

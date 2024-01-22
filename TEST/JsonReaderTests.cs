@@ -172,30 +172,30 @@ namespace Solti.Utils.Json.Tests
         {
             get
             {
-                yield return new object[] { "\"\"", '"', "" };
-                yield return new object[] { "''", '\'', "" };
-                yield return new object[] { "\"cica\"", '"', "cica" };
-                yield return new object[] { "'cica'", '\'', "cica" };
-                yield return new object[] { "\"cica mica\"", '"', "cica mica" };
-                yield return new object[] { "'cica mica'", '\'', "cica mica" };
+                yield return new object[] { "\"\"", "" };
+                yield return new object[] { "''", "" };
+                yield return new object[] { "\"cica\"", "cica" };
+                yield return new object[] { "'cica'", "cica" };
+                yield return new object[] { "\"cica mica\"", "cica mica" };
+                yield return new object[] { "'cica mica'", "cica mica" };
             }
         }
 
-        private static void ParseString_ShouldParseSingleStrings(string input, char terminating, string expected, int bufferSize)
+        private static void ParseString_ShouldParseSingleStrings(string input, string expected, int bufferSize)
         {
             JsonReader rdr = CreateReader(input, out ITextReader content, out _, JsonReaderFlags.AllowSingleQuotedStrings);
 
-            Assert.That(rdr.ParseString(terminating, bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(rdr.ParseString(bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
         [TestCaseSource(nameof(ParseString_ShouldParseSingleStrings_Params))]
-        public void ParseString_ShouldParseSingleStrings(string input, char terminating, string expected) =>
-            ParseString_ShouldParseSingleStrings(input, terminating, expected, 128);
+        public void ParseString_ShouldParseSingleStrings(string input, string expected) =>
+            ParseString_ShouldParseSingleStrings(input, expected, 128);
 
         [TestCaseSource(nameof(ParseString_ShouldParseSingleStrings_Params))]
-        public void ParseString_ShouldParseSingleStringsInMultipleIterations(string input, char terminating, string expected) =>
-            ParseString_ShouldParseSingleStrings(input, terminating, expected, 1);
+        public void ParseString_ShouldParseSingleStringsInMultipleIterations(string input, string expected) =>
+            ParseString_ShouldParseSingleStrings(input, expected, 1);
 
         public static IEnumerable<object[]> ParseString_ShouldProcessSingleControlCharacters_Params
         {
@@ -222,7 +222,7 @@ namespace Solti.Utils.Json.Tests
         {
             JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
-            Assert.That(rdr.ParseString('"', bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(rdr.ParseString(bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
@@ -260,7 +260,7 @@ namespace Solti.Utils.Json.Tests
         {
             JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
-            FormatException ex = Assert.Throws<FormatException>(() => rdr.ParseString('"', bufferSize))!;
+            FormatException ex = Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize))!;
             Assert.That(ex.Data.Contains("column"));
             Assert.That(ex.Data["row"], Is.EqualTo(0));
             Assert.That(ex.Data["column"], Is.EqualTo(position));
@@ -279,7 +279,7 @@ namespace Solti.Utils.Json.Tests
         {
             JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
-            Assert.Throws<FormatException>(() => rdr.ParseString('"', bufferSize));
+            Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize));
         }
 
         public static IEnumerable<object[]> ParseString_ShouldParseEscapedUnicodeCharacters_Params
@@ -298,7 +298,7 @@ namespace Solti.Utils.Json.Tests
         {
             JsonReader rdr = CreateReader(input, out ITextReader content, out _);
 
-            Assert.That(rdr.ParseString('"', bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(rdr.ParseString(bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
@@ -333,7 +333,7 @@ namespace Solti.Utils.Json.Tests
         {
             JsonReader rdr = CreateReader(input, out _, out _);
             
-            Assert.Throws<FormatException>(() => rdr.ParseString('"', bufferSize));
+            Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize));
             Assert.That(rdr.Column, Is.EqualTo(col));
         }
 
@@ -370,7 +370,7 @@ namespace Solti.Utils.Json.Tests
         {
             public string LastComment { get; private set; } = null!;
             public void CommentParsed(ReadOnlySpan<char> value) => LastComment  = value.AsString();
-            public object CreateRawObject() => throw new NotImplementedException();
+            public object CreateRawObject(ObjectKind objectKind) => throw new NotImplementedException();
             public void PopState() => throw new NotImplementedException();
             public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
             public void SetValue(object obj, object? value) => throw new NotImplementedException();
