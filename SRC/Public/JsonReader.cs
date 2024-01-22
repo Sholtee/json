@@ -236,98 +236,108 @@ namespace Solti.Utils.Json
                             // We ran out of the characters but there are more
                             //
 
-                            break;
+                            goto readNextChunk;
                         }
 
-                        c = span[++i];
-
-                        if (c == quote || c == '\\')
-                            buffer[parsed++] = c;
-                        else if (c == 'b')
-                            buffer[parsed++] = '\b';
-                        else if (c == 't')
-                            buffer[parsed++] = '\t';
-                        else if (c == 'n')
-                            buffer[parsed++] = '\n';
-                        else if (c == 'r')
-                            buffer[parsed++] = '\r';
-                        else if (c == 'u')
+                        switch (c = span[++i])
                         {
-                            const int HEX_LEN = 4;
+                            case '\\':
+                                buffer[parsed++] = '\\';
+                                break;
+                            case 'b':
+                                buffer[parsed++] = '\b';
+                                break;
+                            case 't':
+                                buffer[parsed++] = '\t';
+                                break;
+                            case 'r':
+                                buffer[parsed++] = '\r';
+                                break;
+                            case 'n':
+                                buffer[parsed++] = '\n';
+                                break;
+                            case 'u':
+                                const int HEX_LEN = 4;
 
-                            if (returned - i <= HEX_LEN)
-                            {
-                                //
-                                // We need 4 hex digits
-                                //
-
-                                if (input.CharsLeft - i > HEX_LEN)
+                                if (returned - i <= HEX_LEN)
                                 {
                                     //
-                                    // We ran out of the characters but there are more
+                                    // We need 4 hex digits
                                     //
 
-                                    i--;
-                                    break;
+                                    if (input.CharsLeft - i > HEX_LEN)
+                                    {
+                                        //
+                                        // We ran out of the characters but there are more
+                                        //
+
+                                        i--;
+                                        goto readNextChunk;
+                                    }
+
+                                    //
+                                    // Unterminated HEX digits
+                                    //
+
+                                    Advance(i + 1);
+                                    MalformedValue("string", "missing HEX digits");
+                                }
+
+                                if 
+                                (
+                                    !ushort.TryParse
+                                    (
+    #if NETSTANDARD2_1_OR_GREATER
+                                        span.Slice(i + 1, HEX_LEN),
+    #else
+                                        span.Slice(i + 1, HEX_LEN).AsString(),
+    #endif
+                                        NumberStyles.HexNumber,
+                                        null,
+                                        out ushort chr
+                                    )
+                                )
+                                {
+                                    //
+                                    // Malformed HEX digits
+                                    //
+
+                                    Advance(i + 1);
+                                    MalformedValue("string", "not a HEX");
                                 }
 
                                 //
-                                // Unterminated HEX digits
+                                // Jump to the last HEX digit
                                 //
 
-                                Advance(i + 1);
-                                MalformedValue("string", "missing HEX digits");
-                            }
+                                i += HEX_LEN;
 
-                            if 
-                            (
-                                !ushort.TryParse
-                                (
-#if NETSTANDARD2_1_OR_GREATER
-                                    span.Slice(i + 1, HEX_LEN),
-#else
-                                    span.Slice(i + 1, HEX_LEN).AsString(),
-#endif
-                                    NumberStyles.HexNumber,
-                                    null,
-                                    out ushort chr
-                                )
-                            )
-                            {
                                 //
-                                // Malformed HEX digits
+                                // Already unicode so no Encoding.GetChars() call required
                                 //
 
-                                Advance(i + 1);
-                                MalformedValue("string", "not a HEX");
-                            }
+                                buffer[parsed++] = (char) chr;
+                                break;
+                            default:
+                                if (c == quote)
+                                    buffer[parsed++] = c;
+                                else
+                                {
+                                    //
+                                    // Unknown control character -> Error
+                                    //
 
-                            //
-                            // Jump to the last HEX digit
-                            //
-
-                            i += HEX_LEN;
-
-                            //
-                            // Already unicode so no Encoding.GetChars() call required
-                            //
-
-                            buffer[parsed++] = (char) chr;
-                        }
-                        else
-                        {
-                            //
-                            // Unknown control character -> Error
-                            //
-
-                            Advance(i);
-                            MalformedValue("string", "unknown control character");
+                                    Advance(i);
+                                    MalformedValue("string", "unknown control character");
+                                }
+                                break;
                         }
                     }
                     else
                         buffer[parsed++] = span[i];
                 }
 
+                readNextChunk:
                 Advance(i);
             }
         }
@@ -416,7 +426,7 @@ namespace Solti.Utils.Json
 
             object result = context.CreateRawObject(ObjectKind.List);
 
-            for (JsonTokens token; (token = Consume()) is not JsonTokens.SquaredClose;)
+            for (JsonTokens token = Consume(); token is not JsonTokens.SquaredClose;)
             {
                 //
                 // Due to performance considerations strings have their own SetValue() method
@@ -427,11 +437,22 @@ namespace Solti.Utils.Json
                 else 
                     context.SetValue(result, Parse(currentDepth, cancellation));
 
-                if (ConsumeAndValidate(JsonTokens.SquaredClose | JsonTokens.Comma) is JsonTokens.Comma)
+                //
+                // Check if we reached the end of the list or we have a next element.
+                //
+
+                token = ConsumeAndValidate(JsonTokens.SquaredClose | JsonTokens.Comma);
+                if (token is JsonTokens.Comma)
                 {
+                    //
+                    // Check if we have a trailing comma
+                    //
+
                     Advance(1);
-                    if (Consume() is JsonTokens.SquaredClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
-                        MalformedValue("list", "trailing comma not allowed");
+                    token = Consume();
+
+                    if (token is JsonTokens.SquaredClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
+                        MalformedValue("list", "missing list item");
                 }
             }
 
