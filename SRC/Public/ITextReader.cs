@@ -32,5 +32,10 @@ namespace Solti.Utils.Json
         /// Returns how many characters are left in the underlying text source.
         /// </summary>
         int CharsLeft { get; }
+
+        /// <summary>
+        /// Resets the reader if possible.
+        /// </summary>
+        void Reset();
     }
 }

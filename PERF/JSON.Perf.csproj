@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+	<IsPackable>false</IsPackable>
+	<IsTestProject>true</IsTestProject>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
+	<Nullable>enable</Nullable>
+    <!--BenchmarkDotNet requires the exe and csproj name to be the same-->
+    <AssemblyName>JSON.Perf</AssemblyName>
+    <RootNamespace>Solti.Utils.Json.Perf</RootNamespace>
+    <OutputPath>..\BIN\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="docfx.json" />
+    <None Remove="index.md" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.*" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(LibVersion)' != ''">
+	  <!--PackageReference Include="JSON.NET" Version="$(LibVersion)"></PackageReference-->
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(LibVersion)' == ''">
+    <ProjectReference Include="..\SRC\JSON.csproj" />
+  </ItemGroup>
+</Project>

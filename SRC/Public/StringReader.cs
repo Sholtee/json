@@ -39,5 +39,7 @@ namespace Solti.Utils.Json
             span.CopyTo(buffer);
             return span.Length;
         }
+
+        public void Reset() => FPosition = 0;
     }
 }
