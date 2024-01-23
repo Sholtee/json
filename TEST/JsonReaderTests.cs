@@ -474,8 +474,8 @@ namespace Solti.Utils.Json.Tests
             public object CreateRawObject(ObjectKind objectKind) => new List<object?>();
             public void PopState() => throw new NotImplementedException();
             public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
-            public void SetValue(object obj, object? value) => ((List<object?>)obj).Add(value);
-            public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>) obj).Add(value.ToString());
+            public void SetValue(object obj, object? value) => ((List<object?>) obj).Add(value);
+            public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>) obj).Add(value.AsString());
         }
 
         [TestCase("[", JsonReaderFlags.None, 1)]
@@ -572,6 +572,20 @@ namespace Solti.Utils.Json.Tests
             Assert.That(rdr.Parse(default), Is.EqualTo(expected));
             Assert.That(context.Comment, Is.EqualTo(comment));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
+        }
+
+        [TestCase("\"cica\"", 0, false)]
+        [TestCase("[\"cica\"]", 0, true)]
+        [TestCase("[\"cica\"]", 1, false)]
+        [TestCase("[[\"cica\"]]", 1, true)]
+        public void Parse_ShouldCheckTheDepth(string input, int maxDepth, bool shouldThrow)
+        {
+            JsonReader rdr = new(new StringReader(input), new ListParserContext(), JsonReaderFlags.AllowComments, maxDepth);
+
+            if (shouldThrow)
+                Assert.Throws<InvalidOperationException>(() => rdr.Parse(default));
+            else
+                Assert.DoesNotThrow(() => rdr.Parse(default));
         }
     }
 }
