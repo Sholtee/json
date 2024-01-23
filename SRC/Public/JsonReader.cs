@@ -293,7 +293,7 @@ namespace Solti.Utils.Json
                                         span.Slice(i + 1, HEX_LEN).AsString(),
     #endif
                                         NumberStyles.HexNumber,
-                                        null,
+                                        CultureInfo.InvariantCulture,
                                         out ushort chr
                                     )
                                 )
