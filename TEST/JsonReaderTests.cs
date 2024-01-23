@@ -475,7 +475,7 @@ namespace Solti.Utils.Json.Tests
             public void PopState() => throw new NotImplementedException();
             public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
             public void SetValue(object obj, object? value) => ((List<object?>)obj).Add(value);
-            public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>)obj).Add(value.ToString());
+            public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>) obj).Add(value.ToString());
         }
 
         [TestCase("[", JsonReaderFlags.None, 1)]
@@ -493,6 +493,28 @@ namespace Solti.Utils.Json.Tests
 
             Assert.Throws<FormatException>(() => rdr.ParseList(0, default));
             Assert.That(rdr.Column, Is.EqualTo(errorPos));
+        }
+
+        public static IEnumerable<object[]> ParseList_ShouldParse_Params
+        {
+            get
+            {
+                yield return new object[] { "[]", new List<object?> { } };
+                yield return new object[] { "[1]", new List<object?> { 1 } };
+                yield return new object[] { "[\"1\"]", new List<object?> { "1" } };
+                yield return new object[] { "[\r\n\"1\"\r\n]", new List<object?> { "1" } };
+                yield return new object[] { "[null, true, false, 1, \"1\"]", new List<object?> { null, true, false, 1, "1" } };
+            }
+        }
+
+        [TestCaseSource(nameof(ParseList_ShouldParse_Params))]
+        public void ParseList_ShouldParse(string input, List<object?> expected)
+        {
+            ITextReader content = new StringReader(input);
+            JsonReader rdr = new(content, new ListParserContext(), JsonReaderFlags.None, int.MaxValue);
+
+            Assert.That(rdr.ParseList(0, default), Is.EquivalentTo(expected));
+            Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
         [TestCase("true", JsonReaderFlags.None, true)]
@@ -517,17 +539,38 @@ namespace Solti.Utils.Json.Tests
             Assert.That(content.CharsLeft, Is.EqualTo(4));
         }
 
-        [TestCase("\"cica\"", "cica")]
-        [TestCase("1986", 1986)]
-        [TestCase("  \"cica\"", "cica")]
-        [TestCase("  1986", 1986)]
-        [TestCase("  \"cica\"  ", "cica")]
-        [TestCase("  1986  ", 1986)]
-        public void Parse_ShouldParseValues(string input, object expected)
+        //
+        // Cannot mock methods having Span<T> parameter
+        //
+        private sealed class ValueParserContext : IJsonReaderContext
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content, out _);
+            public string? Comment { get; private set; }
+            public void CommentParsed(ReadOnlySpan<char> value) => Comment = value.AsString();
+            public object CreateRawObject(ObjectKind objectKind) => throw new NotImplementedException();
+            public void PopState() => throw new NotImplementedException();
+            public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
+            public void SetValue(object obj, object? value) => throw new NotImplementedException();
+            public void SetValue(object obj, ReadOnlySpan<char> value) => throw new NotImplementedException();
+        }
+
+        [TestCase("\"cica\"", "cica", null)]
+        [TestCase("1986", 1986, null)]
+        [TestCase("  \"cica\"", "cica", null)]
+        [TestCase("  1986", 1986, null)]
+        [TestCase("  \"cica\"  ", "cica", null)]
+        [TestCase("  1986  ", 1986, null)]
+        [TestCase("//comment\n1986  ", 1986, "comment")]
+        [TestCase("  \"cica\"  //comment", "cica", "comment")]
+        [TestCase("  1986\r\n//comment", 1986, "comment")]
+        [TestCase("  1986\r\n//comment\r\n  ", 1986, "comment")]
+        public void Parse_ShouldParseValues(string input, object expected, string? comment)
+        {
+            ITextReader content = new StringReader(input);
+            ValueParserContext context = new();
+            JsonReader rdr = new(content, context, JsonReaderFlags.AllowComments, int.MaxValue);
 
             Assert.That(rdr.Parse(default), Is.EqualTo(expected));
+            Assert.That(context.Comment, Is.EqualTo(comment));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
     }

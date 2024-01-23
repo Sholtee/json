@@ -137,7 +137,7 @@ namespace Solti.Utils.Json
             JsonTokens got = Consume();
             if (!expected.HasFlag(got) || got is JsonTokens.Unknown)
                 //
-                // Concatenation of "exptected" flags are done by the system
+                // Concatenation of "expected" flags are done by the system
                 //
 
                 ThrowFormatException(string.Format(MALFORMED_INPUT, expected, got, Row, Column));
