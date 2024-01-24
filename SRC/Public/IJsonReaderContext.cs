@@ -7,24 +7,17 @@ using System;
 
 namespace Solti.Utils.Json
 {
-    public enum ObjectKind
-    {
-        List,
-        Object
-    }
-
     public interface IJsonReaderContext
     {
         /// <summary>
-        /// Notifies the state machine if a new property is being parsed.
+        /// Creates the context belongs to the property being parsed.
         /// </summary>
-        /// <remarks>If the method returns false then the property value won't be parsed and <see cref="PopState"/> won't be called</remarks>
-        bool PushState(ReadOnlySpan<char> property, StringComparison comparison);
+        IJsonReaderContext CreateContext(ReadOnlySpan<char> property, StringComparison comparison);
 
         /// <summary>
-        /// Reverts the actual state (triggered after a nested property parsed successfully).
+        /// Creates the context belongs to the list item being parsed.
         /// </summary>
-        void PopState();
+        IJsonReaderContext CreateContext(int index);
 
         /// <summary>
         /// Method to be called when a comment section has been parsed successfully.
@@ -33,18 +26,30 @@ namespace Solti.Utils.Json
         void CommentParsed(ReadOnlySpan<char> value);
 
         /// <summary>
-        /// Creates a raw list or object according to the actual state.
+        /// Creates a raw list or object instance.
         /// </summary>
-        object CreateRawObject(ObjectKind objectKind);
+        object CreateRawObject(JsonDataTypes jsonDataType);
 
         /// <summary>
-        /// Updates the given <paramref name="obj"/> according to the actual state. <paramref name="obj"/> must be created by the <see cref="CreateRawObject(ObjectKind)"/> method.
+        /// Returns the supported data types.
         /// </summary>
-        void SetValue(object obj, object? value);
+        JsonDataTypes SupportedTypes { get; }
 
         /// <summary>
-        /// Updates the given <paramref name="obj"/> according to the actual state. <paramref name="obj"/> must be created by the <see cref="CreateRawObject(ObjectKind)"/> method.
+        /// Runs custom validators against the given <paramref name="value"/>.
         /// </summary>
-        void SetValue(object obj, ReadOnlySpan<char> value);
+        /// <remarks>You can implement custom validations here for instance you can check if a value falls in a particular range or an object has all its required properties set.</remarks>
+        void Verify(object? value);
+
+        /// <summary>
+        /// Updates the given <paramref name="instance"/>.
+        /// </summary>
+        /// <remarks>This method will never receive <see cref="string"/> <paramref name="value"/>s.</remarks>
+        void SetValue(object instance, object? value);
+
+        /// <summary>
+        /// Converts the given string <paramref name="value"/> to a user specified type. For instance <see cref="string"/>, <see cref="DateTime"/> or <see cref="Guid"/>.
+        /// </summary>
+        object ConvertString(ReadOnlySpan<char> value);
     }
 }

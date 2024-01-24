@@ -374,6 +374,7 @@ namespace Solti.Utils.Json.Tests
             public object CreateRawObject(ObjectKind objectKind) => throw new NotImplementedException();
             public void PopState() => throw new NotImplementedException();
             public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
+            public bool PushState(int index) => throw new NotImplementedException();
             public void SetValue(object obj, object? value) => throw new NotImplementedException();
             public void SetValue(object obj, ReadOnlySpan<char> value) => throw new NotImplementedException();
         }
@@ -474,6 +475,7 @@ namespace Solti.Utils.Json.Tests
             public object CreateRawObject(ObjectKind objectKind) => new List<object?>();
             public void PopState() => throw new NotImplementedException();
             public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
+            public bool PushState(int index) => throw new NotImplementedException();
             public void SetValue(object obj, object? value) => ((List<object?>) obj).Add(value);
             public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>) obj).Add(value.AsString());
         }
@@ -549,6 +551,7 @@ namespace Solti.Utils.Json.Tests
             public object CreateRawObject(ObjectKind objectKind) => throw new NotImplementedException();
             public void PopState() => throw new NotImplementedException();
             public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
+            public bool PushState(int index) => throw new NotImplementedException();
             public void SetValue(object obj, object? value) => throw new NotImplementedException();
             public void SetValue(object obj, ReadOnlySpan<char> value) => throw new NotImplementedException();
         }

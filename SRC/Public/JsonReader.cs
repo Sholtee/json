@@ -18,7 +18,7 @@ namespace Solti.Utils.Json
     using static Properties.Resources;
 
     /// <summary>
-    /// Represents a low-level JSON reader.
+    /// Represents a generic, cancellable JSON reader.
     /// </summary>
     public sealed class JsonReader(ITextReader input, IJsonReaderContext context, JsonReaderFlags flags, int maxDepth)
     {
@@ -391,20 +391,38 @@ namespace Solti.Utils.Json
 
             if (isFloating)
             {
+                if 
+                (
+                    double.TryParse
+                    (
 #if NETSTANDARD2_1_OR_GREATER
-                if (double.TryParse(buffer, NumberStyles.Float, CultureInfo.InvariantCulture, out double ret))
+                        buffer,
 #else
-                if (double.TryParse(buffer.AsString(), NumberStyles.Float, CultureInfo.InvariantCulture, out double ret))
+                        buffer.AsString(),
 #endif
+                        NumberStyles.Float,
+                        CultureInfo.InvariantCulture,
+                        out double ret
+                    )
+                )
                     result = ret;
             }
             else
             {
+                if 
+                (
+                    long.TryParse
+                    (
 #if NETSTANDARD2_1_OR_GREATER
-                if (long.TryParse(buffer, NumberStyles.Number, CultureInfo.InvariantCulture, out long ret))
+                        buffer,
 #else
-                if (long.TryParse(buffer.AsString(), NumberStyles.Number, CultureInfo.InvariantCulture, out long ret))
+                        buffer.AsString(),
 #endif
+                        NumberStyles.Number,
+                        CultureInfo.InvariantCulture,
+                        out long ret
+                    )
+                )
                     result = ret;
             }
 
@@ -424,18 +442,11 @@ namespace Solti.Utils.Json
             ConsumeAndValidate(JsonTokens.SquaredOpen);
             Advance(1);
 
-            object result = context.CreateRawObject(ObjectKind.List);
+            object result = context.CreateRawObject(JsonDataTypes.List);
 
             for (JsonTokens token = Consume(); token is not JsonTokens.SquaredClose;)
             {
-                //
-                // Due to performance considerations strings have their own SetValue() method
-                // 
-
-                if (token is JsonTokens.DoubleQuote || token is JsonTokens.SingleQuote)
-                    context.SetValue(result, ParseString());
-                else 
-                    context.SetValue(result, Parse(currentDepth, cancellation));
+                context.SetValue(result, Parse(currentDepth, cancellation));
 
                 //
                 // Check if we reached the end of the list or we have a next element.
@@ -515,29 +526,18 @@ namespace Solti.Utils.Json
 
         internal object? Parse(int currentDepth, in CancellationToken cancellation)
         {
-            const JsonTokens EXPECTED =
-                JsonTokens.CurlyOpen |
-                JsonTokens.SquaredOpen |
-                JsonTokens.SingleQuote |
-                JsonTokens.DoubleQuote |
-                JsonTokens.DoubleSlash |
-                JsonTokens.Number |
-                JsonTokens.True |
-                JsonTokens.False |
-                JsonTokens.Null;
-
             cancellation.ThrowIfCancellationRequested();
 
             for (;;)
             {
-                switch (ConsumeAndValidate(EXPECTED)) 
+                switch (ConsumeAndValidate((JsonTokens) context.SupportedTypes | JsonTokens.DoubleSlash)) 
                 {
                     case JsonTokens.CurlyOpen:
                         return ParseObject(Deeper(currentDepth), cancellation);
                     case JsonTokens.SquaredOpen:
                         return ParseList(Deeper(currentDepth), cancellation);
                     case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
-                        return ParseString().AsString();                   
+                        return context.ConvertString(ParseString());                   
                     case JsonTokens.DoubleSlash:
                         ParseComment();
                         continue;
@@ -553,7 +553,7 @@ namespace Solti.Utils.Json
                         Advance(NULL.Length);
                         return null;
                     default:
-                        Fail("Unexpected token has been returned");
+                        Fail("Got unexpected token");
                         return null!;
                 };
             }
