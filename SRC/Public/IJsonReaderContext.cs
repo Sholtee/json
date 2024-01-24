@@ -10,14 +10,14 @@ namespace Solti.Utils.Json
     public interface IJsonReaderContext
     {
         /// <summary>
-        /// Creates the context belongs to the property being parsed.
+        /// Gets the nested context belongs to the property being parsed.
         /// </summary>
-        IJsonReaderContext CreateContext(ReadOnlySpan<char> property, StringComparison comparison);
+        IJsonReaderContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison);
 
         /// <summary>
-        /// Creates the context belongs to the list item being parsed.
+        /// GEts the nested context belongs to the list item being parsed.
         /// </summary>
-        IJsonReaderContext CreateContext(int index);
+        IJsonReaderContext GetNestedContext(int index);
 
         /// <summary>
         /// Method to be called when a comment section has been parsed successfully.

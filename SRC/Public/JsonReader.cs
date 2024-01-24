@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -20,7 +21,7 @@ namespace Solti.Utils.Json
     /// <summary>
     /// Represents a generic, cancellable JSON reader.
     /// </summary>
-    public sealed class JsonReader(ITextReader input, IJsonReaderContext context, JsonReaderFlags flags, int maxDepth)
+    public sealed class JsonReader(ITextReader input, IJsonReaderContext context, JsonReaderFlags flags, int maxDepth): IDisposable
     {
         #region Private
         private static readonly string
@@ -29,7 +30,9 @@ namespace Solti.Utils.Json
             NULL = "null",
             DOUBLE_SLASH = "//";
 
-        private char[] FBuffer = [];
+        private static readonly ConcurrentBag<char[]> FBufferPool = [];
+
+        private char[] FBuffer = FBufferPool.TryTake(out char[] buffer) ? buffer : new char[256];
 
         /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
@@ -97,6 +100,15 @@ namespace Solti.Utils.Json
                 Array.Resize(ref FBuffer, length);
 
             return FBuffer.AsSpan(0, length);
+        }
+
+        void IDisposable.Dispose()
+        {
+            if (FBuffer is not null)
+            {
+                FBufferPool.Add(FBuffer);
+                FBuffer = null!;
+            }
         }
         #endregion
 
@@ -437,16 +449,17 @@ namespace Solti.Utils.Json
             return result!;
         }
 
-        internal object ParseList(int currentDepth, in CancellationToken cancellation)
+        internal object ParseList(int currentDepth, IJsonReaderContext currentContext, in CancellationToken cancellation)
         {
             ConsumeAndValidate(JsonTokens.SquaredOpen);
             Advance(1);
 
-            object result = context.CreateRawObject(JsonDataTypes.List);
+            object result = currentContext.CreateRawObject(JsonDataTypes.List);
 
+            int i = 0;
             for (JsonTokens token = Consume(); token is not JsonTokens.SquaredClose;)
             {
-                context.SetValue(result, Parse(currentDepth, cancellation));
+                currentContext.SetValue(result, Parse(currentDepth, currentContext.GetNestedContext(i++), cancellation));
 
                 //
                 // Check if we reached the end of the list or we have a next element.
@@ -472,12 +485,12 @@ namespace Solti.Utils.Json
             return result;
         }
 
-        internal object ParseObject(int currentDepth, in CancellationToken cancellation)
+        internal object ParseObject(int currentDepth, IJsonReaderContext currentContext, in CancellationToken cancellation)
         {
             return new Dictionary<string, object?>();
         }
 
-        internal void ParseComment(int initialBufferSize = 32 /*for debug*/)
+        internal void ParseComment(IJsonReaderContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
             ConsumeAndValidate(JsonTokens.DoubleSlash);
             input.Advance(2);
@@ -521,42 +534,52 @@ namespace Solti.Utils.Json
             if (parsed > 0 && buffer[parsed - 1] is '\r')
                 parsed--;
 
-            context.CommentParsed(buffer.Slice(0, parsed));
+            currentContext.CommentParsed(buffer.Slice(0, parsed));
         }
 
-        internal object? Parse(int currentDepth, in CancellationToken cancellation)
+        internal object? Parse(int currentDepth, IJsonReaderContext currentContext, in CancellationToken cancellation)
         {
             cancellation.ThrowIfCancellationRequested();
 
-            for (;;)
+            object? result;
+
+            start:
+            switch (ConsumeAndValidate((JsonTokens) currentContext.SupportedTypes | JsonTokens.DoubleSlash)) 
             {
-                switch (ConsumeAndValidate((JsonTokens) context.SupportedTypes | JsonTokens.DoubleSlash)) 
-                {
-                    case JsonTokens.CurlyOpen:
-                        return ParseObject(Deeper(currentDepth), cancellation);
-                    case JsonTokens.SquaredOpen:
-                        return ParseList(Deeper(currentDepth), cancellation);
-                    case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
-                        return context.ConvertString(ParseString());                   
-                    case JsonTokens.DoubleSlash:
-                        ParseComment();
-                        continue;
-                    case JsonTokens.Number:
-                        return ParseNumber();
-                    case JsonTokens.True:
-                        Advance(TRUE.Length);
-                        return true;
-                    case JsonTokens.False:
-                        Advance(FALSE.Length);
-                        return false;
-                    case JsonTokens.Null:
-                        Advance(NULL.Length);
-                        return null;
-                    default:
-                        Fail("Got unexpected token");
-                        return null!;
-                };
-            }
+                case JsonTokens.CurlyOpen:
+                    result = ParseObject(Deeper(currentDepth), currentContext, cancellation);
+                    break;
+                case JsonTokens.SquaredOpen:
+                    result = ParseList(Deeper(currentDepth), currentContext, cancellation);
+                    break;
+                case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
+                    result = currentContext.ConvertString(ParseString());
+                    break;
+                case JsonTokens.DoubleSlash:
+                    ParseComment(currentContext);
+                    goto start;
+                case JsonTokens.Number:
+                    result = ParseNumber();
+                    break;
+                case JsonTokens.True:
+                    Advance(TRUE.Length);
+                    result = true;
+                    break;
+                case JsonTokens.False:
+                    Advance(FALSE.Length);
+                    result = false;
+                    break;
+                case JsonTokens.Null:
+                    Advance(NULL.Length);
+                    result = null;
+                    break;
+                default:
+                    Fail("Got unexpected token");
+                    return null!;
+            };
+
+            currentContext.Verify(result);
+            return result;
         }
 #endregion
 
@@ -575,14 +598,14 @@ namespace Solti.Utils.Json
         /// </summary>
         public object? Parse(in CancellationToken cancellation)
         {
-            object? result = Parse(0, cancellation);
+            object? result = Parse(0, context, cancellation);
 
             //
             // Parse trailing comments properly.
             //
 
             while(ConsumeAndValidate(JsonTokens.Eof | JsonTokens.DoubleSlash) is JsonTokens.DoubleSlash)
-                ParseComment();
+                ParseComment(context);
 
             return result;
         }

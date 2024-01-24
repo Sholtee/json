@@ -18,9 +18,13 @@ namespace Solti.Utils.Json.Tests
     [TestFixture]
     public class JsonReaderTests
     {
-        private static JsonReader CreateReader(string input, out ITextReader reader, out Mock<IJsonReaderContext> mockContext, JsonReaderFlags flags = JsonReaderFlags.None)
+        private static JsonReader CreateReader(string input, out ITextReader reader, out Mock<IJsonReaderContext> mockContext, JsonReaderFlags flags = JsonReaderFlags.None, JsonDataTypes supportedTypes = JsonDataTypes.String)
         {
             mockContext = new(MockBehavior.Loose);
+            mockContext
+                .SetupGet(c => c.SupportedTypes)
+                .Returns(supportedTypes);
+
             reader = new StringReader(input);
 
             return new JsonReader(reader, mockContext.Object, flags, int.MaxValue);
@@ -364,19 +368,20 @@ namespace Solti.Utils.Json.Tests
         }
 
         //
-        // Cannot mock methods having Span<T> parameter
+        // We cannot mock methods having Span<T> parameter =(
         //
 
         private sealed class CommentParserContext : IJsonReaderContext
         {
             public string LastComment { get; private set; } = null!;
+            public JsonDataTypes SupportedTypes => throw new NotImplementedException();
             public void CommentParsed(ReadOnlySpan<char> value) => LastComment = value.AsString();
-            public object CreateRawObject(ObjectKind objectKind) => throw new NotImplementedException();
-            public void PopState() => throw new NotImplementedException();
-            public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
-            public bool PushState(int index) => throw new NotImplementedException();
-            public void SetValue(object obj, object? value) => throw new NotImplementedException();
-            public void SetValue(object obj, ReadOnlySpan<char> value) => throw new NotImplementedException();
+            public object ConvertString(ReadOnlySpan<char> value) => throw new NotImplementedException();
+            public object CreateRawObject(JsonDataTypes jsonDataType) => throw new NotImplementedException();
+            public IJsonReaderContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
+            public IJsonReaderContext GetNestedContext(int index) => throw new NotImplementedException();
+            public void SetValue(object instance, object? value) => throw new NotImplementedException();
+            public void Verify(object? value) => throw new NotImplementedException();
         }
 
         private static void ParseComment_ShouldConsumeComments(string input, string expected, int charsLeft, int bufferSize)
@@ -386,7 +391,7 @@ namespace Solti.Utils.Json.Tests
 
             JsonReader rdr = new(content, commentParserContext, JsonReaderFlags.AllowComments, int.MaxValue);
 
-            Assert.DoesNotThrow(() => rdr.ParseComment(bufferSize));
+            Assert.DoesNotThrow(() => rdr.ParseComment(commentParserContext, bufferSize));
             Assert.That(commentParserContext.LastComment, Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(charsLeft));
         }
@@ -466,18 +471,19 @@ namespace Solti.Utils.Json.Tests
         }
 
         //
-        // Cannot mock methods having Span<T> parameter
+        // We cannot mock methods having Span<T> parameter =(
         //
 
         private sealed class ListParserContext : IJsonReaderContext
         {
+            public JsonDataTypes SupportedTypes { get; } = JsonDataTypes.String | JsonDataTypes.Number | JsonDataTypes.Boolean | JsonDataTypes.Null | JsonDataTypes.List;
             public void CommentParsed(ReadOnlySpan<char> value) => throw new NotImplementedException();
-            public object CreateRawObject(ObjectKind objectKind) => new List<object?>();
-            public void PopState() => throw new NotImplementedException();
-            public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
-            public bool PushState(int index) => throw new NotImplementedException();
+            public object ConvertString(ReadOnlySpan<char> value) => value.AsString();
+            public object CreateRawObject(JsonDataTypes jsonDataType) => new List<object?>();
+            public IJsonReaderContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
+            public IJsonReaderContext GetNestedContext(int index) => this;
             public void SetValue(object obj, object? value) => ((List<object?>) obj).Add(value);
-            public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>) obj).Add(value.AsString());
+            public void Verify(object? value) { }
         }
 
         [TestCase("[", JsonReaderFlags.None, 1)]
@@ -493,7 +499,7 @@ namespace Solti.Utils.Json.Tests
         {
             JsonReader rdr = new(new StringReader(input), new ListParserContext(), flags, int.MaxValue);
 
-            Assert.Throws<FormatException>(() => rdr.ParseList(0, default));
+            Assert.Throws<FormatException>(() => rdr.ParseList(0, new ListParserContext(), default));
             Assert.That(rdr.Column, Is.EqualTo(errorPos));
         }
 
@@ -515,19 +521,19 @@ namespace Solti.Utils.Json.Tests
             ITextReader content = new StringReader(input);
             JsonReader rdr = new(content, new ListParserContext(), JsonReaderFlags.None, int.MaxValue);
 
-            Assert.That(rdr.ParseList(0, default), Is.EquivalentTo(expected));
+            Assert.That(rdr.ParseList(0, new ListParserContext(), default), Is.EquivalentTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
-        [TestCase("true", JsonReaderFlags.None, true)]
-        [TestCase("false", JsonReaderFlags.None, false)]
-        [TestCase("null", JsonReaderFlags.None, null)]
-        [TestCase("True", JsonReaderFlags.CaseInsensitive, true)]
-        [TestCase("False", JsonReaderFlags.CaseInsensitive, false)]
-        [TestCase("Null", JsonReaderFlags.CaseInsensitive, null)]
-        public void Parse_ShouldParseLiterals(string input, JsonReaderFlags flags, object expected)
+        [TestCase("true", JsonReaderFlags.None, JsonDataTypes.Boolean, true)]
+        [TestCase("false", JsonReaderFlags.None, JsonDataTypes.Boolean, false)]
+        [TestCase("null", JsonReaderFlags.None, JsonDataTypes.Null, null)]
+        [TestCase("True", JsonReaderFlags.CaseInsensitive, JsonDataTypes.Boolean, true)]
+        [TestCase("False", JsonReaderFlags.CaseInsensitive, JsonDataTypes.Boolean, false)]
+        [TestCase("Null", JsonReaderFlags.CaseInsensitive, JsonDataTypes.Null, null)]
+        public void Parse_ShouldParseLiterals(string input, JsonReaderFlags flags, JsonDataTypes supportedTypes, object expected)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content, out _, flags);
+            JsonReader rdr = CreateReader(input, out ITextReader content, out _, flags, supportedTypes);
 
             Assert.That(rdr.Parse(default), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
@@ -542,18 +548,20 @@ namespace Solti.Utils.Json.Tests
         }
 
         //
-        // Cannot mock methods having Span<T> parameter
+        // We cannot mock methods having Span<T> parameter =(
         //
+
         private sealed class ValueParserContext : IJsonReaderContext
         {
-            public string? Comment { get; private set; }
-            public void CommentParsed(ReadOnlySpan<char> value) => Comment = value.AsString();
-            public object CreateRawObject(ObjectKind objectKind) => throw new NotImplementedException();
-            public void PopState() => throw new NotImplementedException();
-            public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
-            public bool PushState(int index) => throw new NotImplementedException();
-            public void SetValue(object obj, object? value) => throw new NotImplementedException();
-            public void SetValue(object obj, ReadOnlySpan<char> value) => throw new NotImplementedException();
+            public string Comment { get; private set; } = null!;
+            public JsonDataTypes SupportedTypes { get; } = JsonDataTypes.String | JsonDataTypes.Number;
+            public void CommentParsed(ReadOnlySpan<char> value) => Comment = value.ToString();
+            public object ConvertString(ReadOnlySpan<char> value) => value.AsString();
+            public object CreateRawObject(JsonDataTypes jsonDataType) => throw new NotImplementedException();
+            public IJsonReaderContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
+            public IJsonReaderContext GetNestedContext(int index) => throw new NotImplementedException();
+            public void SetValue(object instance, object? value) => throw new NotImplementedException();
+            public void Verify(object? value) { }
         }
 
         [TestCase("\"cica\"", "cica", null)]
@@ -589,6 +597,17 @@ namespace Solti.Utils.Json.Tests
                 Assert.Throws<InvalidOperationException>(() => rdr.Parse(default));
             else
                 Assert.DoesNotThrow(() => rdr.Parse(default));
+        }
+
+        [Test]
+        public void Parse_ShouldVerify()
+        {
+            JsonReader rdr = CreateReader("1986", out _, out Mock<IJsonReaderContext> mockContext, supportedTypes: JsonDataTypes.Number);
+            mockContext.Setup(c => c.Verify((long) 1986));
+
+            rdr.Parse(default);
+
+            mockContext.Verify(c => c.Verify((long) 1986), Times.Once);
         }
     }
 }
