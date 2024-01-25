@@ -30,9 +30,13 @@ namespace Solti.Utils.Json
             NULL = "null",
             DOUBLE_SLASH = "//";
 
-        private static readonly ConcurrentBag<char[]> FBufferPool = [];
+        //
+        // Do not use ConcurrentBag here as it significantly slower than ConcurrentStack
+        //
 
-        private char[] FBuffer = FBufferPool.TryTake(out char[] buffer) ? buffer : new char[256];
+        private static readonly ConcurrentStack<char[]> FBufferPool = [];
+
+        private char[] FBuffer = FBufferPool.TryPop(out char[] buffer) ? buffer : new char[256];
 
         /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
@@ -106,7 +110,7 @@ namespace Solti.Utils.Json
         {
             if (FBuffer is not null)
             {
-                FBufferPool.Add(FBuffer);
+                FBufferPool.Push(FBuffer);
                 FBuffer = null!;
             }
         }
