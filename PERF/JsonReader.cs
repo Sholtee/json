@@ -1,28 +1,16 @@
 ﻿/********************************************************************************
-* JsonParser.cs                                                                 *
+* JsonReader.cs                                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-using System.Collections.Generic;
 using System.Threading;
 
 using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.Json.Perf
 {
-    internal sealed class DummyContext : IJsonReaderContext
-    {
-        public void CommentParsed(ReadOnlySpan<char> value) => throw new NotImplementedException();
-        public object CreateRawObject(ObjectKind objectKind) => new List<object?>();
-        public void PopState() => throw new NotImplementedException();
-        public bool PushState(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
-        public void SetValue(object obj, object? value) => ((List<object?>) obj).Add(value);
-        public void SetValue(object obj, ReadOnlySpan<char> value) => ((List<object?>) obj).Add(new string(value));
-    }
-
     [MemoryDiagnoser]
-    public class JsonParser
+    public class JsonReaderParsingTests
     {
         [
             Params
@@ -56,22 +44,21 @@ namespace Solti.Utils.Json.Perf
         ]
         public string Input { get; set; } = null!;
 
-        public JsonReader Reader { get; set; } = null!;
-
-        public ITextReader Content { get; set; } = null!;
-
-        [GlobalSetup(Target = nameof(Parse))]
-        public void SetupParse()
-        {
-            Content = new StringReader(Input);
-            Reader = new JsonReader(Content, new DummyContext(), JsonReaderFlags.None, 256);
-        }
-
         [Benchmark]
         public void Parse()
         {
-            Content.Reset();
-            _ = Reader.Parse(CancellationToken.None);
+            using JsonReader rdr = new(new StringReader(Input), new UntypedJsonReaderContext(), JsonReaderFlags.None, 256);
+            _ = rdr.Parse(CancellationToken.None);
+        }
+    }
+
+    [MemoryDiagnoser]
+    public class JsonReaderInstantiationTests
+    {
+        [Benchmark]
+        public void CreateAndDestroyReader()
+        {
+            using JsonReader rdr = new(new StringReader(""), new UntypedJsonReaderContext(), JsonReaderFlags.None, 256);
         }
     }
 }

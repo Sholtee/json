@@ -371,17 +371,11 @@ namespace Solti.Utils.Json.Tests
         // We cannot mock methods having Span<T> parameter =(
         //
 
-        private sealed class CommentParserContext : IJsonReaderContext
+        private sealed class CommentParserContext : UntypedJsonReaderContext
         {
             public string LastComment { get; private set; } = null!;
-            public JsonDataTypes SupportedTypes => throw new NotImplementedException();
-            public void CommentParsed(ReadOnlySpan<char> value) => LastComment = value.AsString();
-            public object ConvertString(ReadOnlySpan<char> value) => throw new NotImplementedException();
-            public object CreateRawObject(JsonDataTypes jsonDataType) => throw new NotImplementedException();
-            public IJsonReaderContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
-            public IJsonReaderContext GetNestedContext(int index) => throw new NotImplementedException();
-            public void SetValue(object instance, object? value) => throw new NotImplementedException();
-            public void Verify(object? value) => throw new NotImplementedException();
+            public override JsonDataTypes SupportedTypes => throw new NotImplementedException();
+            public override void CommentParsed(ReadOnlySpan<char> value) => LastComment = value.AsString();
         }
 
         private static void ParseComment_ShouldConsumeComments(string input, string expected, int charsLeft, int bufferSize)
@@ -470,22 +464,6 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<FormatException>(() => rdr.ParseNumber(bufferSize));
         }
 
-        //
-        // We cannot mock methods having Span<T> parameter =(
-        //
-
-        private sealed class ListParserContext : IJsonReaderContext
-        {
-            public JsonDataTypes SupportedTypes { get; } = JsonDataTypes.String | JsonDataTypes.Number | JsonDataTypes.Boolean | JsonDataTypes.Null | JsonDataTypes.List;
-            public void CommentParsed(ReadOnlySpan<char> value) => throw new NotImplementedException();
-            public object ConvertString(ReadOnlySpan<char> value) => value.AsString();
-            public object CreateRawObject(JsonDataTypes jsonDataType) => new List<object?>();
-            public IJsonReaderContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
-            public IJsonReaderContext GetNestedContext(int index) => this;
-            public void SetValue(object obj, object? value) => ((List<object?>) obj).Add(value);
-            public void Verify(object? value) { }
-        }
-
         [TestCase("[", JsonReaderFlags.None, 1)]
         [TestCase("[,]", JsonReaderFlags.None, 1)]
         [TestCase("[x]", JsonReaderFlags.None, 1)]
@@ -497,9 +475,9 @@ namespace Solti.Utils.Json.Tests
         [TestCase("[\"cica\", \"mica\", x]", JsonReaderFlags.None, 17)]
         public void ParseList_ShouldThrowOnInvalidList(string input, JsonReaderFlags flags, int errorPos)
         {
-            JsonReader rdr = new(new StringReader(input), new ListParserContext(), flags, int.MaxValue);
+            JsonReader rdr = new(new StringReader(input), new UntypedJsonReaderContext(), flags, int.MaxValue);
 
-            Assert.Throws<FormatException>(() => rdr.ParseList(0, new ListParserContext(), default));
+            Assert.Throws<FormatException>(() => rdr.ParseList(0, new UntypedJsonReaderContext(), default));
             Assert.That(rdr.Column, Is.EqualTo(errorPos));
         }
 
@@ -519,9 +497,9 @@ namespace Solti.Utils.Json.Tests
         public void ParseList_ShouldParse(string input, List<object?> expected)
         {
             ITextReader content = new StringReader(input);
-            JsonReader rdr = new(content, new ListParserContext(), JsonReaderFlags.None, int.MaxValue);
+            JsonReader rdr = new(content, new UntypedJsonReaderContext(), JsonReaderFlags.None, int.MaxValue);
 
-            Assert.That(rdr.ParseList(0, new ListParserContext(), default), Is.EquivalentTo(expected));
+            Assert.That(rdr.ParseList(0, new UntypedJsonReaderContext(), default), Is.EquivalentTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
@@ -551,17 +529,11 @@ namespace Solti.Utils.Json.Tests
         // We cannot mock methods having Span<T> parameter =(
         //
 
-        private sealed class ValueParserContext : IJsonReaderContext
+        private sealed class ValueParserContext : UntypedJsonReaderContext
         {
             public string Comment { get; private set; } = null!;
-            public JsonDataTypes SupportedTypes { get; } = JsonDataTypes.String | JsonDataTypes.Number;
-            public void CommentParsed(ReadOnlySpan<char> value) => Comment = value.ToString();
-            public object ConvertString(ReadOnlySpan<char> value) => value.AsString();
-            public object CreateRawObject(JsonDataTypes jsonDataType) => throw new NotImplementedException();
-            public IJsonReaderContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison) => throw new NotImplementedException();
-            public IJsonReaderContext GetNestedContext(int index) => throw new NotImplementedException();
-            public void SetValue(object instance, object? value) => throw new NotImplementedException();
-            public void Verify(object? value) { }
+            public override JsonDataTypes SupportedTypes { get; } = JsonDataTypes.String | JsonDataTypes.Number;
+            public override void CommentParsed(ReadOnlySpan<char> value) => Comment = value.ToString();
         }
 
         [TestCase("\"cica\"", "cica", null)]
@@ -591,7 +563,7 @@ namespace Solti.Utils.Json.Tests
         [TestCase("[[\"cica\"]]", 1, true)]
         public void Parse_ShouldCheckTheDepth(string input, int maxDepth, bool shouldThrow)
         {
-            JsonReader rdr = new(new StringReader(input), new ListParserContext(), JsonReaderFlags.AllowComments, maxDepth);
+            JsonReader rdr = new(new StringReader(input), new UntypedJsonReaderContext(), JsonReaderFlags.AllowComments, maxDepth);
 
             if (shouldThrow)
                 Assert.Throws<InvalidOperationException>(() => rdr.Parse(default));
