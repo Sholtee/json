@@ -21,7 +21,7 @@ namespace Solti.Utils.Json
     /// <summary>
     /// Represents a generic, cancellable JSON reader.
     /// </summary>
-    public sealed class JsonReader(ITextReader input, IJsonReaderContext context, JsonReaderFlags flags, int maxDepth): IDisposable
+    public sealed class JsonReader(ITextReader input, IDeserializationContext context, JsonReaderFlags flags, int maxDepth): IDisposable
     {
         #region Private
         private static readonly string
@@ -453,7 +453,7 @@ namespace Solti.Utils.Json
             return result!;
         }
 
-        internal object ParseList(int currentDepth, IJsonReaderContext currentContext, in CancellationToken cancellation)
+        internal object ParseList(int currentDepth, IDeserializationContext currentContext, in CancellationToken cancellation)
         {
             ConsumeAndValidate(JsonTokens.SquaredOpen);
             Advance(1);
@@ -489,12 +489,12 @@ namespace Solti.Utils.Json
             return result;
         }
 
-        internal object ParseObject(int currentDepth, IJsonReaderContext currentContext, in CancellationToken cancellation)
+        internal object ParseObject(int currentDepth, IDeserializationContext currentContext, in CancellationToken cancellation)
         {
             return new Dictionary<string, object?>();
         }
 
-        internal void ParseComment(IJsonReaderContext currentContext, int initialBufferSize = 32 /*for debug*/)
+        internal void ParseComment(IDeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
             ConsumeAndValidate(JsonTokens.DoubleSlash);
             input.Advance(2);
@@ -541,7 +541,7 @@ namespace Solti.Utils.Json
             currentContext.CommentParsed(buffer.Slice(0, parsed));
         }
 
-        internal object? Parse(int currentDepth, IJsonReaderContext currentContext, in CancellationToken cancellation)
+        internal object? Parse(int currentDepth, IDeserializationContext currentContext, in CancellationToken cancellation)
         {
             cancellation.ThrowIfCancellationRequested();
 

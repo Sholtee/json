@@ -18,7 +18,7 @@ namespace Solti.Utils.Json.Tests
     [TestFixture]
     public class JsonReaderTests
     {
-        private static JsonReader CreateReader(string input, out ITextReader reader, out Mock<IJsonReaderContext> mockContext, JsonReaderFlags flags = JsonReaderFlags.None, JsonDataTypes supportedTypes = JsonDataTypes.String)
+        private static JsonReader CreateReader(string input, out ITextReader reader, out Mock<IDeserializationContext> mockContext, JsonReaderFlags flags = JsonReaderFlags.None, JsonDataTypes supportedTypes = JsonDataTypes.String)
         {
             mockContext = new(MockBehavior.Loose);
             mockContext
@@ -371,7 +371,7 @@ namespace Solti.Utils.Json.Tests
         // We cannot mock methods having Span<T> parameter =(
         //
 
-        private sealed class CommentParserContext : UntypedJsonReaderContext
+        private sealed class CommentParserContext : UntypedDeserializationContext
         {
             public string LastComment { get; private set; } = null!;
             public override JsonDataTypes SupportedTypes => throw new NotImplementedException();
@@ -475,9 +475,9 @@ namespace Solti.Utils.Json.Tests
         [TestCase("[\"cica\", \"mica\", x]", JsonReaderFlags.None, 17)]
         public void ParseList_ShouldThrowOnInvalidList(string input, JsonReaderFlags flags, int errorPos)
         {
-            JsonReader rdr = new(new StringReader(input), new UntypedJsonReaderContext(), flags, int.MaxValue);
+            JsonReader rdr = new(new StringReader(input), new UntypedDeserializationContext(), flags, int.MaxValue);
 
-            Assert.Throws<FormatException>(() => rdr.ParseList(0, new UntypedJsonReaderContext(), default));
+            Assert.Throws<FormatException>(() => rdr.ParseList(0, new UntypedDeserializationContext(), default));
             Assert.That(rdr.Column, Is.EqualTo(errorPos));
         }
 
@@ -497,9 +497,9 @@ namespace Solti.Utils.Json.Tests
         public void ParseList_ShouldParse(string input, List<object?> expected)
         {
             ITextReader content = new StringReader(input);
-            JsonReader rdr = new(content, new UntypedJsonReaderContext(), JsonReaderFlags.None, int.MaxValue);
+            JsonReader rdr = new(content, new UntypedDeserializationContext(), JsonReaderFlags.None, int.MaxValue);
 
-            Assert.That(rdr.ParseList(0, new UntypedJsonReaderContext(), default), Is.EquivalentTo(expected));
+            Assert.That(rdr.ParseList(0, new UntypedDeserializationContext(), default), Is.EquivalentTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
@@ -529,7 +529,7 @@ namespace Solti.Utils.Json.Tests
         // We cannot mock methods having Span<T> parameter =(
         //
 
-        private sealed class ValueParserContext : UntypedJsonReaderContext
+        private sealed class ValueParserContext : UntypedDeserializationContext
         {
             public string Comment { get; private set; } = null!;
             public override JsonDataTypes SupportedTypes { get; } = JsonDataTypes.String | JsonDataTypes.Number;
@@ -563,7 +563,7 @@ namespace Solti.Utils.Json.Tests
         [TestCase("[[\"cica\"]]", 1, true)]
         public void Parse_ShouldCheckTheDepth(string input, int maxDepth, bool shouldThrow)
         {
-            JsonReader rdr = new(new StringReader(input), new UntypedJsonReaderContext(), JsonReaderFlags.AllowComments, maxDepth);
+            JsonReader rdr = new(new StringReader(input), new UntypedDeserializationContext(), JsonReaderFlags.AllowComments, maxDepth);
 
             if (shouldThrow)
                 Assert.Throws<InvalidOperationException>(() => rdr.Parse(default));
@@ -574,7 +574,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void Parse_ShouldVerify()
         {
-            JsonReader rdr = CreateReader("1986", out _, out Mock<IJsonReaderContext> mockContext, supportedTypes: JsonDataTypes.Number);
+            JsonReader rdr = CreateReader("1986", out _, out Mock<IDeserializationContext> mockContext, supportedTypes: JsonDataTypes.Number);
             mockContext.Setup(c => c.Verify((long) 1986));
 
             rdr.Parse(default);

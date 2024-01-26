@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* UntypedJsonReaderContext.cs                                                   *
+* UntypedDeserializationContext.cs                                              *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -15,7 +15,7 @@ namespace Solti.Utils.Json
     /// Context used to create untyped result.
     /// </summary>
     /// <remarks>In untyped result objects are returned as <see cref="IDictionary"/> while lists as <see cref="IList"/>.</remarks>
-    public class UntypedJsonReaderContext : IJsonReaderContext
+    public class UntypedDeserializationContext : IDeserializationContext
     {
         /// <summary>
         /// This context supports all the data types.
@@ -47,12 +47,12 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Returns this instance, no nested context created.
         /// </summary>
-        public IJsonReaderContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison) => this;
+        public IDeserializationContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison) => this;
 
         /// <summary>
         /// Returns this instance, no nested context created.
         /// </summary>
-        public IJsonReaderContext GetNestedContext(int index) => this;
+        public IDeserializationContext GetNestedContext(int index) => this;
 
         /// <summary>
         /// Updates the given <paramref name="instance"/>.

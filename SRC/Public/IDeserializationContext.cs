@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* IJsonReaderContext.cs                                                         *
+* IDeserializationContext.cs                                                    *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,17 +7,17 @@ using System;
 
 namespace Solti.Utils.Json
 {
-    public interface IJsonReaderContext
+    public interface IDeserializationContext
     {
         /// <summary>
         /// Gets the nested context belongs to the property being parsed.
         /// </summary>
-        IJsonReaderContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison);
+        IDeserializationContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison);
 
         /// <summary>
         /// GEts the nested context belongs to the list item being parsed.
         /// </summary>
-        IJsonReaderContext GetNestedContext(int index);
+        IDeserializationContext GetNestedContext(int index);
 
         /// <summary>
         /// Method to be called when a comment section has been parsed successfully.
