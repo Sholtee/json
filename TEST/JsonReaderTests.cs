@@ -473,18 +473,18 @@ namespace Solti.Utils.Json.Tests
             mockConverter.Verify(c => c.Invoke((long) 1986), Times.Once);
         }
 
-        [TestCase("[", JsonReaderFlags.None, 1)]
-        [TestCase("[,]", JsonReaderFlags.None, 1)]
-        [TestCase("[x]", JsonReaderFlags.None, 1)]
-        [TestCase("[\"cica\"", JsonReaderFlags.None, 7)]
-        [TestCase("[\"cica\",]", JsonReaderFlags.None, 8)]
-        [TestCase("[\"cica\", x]", JsonReaderFlags.None, 9)]
-        [TestCase("[\"cica\", \"mica\"", JsonReaderFlags.None, 15)]
-        [TestCase("[\"cica\", \"mica\",]", JsonReaderFlags.None, 16)]
-        [TestCase("[\"cica\", \"mica\", x]", JsonReaderFlags.None, 17)]
-        public void ParseList_ShouldThrowOnInvalidList(string input, JsonReaderFlags flags, int errorPos)
+        [TestCase("[", 1)]
+        [TestCase("[,]", 1)]
+        [TestCase("[x]", 1)]
+        [TestCase("[\"cica\"", 7)]
+        [TestCase("[\"cica\",]", 8)]
+        [TestCase("[\"cica\", x]", 9)]
+        [TestCase("[\"cica\", \"mica\"", 15)]
+        [TestCase("[\"cica\", \"mica\",]", 16)]
+        [TestCase("[\"cica\", \"mica\", x]", 17)]
+        public void ParseList_ShouldThrowOnInvalidList(string input, int errorPos)
         {
-            JsonReader rdr = CreateReader(input, out _, flags);
+            JsonReader rdr = CreateReader(input, out _);
 
             Assert.Throws<FormatException>(() => rdr.ParseList(0, UntypedDeserializationContext.Instance, default));
             Assert.That(rdr.Column, Is.EqualTo(errorPos));
@@ -519,6 +519,29 @@ namespace Solti.Utils.Json.Tests
 
             Assert.That(rdr.ParseList(0, UntypedDeserializationContext.Instance, default), Is.EquivalentTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
+        }
+
+        [TestCase("{", 1)]
+        [TestCase("{,}", 1)]
+        [TestCase("{x: 1}", 1)]
+        [TestCase("{\"cica\"", 7)]
+        [TestCase("{\"cica\"}", 7)]
+        [TestCase("{\"cica\": }", 9)]
+        [TestCase("{\"cica\": x}", 9)]
+        [TestCase("{\"cica\": 1,}", 11)]
+        public void ParseObject_ShouldThrowOnInvalidObject(string input, int errorPos)
+        {
+            JsonReader rdr = CreateReader(input, out _);
+
+            Assert.Throws<FormatException>(() => rdr.ParseObject(0, UntypedDeserializationContext.Instance, default));
+            Assert.That(rdr.Column, Is.EqualTo(errorPos));
+        }
+
+        [Test]
+        public void ParseObject_ShouldThrowOnInvalidContext()
+        {
+            JsonReader rdr = CreateReader("{}", out _);
+            Assert.Throws<InvalidOperationException>(() => rdr.ParseObject(0, UntypedDeserializationContext.Instance with { CreateRawObject = null }, default));
         }
 
         public static IEnumerable<object[]> ParseObject_ShouldParse_Params
