@@ -26,6 +26,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\TEST\large.json" Link="large.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.*" />
   </ItemGroup>
 

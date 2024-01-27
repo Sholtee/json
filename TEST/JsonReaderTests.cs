@@ -554,6 +554,7 @@ namespace Solti.Utils.Json.Tests
                 yield return new object[] { "{}", new Dictionary<string, object?> { }, JsonReaderFlags.None };
                 yield return new object[] { "{\"cica\": 1}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.None };
                 yield return new object[] { "{\"cica\": \"1\"}", new Dictionary<string, object?> { { "cica", "1" } }, JsonReaderFlags.None };
+                yield return new object[] { "{\"cica\": \"1\", \"cica\": 1986}", new Dictionary<string, object?> { { "cica", 1986 } }, JsonReaderFlags.None };
                 yield return new object[] { "{\"cica\": 1,}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowTrailingComma };
                 yield return new object[] { "{\"cica\": \"1\",}", new Dictionary<string, object?> { { "cica", "1" } }, JsonReaderFlags.AllowTrailingComma };
                 yield return new object[] { "{\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.None };

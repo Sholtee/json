@@ -46,7 +46,7 @@ namespace Solti.Utils.Json
                     {
                         if (instance is not Dictionary<string, object?> dict)
                             throw new NotSupportedException();
-                        dict.Add(propStr, val);
+                        dict[propStr] = val;
                     }
                 };
             }

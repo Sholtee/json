@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 using BenchmarkDotNet.Attributes;
@@ -12,36 +14,52 @@ namespace Solti.Utils.Json.Perf
     [MemoryDiagnoser]
     public class JsonReaderParsingTests
     {
-        [
-            Params
-            (
+        public static IEnumerable<string> Params
+        {
+            get
+            {
                 //
-                // string
+                // String
                 //
 
-                "\"cica\"",
-                "\"cica\\r\\n\"",
-                "\"Let's smile \\uD83D\\uDE01\"",
-                "\"Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong\"",
-                
+                yield return "\"cica\"";
+                yield return "\"cica\\r\\n\"";
+                yield return "\"Let's smile \\uD83D\\uDE01\"";
+
                 //
                 // Number
                 //
 
-                "100",
-                "-100",
-                "100.0",
-                "-100.0",
+                yield return "100";
+                yield return "-100";
+                yield return "100.0";
+                yield return "-100.0";
 
                 //
                 // List
                 //
 
-                "[]",
-                "[true]",
-                "[0, true, false, null, \"cica\"]"
-            )
-        ]
+                yield return "[]";
+                yield return "[true]";
+                yield return "[0, true, false, null, \"cica\"]";
+
+                //
+                // Object
+                //
+
+                yield return "{}";
+                yield return "{\"cica\": 1986}";
+                yield return "{\"a\": 0, \"b\": true, \"c\": false, \"d\": null, \"e\": \"cica\"}";
+
+                //
+                // Mixed, large
+                //
+
+                yield return File.ReadAllText("large.json");
+            }
+        }
+
+        [ParamsSource(nameof(Params))]
         public string Input { get; set; } = null!;
 
         [Benchmark]
