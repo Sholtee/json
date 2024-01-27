@@ -129,4 +129,28 @@
   <data name="MAX_DEPTH_REACHED" xml:space="preserve">
     <value>Max depth reached.</value>
   </data>
+  <data name="MISSING_HEX_DIGIT" xml:space="preserve">
+    <value>Missing HEX digit</value>
+  </data>
+  <data name="MISSING_ITEM" xml:space="preserve">
+    <value>Missing list item</value>
+  </data>
+  <data name="MISSING_PROP" xml:space="preserve">
+    <value>Missing property</value>
+  </data>
+  <data name="NOT_HEX_DIGIT" xml:space="preserve">
+    <value>Not a hex digit</value>
+  </data>
+  <data name="NOT_NUMBER" xml:space="preserve">
+    <value>Not a number</value>
+  </data>
+  <data name="UNEXPECTED_WHITE_SPACE" xml:space="preserve">
+    <value>Unexpected white space</value>
+  </data>
+  <data name="UNKNOWN_CTRL" xml:space="preserve">
+    <value>Unknown control character</value>
+  </data>
+  <data name="UNTERMINATED_STR" xml:space="preserve">
+    <value>Unterminated string</value>
+  </data>
 </root>

@@ -38,6 +38,10 @@ namespace Solti.Utils.Json
 
         private char[] FBuffer = FBufferPool.TryPop(out char[] buffer) ? buffer : new char[256];
 
+        private readonly StringComparison FComparison = flags.HasFlag(JsonReaderFlags.CaseInsensitive)
+            ? StringComparison.OrdinalIgnoreCase
+            : StringComparison.Ordinal;
+
         /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
         /// </summary>
@@ -168,10 +172,6 @@ namespace Solti.Utils.Json
         {
             SkipSpaces();
 
-            StringComparison comparison = flags.HasFlag(JsonReaderFlags.CaseInsensitive)
-                ? StringComparison.OrdinalIgnoreCase
-                : StringComparison.Ordinal;
-
             return !input.PeekChar(out char chr) ? JsonTokens.Eof : chr switch
             {
                 '{' => JsonTokens.CurlyOpen,
@@ -182,10 +182,10 @@ namespace Solti.Utils.Json
                 ':' => JsonTokens.Colon,
                 '"' => JsonTokens.DoubleQuote,
                 '\'' when flags.HasFlag(JsonReaderFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
-                '/' when flags.HasFlag(JsonReaderFlags.AllowComments) && PeekText(DOUBLE_SLASH.Length).Equals(DOUBLE_SLASH.AsSpan(), comparison) => JsonTokens.DoubleSlash,
-                't' or 'T' when PeekText(TRUE.Length).Equals(TRUE.AsSpan(), comparison) => JsonTokens.True,
-                'f' or 'F' when PeekText(FALSE.Length).Equals(FALSE.AsSpan(), comparison) => JsonTokens.False,
-                'n' or 'N' when PeekText(NULL.Length).Equals(NULL.AsSpan(), comparison) => JsonTokens.Null,
+                '/' when flags.HasFlag(JsonReaderFlags.AllowComments) && PeekText(DOUBLE_SLASH.Length).Equals(DOUBLE_SLASH.AsSpan(), FComparison) => JsonTokens.DoubleSlash,
+                't' or 'T' when PeekText(TRUE.Length).Equals(TRUE.AsSpan(), FComparison) => JsonTokens.True,
+                'f' or 'F' when PeekText(FALSE.Length).Equals(FALSE.AsSpan(), FComparison) => JsonTokens.False,
+                'n' or 'N' when PeekText(NULL.Length).Equals(NULL.AsSpan(), FComparison) => JsonTokens.Null,
                 '-' or (>= '0' and <= '9') => JsonTokens.Number,
                 _ => JsonTokens.Unknown
             };
@@ -214,7 +214,7 @@ namespace Solti.Utils.Json
 
                 int returned = input.PeekText(span);
                 if (returned is 0)
-                    MalformedValue("string", "unterminated string");
+                    MalformedValue("string", UNTERMINATED_STR);
 
                 int i;
                 for (i = 0; i < returned; i++)
@@ -238,7 +238,7 @@ namespace Solti.Utils.Json
                         //
 
                         Advance(i + 1);
-                        MalformedValue("string", "unexpected white space");
+                        MalformedValue("string", UNEXPECTED_WHITE_SPACE);
                     }
 
                     if (c == '\\')
@@ -296,7 +296,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(i + 1);
-                                    MalformedValue("string", "missing HEX digits");
+                                    MalformedValue("string", MISSING_HEX_DIGIT);
                                 }
 
                                 if 
@@ -319,7 +319,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(i + 1);
-                                    MalformedValue("string", "not a HEX");
+                                    MalformedValue("string", NOT_HEX_DIGIT);
                                 }
 
                                 //
@@ -344,7 +344,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(i);
-                                    MalformedValue("string", "unknown control character");
+                                    MalformedValue("string", UNKNOWN_CTRL);
                                 }
                                 break;
                         }
@@ -443,7 +443,7 @@ namespace Solti.Utils.Json
             }
 
             if (result is null)
-                MalformedValue("number", "not a number");
+                MalformedValue("number", NOT_NUMBER);
 
             //
             // Advance the reader if everything was all right
@@ -486,7 +486,7 @@ namespace Solti.Utils.Json
                     token = Consume();
 
                     if (token is JsonTokens.SquaredClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
-                        MalformedValue("list", "missing list item");
+                        MalformedValue("list", MISSING_ITEM);
                 }
             }
 
@@ -500,7 +500,49 @@ namespace Solti.Utils.Json
 
         internal object ParseObject(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
-            return new Dictionary<string, object?>();
+            ConsumeAndValidate(JsonTokens.CurlyOpen);
+            Advance(1);
+
+            object obj = EnsureNotNull(currentContext.CreateRawObject).Invoke();
+
+            for (JsonTokens token = Consume(); token is not JsonTokens.CurlyClose;)
+            {
+                DeserializationContext childContext = EnsureNotNull(currentContext.GetPropertyContext).Invoke
+                (
+                    ParseString(),
+                    FComparison
+                );
+
+                ConsumeAndValidate(JsonTokens.Colon);
+                Advance(1);
+
+                EnsureNotNull(childContext.Push).Invoke(obj, Parse(currentDepth, childContext, cancellation));
+
+                //
+                // Check if we reached the end of the object or we have a next element.
+                //
+
+                token = ConsumeAndValidate(JsonTokens.CurlyClose | JsonTokens.Comma);
+                if (token is JsonTokens.Comma)
+                {
+                    //
+                    // Check if we have a trailing comma
+                    //
+
+                    Advance(1);
+                    token = Consume();
+
+                    if (token is JsonTokens.CurlyClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
+                        MalformedValue("object", MISSING_PROP);
+                }
+            }
+
+            Advance(1);
+
+            return obj;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static T EnsureNotNull<T>(T? val) => val ?? throw new InvalidOperationException(INVALID_CONTEXT);
         }
 
         internal void ParseComment(DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)

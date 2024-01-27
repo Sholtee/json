@@ -508,6 +508,7 @@ namespace Solti.Utils.Json.Tests
                 yield return new object[] { "[\"1\",]", new List<object?> { "1" }, JsonReaderFlags.AllowTrailingComma };
                 yield return new object[] { "[\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonReaderFlags.None };
                 yield return new object[] { "[null, true, false, 1, \"1\"]", new List<object?> { null, true, false, 1, "1" }, JsonReaderFlags.None };
+                yield return new object[] { "[[]]", new List<object?> { new List<object?> { } }, JsonReaderFlags.None };
             }
         }
 
@@ -517,6 +518,29 @@ namespace Solti.Utils.Json.Tests
             JsonReader rdr = CreateReader(input, out ITextReader content, flags);
 
             Assert.That(rdr.ParseList(0, UntypedDeserializationContext.Instance, default), Is.EquivalentTo(expected));
+            Assert.That(content.CharsLeft, Is.EqualTo(0));
+        }
+
+        public static IEnumerable<object[]> ParseObject_ShouldParse_Params
+        {
+            get
+            {
+                yield return new object[] { "{}", new Dictionary<string, object?> { }, JsonReaderFlags.None };
+                yield return new object[] { "{\"cica\": 1}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.None };
+                yield return new object[] { "{\"cica\": \"1\"}", new Dictionary<string, object?> { { "cica", "1" } }, JsonReaderFlags.None };
+                yield return new object[] { "{\"cica\": 1,}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowTrailingComma };
+                yield return new object[] { "{\"cica\": \"1\",}", new Dictionary<string, object?> { { "cica", "1" } }, JsonReaderFlags.AllowTrailingComma };
+                yield return new object[] { "{\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.None };
+                yield return new object[] { "{\"nested\": {}}", new Dictionary<string, object?> { { "nested", new Dictionary<string, object?> { } } }, JsonReaderFlags.None };
+            }
+        }
+
+        [TestCaseSource(nameof(ParseObject_ShouldParse_Params))]
+        public void ParseObject_ShouldParse(string input, Dictionary<string, object?> expected, JsonReaderFlags flags)
+        {
+            JsonReader rdr = CreateReader(input, out ITextReader content, flags);
+
+            Assert.That(rdr.ParseObject(0, UntypedDeserializationContext.Instance, default), Is.EquivalentTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
         }
 
@@ -565,12 +589,18 @@ namespace Solti.Utils.Json.Tests
         }
 
         [TestCase("\"cica\"", 0, false)]
+        [TestCase("[]", 0, true)]
         [TestCase("[\"cica\"]", 0, true)]
         [TestCase("[\"cica\"]", 1, false)]
         [TestCase("[[\"cica\"]]", 1, true)]
+        [TestCase("{}", 0, true)]
+        [TestCase("{\"cica\": 1986}", 0, true)]
+        [TestCase("{\"cica\": 1986}", 1, false)]
+        [TestCase("{\"cica\": [1986]}", 1, true)]
+        [TestCase("{\"cica\": [1986]}", 2, false)]
         public void Parse_ShouldCheckTheDepth(string input, int maxDepth, bool shouldThrow)
         {
-            JsonReader rdr = new(new StringReader(input), UntypedDeserializationContext.Instance, JsonReaderFlags.AllowComments, maxDepth);
+            JsonReader rdr = new(new StringReader(input), UntypedDeserializationContext.Instance, JsonReaderFlags.None, maxDepth);
 
             if (shouldThrow)
                 Assert.Throws<InvalidOperationException>(() => rdr.Parse(default));
