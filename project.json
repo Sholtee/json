@@ -1,0 +1,12 @@
+{
+  "bin": "\\BIN",
+  "solution": "\\JSON.sln",
+  "app": "\\SRC\\JSON.csproj",
+  "vendor": "\\Vendor",
+  "tests": "\\TEST\\JSON.Tests.csproj",
+  "coverage": ["Solti.Utils.Json.dll"],
+  "artifacts": "\\Artifacts",
+  "perftests": "\\PERF\\JSON.Perf.csproj",
+  "docsbranch": "gh-pages",
+  "CI": "AppVeyor"
+}

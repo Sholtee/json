@@ -17,7 +17,17 @@
 		<NuGetAuditMode>all</NuGetAuditMode>
 		<AllowUnsafeBlocks Condition="'$(TargetFramework)'=='netstandard2.0'">True</AllowUnsafeBlocks>
 	</PropertyGroup>
+	
+	<ItemGroup>
+		<None Remove="docfx.json" />
+		<None Remove="index.md" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="..\icon.png" Pack="true" PackagePath="\" />
+		<None Include="..\README.MD" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <PackageReference Include="IsExternalInit" Version="1.0.*" />
 	  <PackageReference Include="RequiredMemberAttribute" Version="1.0.*" />
@@ -50,5 +60,4 @@
 	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
-
 </Project>
