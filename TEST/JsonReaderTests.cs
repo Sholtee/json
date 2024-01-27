@@ -47,7 +47,7 @@ namespace Solti.Utils.Json.Tests
 
         private static void SkipSpaces_ShouldSkipWhiteSpaces(string input, int shouldSkip, int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content);
+            using JsonReader rdr = CreateReader(input, out ITextReader content);
             rdr.SkipSpaces(bufferSize);
 
             Assert.That(content.CharsLeft, Is.EqualTo(input.Length - shouldSkip));
@@ -83,7 +83,7 @@ namespace Solti.Utils.Json.Tests
 
         private static void SkipSpaces_ShouldMaintainTheRowIndex(string input, int rows, int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content);
+            using JsonReader rdr = CreateReader(input, out ITextReader content);
 
             for (; content.CharsLeft > 0;)
             {
@@ -149,7 +149,7 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(Consume_ShouldReturnTheCurrectToken_Params))]
         public void Consume_ShouldReturnTheCurrectToken(string input, object expected, JsonReaderFlags flags)
         {
-            JsonReader rdr = CreateReader(input, out _, flags);
+            using JsonReader rdr = CreateReader(input, out _, flags);
 
             Assert.That(rdr.Consume(), Is.EqualTo(expected));
         }
@@ -157,7 +157,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void Consume_ShouldRejectPartialLiterals([Values("nul", "tru", "fal")] string input)
         {
-            JsonReader rdr = CreateReader(input, out _);
+            using JsonReader rdr = CreateReader(input, out _);
 
             Assert.That(rdr.Consume(), Is.EqualTo(JsonTokens.Unknown));
         }
@@ -165,7 +165,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void ConsumeAndValidate_ShouldValidateTheReturnedToken()
         {
-            JsonReader rdr = CreateReader("{", out _);
+            using JsonReader rdr = CreateReader("{", out _);
 
             Assert.That(rdr.ConsumeAndValidate(JsonTokens.Eof | JsonTokens.CurlyOpen), Is.EqualTo(JsonTokens.CurlyOpen));
             Assert.Throws<FormatException>(() => rdr.ConsumeAndValidate(JsonTokens.Eof));
@@ -186,7 +186,7 @@ namespace Solti.Utils.Json.Tests
 
         private static void ParseString_ShouldParseSingleStrings(string input, string expected, int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content, JsonReaderFlags.AllowSingleQuotedStrings);
+            using JsonReader rdr = CreateReader(input, out ITextReader content, JsonReaderFlags.AllowSingleQuotedStrings);
 
             Assert.That(rdr.ParseString(bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
@@ -223,7 +223,7 @@ namespace Solti.Utils.Json.Tests
 
         private static void ParseString_ShouldProcessSingleControlCharacters(string input, string expected, int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content);
+            using JsonReader rdr = CreateReader(input, out ITextReader content);
 
             Assert.That(rdr.ParseString(bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
@@ -240,7 +240,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void ParseString_ShouldThrowOnUnknownControlCharacter([Values("\"\\x\"", "\"\\\t\"", "\"prefix\\x\"", "\"\\\tsuffix\"")] string input)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content);
+            using JsonReader rdr = CreateReader(input, out ITextReader content);
 
             Assert.Throws<FormatException>(() => rdr.ParseString('"'));
         }
@@ -261,7 +261,7 @@ namespace Solti.Utils.Json.Tests
 
         private static void ParseString_ShouldThrowOnUnescapedSpace(string input, int position, int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content);
+            using JsonReader rdr = CreateReader(input, out ITextReader content);
 
             FormatException ex = Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize))!;
             Assert.That(ex.Data.Contains("column"));
@@ -280,7 +280,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void ParseString_ShouldThrowOnUnterminatedString([Values("\"", "\"cica", "\"cica\t", /*"\"\\\"",*/ "\"\\")] string input, [Values(1, 128)] int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content);
+            using JsonReader rdr = CreateReader(input, out ITextReader content);
 
             Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize));
         }
@@ -299,7 +299,7 @@ namespace Solti.Utils.Json.Tests
 
         private static void ParseString_ShouldParseEscapedUnicodeCharacters(string input, string expected, int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content);
+            using JsonReader rdr = CreateReader(input, out ITextReader content);
 
             Assert.That(rdr.ParseString(bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
@@ -334,7 +334,7 @@ namespace Solti.Utils.Json.Tests
 
         private static void ParseString_ShouldThrowOnInvalidHex(string input, int col, int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out _);
+            using JsonReader rdr = CreateReader(input, out _);
 
             Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize));
             Assert.That(rdr.Column, Is.EqualTo(col));
@@ -380,7 +380,7 @@ namespace Solti.Utils.Json.Tests
             };
             ITextReader content = new StringReader(input);
 
-            JsonReader rdr = new(content, ctx, JsonReaderFlags.AllowComments, int.MaxValue);
+            using JsonReader rdr = new(content, ctx, JsonReaderFlags.AllowComments, int.MaxValue);
 
             Assert.DoesNotThrow(() => rdr.ParseComment(ctx, bufferSize));
             Assert.That(lastComment, Is.EqualTo(expected));
@@ -437,7 +437,7 @@ namespace Solti.Utils.Json.Tests
 
         private static void ParseNumber_ShouldReturnTheAppropriateValue(string input, object expected, int charsLeft, int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content);
+            using JsonReader rdr = CreateReader(input, out ITextReader content);
 
             object result = rdr.ParseNumber(UntypedDeserializationContext.Instance, bufferSize);
 
@@ -457,7 +457,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void ParseNumber_ShouldThrowOnInvalidValue([Values("1E-")] string input, [Values(1, 16)] int bufferSize)
         {
-            JsonReader rdr = CreateReader(input, out _);
+            using JsonReader rdr = CreateReader(input, out _);
             Assert.Throws<FormatException>(() => rdr.ParseNumber(UntypedDeserializationContext.Instance, bufferSize));
         }
 
@@ -469,7 +469,7 @@ namespace Solti.Utils.Json.Tests
                 .Setup(c => c.Invoke((long) 1986))
                 .Returns(1991);
 
-            JsonReader rdr = CreateReader("1986", out _);
+            using JsonReader rdr = CreateReader("1986", out _);
             object ret = rdr.ParseNumber(UntypedDeserializationContext.Instance with { ConvertNumber = mockConverter.Object });
 
             Assert.That(ret, Is.EqualTo(1991));
@@ -487,7 +487,7 @@ namespace Solti.Utils.Json.Tests
         [TestCase("[\"cica\", \"mica\", x]", 17)]
         public void ParseList_ShouldThrowOnInvalidList(string input, int errorPos)
         {
-            JsonReader rdr = CreateReader(input, out _);
+            using JsonReader rdr = CreateReader(input, out _);
 
             Assert.Throws<FormatException>(() => rdr.ParseList(0, UntypedDeserializationContext.Instance, default));
             Assert.That(rdr.Column, Is.EqualTo(errorPos));
@@ -496,7 +496,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void ParseList_ShouldThrowOnInvalidContext()
         {
-            JsonReader rdr = CreateReader("[]", out _);
+            using JsonReader rdr = CreateReader("[]", out _);
             Assert.Throws<InvalidOperationException>(() => rdr.ParseList(0, new DeserializationContext { SupportedTypes = JsonDataTypes.None }, default));
         }
 
@@ -518,7 +518,7 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(ParseList_ShouldParse_Params))]
         public void ParseList_ShouldParse(string input, List<object?> expected, JsonReaderFlags flags)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content, flags);
+            using JsonReader rdr = CreateReader(input, out ITextReader content, flags);
 
             Assert.That(rdr.ParseList(0, UntypedDeserializationContext.Instance, default), Is.EquivalentTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
@@ -534,7 +534,7 @@ namespace Solti.Utils.Json.Tests
         [TestCase("{\"cica\": 1,}", 11)]
         public void ParseObject_ShouldThrowOnInvalidObject(string input, int errorPos)
         {
-            JsonReader rdr = CreateReader(input, out _);
+            using JsonReader rdr = CreateReader(input, out _);
 
             Assert.Throws<FormatException>(() => rdr.ParseObject(0, UntypedDeserializationContext.Instance, default));
             Assert.That(rdr.Column, Is.EqualTo(errorPos));
@@ -543,7 +543,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void ParseObject_ShouldThrowOnInvalidContext()
         {
-            JsonReader rdr = CreateReader("{}", out _);
+            using JsonReader rdr = CreateReader("{}", out _);
             Assert.Throws<InvalidOperationException>(() => rdr.ParseObject(0, UntypedDeserializationContext.Instance with { CreateRawObject = null }, default));
         }
 
@@ -565,7 +565,7 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(ParseObject_ShouldParse_Params))]
         public void ParseObject_ShouldParse(string input, Dictionary<string, object?> expected, JsonReaderFlags flags)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content, flags);
+            using JsonReader rdr = CreateReader(input, out ITextReader content, flags);
 
             Assert.That(rdr.ParseObject(0, UntypedDeserializationContext.Instance, default), Is.EquivalentTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
@@ -579,7 +579,7 @@ namespace Solti.Utils.Json.Tests
         [TestCase("Null", JsonReaderFlags.CaseInsensitive, JsonDataTypes.Null, null)]
         public void Parse_ShouldParseLiterals(string input, JsonReaderFlags flags, JsonDataTypes supportedTypes, object expected)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content, flags, supportedTypes);
+            using JsonReader rdr = CreateReader(input, out ITextReader content, flags, supportedTypes);
 
             Assert.That(rdr.Parse(default), Is.EqualTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
@@ -588,7 +588,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void Parse_ShouldBeCaseSensitiveByDefault()
         {
-            JsonReader rdr = CreateReader("Null", out ITextReader content);
+            using JsonReader rdr = CreateReader("Null", out ITextReader content);
             Assert.Throws<FormatException>(() => rdr.Parse(default));
             Assert.That(content.CharsLeft, Is.EqualTo(4));
         }
@@ -608,7 +608,7 @@ namespace Solti.Utils.Json.Tests
             string? got = null;
 
             ITextReader content = new StringReader(input);
-            JsonReader rdr = new(content, UntypedDeserializationContext.Instance with { CommentParser = chars => got = chars.AsString() }, JsonReaderFlags.AllowComments, 0);
+            using JsonReader rdr = new(content, UntypedDeserializationContext.Instance with { CommentParser = chars => got = chars.AsString() }, JsonReaderFlags.AllowComments, 0);
 
             Assert.That(rdr.Parse(default), Is.EqualTo(expected));
             Assert.That(got, Is.EqualTo(comment));
@@ -627,7 +627,7 @@ namespace Solti.Utils.Json.Tests
         [TestCase("{\"cica\": [1986]}", 2, false)]
         public void Parse_ShouldCheckTheDepth(string input, int maxDepth, bool shouldThrow)
         {
-            JsonReader rdr = new(new StringReader(input), UntypedDeserializationContext.Instance, JsonReaderFlags.None, maxDepth);
+            using JsonReader rdr = new(new StringReader(input), UntypedDeserializationContext.Instance, JsonReaderFlags.None, maxDepth);
 
             if (shouldThrow)
                 Assert.Throws<InvalidOperationException>(() => rdr.Parse(default));
@@ -640,9 +640,9 @@ namespace Solti.Utils.Json.Tests
         {
             Mock<DeserializationContext.VerifyDelegate> mockValidator = new(MockBehavior.Strict);
             mockValidator
-                .Setup(v => v.Invoke((long) 1986)); 
+                .Setup(v => v.Invoke((long) 1986));
 
-            JsonReader rdr = new(new StringReader("1986"), new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, JsonReaderFlags.None, 0);
+            using JsonReader rdr = new(new StringReader("1986"), new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, JsonReaderFlags.None, 0);
 
             rdr.Parse(default);
 
@@ -651,8 +651,8 @@ namespace Solti.Utils.Json.Tests
 
         [Test]
         public void Parse_ShouldHandleLargeInput()
-        {  
-            JsonReader rdr = new
+        {
+            using JsonReader rdr = new
             (
                 // TODO: implement StreamReader
                 new StringReader
