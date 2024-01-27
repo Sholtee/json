@@ -11,7 +11,7 @@ image: Visual Studio 2022
 
 environment:
   COVERALLS_REPO_TOKEN:  
-    secure: xx7Lt1QT7eGOULugKSF4mcsccppFNHzord2VML/nwox+6HSHC/+IN+W1EoBT9fut
+    secure: nAAp03CZ2qck5RM+0XroKB7HjAIbWT/W9hPtrVTQ20KFiMQvRJ04gKpdVE1nwleX
   GITHUB_REPO_TOKEN:
     secure: qJEufJv866eebR/Boe1UnV3p1arOIX9BTyqAQnAVY49h4Ks40Sr0rHb3iN70e7BZ 
   NUGET_REPO_TOKEN: TODO
