@@ -21,7 +21,7 @@ namespace Solti.Utils.Json
     /// <summary>
     /// Represents a generic, cancellable JSON reader.
     /// </summary>
-    public sealed class JsonReader(ITextReader input, IDeserializationContext context, JsonReaderFlags flags, int maxDepth): IDisposable
+    public sealed class JsonReader(ITextReader input, DeserializationContext context, JsonReaderFlags flags, int maxDepth): IDisposable
     {
         #region Private
         private static readonly string
@@ -365,7 +365,7 @@ namespace Solti.Utils.Json
         // d) 1E+2
         //
 
-        internal object ParseNumber(int initialBufferSize = 16 /*for debug*/)
+        internal object ParseNumber(DeserializationContext currentContext, int initialBufferSize = 16 /*for debug*/)
         {
             ConsumeAndValidate(JsonTokens.Number);
 
@@ -450,20 +450,26 @@ namespace Solti.Utils.Json
             //
 
             Advance(parsed);
+
+            if (currentContext.ConvertNumber is not null)
+                result = currentContext.ConvertNumber(result);
+
             return result!;
         }
 
-        internal object ParseList(int currentDepth, IDeserializationContext currentContext, in CancellationToken cancellation)
+        internal object ParseList(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
             ConsumeAndValidate(JsonTokens.SquaredOpen);
             Advance(1);
 
-            object result = currentContext.CreateRawObject(JsonDataTypes.List);
+            object list = EnsureNotNull(currentContext.CreateRawList).Invoke();
 
             int i = 0;
             for (JsonTokens token = Consume(); token is not JsonTokens.SquaredClose;)
             {
-                currentContext.SetValue(result, Parse(currentDepth, currentContext.GetNestedContext(i++), cancellation));
+                DeserializationContext childContext = EnsureNotNull(currentContext.GetListItemContext).Invoke(i++);
+
+                EnsureNotNull(childContext.Push).Invoke(list, Parse(currentDepth, childContext, cancellation));
 
                 //
                 // Check if we reached the end of the list or we have a next element.
@@ -486,15 +492,18 @@ namespace Solti.Utils.Json
 
             Advance(1);
 
-            return result;
+            return list;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static T EnsureNotNull<T>(T? val) => val ?? throw new InvalidOperationException(INVALID_CONTEXT);
         }
 
-        internal object ParseObject(int currentDepth, IDeserializationContext currentContext, in CancellationToken cancellation)
+        internal object ParseObject(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
             return new Dictionary<string, object?>();
         }
 
-        internal void ParseComment(IDeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
+        internal void ParseComment(DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
             ConsumeAndValidate(JsonTokens.DoubleSlash);
             input.Advance(2);
@@ -538,10 +547,10 @@ namespace Solti.Utils.Json
             if (parsed > 0 && buffer[parsed - 1] is '\r')
                 parsed--;
 
-            currentContext.CommentParsed(buffer.Slice(0, parsed));
+            currentContext.CommentParser?.Invoke(buffer.Slice(0, parsed));
         }
 
-        internal object? Parse(int currentDepth, IDeserializationContext currentContext, in CancellationToken cancellation)
+        internal object? Parse(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
             cancellation.ThrowIfCancellationRequested();
 
@@ -563,7 +572,7 @@ namespace Solti.Utils.Json
                     ParseComment(currentContext);
                     goto start;
                 case JsonTokens.Number:
-                    result = ParseNumber();
+                    result = ParseNumber(currentContext);
                     break;
                 case JsonTokens.True:
                     Advance(TRUE.Length);
@@ -582,7 +591,7 @@ namespace Solti.Utils.Json
                     return null!;
             };
 
-            currentContext.Verify(result);
+            currentContext.Verify?.Invoke(result);
             return result;
         }
 #endregion

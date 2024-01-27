@@ -15,68 +15,41 @@ namespace Solti.Utils.Json
     /// Context used to create untyped result.
     /// </summary>
     /// <remarks>In untyped result objects are returned as <see cref="IDictionary"/> while lists as <see cref="IList"/>.</remarks>
-    public class UntypedDeserializationContext : IDeserializationContext
+    public static class UntypedDeserializationContext
     {
-        /// <summary>
-        /// This context supports all the data types.
-        /// </summary>
-        public virtual JsonDataTypes SupportedTypes { get; } = JsonDataTypes.Object | JsonDataTypes.List | JsonDataTypes.String | JsonDataTypes.Number | JsonDataTypes.Boolean | JsonDataTypes.Null;
-
-        /// <summary>
-        /// By default this method does nothing, ovverride to introduce your own implementation.
-        /// </summary>
-        public virtual void CommentParsed(ReadOnlySpan<char> value)
+        public static DeserializationContext Instance { get; } = new()
         {
-        }
+            SupportedTypes = JsonDataTypes.Object | JsonDataTypes.List | JsonDataTypes.String | JsonDataTypes.Number | JsonDataTypes.Boolean | JsonDataTypes.Null,
 
-        /// <summary>
-        /// Converts the <paramref name="value"/> to a regular <see cref="string"/>.
-        /// </summary>
-        public virtual object ConvertString(ReadOnlySpan<char> value) => value.AsString();
+            CreateRawObject = static () => new Dictionary<string, object?>(StringComparer.Ordinal),
 
-        /// <summary>
-        /// Returns <see cref="Dictionary{string, object}"/> for <see cref="JsonDataTypes.Object"/> and <see cref="List{object}"/> for <see cref="JsonDataTypes.List"/>.
-        /// </summary>
-        public virtual object CreateRawObject(JsonDataTypes jsonDataType) => jsonDataType switch
-        {
-            JsonDataTypes.Object => new Dictionary<string, object?>(StringComparer.Ordinal),
-            JsonDataTypes.List => new List<object?>(),
-            _ => throw new NotSupportedException()
-        };
+            CreateRawList = static () => new List<object?>(),
 
-        /// <summary>
-        /// Returns this instance, no nested context created.
-        /// </summary>
-        public IDeserializationContext GetNestedContext(ReadOnlySpan<char> property, StringComparison comparison) => this;
-
-        /// <summary>
-        /// Returns this instance, no nested context created.
-        /// </summary>
-        public IDeserializationContext GetNestedContext(int index) => this;
-
-        /// <summary>
-        /// Updates the given <paramref name="instance"/>.
-        /// </summary>
-        public void SetValue(object instance, object? value)
-        {
-            switch (instance)
+            GetListItemContext = static _ => Instance! with
             {
-                case List<object?> list:
-                    list.Add(value);
-                    break;
-                case Dictionary<string, object?> dictionary:
-                    // TODO
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
-        }
+                Push = static (object instance, object? val) =>
+                {
+                    if (instance is not List<object?> lst)
+                        throw new NotSupportedException();
 
-        /// <summary>
-        /// By default this method does nothing, ovverride to introduce your own implementation.
-        /// </summary>
-        public virtual void Verify(object? value)
-        {
-        }
+                    lst.Add(val);
+                }
+            },
+
+            GetPropertyContext = static (ReadOnlySpan<char> prop, StringComparison _) =>
+            {
+                string propStr = prop.AsString();
+
+                return Instance! with
+                {
+                    Push = (object instance, object? val) =>
+                    {
+                        if (instance is not Dictionary<string, object?> dict)
+                            throw new NotSupportedException();
+                        dict.Add(propStr, val);
+                    }
+                };
+            }
+        };
     }
 }

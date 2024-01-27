@@ -61,6 +61,15 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid context.
+        /// </summary>
+        internal static string INVALID_CONTEXT {
+            get {
+                return ResourceManager.GetString("INVALID_CONTEXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Malformed {0} found (row: {1}, col: {2}). Reason: &quot;{3}&quot;.
         /// </summary>
         internal static string MALFORMED {
