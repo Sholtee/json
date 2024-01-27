@@ -501,18 +501,20 @@ namespace Solti.Utils.Json.Tests
         {
             get
             {
-                yield return new object[] { "[]", new List<object?> { } };
-                yield return new object[] { "[1]", new List<object?> { 1 } };
-                yield return new object[] { "[\"1\"]", new List<object?> { "1" } };
-                yield return new object[] { "[\r\n\"1\"\r\n]", new List<object?> { "1" } };
-                yield return new object[] { "[null, true, false, 1, \"1\"]", new List<object?> { null, true, false, 1, "1" } };
+                yield return new object[] { "[]", new List<object?> { }, JsonReaderFlags.None };
+                yield return new object[] { "[1]", new List<object?> { 1 }, JsonReaderFlags.None };
+                yield return new object[] { "[\"1\"]", new List<object?> { "1" }, JsonReaderFlags.None };
+                yield return new object[] { "[1,]", new List<object?> { 1 }, JsonReaderFlags.AllowTrailingComma };
+                yield return new object[] { "[\"1\",]", new List<object?> { "1" }, JsonReaderFlags.AllowTrailingComma };
+                yield return new object[] { "[\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonReaderFlags.None };
+                yield return new object[] { "[null, true, false, 1, \"1\"]", new List<object?> { null, true, false, 1, "1" }, JsonReaderFlags.None };
             }
         }
 
         [TestCaseSource(nameof(ParseList_ShouldParse_Params))]
-        public void ParseList_ShouldParse(string input, List<object?> expected)
+        public void ParseList_ShouldParse(string input, List<object?> expected, JsonReaderFlags flags)
         {
-            JsonReader rdr = CreateReader(input, out ITextReader content);
+            JsonReader rdr = CreateReader(input, out ITextReader content, flags);
 
             Assert.That(rdr.ParseList(0, UntypedDeserializationContext.Instance, default), Is.EquivalentTo(expected));
             Assert.That(content.CharsLeft, Is.EqualTo(0));
