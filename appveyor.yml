@@ -67,7 +67,7 @@ for:
 -
   branches:
     only:
-      - main
+      - master
 
   before_deploy:
     - ps: Git-Config 
