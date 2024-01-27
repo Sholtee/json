@@ -4,7 +4,10 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 using Moq;
 using NUnit.Framework;
@@ -22,7 +25,7 @@ namespace Solti.Utils.Json.Tests
         {
             reader = new StringReader(input);
 
-            return new JsonReader(reader, UntypedDeserializationContext.Instance, flags, int.MaxValue);
+            return new JsonReader(reader, UntypedDeserializationContext.Instance with { SupportedTypes = supportedTypes }, flags, int.MaxValue);
         }
 
         public static IEnumerable<object[]> SkipSpaces_ShouldSkipWhiteSpaces_Params
@@ -643,6 +646,33 @@ namespace Solti.Utils.Json.Tests
             rdr.Parse(default);
 
             mockValidator.Verify(v => v.Invoke((long) 1986), Times.Once);
+        }
+
+        [Test]
+        public void Parse_ShouldHandleLargeInput()
+        {  
+            JsonReader rdr = new
+            (
+                // TODO: implement StreamReader
+                new StringReader
+                (
+                    File.ReadAllText
+                    (
+                        Path.Combine
+                        (
+                            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+                            "large.json"
+                        )
+                    )
+                ),
+                UntypedDeserializationContext.Instance,
+                JsonReaderFlags.None,
+                int.MaxValue
+            );
+
+            IList? result = rdr.Parse(default) as IList;
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result!.Count, Is.EqualTo(5000));
         }
     }
 }

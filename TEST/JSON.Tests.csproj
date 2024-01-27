@@ -29,4 +29,10 @@
 	  <ProjectReference Include="..\SRC\JSON.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="large.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>
