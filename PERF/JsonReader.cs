@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 
 using BenchmarkDotNet.Attributes;
@@ -55,7 +56,14 @@ namespace Solti.Utils.Json.Perf
                 // Mixed, large
                 //
 
-                yield return File.ReadAllText("large.json");
+                yield return File.ReadAllText
+                (
+                    Path.Combine
+                    (
+                        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+                        "large.json"
+                    )
+                );
             }
         }
 
