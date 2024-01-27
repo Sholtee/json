@@ -1,0 +1,1002 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: Solti.Utils.Json
+  name: Solti.Utils.Json
+  href: Solti.Utils.Json.html
+  commentId: N:Solti.Utils.Json
+  fullName: Solti.Utils.Json
+  nameWithType: Solti.Utils.Json
+- uid: Solti.Utils.Json.DeserializationContext
+  name: DeserializationContext
+  href: Solti.Utils.Json.DeserializationContext.html
+  commentId: T:Solti.Utils.Json.DeserializationContext
+  fullName: Solti.Utils.Json.DeserializationContext
+  nameWithType: DeserializationContext
+- uid: Solti.Utils.Json.DeserializationContext.#ctor
+  name: DeserializationContext()
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext__ctor
+  commentId: M:Solti.Utils.Json.DeserializationContext.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.DeserializationContext()
+  nameWithType: DeserializationContext.DeserializationContext()
+- uid: Solti.Utils.Json.DeserializationContext.#ctor*
+  name: DeserializationContext
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.DeserializationContext
+  nameWithType: DeserializationContext.DeserializationContext
+- uid: Solti.Utils.Json.DeserializationContext.{Clone}$
+  name: <Clone>$()
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext__Clone__
+  commentId: M:Solti.Utils.Json.DeserializationContext.{Clone}$
+  fullName: Solti.Utils.Json.DeserializationContext.<Clone>$()
+  nameWithType: DeserializationContext.<Clone>$()
+- uid: Solti.Utils.Json.DeserializationContext.{Clone}$*
+  name: <Clone>$
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext__Clone___
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.{Clone}$
+  fullName: Solti.Utils.Json.DeserializationContext.<Clone>$
+  nameWithType: DeserializationContext.<Clone>$
+- uid: Solti.Utils.Json.DeserializationContext.CommentParser
+  name: CommentParser
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CommentParser
+  commentId: P:Solti.Utils.Json.DeserializationContext.CommentParser
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParser
+  nameWithType: DeserializationContext.CommentParser
+- uid: Solti.Utils.Json.DeserializationContext.CommentParser*
+  name: CommentParser
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CommentParser_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParser
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParser
+  nameWithType: DeserializationContext.CommentParser
+- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate
+  name: DeserializationContext.CommentParserDelegate
+  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.CommentParserDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate
+  nameWithType: DeserializationContext.CommentParserDelegate
+- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.#ctor(System.Object,System.IntPtr)
+  name: CommentParserDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.CommentParserDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.CommentParserDelegate.CommentParserDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.#ctor*
+  name: CommentParserDelegate
+  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.CommentParserDelegate
+  nameWithType: DeserializationContext.CommentParserDelegate.CommentParserDelegate
+- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.AsyncCallback,System.Object)
+  name: BeginInvoke(ReadOnlySpan<Char>, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(ReadOnlySpan(Of Char), AsyncCallback, Object)
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke(System.ReadOnlySpan<System.Char>, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke(System.ReadOnlySpan(Of System.Char), System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.CommentParserDelegate.BeginInvoke(ReadOnlySpan<Char>, AsyncCallback, Object)
+  nameWithType.vb: DeserializationContext.CommentParserDelegate.BeginInvoke(ReadOnlySpan(Of Char), AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke
+  nameWithType: DeserializationContext.CommentParserDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.CommentParserDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke
+  nameWithType: DeserializationContext.CommentParserDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke(System.ReadOnlySpan{System.Char})
+  name: Invoke(ReadOnlySpan<Char>)
+  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_Invoke_System_ReadOnlySpan_System_Char__
+  commentId: M:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke(System.ReadOnlySpan{System.Char})
+  name.vb: Invoke(ReadOnlySpan(Of Char))
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke(System.ReadOnlySpan<System.Char>)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke(System.ReadOnlySpan(Of System.Char))
+  nameWithType: DeserializationContext.CommentParserDelegate.Invoke(ReadOnlySpan<Char>)
+  nameWithType.vb: DeserializationContext.CommentParserDelegate.Invoke(ReadOnlySpan(Of Char))
+- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke
+  nameWithType: DeserializationContext.CommentParserDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumber
+  name: ConvertNumber
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ConvertNumber
+  commentId: P:Solti.Utils.Json.DeserializationContext.ConvertNumber
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumber
+  nameWithType: DeserializationContext.ConvertNumber
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumber*
+  name: ConvertNumber
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ConvertNumber_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumber
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumber
+  nameWithType: DeserializationContext.ConvertNumber
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate
+  name: DeserializationContext.ConvertNumberDelegate
+  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate
+  nameWithType: DeserializationContext.ConvertNumberDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.#ctor(System.Object,System.IntPtr)
+  name: ConvertNumberDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.ConvertNumberDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.ConvertNumberDelegate.ConvertNumberDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.#ctor*
+  name: ConvertNumberDelegate
+  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.ConvertNumberDelegate
+  nameWithType: DeserializationContext.ConvertNumberDelegate.ConvertNumberDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
+  name: BeginInvoke(Object, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_BeginInvoke_System_Object_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke(System.Object, System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.ConvertNumberDelegate.BeginInvoke(Object, AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke
+  nameWithType: DeserializationContext.ConvertNumberDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.ConvertNumberDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke
+  nameWithType: DeserializationContext.ConvertNumberDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke(System.Object)
+  name: Invoke(Object)
+  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_Invoke_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke(System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke(System.Object)
+  nameWithType: DeserializationContext.ConvertNumberDelegate.Invoke(Object)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke
+  nameWithType: DeserializationContext.ConvertNumberDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.ConvertString
+  name: ConvertString
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ConvertString
+  commentId: P:Solti.Utils.Json.DeserializationContext.ConvertString
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertString
+  nameWithType: DeserializationContext.ConvertString
+- uid: Solti.Utils.Json.DeserializationContext.ConvertString*
+  name: ConvertString
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ConvertString_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertString
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertString
+  nameWithType: DeserializationContext.ConvertString
+- uid: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate
+  name: DeserializationContext.ConvertStringDelegate
+  href: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.ConvertStringDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate
+  nameWithType: DeserializationContext.ConvertStringDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.#ctor(System.Object,System.IntPtr)
+  name: ConvertStringDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertStringDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.ConvertStringDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.ConvertStringDelegate.ConvertStringDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.#ctor*
+  name: ConvertStringDelegate
+  href: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertStringDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.ConvertStringDelegate
+  nameWithType: DeserializationContext.ConvertStringDelegate.ConvertStringDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.AsyncCallback,System.Object)
+  name: BeginInvoke(ReadOnlySpan<Char>, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertStringDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(ReadOnlySpan(Of Char), AsyncCallback, Object)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.BeginInvoke(System.ReadOnlySpan<System.Char>, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.BeginInvoke(System.ReadOnlySpan(Of System.Char), System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.ConvertStringDelegate.BeginInvoke(ReadOnlySpan<Char>, AsyncCallback, Object)
+  nameWithType.vb: DeserializationContext.ConvertStringDelegate.BeginInvoke(ReadOnlySpan(Of Char), AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertStringDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.BeginInvoke
+  nameWithType: DeserializationContext.ConvertStringDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertStringDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.ConvertStringDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertStringDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.EndInvoke
+  nameWithType: DeserializationContext.ConvertStringDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.Invoke(System.ReadOnlySpan{System.Char})
+  name: Invoke(ReadOnlySpan<Char>)
+  href: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertStringDelegate_Invoke_System_ReadOnlySpan_System_Char__
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.Invoke(System.ReadOnlySpan{System.Char})
+  name.vb: Invoke(ReadOnlySpan(Of Char))
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.Invoke(System.ReadOnlySpan<System.Char>)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.Invoke(System.ReadOnlySpan(Of System.Char))
+  nameWithType: DeserializationContext.ConvertStringDelegate.Invoke(ReadOnlySpan<Char>)
+  nameWithType.vb: DeserializationContext.ConvertStringDelegate.Invoke(ReadOnlySpan(Of Char))
+- uid: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertStringDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertStringDelegate.Invoke
+  nameWithType: DeserializationContext.ConvertStringDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.CreateRawList
+  name: CreateRawList
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CreateRawList
+  commentId: P:Solti.Utils.Json.DeserializationContext.CreateRawList
+  fullName: Solti.Utils.Json.DeserializationContext.CreateRawList
+  nameWithType: DeserializationContext.CreateRawList
+- uid: Solti.Utils.Json.DeserializationContext.CreateRawList*
+  name: CreateRawList
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CreateRawList_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.CreateRawList
+  fullName: Solti.Utils.Json.DeserializationContext.CreateRawList
+  nameWithType: DeserializationContext.CreateRawList
+- uid: Solti.Utils.Json.DeserializationContext.CreateRawObject
+  name: CreateRawObject
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CreateRawObject
+  commentId: P:Solti.Utils.Json.DeserializationContext.CreateRawObject
+  fullName: Solti.Utils.Json.DeserializationContext.CreateRawObject
+  nameWithType: DeserializationContext.CreateRawObject
+- uid: Solti.Utils.Json.DeserializationContext.CreateRawObject*
+  name: CreateRawObject
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CreateRawObject_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.CreateRawObject
+  fullName: Solti.Utils.Json.DeserializationContext.CreateRawObject
+  nameWithType: DeserializationContext.CreateRawObject
+- uid: Solti.Utils.Json.DeserializationContext.Equals(Solti.Utils.Json.DeserializationContext)
+  name: Equals(DeserializationContext)
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Equals_Solti_Utils_Json_DeserializationContext_
+  commentId: M:Solti.Utils.Json.DeserializationContext.Equals(Solti.Utils.Json.DeserializationContext)
+  fullName: Solti.Utils.Json.DeserializationContext.Equals(Solti.Utils.Json.DeserializationContext)
+  nameWithType: DeserializationContext.Equals(DeserializationContext)
+- uid: Solti.Utils.Json.DeserializationContext.Equals(System.Object)
+  name: Equals(Object)
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Equals_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.Equals(System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.Equals(System.Object)
+  nameWithType: DeserializationContext.Equals(Object)
+- uid: Solti.Utils.Json.DeserializationContext.Equals*
+  name: Equals
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Equals_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.Equals
+  fullName: Solti.Utils.Json.DeserializationContext.Equals
+  nameWithType: DeserializationContext.Equals
+- uid: Solti.Utils.Json.DeserializationContext.GetHashCode
+  name: GetHashCode()
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetHashCode
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetHashCode
+  fullName: Solti.Utils.Json.DeserializationContext.GetHashCode()
+  nameWithType: DeserializationContext.GetHashCode()
+- uid: Solti.Utils.Json.DeserializationContext.GetHashCode*
+  name: GetHashCode
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetHashCode_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetHashCode
+  fullName: Solti.Utils.Json.DeserializationContext.GetHashCode
+  nameWithType: DeserializationContext.GetHashCode
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContext
+  name: GetListItemContext
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetListItemContext
+  commentId: P:Solti.Utils.Json.DeserializationContext.GetListItemContext
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContext
+  nameWithType: DeserializationContext.GetListItemContext
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContext*
+  name: GetListItemContext
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetListItemContext_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetListItemContext
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContext
+  nameWithType: DeserializationContext.GetListItemContext
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate
+  name: DeserializationContext.GetListItemContextDelegate
+  href: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate
+  nameWithType: DeserializationContext.GetListItemContextDelegate
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.#ctor(System.Object,System.IntPtr)
+  name: GetListItemContextDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.GetListItemContextDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.GetListItemContextDelegate.GetListItemContextDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.#ctor*
+  name: GetListItemContextDelegate
+  href: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.GetListItemContextDelegate
+  nameWithType: DeserializationContext.GetListItemContextDelegate.GetListItemContextDelegate
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.BeginInvoke(System.Int32,System.AsyncCallback,System.Object)
+  name: BeginInvoke(Int32, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_BeginInvoke_System_Int32_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.BeginInvoke(System.Int32,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.BeginInvoke(System.Int32, System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.GetListItemContextDelegate.BeginInvoke(Int32, AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.BeginInvoke
+  nameWithType: DeserializationContext.GetListItemContextDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.GetListItemContextDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.EndInvoke
+  nameWithType: DeserializationContext.GetListItemContextDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.Invoke(System.Int32)
+  name: Invoke(Int32)
+  href: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_Invoke_System_Int32_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.Invoke(System.Int32)
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.Invoke(System.Int32)
+  nameWithType: DeserializationContext.GetListItemContextDelegate.Invoke(Int32)
+- uid: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.Invoke
+  nameWithType: DeserializationContext.GetListItemContextDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContext
+  name: GetPropertyContext
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetPropertyContext
+  commentId: P:Solti.Utils.Json.DeserializationContext.GetPropertyContext
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContext
+  nameWithType: DeserializationContext.GetPropertyContext
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContext*
+  name: GetPropertyContext
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetPropertyContext_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContext
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContext
+  nameWithType: DeserializationContext.GetPropertyContext
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate
+  name: DeserializationContext.GetPropertyContextDelegate
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate
+  nameWithType: DeserializationContext.GetPropertyContextDelegate
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.#ctor(System.Object,System.IntPtr)
+  name: GetPropertyContextDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.GetPropertyContextDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.GetPropertyContextDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.#ctor*
+  name: GetPropertyContextDelegate
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.GetPropertyContextDelegate
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.GetPropertyContextDelegate
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.StringComparison,System.AsyncCallback,System.Object)
+  name: BeginInvoke(ReadOnlySpan<Char>, StringComparison, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_StringComparison_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.StringComparison,System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(ReadOnlySpan(Of Char), StringComparison, AsyncCallback, Object)
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan<System.Char>, System.StringComparison, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan(Of System.Char), System.StringComparison, System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.BeginInvoke(ReadOnlySpan<Char>, StringComparison, AsyncCallback, Object)
+  nameWithType.vb: DeserializationContext.GetPropertyContextDelegate.BeginInvoke(ReadOnlySpan(Of Char), StringComparison, AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.EndInvoke
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan{System.Char},System.StringComparison)
+  name: Invoke(ReadOnlySpan<Char>, StringComparison)
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_Invoke_System_ReadOnlySpan_System_Char__System_StringComparison_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan{System.Char},System.StringComparison)
+  name.vb: Invoke(ReadOnlySpan(Of Char), StringComparison)
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan<System.Char>, System.StringComparison)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan(Of System.Char), System.StringComparison)
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.Invoke(ReadOnlySpan<Char>, StringComparison)
+  nameWithType.vb: DeserializationContext.GetPropertyContextDelegate.Invoke(ReadOnlySpan(Of Char), StringComparison)
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.op_Equality(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.DeserializationContext)
+  name: Equality(DeserializationContext, DeserializationContext)
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_op_Equality_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_DeserializationContext_
+  commentId: M:Solti.Utils.Json.DeserializationContext.op_Equality(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.DeserializationContext)
+  fullName: Solti.Utils.Json.DeserializationContext.Equality(Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.DeserializationContext)
+  nameWithType: DeserializationContext.Equality(DeserializationContext, DeserializationContext)
+- uid: Solti.Utils.Json.DeserializationContext.op_Equality*
+  name: Equality
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_op_Equality_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.op_Equality
+  fullName: Solti.Utils.Json.DeserializationContext.Equality
+  nameWithType: DeserializationContext.Equality
+- uid: Solti.Utils.Json.DeserializationContext.op_Inequality(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.DeserializationContext)
+  name: Inequality(DeserializationContext, DeserializationContext)
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_op_Inequality_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_DeserializationContext_
+  commentId: M:Solti.Utils.Json.DeserializationContext.op_Inequality(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.DeserializationContext)
+  fullName: Solti.Utils.Json.DeserializationContext.Inequality(Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.DeserializationContext)
+  nameWithType: DeserializationContext.Inequality(DeserializationContext, DeserializationContext)
+- uid: Solti.Utils.Json.DeserializationContext.op_Inequality*
+  name: Inequality
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_op_Inequality_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.op_Inequality
+  fullName: Solti.Utils.Json.DeserializationContext.Inequality
+  nameWithType: DeserializationContext.Inequality
+- uid: Solti.Utils.Json.DeserializationContext.Push
+  name: Push
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Push
+  commentId: P:Solti.Utils.Json.DeserializationContext.Push
+  fullName: Solti.Utils.Json.DeserializationContext.Push
+  nameWithType: DeserializationContext.Push
+- uid: Solti.Utils.Json.DeserializationContext.Push*
+  name: Push
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Push_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.Push
+  fullName: Solti.Utils.Json.DeserializationContext.Push
+  nameWithType: DeserializationContext.Push
+- uid: Solti.Utils.Json.DeserializationContext.PushDelegate
+  name: DeserializationContext.PushDelegate
+  href: Solti.Utils.Json.DeserializationContext.PushDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.PushDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.PushDelegate
+  nameWithType: DeserializationContext.PushDelegate
+- uid: Solti.Utils.Json.DeserializationContext.PushDelegate.#ctor(System.Object,System.IntPtr)
+  name: PushDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.PushDelegate.html#Solti_Utils_Json_DeserializationContext_PushDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.PushDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.PushDelegate.PushDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.PushDelegate.PushDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.PushDelegate.#ctor*
+  name: PushDelegate
+  href: Solti.Utils.Json.DeserializationContext.PushDelegate.html#Solti_Utils_Json_DeserializationContext_PushDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.PushDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.PushDelegate.PushDelegate
+  nameWithType: DeserializationContext.PushDelegate.PushDelegate
+- uid: Solti.Utils.Json.DeserializationContext.PushDelegate.BeginInvoke(System.Object,System.Object,System.AsyncCallback,System.Object)
+  name: BeginInvoke(Object, Object, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.PushDelegate.html#Solti_Utils_Json_DeserializationContext_PushDelegate_BeginInvoke_System_Object_System_Object_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.PushDelegate.BeginInvoke(System.Object,System.Object,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.PushDelegate.BeginInvoke(System.Object, System.Object, System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.PushDelegate.BeginInvoke(Object, Object, AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.PushDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.PushDelegate.html#Solti_Utils_Json_DeserializationContext_PushDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.PushDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.PushDelegate.BeginInvoke
+  nameWithType: DeserializationContext.PushDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.PushDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.PushDelegate.html#Solti_Utils_Json_DeserializationContext_PushDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.PushDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.PushDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.PushDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.PushDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.PushDelegate.html#Solti_Utils_Json_DeserializationContext_PushDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.PushDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.PushDelegate.EndInvoke
+  nameWithType: DeserializationContext.PushDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.PushDelegate.Invoke(System.Object,System.Object)
+  name: Invoke(Object, Object)
+  href: Solti.Utils.Json.DeserializationContext.PushDelegate.html#Solti_Utils_Json_DeserializationContext_PushDelegate_Invoke_System_Object_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.PushDelegate.Invoke(System.Object,System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.PushDelegate.Invoke(System.Object, System.Object)
+  nameWithType: DeserializationContext.PushDelegate.Invoke(Object, Object)
+- uid: Solti.Utils.Json.DeserializationContext.PushDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.PushDelegate.html#Solti_Utils_Json_DeserializationContext_PushDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.PushDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.PushDelegate.Invoke
+  nameWithType: DeserializationContext.PushDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate
+  name: DeserializationContext.RawObjectFavtoryDelegate
+  href: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate
+  nameWithType: DeserializationContext.RawObjectFavtoryDelegate
+- uid: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.#ctor(System.Object,System.IntPtr)
+  name: RawObjectFavtoryDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.html#Solti_Utils_Json_DeserializationContext_RawObjectFavtoryDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.RawObjectFavtoryDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.RawObjectFavtoryDelegate.RawObjectFavtoryDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.#ctor*
+  name: RawObjectFavtoryDelegate
+  href: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.html#Solti_Utils_Json_DeserializationContext_RawObjectFavtoryDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.RawObjectFavtoryDelegate
+  nameWithType: DeserializationContext.RawObjectFavtoryDelegate.RawObjectFavtoryDelegate
+- uid: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.BeginInvoke(System.AsyncCallback,System.Object)
+  name: BeginInvoke(AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.html#Solti_Utils_Json_DeserializationContext_RawObjectFavtoryDelegate_BeginInvoke_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.BeginInvoke(System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.BeginInvoke(System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.RawObjectFavtoryDelegate.BeginInvoke(AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.html#Solti_Utils_Json_DeserializationContext_RawObjectFavtoryDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.BeginInvoke
+  nameWithType: DeserializationContext.RawObjectFavtoryDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.html#Solti_Utils_Json_DeserializationContext_RawObjectFavtoryDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.RawObjectFavtoryDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.html#Solti_Utils_Json_DeserializationContext_RawObjectFavtoryDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.EndInvoke
+  nameWithType: DeserializationContext.RawObjectFavtoryDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.Invoke
+  name: Invoke()
+  href: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.html#Solti_Utils_Json_DeserializationContext_RawObjectFavtoryDelegate_Invoke
+  commentId: M:Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.Invoke()
+  nameWithType: DeserializationContext.RawObjectFavtoryDelegate.Invoke()
+- uid: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.html#Solti_Utils_Json_DeserializationContext_RawObjectFavtoryDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.RawObjectFavtoryDelegate.Invoke
+  nameWithType: DeserializationContext.RawObjectFavtoryDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.SupportedTypes
+  name: SupportedTypes
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_SupportedTypes
+  commentId: P:Solti.Utils.Json.DeserializationContext.SupportedTypes
+  fullName: Solti.Utils.Json.DeserializationContext.SupportedTypes
+  nameWithType: DeserializationContext.SupportedTypes
+- uid: Solti.Utils.Json.DeserializationContext.SupportedTypes*
+  name: SupportedTypes
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_SupportedTypes_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.SupportedTypes
+  fullName: Solti.Utils.Json.DeserializationContext.SupportedTypes
+  nameWithType: DeserializationContext.SupportedTypes
+- uid: Solti.Utils.Json.DeserializationContext.ToString
+  name: ToString()
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ToString
+  commentId: M:Solti.Utils.Json.DeserializationContext.ToString
+  fullName: Solti.Utils.Json.DeserializationContext.ToString()
+  nameWithType: DeserializationContext.ToString()
+- uid: Solti.Utils.Json.DeserializationContext.ToString*
+  name: ToString
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ToString_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ToString
+  fullName: Solti.Utils.Json.DeserializationContext.ToString
+  nameWithType: DeserializationContext.ToString
+- uid: Solti.Utils.Json.DeserializationContext.Verify
+  name: Verify
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Verify
+  commentId: P:Solti.Utils.Json.DeserializationContext.Verify
+  fullName: Solti.Utils.Json.DeserializationContext.Verify
+  nameWithType: DeserializationContext.Verify
+- uid: Solti.Utils.Json.DeserializationContext.Verify*
+  name: Verify
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Verify_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.Verify
+  fullName: Solti.Utils.Json.DeserializationContext.Verify
+  nameWithType: DeserializationContext.Verify
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate
+  name: DeserializationContext.VerifyDelegate
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.VerifyDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate
+  nameWithType: DeserializationContext.VerifyDelegate
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.#ctor(System.Object,System.IntPtr)
+  name: VerifyDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.VerifyDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.VerifyDelegate.VerifyDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.#ctor*
+  name: VerifyDelegate
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.VerifyDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.VerifyDelegate
+  nameWithType: DeserializationContext.VerifyDelegate.VerifyDelegate
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
+  name: BeginInvoke(Object, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_BeginInvoke_System_Object_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object, System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.VerifyDelegate.BeginInvoke(Object, AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke
+  nameWithType: DeserializationContext.VerifyDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.VerifyDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke
+  nameWithType: DeserializationContext.VerifyDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object)
+  name: Invoke(Object)
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_Invoke_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object)
+  nameWithType: DeserializationContext.VerifyDelegate.Invoke(Object)
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke
+  nameWithType: DeserializationContext.VerifyDelegate.Invoke
+- uid: Solti.Utils.Json.ITextReader
+  name: ITextReader
+  href: Solti.Utils.Json.ITextReader.html
+  commentId: T:Solti.Utils.Json.ITextReader
+  fullName: Solti.Utils.Json.ITextReader
+  nameWithType: ITextReader
+- uid: Solti.Utils.Json.ITextReader.Advance(System.Int32)
+  name: Advance(Int32)
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_Advance_System_Int32_
+  commentId: M:Solti.Utils.Json.ITextReader.Advance(System.Int32)
+  fullName: Solti.Utils.Json.ITextReader.Advance(System.Int32)
+  nameWithType: ITextReader.Advance(Int32)
+- uid: Solti.Utils.Json.ITextReader.Advance*
+  name: Advance
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_Advance_
+  commentId: Overload:Solti.Utils.Json.ITextReader.Advance
+  fullName: Solti.Utils.Json.ITextReader.Advance
+  nameWithType: ITextReader.Advance
+- uid: Solti.Utils.Json.ITextReader.CharsLeft
+  name: CharsLeft
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_CharsLeft
+  commentId: P:Solti.Utils.Json.ITextReader.CharsLeft
+  fullName: Solti.Utils.Json.ITextReader.CharsLeft
+  nameWithType: ITextReader.CharsLeft
+- uid: Solti.Utils.Json.ITextReader.CharsLeft*
+  name: CharsLeft
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_CharsLeft_
+  commentId: Overload:Solti.Utils.Json.ITextReader.CharsLeft
+  fullName: Solti.Utils.Json.ITextReader.CharsLeft
+  nameWithType: ITextReader.CharsLeft
+- uid: Solti.Utils.Json.ITextReader.PeekChar(System.Char@)
+  name: PeekChar(out Char)
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_PeekChar_System_Char__
+  commentId: M:Solti.Utils.Json.ITextReader.PeekChar(System.Char@)
+  name.vb: PeekChar(ByRef Char)
+  fullName: Solti.Utils.Json.ITextReader.PeekChar(out System.Char)
+  fullName.vb: Solti.Utils.Json.ITextReader.PeekChar(ByRef System.Char)
+  nameWithType: ITextReader.PeekChar(out Char)
+  nameWithType.vb: ITextReader.PeekChar(ByRef Char)
+- uid: Solti.Utils.Json.ITextReader.PeekChar*
+  name: PeekChar
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_PeekChar_
+  commentId: Overload:Solti.Utils.Json.ITextReader.PeekChar
+  fullName: Solti.Utils.Json.ITextReader.PeekChar
+  nameWithType: ITextReader.PeekChar
+- uid: Solti.Utils.Json.ITextReader.PeekText(System.Span{System.Char})
+  name: PeekText(Span<Char>)
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_PeekText_System_Span_System_Char__
+  commentId: M:Solti.Utils.Json.ITextReader.PeekText(System.Span{System.Char})
+  name.vb: PeekText(Span(Of Char))
+  fullName: Solti.Utils.Json.ITextReader.PeekText(System.Span<System.Char>)
+  fullName.vb: Solti.Utils.Json.ITextReader.PeekText(System.Span(Of System.Char))
+  nameWithType: ITextReader.PeekText(Span<Char>)
+  nameWithType.vb: ITextReader.PeekText(Span(Of Char))
+- uid: Solti.Utils.Json.ITextReader.PeekText*
+  name: PeekText
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_PeekText_
+  commentId: Overload:Solti.Utils.Json.ITextReader.PeekText
+  fullName: Solti.Utils.Json.ITextReader.PeekText
+  nameWithType: ITextReader.PeekText
+- uid: Solti.Utils.Json.ITextReader.Reset
+  name: Reset()
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_Reset
+  commentId: M:Solti.Utils.Json.ITextReader.Reset
+  fullName: Solti.Utils.Json.ITextReader.Reset()
+  nameWithType: ITextReader.Reset()
+- uid: Solti.Utils.Json.ITextReader.Reset*
+  name: Reset
+  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_Reset_
+  commentId: Overload:Solti.Utils.Json.ITextReader.Reset
+  fullName: Solti.Utils.Json.ITextReader.Reset
+  nameWithType: ITextReader.Reset
+- uid: Solti.Utils.Json.JsonDataTypes
+  name: JsonDataTypes
+  href: Solti.Utils.Json.JsonDataTypes.html
+  commentId: T:Solti.Utils.Json.JsonDataTypes
+  fullName: Solti.Utils.Json.JsonDataTypes
+  nameWithType: JsonDataTypes
+- uid: Solti.Utils.Json.JsonDataTypes.Boolean
+  name: Boolean
+  href: Solti.Utils.Json.JsonDataTypes.html#Solti_Utils_Json_JsonDataTypes_Boolean
+  commentId: F:Solti.Utils.Json.JsonDataTypes.Boolean
+  fullName: Solti.Utils.Json.JsonDataTypes.Boolean
+  nameWithType: JsonDataTypes.Boolean
+- uid: Solti.Utils.Json.JsonDataTypes.List
+  name: List
+  href: Solti.Utils.Json.JsonDataTypes.html#Solti_Utils_Json_JsonDataTypes_List
+  commentId: F:Solti.Utils.Json.JsonDataTypes.List
+  fullName: Solti.Utils.Json.JsonDataTypes.List
+  nameWithType: JsonDataTypes.List
+- uid: Solti.Utils.Json.JsonDataTypes.None
+  name: None
+  href: Solti.Utils.Json.JsonDataTypes.html#Solti_Utils_Json_JsonDataTypes_None
+  commentId: F:Solti.Utils.Json.JsonDataTypes.None
+  fullName: Solti.Utils.Json.JsonDataTypes.None
+  nameWithType: JsonDataTypes.None
+- uid: Solti.Utils.Json.JsonDataTypes.Null
+  name: "Null"
+  href: Solti.Utils.Json.JsonDataTypes.html#Solti_Utils_Json_JsonDataTypes_Null
+  commentId: F:Solti.Utils.Json.JsonDataTypes.Null
+  fullName: Solti.Utils.Json.JsonDataTypes.Null
+  nameWithType: JsonDataTypes.Null
+- uid: Solti.Utils.Json.JsonDataTypes.Number
+  name: Number
+  href: Solti.Utils.Json.JsonDataTypes.html#Solti_Utils_Json_JsonDataTypes_Number
+  commentId: F:Solti.Utils.Json.JsonDataTypes.Number
+  fullName: Solti.Utils.Json.JsonDataTypes.Number
+  nameWithType: JsonDataTypes.Number
+- uid: Solti.Utils.Json.JsonDataTypes.Object
+  name: Object
+  href: Solti.Utils.Json.JsonDataTypes.html#Solti_Utils_Json_JsonDataTypes_Object
+  commentId: F:Solti.Utils.Json.JsonDataTypes.Object
+  fullName: Solti.Utils.Json.JsonDataTypes.Object
+  nameWithType: JsonDataTypes.Object
+- uid: Solti.Utils.Json.JsonDataTypes.String
+  name: String
+  href: Solti.Utils.Json.JsonDataTypes.html#Solti_Utils_Json_JsonDataTypes_String
+  commentId: F:Solti.Utils.Json.JsonDataTypes.String
+  fullName: Solti.Utils.Json.JsonDataTypes.String
+  nameWithType: JsonDataTypes.String
+- uid: Solti.Utils.Json.JsonDataTypes.value__
+  name: value__
+  href: Solti.Utils.Json.JsonDataTypes.html#Solti_Utils_Json_JsonDataTypes_value__
+  commentId: F:Solti.Utils.Json.JsonDataTypes.value__
+  fullName: Solti.Utils.Json.JsonDataTypes.value__
+  nameWithType: JsonDataTypes.value__
+- uid: Solti.Utils.Json.JsonReader
+  name: JsonReader
+  href: Solti.Utils.Json.JsonReader.html
+  commentId: T:Solti.Utils.Json.JsonReader
+  fullName: Solti.Utils.Json.JsonReader
+  nameWithType: JsonReader
+- uid: Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.ITextReader,Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
+  name: JsonReader(ITextReader, DeserializationContext, JsonReaderFlags, Int32)
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_Solti_Utils_Json_ITextReader_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_JsonReaderFlags_System_Int32_
+  commentId: M:Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.ITextReader,Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
+  fullName: Solti.Utils.Json.JsonReader.JsonReader(Solti.Utils.Json.ITextReader, Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.JsonReaderFlags, System.Int32)
+  nameWithType: JsonReader.JsonReader(ITextReader, DeserializationContext, JsonReaderFlags, Int32)
+- uid: Solti.Utils.Json.JsonReader.#ctor*
+  name: JsonReader
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_
+  commentId: Overload:Solti.Utils.Json.JsonReader.#ctor
+  fullName: Solti.Utils.Json.JsonReader.JsonReader
+  nameWithType: JsonReader.JsonReader
+- uid: Solti.Utils.Json.JsonReader.Column
+  name: Column
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Column
+  commentId: P:Solti.Utils.Json.JsonReader.Column
+  fullName: Solti.Utils.Json.JsonReader.Column
+  nameWithType: JsonReader.Column
+- uid: Solti.Utils.Json.JsonReader.Column*
+  name: Column
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Column_
+  commentId: Overload:Solti.Utils.Json.JsonReader.Column
+  fullName: Solti.Utils.Json.JsonReader.Column
+  nameWithType: JsonReader.Column
+- uid: Solti.Utils.Json.JsonReader.Parse(System.Threading.CancellationToken@)
+  name: Parse(in CancellationToken)
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Parse_System_Threading_CancellationToken__
+  commentId: M:Solti.Utils.Json.JsonReader.Parse(System.Threading.CancellationToken@)
+  name.vb: Parse(ByRef CancellationToken)
+  fullName: Solti.Utils.Json.JsonReader.Parse(in System.Threading.CancellationToken)
+  fullName.vb: Solti.Utils.Json.JsonReader.Parse(ByRef System.Threading.CancellationToken)
+  nameWithType: JsonReader.Parse(in CancellationToken)
+  nameWithType.vb: JsonReader.Parse(ByRef CancellationToken)
+- uid: Solti.Utils.Json.JsonReader.Parse*
+  name: Parse
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Parse_
+  commentId: Overload:Solti.Utils.Json.JsonReader.Parse
+  fullName: Solti.Utils.Json.JsonReader.Parse
+  nameWithType: JsonReader.Parse
+- uid: Solti.Utils.Json.JsonReader.Row
+  name: Row
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Row
+  commentId: P:Solti.Utils.Json.JsonReader.Row
+  fullName: Solti.Utils.Json.JsonReader.Row
+  nameWithType: JsonReader.Row
+- uid: Solti.Utils.Json.JsonReader.Row*
+  name: Row
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Row_
+  commentId: Overload:Solti.Utils.Json.JsonReader.Row
+  fullName: Solti.Utils.Json.JsonReader.Row
+  nameWithType: JsonReader.Row
+- uid: Solti.Utils.Json.JsonReaderFlags
+  name: JsonReaderFlags
+  href: Solti.Utils.Json.JsonReaderFlags.html
+  commentId: T:Solti.Utils.Json.JsonReaderFlags
+  fullName: Solti.Utils.Json.JsonReaderFlags
+  nameWithType: JsonReaderFlags
+- uid: Solti.Utils.Json.JsonReaderFlags.AllowComments
+  name: AllowComments
+  href: Solti.Utils.Json.JsonReaderFlags.html#Solti_Utils_Json_JsonReaderFlags_AllowComments
+  commentId: F:Solti.Utils.Json.JsonReaderFlags.AllowComments
+  fullName: Solti.Utils.Json.JsonReaderFlags.AllowComments
+  nameWithType: JsonReaderFlags.AllowComments
+- uid: Solti.Utils.Json.JsonReaderFlags.AllowSingleQuotedStrings
+  name: AllowSingleQuotedStrings
+  href: Solti.Utils.Json.JsonReaderFlags.html#Solti_Utils_Json_JsonReaderFlags_AllowSingleQuotedStrings
+  commentId: F:Solti.Utils.Json.JsonReaderFlags.AllowSingleQuotedStrings
+  fullName: Solti.Utils.Json.JsonReaderFlags.AllowSingleQuotedStrings
+  nameWithType: JsonReaderFlags.AllowSingleQuotedStrings
+- uid: Solti.Utils.Json.JsonReaderFlags.AllowTrailingComma
+  name: AllowTrailingComma
+  href: Solti.Utils.Json.JsonReaderFlags.html#Solti_Utils_Json_JsonReaderFlags_AllowTrailingComma
+  commentId: F:Solti.Utils.Json.JsonReaderFlags.AllowTrailingComma
+  fullName: Solti.Utils.Json.JsonReaderFlags.AllowTrailingComma
+  nameWithType: JsonReaderFlags.AllowTrailingComma
+- uid: Solti.Utils.Json.JsonReaderFlags.CaseInsensitive
+  name: CaseInsensitive
+  href: Solti.Utils.Json.JsonReaderFlags.html#Solti_Utils_Json_JsonReaderFlags_CaseInsensitive
+  commentId: F:Solti.Utils.Json.JsonReaderFlags.CaseInsensitive
+  fullName: Solti.Utils.Json.JsonReaderFlags.CaseInsensitive
+  nameWithType: JsonReaderFlags.CaseInsensitive
+- uid: Solti.Utils.Json.JsonReaderFlags.None
+  name: None
+  href: Solti.Utils.Json.JsonReaderFlags.html#Solti_Utils_Json_JsonReaderFlags_None
+  commentId: F:Solti.Utils.Json.JsonReaderFlags.None
+  fullName: Solti.Utils.Json.JsonReaderFlags.None
+  nameWithType: JsonReaderFlags.None
+- uid: Solti.Utils.Json.JsonReaderFlags.value__
+  name: value__
+  href: Solti.Utils.Json.JsonReaderFlags.html#Solti_Utils_Json_JsonReaderFlags_value__
+  commentId: F:Solti.Utils.Json.JsonReaderFlags.value__
+  fullName: Solti.Utils.Json.JsonReaderFlags.value__
+  nameWithType: JsonReaderFlags.value__
+- uid: Solti.Utils.Json.StringReader
+  name: StringReader
+  href: Solti.Utils.Json.StringReader.html
+  commentId: T:Solti.Utils.Json.StringReader
+  fullName: Solti.Utils.Json.StringReader
+  nameWithType: StringReader
+- uid: Solti.Utils.Json.StringReader.#ctor(System.String)
+  name: StringReader(String)
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader__ctor_System_String_
+  commentId: M:Solti.Utils.Json.StringReader.#ctor(System.String)
+  fullName: Solti.Utils.Json.StringReader.StringReader(System.String)
+  nameWithType: StringReader.StringReader(String)
+- uid: Solti.Utils.Json.StringReader.#ctor*
+  name: StringReader
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader__ctor_
+  commentId: Overload:Solti.Utils.Json.StringReader.#ctor
+  fullName: Solti.Utils.Json.StringReader.StringReader
+  nameWithType: StringReader.StringReader
+- uid: Solti.Utils.Json.StringReader.Advance(System.Int32)
+  name: Advance(Int32)
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_Advance_System_Int32_
+  commentId: M:Solti.Utils.Json.StringReader.Advance(System.Int32)
+  fullName: Solti.Utils.Json.StringReader.Advance(System.Int32)
+  nameWithType: StringReader.Advance(Int32)
+- uid: Solti.Utils.Json.StringReader.Advance*
+  name: Advance
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_Advance_
+  commentId: Overload:Solti.Utils.Json.StringReader.Advance
+  fullName: Solti.Utils.Json.StringReader.Advance
+  nameWithType: StringReader.Advance
+- uid: Solti.Utils.Json.StringReader.CharsLeft
+  name: CharsLeft
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_CharsLeft
+  commentId: P:Solti.Utils.Json.StringReader.CharsLeft
+  fullName: Solti.Utils.Json.StringReader.CharsLeft
+  nameWithType: StringReader.CharsLeft
+- uid: Solti.Utils.Json.StringReader.CharsLeft*
+  name: CharsLeft
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_CharsLeft_
+  commentId: Overload:Solti.Utils.Json.StringReader.CharsLeft
+  fullName: Solti.Utils.Json.StringReader.CharsLeft
+  nameWithType: StringReader.CharsLeft
+- uid: Solti.Utils.Json.StringReader.PeekChar(System.Char@)
+  name: PeekChar(out Char)
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_PeekChar_System_Char__
+  commentId: M:Solti.Utils.Json.StringReader.PeekChar(System.Char@)
+  name.vb: PeekChar(ByRef Char)
+  fullName: Solti.Utils.Json.StringReader.PeekChar(out System.Char)
+  fullName.vb: Solti.Utils.Json.StringReader.PeekChar(ByRef System.Char)
+  nameWithType: StringReader.PeekChar(out Char)
+  nameWithType.vb: StringReader.PeekChar(ByRef Char)
+- uid: Solti.Utils.Json.StringReader.PeekChar*
+  name: PeekChar
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_PeekChar_
+  commentId: Overload:Solti.Utils.Json.StringReader.PeekChar
+  fullName: Solti.Utils.Json.StringReader.PeekChar
+  nameWithType: StringReader.PeekChar
+- uid: Solti.Utils.Json.StringReader.PeekText(System.Span{System.Char})
+  name: PeekText(Span<Char>)
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_PeekText_System_Span_System_Char__
+  commentId: M:Solti.Utils.Json.StringReader.PeekText(System.Span{System.Char})
+  name.vb: PeekText(Span(Of Char))
+  fullName: Solti.Utils.Json.StringReader.PeekText(System.Span<System.Char>)
+  fullName.vb: Solti.Utils.Json.StringReader.PeekText(System.Span(Of System.Char))
+  nameWithType: StringReader.PeekText(Span<Char>)
+  nameWithType.vb: StringReader.PeekText(Span(Of Char))
+- uid: Solti.Utils.Json.StringReader.PeekText*
+  name: PeekText
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_PeekText_
+  commentId: Overload:Solti.Utils.Json.StringReader.PeekText
+  fullName: Solti.Utils.Json.StringReader.PeekText
+  nameWithType: StringReader.PeekText
+- uid: Solti.Utils.Json.StringReader.Reset
+  name: Reset()
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_Reset
+  commentId: M:Solti.Utils.Json.StringReader.Reset
+  fullName: Solti.Utils.Json.StringReader.Reset()
+  nameWithType: StringReader.Reset()
+- uid: Solti.Utils.Json.StringReader.Reset*
+  name: Reset
+  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_Reset_
+  commentId: Overload:Solti.Utils.Json.StringReader.Reset
+  fullName: Solti.Utils.Json.StringReader.Reset
+  nameWithType: StringReader.Reset
+- uid: Solti.Utils.Json.UntypedDeserializationContext
+  name: UntypedDeserializationContext
+  href: Solti.Utils.Json.UntypedDeserializationContext.html
+  commentId: T:Solti.Utils.Json.UntypedDeserializationContext
+  fullName: Solti.Utils.Json.UntypedDeserializationContext
+  nameWithType: UntypedDeserializationContext
+- uid: Solti.Utils.Json.UntypedDeserializationContext.Instance
+  name: Instance
+  href: Solti.Utils.Json.UntypedDeserializationContext.html#Solti_Utils_Json_UntypedDeserializationContext_Instance
+  commentId: P:Solti.Utils.Json.UntypedDeserializationContext.Instance
+  fullName: Solti.Utils.Json.UntypedDeserializationContext.Instance
+  nameWithType: UntypedDeserializationContext.Instance
+- uid: Solti.Utils.Json.UntypedDeserializationContext.Instance*
+  name: Instance
+  href: Solti.Utils.Json.UntypedDeserializationContext.html#Solti_Utils_Json_UntypedDeserializationContext_Instance_
+  commentId: Overload:Solti.Utils.Json.UntypedDeserializationContext.Instance
+  fullName: Solti.Utils.Json.UntypedDeserializationContext.Instance
+  nameWithType: UntypedDeserializationContext.Instance
