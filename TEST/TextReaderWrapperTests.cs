@@ -16,7 +16,7 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void PeekText_ShouldThrowOnInvalidIndex()
         {
-            TextReaderWrapper textReader = new(new System.IO.StringReader("cica"));
+            using TextReaderWrapper textReader = new(new System.IO.StringReader("cica"));
             Assert.Throws<ArgumentOutOfRangeException>(() => textReader.PeekText(-1));
         }
 
@@ -30,7 +30,7 @@ namespace Solti.Utils.Json.Internals.Tests
                 .Setup(r => r.Read(It.IsAny<char[]>(), 0, charsToRead))
                 .CallBase();
 
-            TextReaderWrapper textReader = new(mockRdr.Object);
+            using TextReaderWrapper textReader = new(mockRdr.Object);
 
             string ret = textReader.PeekText(charsToRead).AsString();
 
@@ -50,7 +50,7 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void PeekText_ShouldPreserveTheState()
         {
-            TextReaderWrapper textReader = new(new System.IO.StringReader("cica"));
+            using TextReaderWrapper textReader = new(new System.IO.StringReader("cica"));
 
             textReader.PeekText(1)[0] = 'm';
 
@@ -60,7 +60,7 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void PeekText_ShouldEnlargeTheUnderlyingBuffer()
         {
-            TextReaderWrapper textReader = new(new System.IO.StringReader("cicamica"), 2);
+            using TextReaderWrapper textReader = new(new System.IO.StringReader("cicamica"), 2);
 
             Assert.That(textReader.BufferSize, Is.EqualTo(2));
             Assert.That(textReader.FreeSpace, Is.EqualTo(2));
@@ -82,7 +82,7 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void PeekText_ShouldOptimizeTheBuffer()
         {
-            TextReaderWrapper textReader = new(new System.IO.StringReader("cicamica"), 4);
+            using TextReaderWrapper textReader = new(new System.IO.StringReader("cicamica"), 4);
 
             Assert.That(textReader.BufferSize, Is.EqualTo(4));
             Assert.That(textReader.FreeSpace, Is.EqualTo(4));
@@ -105,7 +105,9 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void Advance_ShouldThrowOnInvalidIndex()
         {
-            TextReaderWrapper textReader = new(new System.IO.StringReader("cicamica"));
+            string input = "cicamica";
+
+            using TextReaderWrapper textReader = new(new System.IO.StringReader(input));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => textReader.Advance(-1));
 
@@ -114,11 +116,22 @@ namespace Solti.Utils.Json.Internals.Tests
         }
 
         [Test]
-        public void PeekChar_ShouldReturnTheFirstChar()
+        public void Advance_ShouldThrowOnInvalidIndex2()
+        {
+            string input = "cicamica";
+
+            using TextReaderWrapper textReader = new(new System.IO.StringReader(input));
+
+            Assert.DoesNotThrow(() => textReader.Advance(input.Length));
+            Assert.Throws<ArgumentOutOfRangeException>(() => textReader.Advance(1));
+        }
+
+        [Test]
+        public void PeekChar_ShouldReturnTheFirstChar([Values(0, 1, 2, 5, 10)] int initialBufferSize)
         {
             const string input = "cica";
 
-            TextReaderWrapper textReader = new(new System.IO.StringReader(input));
+            using TextReaderWrapper textReader = new(new System.IO.StringReader(input), initialBufferSize);
 
             for (int i = 0; i < input.Length; i++)
             {

@@ -12,7 +12,7 @@ using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.Json.Internals
 {
-    internal sealed class TextReaderWrapper(TextReader textReader, int initialBufferSize = 256 /*for testing*/) : IDisposable
+    internal sealed class TextReaderWrapper(TextReader textReader, int initialBufferSize = -1 /*for testing*/) : IDisposable
     {
         private char[] FBuffer = MemoryPool<char>.Get(initialBufferSize);
 
@@ -40,7 +40,7 @@ namespace Solti.Utils.Json.Internals
             int charsToBeRead = len - CharsLeft;
 
             //
-            // Check if we can free up space without resizing the buffer
+            // Try free up enough space to store the new chunk
             //
 
             if (CharsLeft > 0)
@@ -54,19 +54,18 @@ namespace Solti.Utils.Json.Internals
                 FCharsRead = FPosition = 0;
             }
 
+            //
+            // If we don't have enough free space, resize the buffer
+            //
+
             if (FreeSpace < charsToBeRead)
             {
                 Assert(len > BufferSize, "Cannot downsize the buffer");
-
-                //
-                // Resize the buffer
-                //
-
                 Resize(ref FBuffer, len);
             }
 
             //
-            // Read the new chunk to the buffer.
+            // Read the new chunk into the free space.
             //
 
             int startIndex = FPosition + CharsLeft;

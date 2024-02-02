@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Collections.Concurrent;
 
 namespace Solti.Utils.Json.Internals
@@ -16,16 +15,14 @@ namespace Solti.Utils.Json.Internals
 
         private static readonly ConcurrentStack<T[]> FPool = [];
 
-        public static T[] Get(int length)
+        public static T[] Get(int length = -1)
         {
-            if (FPool.TryPop(out T[] result))
-            {
-                if (result.Length < length)
-                    Array.Resize(ref result, length);
-            }
-            else result = new T[length];
+            if (length > -1)
+                return new T[length];
 
-            return result;
+            return FPool.TryPop(out T[] result)
+                ? result
+                : [];
         }
 
         public static void Return(T[] buffer) => FPool.Push(buffer);
