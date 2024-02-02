@@ -17,7 +17,7 @@ namespace Solti.Utils.Json.Internals
         public static string AsString(this ReadOnlySpan<char> self)
         {
 #if NETSTANDARD2_1_OR_GREATER
-            return  new string(self);
+            return new string(self);
 #else
             fixed (char* ptr = self)
             {
