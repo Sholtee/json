@@ -4,13 +4,13 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
 using static System.Diagnostics.Debug;
+using static System.Char;
 
 namespace Solti.Utils.Json
 {
@@ -21,7 +21,7 @@ namespace Solti.Utils.Json
     /// <summary>
     /// Represents a generic, cancellable JSON reader.
     /// </summary>
-    public sealed class JsonReader(ITextReader input, DeserializationContext context, JsonReaderFlags flags, int maxDepth): IDisposable
+    public sealed class JsonReader(TextReader content, DeserializationContext context, JsonReaderFlags flags, int maxDepth): IDisposable
     {
         #region Private
         private static readonly string
@@ -30,17 +30,11 @@ namespace Solti.Utils.Json
             NULL = "null",
             DOUBLE_SLASH = "//";
 
-        //
-        // Do not use ConcurrentBag here as it significantly slower than ConcurrentStack
-        //
-
-        private static readonly ConcurrentStack<char[]> FBufferPool = [];
-
-        private char[] FBuffer = FBufferPool.TryPop(out char[] buffer) ? buffer : new char[256];
-
         private readonly StringComparison FComparison = flags.HasFlag(JsonReaderFlags.CaseInsensitive)
             ? StringComparison.OrdinalIgnoreCase
             : StringComparison.Ordinal;
+
+        private readonly TextReaderWrapper FContent = new(content);
 
         /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
@@ -72,69 +66,51 @@ namespace Solti.Utils.Json
         );
 
         /// <summary>
-        /// Gets maximum <paramref name="len"/> character(s) from the input without advancing the reader.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private ReadOnlySpan<char> PeekText(int len)
-        {
-            Span<char> buffer = GetBuffer(len);
-            return buffer.Slice(0, input.PeekText(buffer));
-        }
-
-        /// <summary>
-        /// Advances the underlying <see cref="ITextReader"/>. It assumes that the row remains the same.
+        /// Advances the underlying text reader. It assumes that the row remains the same.
         /// </summary>
         /// <param name="len"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Advance(int len)
         {
-            Assert(len >= 0, "Cannot advance in negative direction");
-            Assert(len <= input.CharsLeft, "Cannot advance more characters than we have");
-
-            input.Advance(len);
+            FContent.Advance(len);
             Column += len;
         }
 
         /// <summary>
-        /// Creates a view to the underlying buffer.
+        /// Returns true if the input is positioned on the given <paramref name="literal"/>.
         /// </summary>
-        /// <remarks>The method resizes the underlying buffer if necessary.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Span<char> GetBuffer(int length)
-        {
-            Assert(length >= 0, "Buffer size must be greater or equal to 0");
-
-            if (length > FBuffer.Length)
-                Array.Resize(ref FBuffer, length);
-
-            return FBuffer.AsSpan(0, length);
-        }
+        private bool IsLiteral(string literal) => literal.AsSpan().Equals
+        (
+            FContent.PeekText(literal.Length),
+            FComparison
+        );
 
         void IDisposable.Dispose()
         {
-            if (FBuffer is not null)
-            {
-                FBufferPool.Push(FBuffer);
-                FBuffer = null!;
-            }
+            if (!FContent.Disposed)
+                FContent.Dispose();
         }
         #endregion
 
         #region Internal
+        /// <summary>
+        /// The input text.
+        /// </summary>
+        internal TextReaderWrapper Content => FContent;
+
         /// <summary>
         /// Trims all the leading whitespaces maintaining the row and column count.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void SkipSpaces(int bufferSize = 32 /*for tests*/)
         {
-            Span<char> buffer = GetBuffer(bufferSize);
-
-            for (int read; (read = input.PeekText(buffer)) > 0;)
+            for (Span<char> read; (read = FContent.PeekText(bufferSize)).Length > 0;)
             {
                 int skip;
-                for (skip = 0; skip < read && char.IsWhiteSpace(buffer[skip]); skip++)
+                for (skip = 0; skip < read.Length && char.IsWhiteSpace(read[skip]); skip++)
                 {
-                    if (buffer[skip] is '\n')
+                    if (read[skip] is '\n')
                     {
                         Row++;
                         Column = 0;
@@ -142,8 +118,8 @@ namespace Solti.Utils.Json
                     else Column++;
                 }
 
-                input.Advance(skip);
-                if (skip < read)
+                FContent.Advance(skip);
+                if (skip < read.Length)
                     break;
             }
         }
@@ -172,7 +148,9 @@ namespace Solti.Utils.Json
         {
             SkipSpaces();
 
-            return !input.PeekChar(out char chr) ? JsonTokens.Eof : chr switch
+            int chr = FContent.PeekChar();
+
+            return chr is -1 ? JsonTokens.Eof : chr switch
             {
                 '{' => JsonTokens.CurlyOpen,
                 '}' => JsonTokens.CurlyClose,
@@ -182,10 +160,10 @@ namespace Solti.Utils.Json
                 ':' => JsonTokens.Colon,
                 '"' => JsonTokens.DoubleQuote,
                 '\'' when flags.HasFlag(JsonReaderFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
-                '/' when flags.HasFlag(JsonReaderFlags.AllowComments) && PeekText(DOUBLE_SLASH.Length).Equals(DOUBLE_SLASH.AsSpan(), FComparison) => JsonTokens.DoubleSlash,
-                't' or 'T' when PeekText(TRUE.Length).Equals(TRUE.AsSpan(), FComparison) => JsonTokens.True,
-                'f' or 'F' when PeekText(FALSE.Length).Equals(FALSE.AsSpan(), FComparison) => JsonTokens.False,
-                'n' or 'N' when PeekText(NULL.Length).Equals(NULL.AsSpan(), FComparison) => JsonTokens.Null,
+                '/' when flags.HasFlag(JsonReaderFlags.AllowComments) && IsLiteral(DOUBLE_SLASH) => JsonTokens.DoubleSlash,
+                't' or 'T' when IsLiteral(TRUE) => JsonTokens.True,
+                'f' or 'F' when IsLiteral(FALSE) => JsonTokens.False,
+                'n' or 'N' when IsLiteral(NULL) => JsonTokens.Null,
                 '-' or (>= '0' and <= '9') => JsonTokens.Number,
                 _ => JsonTokens.Unknown
             };
@@ -194,32 +172,18 @@ namespace Solti.Utils.Json
         internal ReadOnlySpan<char> ParseString(int initialBufferSize = 128 /*for debug*/)
         {
             ConsumeAndValidate(JsonTokens.DoubleQuote | JsonTokens.SingleQuote);
-            input.PeekChar(out char quote);
+            int quote = FContent.PeekChar();
             Advance(1);
 
-            for (int bufferSize = initialBufferSize, parsed = 0; ; bufferSize *= 2)
+            for (int bufferSize = initialBufferSize, parsed = 0, outputSize = 0; ; bufferSize *= 2)
             {
-                Span<char>
-                    //
-                    // Increase the buffer size
-                    //
-
-                    buffer = GetBuffer(bufferSize),
-
-                    //
-                    // Create a new "working view" to keep the previously parsed characters untouched
-                    // 
-
-                    span = buffer.Slice(parsed);
-
-                int returned = input.PeekText(span);
-                if (returned is 0)
+                Span<char> buffer = FContent.PeekText(bufferSize);
+                if (parsed == buffer.Length)
                     MalformedValue("string", UNTERMINATED_STR);
 
-                int i;
-                for (i = 0; i < returned; i++)
+                for (; parsed < buffer.Length; parsed++)
                 {
-                    char c = span[i];
+                    char c = buffer[parsed];
 
                     if (c == quote)
                     {
@@ -227,87 +191,81 @@ namespace Solti.Utils.Json
                         // We reached the end of the string
                         //
 
-                        Advance(i + 1);
-                        return buffer.Slice(0, parsed);
+                        Assert(buffer[parsed] == c && parsed < FContent.CharsLeft, "Miscalculated 'parsed' value");
+                        Advance(parsed + 1);
+
+                        return buffer.Slice(0, outputSize);
                     }
 
-                    if (char.IsWhiteSpace(c) && c is not ' ')
+                    if (IsWhiteSpace(c) && c is not ' ')
                     {
                         //
                         // Unexpected white space
                         //
 
-                        Advance(i + 1);
+                        Assert(buffer[parsed] == c && parsed < FContent.CharsLeft, "Miscalculated 'parsed' value");
+                        Advance(parsed + 1);
+
                         MalformedValue("string", UNEXPECTED_WHITE_SPACE);
                     }
 
                     if (c == '\\')
                     {
-                        if (i + 1 == returned)
-                        {
-                            if (input.CharsLeft is 1)
-                                i++;  // avoid infinite loop 
-
+                        if (parsed == buffer.Length - 1)
                             //
                             // We ran out of the characters but there are more
                             //
 
-                            goto readNextChunk;
-                        }
+                            break;
 
-                        switch (c = span[++i])
+                        switch (c = buffer[++parsed])
                         {
                             case '\\':
-                                buffer[parsed++] = '\\';
+                                buffer[outputSize++] = '\\';
                                 break;
                             case 'b':
-                                buffer[parsed++] = '\b';
+                                buffer[outputSize++] = '\b';
                                 break;
                             case 't':
-                                buffer[parsed++] = '\t';
+                                buffer[outputSize++] = '\t';
                                 break;
                             case 'r':
-                                buffer[parsed++] = '\r';
+                                buffer[outputSize++] = '\r';
                                 break;
                             case 'n':
-                                buffer[parsed++] = '\n';
+                                buffer[outputSize++] = '\n';
                                 break;
                             case 'u':
                                 const int HEX_LEN = 4;
 
-                                if (returned - i <= HEX_LEN)
+                                if (buffer.Length - parsed <= HEX_LEN)
                                 {
                                     //
-                                    // We need 4 hex digits
+                                    // We need 4 hex digits, try to enlarge the buffer
                                     //
 
-                                    if (input.CharsLeft - i > HEX_LEN)
+                                    buffer = FContent.PeekText(buffer.Length + HEX_LEN);
+                                    if (buffer.Length - parsed <= HEX_LEN)
                                     {
                                         //
-                                        // We ran out of the characters but there are more
+                                        // Unterminated HEX digits
                                         //
 
-                                        i--;
-                                        goto readNextChunk;
+                                        Advance(parsed);
+                                        MalformedValue("string", MISSING_HEX_DIGIT);
                                     }
-
-                                    //
-                                    // Unterminated HEX digits
-                                    //
-
-                                    Advance(i + 1);
-                                    MalformedValue("string", MISSING_HEX_DIGIT);
+                                    bufferSize = buffer.Length;
                                 }
 
                                 if 
                                 (
                                     !ushort.TryParse
                                     (
-    #if NETSTANDARD2_1_OR_GREATER
-                                        span.Slice(i + 1, HEX_LEN),
-    #else
-                                        span.Slice(i + 1, HEX_LEN).AsString(),
-    #endif
+#if NETSTANDARD2_1_OR_GREATER
+                                        buffer.Slice(parsed + 1, HEX_LEN),
+#else
+                                        buffer.Slice(parsed + 1, HEX_LEN).AsString(),
+#endif
                                         NumberStyles.HexNumber,
                                         CultureInfo.InvariantCulture,
                                         out ushort chr
@@ -318,7 +276,7 @@ namespace Solti.Utils.Json
                                     // Malformed HEX digits
                                     //
 
-                                    Advance(i + 1);
+                                    Advance(parsed);
                                     MalformedValue("string", NOT_HEX_DIGIT);
                                 }
 
@@ -326,35 +284,32 @@ namespace Solti.Utils.Json
                                 // Jump to the last HEX digit
                                 //
 
-                                i += HEX_LEN;
+                                parsed += HEX_LEN;
 
                                 //
                                 // Already unicode so no Encoding.GetChars() call required
                                 //
 
-                                buffer[parsed++] = (char) chr;
+                                buffer[outputSize++] = (char) chr;
                                 break;
                             default:
                                 if (c == quote)
-                                    buffer[parsed++] = c;
+                                    buffer[outputSize++] = c;
                                 else
                                 {
                                     //
                                     // Unknown control character -> Error
                                     //
 
-                                    Advance(i);
+                                    Advance(parsed);
                                     MalformedValue("string", UNKNOWN_CTRL);
                                 }
                                 break;
                         }
                     }
                     else
-                        buffer[parsed++] = span[i];
+                        buffer[outputSize++] = buffer[parsed];
                 }
-
-                readNextChunk:
-                Advance(i);
             }
         }
 
@@ -379,21 +334,20 @@ namespace Solti.Utils.Json
             int parsed = 0;
             for (int bufferSize = initialBufferSize; ; bufferSize *= 2)
             {
-                buffer = GetBuffer(bufferSize);
-                int returned = input.PeekText(buffer);
+                buffer = FContent.PeekText(bufferSize);
 
-                for (; parsed < returned; parsed++)
+                for (; parsed < buffer.Length; parsed++)
                 {
                     char chr = buffer[parsed];
 
-                    if (chr is '.' || char.ToLower(chr) is 'e')
+                    if (chr is '.' || ToLower(chr) is 'e')
                         isFloating = true;
 
                     else if ((chr is < '0' or > '9') && chr is not '+' && chr is not '-')
                         goto parse;
                 }
 
-                if (input.CharsLeft == parsed)
+                if (buffer.Length < bufferSize)
                     goto parse;  // We reached the end of the stream
             }
 
@@ -548,48 +502,52 @@ namespace Solti.Utils.Json
         internal void ParseComment(DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
             ConsumeAndValidate(JsonTokens.DoubleSlash);
-            input.Advance(2);
+            Advance(2);
 
             Span<char> buffer;
 
-            int parsed = 0;
+            int
+                lineEnd,
+                parsed = 0;
+
             for (int bufferSize = initialBufferSize; ; bufferSize *= 2)
             {
                 //
                 // Increase the buffer size
                 //
 
-                buffer = GetBuffer(bufferSize);
+                buffer = FContent.PeekText(bufferSize);
 
                 //
-                // Create a new "working view" to keep the previously parsed characters untouched
+                // Deal with the "fresh" characters only
                 // 
 
-                Span<char> span = buffer.Slice(parsed);
-
-                int returned = input.PeekText(span);
-                if (returned is 0)
+                Span<char> freshChars = buffer.Slice(parsed);
+                if (freshChars.Length is 0)
                     break;
 
-                int lineEnd = span.Slice(0, returned).IndexOf('\n');
+                lineEnd = freshChars.IndexOf('\n');
                 if (lineEnd >= 0)
                 {
-                    Advance(lineEnd + 1);
                     parsed += lineEnd + 1;
                     break;
                 }
 
-                Advance(returned);
-                parsed += returned;
+                parsed += freshChars.Length;
             }
 
-            if (parsed > 0 && buffer[parsed - 1] is '\n')
-                parsed--;
+            lineEnd = parsed;
 
-            if (parsed > 0 && buffer[parsed - 1] is '\r')
-                parsed--;
+            if (lineEnd > 0 && buffer[lineEnd - 1] is '\n')
+                lineEnd--;
 
-            currentContext.CommentParser?.Invoke(buffer.Slice(0, parsed));
+            if (lineEnd > 0 && buffer[lineEnd - 1] is '\r')
+                lineEnd--;
+
+            Assert(parsed <= FContent.CharsLeft, "Cannot advance more character than we have in the buffer");
+            Advance(parsed);
+
+            currentContext.CommentParser?.Invoke(buffer.Slice(0, lineEnd));
         }
 
         internal object? Parse(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)

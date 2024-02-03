@@ -25,6 +25,12 @@ namespace Solti.Utils.Json.Internals
 
             FCharsRead;
 
+        /// <summary>
+        /// Peeks <b>maximum</b> <paramref name="len"/> characters from the underlying <see cref="TextReader"/>
+        /// </summary>
+        /// <remarks>
+        /// This method preserves the state so modification made to the returned <see cref="Span{char}"/> won't be lost between calls.
+        /// </remarks>
         public Span<char> PeekText(int len)
         {
             if (len < 0)
@@ -80,27 +86,36 @@ namespace Solti.Utils.Json.Internals
             return FBuffer.AsSpan(FPosition, FCharsRead);
         }
 
+        /// <summary>
+        /// Peeks one character from the underlying <see cref="TextReader"/> or returns -1 if there is no more data.
+        /// </summary>
         public int PeekChar() => CharsLeft is 0 && PeekText(1).Length is 0
             ? -1
             : FBuffer[FPosition];
 
-        public void Advance(int chars)
+        /// <summary>
+        /// Advances the reader by <b>exactly</b> <paramref name="len"/> characters or throws if there is no enough charcters left
+        /// </summary>
+        public void Advance(int len)
         {
-            if (chars < 0)
-                throw new ArgumentOutOfRangeException(nameof(chars));
+            if (len < 0)
+                throw new ArgumentOutOfRangeException(nameof(len));
 
-            int missingChars = chars - CharsLeft;
+            int missingChars = len - CharsLeft;
             if (missingChars > 0)
             {
-                PeekText(chars);
+                PeekText(len);
 
-                if (chars > CharsLeft)
-                    throw new ArgumentOutOfRangeException(nameof(chars));
+                if (len > CharsLeft)
+                    throw new ArgumentOutOfRangeException(nameof(len));
             }
 
-            FPosition += chars;
+            FPosition += len;
         }
 
+        /// <summary>
+        /// Disposes this instance releasing the underlying <see cref="TextReader"/> as well.
+        /// </summary>
         public void Dispose()
         {
             if (FBuffer is not null)
@@ -115,7 +130,13 @@ namespace Solti.Utils.Json.Internals
                 textReader = null!;
             }
 
-            FPosition = FCharsRead = -1;
+            FPosition = FCharsRead = 0;
+        }
+
+        public bool Disposed
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => FBuffer is null;
         }
 
         /// <summary>
@@ -128,7 +149,7 @@ namespace Solti.Utils.Json.Internals
         }
 
         /// <summary>
-        /// Characters left in the underlying buffer
+        /// Characters left in the underlying buffer.
         /// </summary>
         public int CharsLeft
         {
@@ -136,6 +157,9 @@ namespace Solti.Utils.Json.Internals
             get => FCharsRead - FPosition;
         }
 
+        /// <summary>
+        /// The maximum number of characters that can be stored in the underlying buffer. This value may change runtime.
+        /// </summary>
         public int BufferSize
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

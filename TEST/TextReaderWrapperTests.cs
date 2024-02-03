@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.IO;
 
 using Moq;
 using NUnit.Framework;
@@ -16,7 +17,7 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void PeekText_ShouldThrowOnInvalidIndex()
         {
-            using TextReaderWrapper textReader = new(new System.IO.StringReader("cica"));
+            using TextReaderWrapper textReader = new(new StringReader("cica"));
             Assert.Throws<ArgumentOutOfRangeException>(() => textReader.PeekText(-1));
         }
 
@@ -25,7 +26,7 @@ namespace Solti.Utils.Json.Internals.Tests
         {
             const string str = "cicamica";
 
-            Mock<System.IO.StringReader> mockRdr = new(str);
+            Mock<StringReader> mockRdr = new(str);
             mockRdr
                 .Setup(r => r.Read(It.IsAny<char[]>(), 0, charsToRead))
                 .CallBase();
@@ -50,7 +51,7 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void PeekText_ShouldPreserveTheState()
         {
-            using TextReaderWrapper textReader = new(new System.IO.StringReader("cica"));
+            using TextReaderWrapper textReader = new(new StringReader("cica"));
 
             textReader.PeekText(1)[0] = 'm';
 
@@ -60,7 +61,7 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void PeekText_ShouldEnlargeTheUnderlyingBuffer()
         {
-            using TextReaderWrapper textReader = new(new System.IO.StringReader("cicamica"), 2);
+            using TextReaderWrapper textReader = new(new StringReader("cicamica"), 2);
 
             Assert.That(textReader.BufferSize, Is.EqualTo(2));
             Assert.That(textReader.FreeSpace, Is.EqualTo(2));
@@ -82,7 +83,7 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void PeekText_ShouldOptimizeTheBuffer()
         {
-            using TextReaderWrapper textReader = new(new System.IO.StringReader("cicamica"), 4);
+            using TextReaderWrapper textReader = new(new StringReader("cicamica"), 4);
 
             Assert.That(textReader.BufferSize, Is.EqualTo(4));
             Assert.That(textReader.FreeSpace, Is.EqualTo(4));
@@ -107,7 +108,7 @@ namespace Solti.Utils.Json.Internals.Tests
         {
             string input = "cicamica";
 
-            using TextReaderWrapper textReader = new(new System.IO.StringReader(input));
+            using TextReaderWrapper textReader = new(new StringReader(input));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => textReader.Advance(-1));
 
@@ -120,7 +121,7 @@ namespace Solti.Utils.Json.Internals.Tests
         {
             string input = "cicamica";
 
-            using TextReaderWrapper textReader = new(new System.IO.StringReader(input));
+            using TextReaderWrapper textReader = new(new StringReader(input));
 
             Assert.DoesNotThrow(() => textReader.Advance(input.Length));
             Assert.Throws<ArgumentOutOfRangeException>(() => textReader.Advance(1));
@@ -131,7 +132,7 @@ namespace Solti.Utils.Json.Internals.Tests
         {
             const string input = "cica";
 
-            using TextReaderWrapper textReader = new(new System.IO.StringReader(input), initialBufferSize);
+            using TextReaderWrapper textReader = new(new StringReader(input), initialBufferSize);
 
             for (int i = 0; i < input.Length; i++)
             {

@@ -15,6 +15,10 @@ namespace Solti.Utils.Json.Internals
 
         private static readonly ConcurrentStack<T[]> FPool = [];
 
+        /// <summary>
+        /// Gets or creates an array in the given <paramref name="length"/>. 
+        /// </summary>
+        /// <remarks>If <paramref name="length"/> is less than 0 the size of the returned array is unpredictable.</remarks>
         public static T[] Get(int length = -1)
         {
             if (length > -1)
