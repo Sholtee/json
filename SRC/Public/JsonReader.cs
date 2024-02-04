@@ -16,6 +16,7 @@ namespace Solti.Utils.Json
 {
     using Internals;
 
+    using static DeserializationContext;
     using static Properties.Resources;
 
     /// <summary>
@@ -85,6 +86,12 @@ namespace Solti.Utils.Json
             FContent.PeekText(literal.Length),
             FComparison
         );
+
+        /// <summary>
+        /// Verifies the given <paramref name="delegate"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static T VerifyDelegate<T>(T? @delegate) where T: Delegate => @delegate ?? throw new InvalidOperationException(INVALID_CONTEXT);
 
         void IDisposable.Dispose()
         {
@@ -430,15 +437,17 @@ namespace Solti.Utils.Json
         {
             ConsumeAndValidate(JsonTokens.SquaredOpen);
             Advance(1);
+ 
+            GetListItemContextDelegate getListItemContext = VerifyDelegate(currentContext.GetListItemContext);
 
-            object list = EnsureNotNull(currentContext.CreateRawList).Invoke();
-
+            object list = VerifyDelegate(currentContext.CreateRawList)();
             int i = 0;
+
             for (JsonTokens token = Consume(); token is not JsonTokens.SquaredClose;)
             {
-                DeserializationContext childContext = EnsureNotNull(currentContext.GetListItemContext).Invoke(i++);
+                DeserializationContext childContext = getListItemContext(i++);
 
-                EnsureNotNull(childContext.Push).Invoke(list, Parse(currentDepth, childContext, cancellation));
+                VerifyDelegate(childContext.Push)(list, Parse(currentDepth, childContext, cancellation));
 
                 //
                 // Check if we reached the end of the list or we have a next element.
@@ -462,9 +471,6 @@ namespace Solti.Utils.Json
             Advance(1);
 
             return list;
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static T EnsureNotNull<T>(T? val) => val ?? throw new InvalidOperationException(INVALID_CONTEXT);
         }
 
         internal object ParseObject(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
@@ -472,11 +478,13 @@ namespace Solti.Utils.Json
             ConsumeAndValidate(JsonTokens.CurlyOpen);
             Advance(1);
 
-            object obj = EnsureNotNull(currentContext.CreateRawObject).Invoke();
+            GetPropertyContextDelegate getPropertyContext = VerifyDelegate(currentContext.GetPropertyContext);
+
+            object obj = VerifyDelegate(currentContext.CreateRawObject)();
 
             for (JsonTokens token = Consume(); token is not JsonTokens.CurlyClose;)
             {
-                DeserializationContext childContext = EnsureNotNull(currentContext.GetPropertyContext).Invoke
+                DeserializationContext childContext = getPropertyContext
                 (
                     ParseString(),
                     FComparison
@@ -485,7 +493,7 @@ namespace Solti.Utils.Json
                 ConsumeAndValidate(JsonTokens.Colon);
                 Advance(1);
 
-                EnsureNotNull(childContext.Push).Invoke(obj, Parse(currentDepth, childContext, cancellation));
+                VerifyDelegate(childContext.Push)(obj, Parse(currentDepth, childContext, cancellation));
 
                 //
                 // Check if we reached the end of the object or we have a next element.
@@ -509,9 +517,6 @@ namespace Solti.Utils.Json
             Advance(1);
 
             return obj;
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static T EnsureNotNull<T>(T? val) => val ?? throw new InvalidOperationException(INVALID_CONTEXT);
         }
 
         internal void ParseComment(DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
