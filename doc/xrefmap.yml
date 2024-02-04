@@ -673,78 +673,6 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke
   fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke
   nameWithType: DeserializationContext.VerifyDelegate.Invoke
-- uid: Solti.Utils.Json.ITextReader
-  name: ITextReader
-  href: Solti.Utils.Json.ITextReader.html
-  commentId: T:Solti.Utils.Json.ITextReader
-  fullName: Solti.Utils.Json.ITextReader
-  nameWithType: ITextReader
-- uid: Solti.Utils.Json.ITextReader.Advance(System.Int32)
-  name: Advance(Int32)
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_Advance_System_Int32_
-  commentId: M:Solti.Utils.Json.ITextReader.Advance(System.Int32)
-  fullName: Solti.Utils.Json.ITextReader.Advance(System.Int32)
-  nameWithType: ITextReader.Advance(Int32)
-- uid: Solti.Utils.Json.ITextReader.Advance*
-  name: Advance
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_Advance_
-  commentId: Overload:Solti.Utils.Json.ITextReader.Advance
-  fullName: Solti.Utils.Json.ITextReader.Advance
-  nameWithType: ITextReader.Advance
-- uid: Solti.Utils.Json.ITextReader.CharsLeft
-  name: CharsLeft
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_CharsLeft
-  commentId: P:Solti.Utils.Json.ITextReader.CharsLeft
-  fullName: Solti.Utils.Json.ITextReader.CharsLeft
-  nameWithType: ITextReader.CharsLeft
-- uid: Solti.Utils.Json.ITextReader.CharsLeft*
-  name: CharsLeft
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_CharsLeft_
-  commentId: Overload:Solti.Utils.Json.ITextReader.CharsLeft
-  fullName: Solti.Utils.Json.ITextReader.CharsLeft
-  nameWithType: ITextReader.CharsLeft
-- uid: Solti.Utils.Json.ITextReader.PeekChar(System.Char@)
-  name: PeekChar(out Char)
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_PeekChar_System_Char__
-  commentId: M:Solti.Utils.Json.ITextReader.PeekChar(System.Char@)
-  name.vb: PeekChar(ByRef Char)
-  fullName: Solti.Utils.Json.ITextReader.PeekChar(out System.Char)
-  fullName.vb: Solti.Utils.Json.ITextReader.PeekChar(ByRef System.Char)
-  nameWithType: ITextReader.PeekChar(out Char)
-  nameWithType.vb: ITextReader.PeekChar(ByRef Char)
-- uid: Solti.Utils.Json.ITextReader.PeekChar*
-  name: PeekChar
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_PeekChar_
-  commentId: Overload:Solti.Utils.Json.ITextReader.PeekChar
-  fullName: Solti.Utils.Json.ITextReader.PeekChar
-  nameWithType: ITextReader.PeekChar
-- uid: Solti.Utils.Json.ITextReader.PeekText(System.Span{System.Char})
-  name: PeekText(Span<Char>)
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_PeekText_System_Span_System_Char__
-  commentId: M:Solti.Utils.Json.ITextReader.PeekText(System.Span{System.Char})
-  name.vb: PeekText(Span(Of Char))
-  fullName: Solti.Utils.Json.ITextReader.PeekText(System.Span<System.Char>)
-  fullName.vb: Solti.Utils.Json.ITextReader.PeekText(System.Span(Of System.Char))
-  nameWithType: ITextReader.PeekText(Span<Char>)
-  nameWithType.vb: ITextReader.PeekText(Span(Of Char))
-- uid: Solti.Utils.Json.ITextReader.PeekText*
-  name: PeekText
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_PeekText_
-  commentId: Overload:Solti.Utils.Json.ITextReader.PeekText
-  fullName: Solti.Utils.Json.ITextReader.PeekText
-  nameWithType: ITextReader.PeekText
-- uid: Solti.Utils.Json.ITextReader.Reset
-  name: Reset()
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_Reset
-  commentId: M:Solti.Utils.Json.ITextReader.Reset
-  fullName: Solti.Utils.Json.ITextReader.Reset()
-  nameWithType: ITextReader.Reset()
-- uid: Solti.Utils.Json.ITextReader.Reset*
-  name: Reset
-  href: Solti.Utils.Json.ITextReader.html#Solti_Utils_Json_ITextReader_Reset_
-  commentId: Overload:Solti.Utils.Json.ITextReader.Reset
-  fullName: Solti.Utils.Json.ITextReader.Reset
-  nameWithType: ITextReader.Reset
 - uid: Solti.Utils.Json.JsonDataTypes
   name: JsonDataTypes
   href: Solti.Utils.Json.JsonDataTypes.html
@@ -805,12 +733,12 @@ references:
   commentId: T:Solti.Utils.Json.JsonReader
   fullName: Solti.Utils.Json.JsonReader
   nameWithType: JsonReader
-- uid: Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.ITextReader,Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
-  name: JsonReader(ITextReader, DeserializationContext, JsonReaderFlags, Int32)
-  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_Solti_Utils_Json_ITextReader_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_JsonReaderFlags_System_Int32_
-  commentId: M:Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.ITextReader,Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
-  fullName: Solti.Utils.Json.JsonReader.JsonReader(Solti.Utils.Json.ITextReader, Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.JsonReaderFlags, System.Int32)
-  nameWithType: JsonReader.JsonReader(ITextReader, DeserializationContext, JsonReaderFlags, Int32)
+- uid: Solti.Utils.Json.JsonReader.#ctor(System.IO.TextReader,Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
+  name: JsonReader(TextReader, DeserializationContext, JsonReaderFlags, Int32)
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_System_IO_TextReader_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_JsonReaderFlags_System_Int32_
+  commentId: M:Solti.Utils.Json.JsonReader.#ctor(System.IO.TextReader,Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
+  fullName: Solti.Utils.Json.JsonReader.JsonReader(System.IO.TextReader, Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.JsonReaderFlags, System.Int32)
+  nameWithType: JsonReader.JsonReader(TextReader, DeserializationContext, JsonReaderFlags, Int32)
 - uid: Solti.Utils.Json.JsonReader.#ctor*
   name: JsonReader
   href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_
@@ -898,90 +826,6 @@ references:
   commentId: F:Solti.Utils.Json.JsonReaderFlags.value__
   fullName: Solti.Utils.Json.JsonReaderFlags.value__
   nameWithType: JsonReaderFlags.value__
-- uid: Solti.Utils.Json.StringReader
-  name: StringReader
-  href: Solti.Utils.Json.StringReader.html
-  commentId: T:Solti.Utils.Json.StringReader
-  fullName: Solti.Utils.Json.StringReader
-  nameWithType: StringReader
-- uid: Solti.Utils.Json.StringReader.#ctor(System.String)
-  name: StringReader(String)
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader__ctor_System_String_
-  commentId: M:Solti.Utils.Json.StringReader.#ctor(System.String)
-  fullName: Solti.Utils.Json.StringReader.StringReader(System.String)
-  nameWithType: StringReader.StringReader(String)
-- uid: Solti.Utils.Json.StringReader.#ctor*
-  name: StringReader
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader__ctor_
-  commentId: Overload:Solti.Utils.Json.StringReader.#ctor
-  fullName: Solti.Utils.Json.StringReader.StringReader
-  nameWithType: StringReader.StringReader
-- uid: Solti.Utils.Json.StringReader.Advance(System.Int32)
-  name: Advance(Int32)
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_Advance_System_Int32_
-  commentId: M:Solti.Utils.Json.StringReader.Advance(System.Int32)
-  fullName: Solti.Utils.Json.StringReader.Advance(System.Int32)
-  nameWithType: StringReader.Advance(Int32)
-- uid: Solti.Utils.Json.StringReader.Advance*
-  name: Advance
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_Advance_
-  commentId: Overload:Solti.Utils.Json.StringReader.Advance
-  fullName: Solti.Utils.Json.StringReader.Advance
-  nameWithType: StringReader.Advance
-- uid: Solti.Utils.Json.StringReader.CharsLeft
-  name: CharsLeft
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_CharsLeft
-  commentId: P:Solti.Utils.Json.StringReader.CharsLeft
-  fullName: Solti.Utils.Json.StringReader.CharsLeft
-  nameWithType: StringReader.CharsLeft
-- uid: Solti.Utils.Json.StringReader.CharsLeft*
-  name: CharsLeft
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_CharsLeft_
-  commentId: Overload:Solti.Utils.Json.StringReader.CharsLeft
-  fullName: Solti.Utils.Json.StringReader.CharsLeft
-  nameWithType: StringReader.CharsLeft
-- uid: Solti.Utils.Json.StringReader.PeekChar(System.Char@)
-  name: PeekChar(out Char)
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_PeekChar_System_Char__
-  commentId: M:Solti.Utils.Json.StringReader.PeekChar(System.Char@)
-  name.vb: PeekChar(ByRef Char)
-  fullName: Solti.Utils.Json.StringReader.PeekChar(out System.Char)
-  fullName.vb: Solti.Utils.Json.StringReader.PeekChar(ByRef System.Char)
-  nameWithType: StringReader.PeekChar(out Char)
-  nameWithType.vb: StringReader.PeekChar(ByRef Char)
-- uid: Solti.Utils.Json.StringReader.PeekChar*
-  name: PeekChar
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_PeekChar_
-  commentId: Overload:Solti.Utils.Json.StringReader.PeekChar
-  fullName: Solti.Utils.Json.StringReader.PeekChar
-  nameWithType: StringReader.PeekChar
-- uid: Solti.Utils.Json.StringReader.PeekText(System.Span{System.Char})
-  name: PeekText(Span<Char>)
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_PeekText_System_Span_System_Char__
-  commentId: M:Solti.Utils.Json.StringReader.PeekText(System.Span{System.Char})
-  name.vb: PeekText(Span(Of Char))
-  fullName: Solti.Utils.Json.StringReader.PeekText(System.Span<System.Char>)
-  fullName.vb: Solti.Utils.Json.StringReader.PeekText(System.Span(Of System.Char))
-  nameWithType: StringReader.PeekText(Span<Char>)
-  nameWithType.vb: StringReader.PeekText(Span(Of Char))
-- uid: Solti.Utils.Json.StringReader.PeekText*
-  name: PeekText
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_PeekText_
-  commentId: Overload:Solti.Utils.Json.StringReader.PeekText
-  fullName: Solti.Utils.Json.StringReader.PeekText
-  nameWithType: StringReader.PeekText
-- uid: Solti.Utils.Json.StringReader.Reset
-  name: Reset()
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_Reset
-  commentId: M:Solti.Utils.Json.StringReader.Reset
-  fullName: Solti.Utils.Json.StringReader.Reset()
-  nameWithType: StringReader.Reset()
-- uid: Solti.Utils.Json.StringReader.Reset*
-  name: Reset
-  href: Solti.Utils.Json.StringReader.html#Solti_Utils_Json_StringReader_Reset_
-  commentId: Overload:Solti.Utils.Json.StringReader.Reset
-  fullName: Solti.Utils.Json.StringReader.Reset
-  nameWithType: StringReader.Reset
 - uid: Solti.Utils.Json.UntypedDeserializationContext
   name: UntypedDeserializationContext
   href: Solti.Utils.Json.UntypedDeserializationContext.html
