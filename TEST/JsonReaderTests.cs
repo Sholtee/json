@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 
 using Moq;
 using NUnit.Framework;
@@ -668,6 +669,16 @@ namespace Solti.Utils.Json.Tests
                 Assert.Throws<InvalidOperationException>(() => rdr.Parse(default));
             else
                 Assert.DoesNotThrow(() => rdr.Parse(default));
+        }
+
+        [Test]
+        public void Parse_CanBeCancelled([Values("{}", "5", "\"cica\"")] string input)
+        {
+            using JsonReader rdr = CreateReader(input);
+            CancellationTokenSource cancellationTokenSource = new();
+            cancellationTokenSource.Cancel();
+
+            Assert.Throws<OperationCanceledException>(() => rdr.Parse(cancellationTokenSource.Token));
         }
 
         [Test]
