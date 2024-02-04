@@ -61,6 +61,15 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incomplete string definition.
+        /// </summary>
+        internal static string INCOMPLETE_STR {
+            get {
+                return ResourceManager.GetString("INCOMPLETE_STR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid context.
         /// </summary>
         internal static string INVALID_CONTEXT {
@@ -88,20 +97,11 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max depth reached..
+        ///   Looks up a localized string similar to Max depth reached.
         /// </summary>
         internal static string MAX_DEPTH_REACHED {
             get {
                 return ResourceManager.GetString("MAX_DEPTH_REACHED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Missing HEX digit.
-        /// </summary>
-        internal static string MISSING_HEX_DIGIT {
-            get {
-                return ResourceManager.GetString("MISSING_HEX_DIGIT", resourceCulture);
             }
         }
         
@@ -124,15 +124,6 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not a hex digit.
-        /// </summary>
-        internal static string NOT_HEX_DIGIT {
-            get {
-                return ResourceManager.GetString("NOT_HEX_DIGIT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Not a number.
         /// </summary>
         internal static string NOT_NUMBER {
@@ -151,20 +142,11 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown control character.
+        ///   Looks up a localized string similar to Unknwon control character.
         /// </summary>
         internal static string UNKNOWN_CTRL {
             get {
                 return ResourceManager.GetString("UNKNOWN_CTRL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unterminated string.
-        /// </summary>
-        internal static string UNTERMINATED_STR {
-            get {
-                return ResourceManager.GetString("UNTERMINATED_STR", resourceCulture);
             }
         }
     }

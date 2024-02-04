@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="INCOMPLETE_STR" xml:space="preserve">
+    <value>Incomplete string definition</value>
+  </data>
   <data name="INVALID_CONTEXT" xml:space="preserve">
     <value>Invalid context</value>
   </data>
@@ -127,19 +130,13 @@
     <value>Invalid input. Expected "{0}", found "{1}" (row: {2}, col: {3}).</value>
   </data>
   <data name="MAX_DEPTH_REACHED" xml:space="preserve">
-    <value>Max depth reached.</value>
-  </data>
-  <data name="MISSING_HEX_DIGIT" xml:space="preserve">
-    <value>Missing HEX digit</value>
+    <value>Max depth reached</value>
   </data>
   <data name="MISSING_ITEM" xml:space="preserve">
     <value>Missing list item</value>
   </data>
   <data name="MISSING_PROP" xml:space="preserve">
     <value>Missing property</value>
-  </data>
-  <data name="NOT_HEX_DIGIT" xml:space="preserve">
-    <value>Not a hex digit</value>
   </data>
   <data name="NOT_NUMBER" xml:space="preserve">
     <value>Not a number</value>
@@ -148,9 +145,6 @@
     <value>Unexpected white space</value>
   </data>
   <data name="UNKNOWN_CTRL" xml:space="preserve">
-    <value>Unknown control character</value>
-  </data>
-  <data name="UNTERMINATED_STR" xml:space="preserve">
-    <value>Unterminated string</value>
+    <value>Unknwon control character</value>
   </data>
 </root>

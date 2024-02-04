@@ -179,7 +179,10 @@ namespace Solti.Utils.Json
             {
                 Span<char> buffer = FContent.PeekText(bufferSize);
                 if (parsed == buffer.Length)
-                    MalformedValue("string", UNTERMINATED_STR);
+                {
+                    Advance(parsed);
+                    MalformedValue("string", INCOMPLETE_STR);
+                }
 
                 for (; parsed < buffer.Length; parsed++)
                 {
@@ -191,7 +194,7 @@ namespace Solti.Utils.Json
                         // We reached the end of the string
                         //
 
-                        Assert(buffer[parsed] == c && parsed < FContent.CharsLeft, "Miscalculated 'parsed' value");
+                        Assert(parsed < FContent.CharsLeft, "Miscalculated 'parsed' value");
                         Advance(parsed + 1);
 
                         return buffer.Slice(0, outputSize);
@@ -203,7 +206,7 @@ namespace Solti.Utils.Json
                         // Unexpected white space
                         //
 
-                        Assert(buffer[parsed] == c && parsed < FContent.CharsLeft, "Miscalculated 'parsed' value");
+                        Assert(parsed < FContent.CharsLeft, "Miscalculated 'parsed' value");
                         Advance(parsed + 1);
 
                         MalformedValue("string", UNEXPECTED_WHITE_SPACE);
@@ -212,11 +215,23 @@ namespace Solti.Utils.Json
                     if (c == '\\')
                     {
                         if (parsed == buffer.Length - 1)
+                        {
                             //
-                            // We ran out of the characters but there are more
+                            // We ran out of the characters.
                             //
 
-                            break;
+                            buffer = FContent.PeekText(buffer.Length + 1);
+                            if (parsed == buffer.Length - 1)
+                            {
+                                //
+                                // Enexpected end of string
+                                //
+
+                                Advance(parsed);
+                                MalformedValue("string", INCOMPLETE_STR);
+                            }
+                            bufferSize = buffer.Length;
+                        }
 
                         switch (c = buffer[++parsed])
                         {
@@ -252,7 +267,7 @@ namespace Solti.Utils.Json
                                         //
 
                                         Advance(parsed);
-                                        MalformedValue("string", MISSING_HEX_DIGIT);
+                                        MalformedValue("string", INCOMPLETE_STR);
                                     }
                                     bufferSize = buffer.Length;
                                 }
@@ -277,7 +292,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(parsed);
-                                    MalformedValue("string", NOT_HEX_DIGIT);
+                                    MalformedValue("string", NOT_NUMBER);
                                 }
 
                                 //

@@ -292,13 +292,33 @@ namespace Solti.Utils.Json.Tests
         public void ParseString_ShouldThrowOnUnescapedSpaceInMultipleIterations(string input, int position) =>
             ParseString_ShouldThrowOnUnescapedSpace(input, position, 1);
 
-        [Test]
-        public void ParseString_ShouldThrowOnUnterminatedString([Values("\"", "\"cica", "\"cica\t", /*"\"\\\"",*/ "\"\\")] string input, [Values(1, 128)] int bufferSize)
+        public static IEnumerable<object[]> ParseString_ShouldThrowOnUnterminatedString_Params
+        {
+            get
+            {
+                yield return new object[] { "\"", 1 };
+                yield return new object[] { "\"cica", 5 };
+                yield return new object[] { "\"cica\t", 6 };
+                yield return new object[] { "\"\\", 1 };
+                yield return new object[] { "\"\\\"", 3 };
+            }
+        }
+
+        private static void ParseString_ShouldThrowOnUnterminatedString(string input, int col, int bufferSize)
         {
             using JsonReader rdr = CreateReader(input);
 
             Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize));
+            Assert.That(rdr.Column, Is.EqualTo(col));
         }
+
+        [TestCaseSource(nameof(ParseString_ShouldThrowOnUnterminatedString_Params))]
+        public void ParseString_ShouldThrowOnUnterminatedString(string input, int col) =>
+            ParseString_ShouldThrowOnUnterminatedString(input, col, 128);
+
+        [TestCaseSource(nameof(ParseString_ShouldThrowOnUnterminatedString_Params))]
+        public void ParseString_ShouldThrowOnUnterminatedStringInMultipleIterations(string input, int col) =>
+            ParseString_ShouldThrowOnUnterminatedString(input, col, 1);
 
         public static IEnumerable<object[]> ParseString_ShouldParseEscapedUnicodeCharacters_Params
         {
