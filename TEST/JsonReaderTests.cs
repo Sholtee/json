@@ -688,17 +688,13 @@ namespace Solti.Utils.Json.Tests
         public void Parse_ShouldHandleLargeInput()
         {
             using JsonReader rdr = new
-            (
-                // TODO: implement StreamReader
-                new StringReader
+            (         
+                new StreamReader
                 (
-                    File.ReadAllText
+                    Path.Combine
                     (
-                        Path.Combine
-                        (
-                            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
-                            "large.json"
-                        )
+                        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+                        "large.json"
                     )
                 ),
                 UntypedDeserializationContext.Instance,
