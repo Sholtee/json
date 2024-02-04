@@ -15,7 +15,7 @@ namespace Solti.Utils.Json.Perf
     [MemoryDiagnoser]
     public class JsonReaderParsingTests
     {
-        public static IEnumerable<string> Params
+        public static IEnumerable<TextReader> Params
         {
             get
             {
@@ -23,40 +23,40 @@ namespace Solti.Utils.Json.Perf
                 // String
                 //
 
-                yield return "\"cica\"";
-                yield return "\"cica\\r\\n\"";
-                yield return "\"Let's smile \\uD83D\\uDE01\"";
+                yield return new StringReader("\"cica\"");
+                yield return new StringReader("\"cica\\r\\n\"");
+                yield return new StringReader("\"Let's smile \\uD83D\\uDE01\"");
 
                 //
                 // Number
                 //
 
-                yield return "100";
-                yield return "-100";
-                yield return "100.0";
-                yield return "-100.0";
+                yield return new StringReader("100");
+                yield return new StringReader("-100");
+                yield return new StringReader("100.0");
+                yield return new StringReader("-100.0");
 
                 //
                 // List
                 //
 
-                yield return "[]";
-                yield return "[true]";
-                yield return "[0, true, false, null, \"cica\"]";
+                yield return new StringReader("[]");
+                yield return new StringReader("[true]");
+                yield return new StringReader("[0, true, false, null, \"cica\"]");
 
                 //
                 // Object
                 //
 
-                yield return "{}";
-                yield return "{\"cica\": 1986}";
-                yield return "{\"a\": 0, \"b\": true, \"c\": false, \"d\": null, \"e\": \"cica\"}";
+                yield return new StringReader("{}");
+                yield return new StringReader("{\"cica\": 1986}");
+                yield return new StringReader("{\"a\": 0, \"b\": true, \"c\": false, \"d\": null, \"e\": \"cica\"}");
 
                 //
                 // Mixed, large
                 //
 
-                yield return File.ReadAllText
+                yield return new StreamReader
                 (
                     Path.Combine
                     (
@@ -68,12 +68,12 @@ namespace Solti.Utils.Json.Perf
         }
 
         [ParamsSource(nameof(Params))]
-        public string Input { get; set; } = null!;
+        public TextReader Input { get; set; } = null!;
 
         [Benchmark]
         public void Parse()
         {
-            using JsonReader rdr = new(new StringReader(Input), UntypedDeserializationContext.Instance, JsonReaderFlags.None, 256);
+            using JsonReader rdr = new(Input, UntypedDeserializationContext.Instance, JsonReaderFlags.None, 256);
             _ = rdr.Parse(CancellationToken.None);
         }
     }
