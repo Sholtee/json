@@ -79,5 +79,25 @@ namespace Solti.Utils.Json.Tests
 
             Assert.That(store.ToString(), Is.EqualTo($"\"1986\""));
         }
+
+        [TestCase(1986, "1986")]
+        [TestCase(1986.1026, "1986.1026")]
+        public void WriteNumber_ShouldStringifyTheGivenNumber(object input, string expected)
+        {
+            StringWriter store = new();
+            using JsonWriter writer = new(store);
+
+            writer.WriteNumber(input, UntypedSerializationContext.Instance);
+
+            Assert.That(store.ToString(), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void WriteNumber_ShouldThrowOnInvalidNumber()
+        {
+            using JsonWriter writer = new(new StringWriter());
+
+            Assert.Throws<InvalidCastException>(() => writer.WriteNumber("invalid", UntypedSerializationContext.Instance));
+        }
     }
 }
