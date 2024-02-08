@@ -19,7 +19,7 @@ namespace Solti.Utils.Json
     {
         public static DeserializationContext Instance { get; } = new()
         {
-            SupportedTypes = JsonDataTypes.Object | JsonDataTypes.List | JsonDataTypes.String | JsonDataTypes.Number | JsonDataTypes.Boolean | JsonDataTypes.Null,
+            SupportedTypes = JsonDataTypes.Any,
 
             CreateRawObject = static () => new Dictionary<string, object?>(StringComparer.Ordinal),
 

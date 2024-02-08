@@ -18,7 +18,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Unspecified
         /// </summary>
-        None = 0,
+        Unkown = 0,
 
         /// <summary>
         /// <see cref="string"/>
@@ -48,6 +48,11 @@ namespace Solti.Utils.Json
         /// <summary>
         /// List
         /// </summary>
-        List = JsonTokens.SquaredOpen
+        List = JsonTokens.SquaredOpen,
+
+        /// <summary>
+        /// Any of supported types
+        /// </summary>
+        Any = Object | List | String | Number | Boolean | Null
     }
 }

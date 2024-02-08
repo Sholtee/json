@@ -411,7 +411,7 @@ namespace Solti.Utils.Json.Tests
 
             DeserializationContext ctx = new()
             {
-                SupportedTypes = JsonDataTypes.None,
+                SupportedTypes = JsonDataTypes.Unkown,
                 CommentParser = chars => lastComment = chars.AsString()
             };
             TextReader content = new StringReader(input);
@@ -533,7 +533,7 @@ namespace Solti.Utils.Json.Tests
         public void ParseList_ShouldThrowOnInvalidContext()
         {
             using JsonReader rdr = CreateReader("[]");
-            Assert.Throws<InvalidOperationException>(() => rdr.ParseList(0, new DeserializationContext { SupportedTypes = JsonDataTypes.None }, default));
+            Assert.Throws<InvalidOperationException>(() => rdr.ParseList(0, new DeserializationContext { SupportedTypes = JsonDataTypes.Unkown }, default));
         }
 
         public static IEnumerable<object[]> ParseList_ShouldParse_Params
