@@ -99,5 +99,26 @@ namespace Solti.Utils.Json.Tests
 
             Assert.Throws<InvalidCastException>(() => writer.WriteNumber("invalid", UntypedSerializationContext.Instance));
         }
+
+        [TestCase(null, "null")]
+        [TestCase(true, "true")]
+        [TestCase(false, "false")]
+        public void WriteLiteral_ShouldStringifyTheGivenValue(object input, string expected)
+        {
+            StringWriter store = new();
+            using JsonWriter writer = new(store);
+
+            writer.WriteLiteral(input, UntypedSerializationContext.Instance);
+
+            Assert.That(store.ToString(), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void WriteLiteral_ShouldThrowOnInvalidValue()
+        {
+            using JsonWriter writer = new(new StringWriter());
+
+            Assert.Throws<InvalidCastException>(() => writer.WriteLiteral("invalid", UntypedSerializationContext.Instance));
+        }
     }
 }

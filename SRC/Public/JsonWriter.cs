@@ -45,6 +45,9 @@ namespace Solti.Utils.Json
         }
         #endregion
 
+        /// <summary>
+        /// Writes the gven number to the underlying buffer.
+        /// </summary>
         internal void WriteNumber(object num, SerializationContext currentContext)
         {
             if (currentContext.GetTypeOf(num) is not JsonDataTypes.Number)
@@ -57,6 +60,10 @@ namespace Solti.Utils.Json
             );
         }
 
+        /// <summary>
+        /// Writes a JSON string to the underlying buffer representing the given <paramref name="str"/>.
+        /// </summary>
+        /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
         internal void WriteString(object str, SerializationContext currentContext)
         {
             if (currentContext.GetTypeOf(str) is not JsonDataTypes.String)
@@ -148,6 +155,24 @@ namespace Solti.Utils.Json
                         .AsString()
 #endif
                 );
+            }
+        }
+
+        /// <summary>
+        /// Writes the given literal to the underlying buffer.
+        /// </summary>
+        internal void WriteLiteral(object? val, SerializationContext currentContext)
+        {
+            switch (val)
+            {
+                case null:
+                    dest.Write("null");
+                    break;
+                case bool b:
+                    dest.Write(b ? "true" : "false");
+                    break;
+                default:
+                    throw new InvalidCastException();
             }
         }
 
