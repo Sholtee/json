@@ -63,7 +63,7 @@ namespace Solti.Utils.Json
                 throw new InvalidCastException();
 
             if (str is not string s)
-                s = Convert.ToString(str, CultureInfo.InvariantCulture);
+                s = currentContext.ConvertToString(str);
 
             dest.Write('"');
     

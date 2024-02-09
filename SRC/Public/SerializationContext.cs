@@ -4,8 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 
 namespace Solti.Utils.Json
 {
@@ -23,6 +21,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Converts the given value to <see cref="string"/>.
         /// </summary>
+        /// <remarks>You can implement -for instance- <see cref="DateTime"/> to <see cref="string"/> conversation here.</remarks>
         public required ToStringDelegate ConvertToString { get; init; }
     }
 }
