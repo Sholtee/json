@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* UntypedSerializationContext.cs                                                *
+* SerializationContext.Untyped.cs                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,9 +9,9 @@ using System.Globalization;
 
 namespace Solti.Utils.Json
 {
-    public static class UntypedSerializationContext
+    public sealed partial record SerializationContext
     {
-        public static SerializationContext Instance { get; } = new()
+        public static SerializationContext Untyped { get; } = new()
         {
             ConvertToString = static val => Convert.ToString(val, CultureInfo.InvariantCulture),
 

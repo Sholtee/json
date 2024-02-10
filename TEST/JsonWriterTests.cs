@@ -46,7 +46,7 @@ namespace Solti.Utils.Json.Tests
             StringWriter store = new();  // will be closed by the writer
             using JsonWriter writer = new(store);
 
-            writer.WriteString(input, UntypedSerializationContext.Instance);
+            writer.WriteString(input, SerializationContext.Untyped);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"{expected}\""));
         }
@@ -57,7 +57,7 @@ namespace Solti.Utils.Json.Tests
             StringWriter store = new();  // will be closed by the writer
             using JsonWriter writer = new(store);
 
-            writer.WriteString(input, UntypedSerializationContext.Instance);
+            writer.WriteString(input, SerializationContext.Untyped);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"{input}\""));
         }
@@ -66,7 +66,7 @@ namespace Solti.Utils.Json.Tests
         public void WriteString_ShouldThrowOnInvalidInput()
         {
             using JsonWriter writer = new(new StringWriter());
-            Assert.Throws<InvalidCastException>(() => writer.WriteString(new object(), UntypedSerializationContext.Instance));
+            Assert.Throws<InvalidCastException>(() => writer.WriteString(new object(), SerializationContext.Untyped));
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace Solti.Utils.Json.Tests
             StringWriter store = new();
             using JsonWriter writer = new(store);
 
-            writer.WriteString(1986, UntypedSerializationContext.Instance with { GetTypeOf = _ => JsonDataTypes.String });
+            writer.WriteString(1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String });
 
             Assert.That(store.ToString(), Is.EqualTo($"\"1986\""));
         }
@@ -87,7 +87,7 @@ namespace Solti.Utils.Json.Tests
             StringWriter store = new();
             using JsonWriter writer = new(store);
 
-            writer.WriteNumber(input, UntypedSerializationContext.Instance);
+            writer.WriteNumber(input, SerializationContext.Untyped);
 
             Assert.That(store.ToString(), Is.EqualTo(expected));
         }
@@ -97,7 +97,7 @@ namespace Solti.Utils.Json.Tests
         {
             using JsonWriter writer = new(new StringWriter());
 
-            Assert.Throws<InvalidCastException>(() => writer.WriteNumber("invalid", UntypedSerializationContext.Instance));
+            Assert.Throws<InvalidCastException>(() => writer.WriteNumber("invalid", SerializationContext.Untyped));
         }
 
         [TestCase(null, "null")]
@@ -108,7 +108,7 @@ namespace Solti.Utils.Json.Tests
             StringWriter store = new();
             using JsonWriter writer = new(store);
 
-            writer.WriteLiteral(input, UntypedSerializationContext.Instance);
+            writer.WriteLiteral(input, SerializationContext.Untyped);
 
             Assert.That(store.ToString(), Is.EqualTo(expected));
         }
@@ -118,7 +118,7 @@ namespace Solti.Utils.Json.Tests
         {
             using JsonWriter writer = new(new StringWriter());
 
-            Assert.Throws<InvalidCastException>(() => writer.WriteLiteral("invalid", UntypedSerializationContext.Instance));
+            Assert.Throws<InvalidCastException>(() => writer.WriteLiteral("invalid", SerializationContext.Untyped));
         }
     }
 }

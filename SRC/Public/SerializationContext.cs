@@ -7,7 +7,7 @@ using System;
 
 namespace Solti.Utils.Json
 {
-    public sealed record SerializationContext
+    public sealed partial record SerializationContext
     {
         public delegate JsonDataTypes GetTypeDelegate(object? obj);
 
