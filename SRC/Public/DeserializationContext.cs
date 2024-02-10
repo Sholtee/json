@@ -51,11 +51,13 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Creates a rawobject instance, if supported.
         /// </summary>
+        /// <remarks>If the value of this property is not null <see cref="GetPropertyContext"/> also need to be provided</remarks>
         public RawObjectFavtoryDelegate? CreateRawObject { get; init; }
 
         /// <summary>
         /// Creates a raw list instance, if supported.
         /// </summary>
+        /// <remarks>If the value of this property is not null <see cref="GetListItemContext"/> also need to be provided</remarks>
         public RawObjectFavtoryDelegate? CreateRawList { get; init; }
 
         /// <summary>

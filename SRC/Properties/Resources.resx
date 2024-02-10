@@ -144,6 +144,9 @@
   <data name="UNEXPECTED_LIST_ITEM" xml:space="preserve">
     <value>Unexpected list item.</value>
   </data>
+  <data name="UNEXPECTED_PROPERTY" xml:space="preserve">
+    <value>Unexpected property</value>
+  </data>
   <data name="UNEXPECTED_WHITE_SPACE" xml:space="preserve">
     <value>Unexpected white space</value>
   </data>

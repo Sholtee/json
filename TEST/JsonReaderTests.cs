@@ -179,12 +179,12 @@ namespace Solti.Utils.Json.Tests
         }
 
         [Test]
-        public void ConsumeAndValidate_ShouldValidateTheReturnedToken()
+        public void Consume_ShouldValidateTheReturnedToken()
         {
             using JsonReader rdr = CreateReader("{");
 
-            Assert.That(rdr.ConsumeAndValidate(JsonTokens.Eof | JsonTokens.CurlyOpen), Is.EqualTo(JsonTokens.CurlyOpen));
-            Assert.Throws<FormatException>(() => rdr.ConsumeAndValidate(JsonTokens.Eof));
+            Assert.That(rdr.Consume(JsonTokens.Eof | JsonTokens.CurlyOpen, DeserializationContext.Default), Is.EqualTo(JsonTokens.CurlyOpen));
+            Assert.Throws<FormatException>(() => rdr.Consume(JsonTokens.Eof, DeserializationContext.Default));
         }
 
         public static IEnumerable<object[]> ParseString_ShouldParseSingleStrings_Params
@@ -204,7 +204,7 @@ namespace Solti.Utils.Json.Tests
         {
             using JsonReader rdr = CreateReader(input, JsonReaderFlags.AllowSingleQuotedStrings);
 
-            Assert.That(rdr.ParseString(bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(rdr.ParseString(DeserializationContext.Default, bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(rdr.Content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -241,7 +241,7 @@ namespace Solti.Utils.Json.Tests
         {
             using JsonReader rdr = CreateReader(input);
 
-            Assert.That(rdr.ParseString(bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(rdr.ParseString(DeserializationContext.Default, bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(rdr.Content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -258,7 +258,7 @@ namespace Solti.Utils.Json.Tests
         {
             using JsonReader rdr = CreateReader(input);
 
-            Assert.Throws<FormatException>(() => rdr.ParseString('"'));
+            Assert.Throws<FormatException>(() => rdr.ParseString(DeserializationContext.Default));
         }
 
         public static IEnumerable<object[]> ParseString_ShouldThrowOnUnescapedSpace_Params
@@ -279,7 +279,7 @@ namespace Solti.Utils.Json.Tests
         {
             using JsonReader rdr = CreateReader(input);
 
-            FormatException ex = Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize))!;
+            FormatException ex = Assert.Throws<FormatException>(() => rdr.ParseString(DeserializationContext.Default, bufferSize))!;
             Assert.That(ex.Data.Contains("column"));
             Assert.That(ex.Data["row"], Is.EqualTo(0));
             Assert.That(ex.Data["column"], Is.EqualTo(position));
@@ -309,7 +309,7 @@ namespace Solti.Utils.Json.Tests
         {
             using JsonReader rdr = CreateReader(input);
 
-            Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize));
+            Assert.Throws<FormatException>(() => rdr.ParseString(DeserializationContext.Default, bufferSize));
             Assert.That(rdr.Column, Is.EqualTo(col));
         }
 
@@ -337,7 +337,7 @@ namespace Solti.Utils.Json.Tests
         {
             using JsonReader rdr = CreateReader(input);
 
-            Assert.That(rdr.ParseString(bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(rdr.ParseString(DeserializationContext.Default, bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(rdr.Content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -372,7 +372,7 @@ namespace Solti.Utils.Json.Tests
         {
             using JsonReader rdr = CreateReader(input);
 
-            Assert.Throws<FormatException>(() => rdr.ParseString(bufferSize));
+            Assert.Throws<FormatException>(() => rdr.ParseString(DeserializationContext.Default, bufferSize));
             Assert.That(rdr.Column, Is.EqualTo(col));
         }
 
@@ -545,7 +545,10 @@ namespace Solti.Utils.Json.Tests
                 yield return new object[] { "[\"1\"]", new List<object?> { "1" }, JsonReaderFlags.None };
                 yield return new object[] { "[1,]", new List<object?> { 1 }, JsonReaderFlags.AllowTrailingComma };
                 yield return new object[] { "[\"1\",]", new List<object?> { "1" }, JsonReaderFlags.AllowTrailingComma };
+                yield return new object[] { "[\"1\",//comment\r\n]", new List<object?> { "1" }, JsonReaderFlags.AllowTrailingComma | JsonReaderFlags.AllowComments };
                 yield return new object[] { "[\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonReaderFlags.None };
+                yield return new object[] { "[\r\n//comment\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonReaderFlags.AllowComments };
+                yield return new object[] { "[\r\n\"1\"\r\n//comment\r\n]", new List<object?> { "1" }, JsonReaderFlags.AllowComments };
                 yield return new object[] { "[null, true, false, 1, \"1\"]", new List<object?> { null, true, false, 1, "1" }, JsonReaderFlags.None };
                 yield return new object[] { "[[]]", new List<object?> { new List<object?> { } }, JsonReaderFlags.None };
             }
@@ -561,19 +564,18 @@ namespace Solti.Utils.Json.Tests
         }
 
         [Test]
-        public void ParseList_ShouldSkipUnknownItems()
+        public void ParseList_ShouldSkipUnknownItems([Values("[1, 2, 3]", "[1, [2], 3]", "[1, {}, 3]")] string input)
         {
-            using JsonReader rdr = CreateReader("[1, [2], 3]");
+            using JsonReader rdr = CreateReader(input);
 
             Assert.That(rdr.ParseList(0, DeserializationContext.Untyped with { GetListItemContext = i => i != 1 ? DeserializationContext.Untyped.GetListItemContext!(i) : null }, default), Is.EquivalentTo(new List<object?> { 1, 3 }));
-            Assert.That(rdr.Row, Is.EqualTo(0));
-            Assert.That(rdr.Column, Is.EqualTo(11));
+            Assert.That(rdr.Content.PeekChar(), Is.EqualTo(-1));
         }
 
         [Test]
-        public void ParseList_ShouldThrowOnUnknownItems()
+        public void ParseList_ShouldThrowOnUnknownItems([Values("[1, 2, 3]", "[1, [2], 3]", "[1, {}, 3]")] string input)
         {
-            using JsonReader rdr = CreateReader("[1, [2], 3]", JsonReaderFlags.ThrowOnUnknownListItem);
+            using JsonReader rdr = CreateReader(input, JsonReaderFlags.ThrowOnUnknownListItem);
 
             Assert.Throws<FormatException>(() => rdr.ParseList(0, DeserializationContext.Untyped with { GetListItemContext = i => i != 1 ? DeserializationContext.Untyped.GetListItemContext!(i) : null }, default));
             Assert.That(rdr.Column, Is.EqualTo(4));
@@ -599,7 +601,7 @@ namespace Solti.Utils.Json.Tests
         public void ParseObject_ShouldThrowOnInvalidContext()
         {
             using JsonReader rdr = CreateReader("{}");
-            Assert.Throws<InvalidOperationException>(() => rdr.ParseObject(0, DeserializationContext.Untyped with { CreateRawObject = null }, default));
+            Assert.Throws<InvalidOperationException>(() => rdr.ParseObject(0, DeserializationContext.Untyped with { GetPropertyContext = null }, default));
         }
 
         public static IEnumerable<object[]> ParseObject_ShouldParse_Params
@@ -613,6 +615,9 @@ namespace Solti.Utils.Json.Tests
                 yield return new object[] { "{\"cica\": 1,}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowTrailingComma };
                 yield return new object[] { "{\"cica\": \"1\",}", new Dictionary<string, object?> { { "cica", "1" } }, JsonReaderFlags.AllowTrailingComma };
                 yield return new object[] { "{\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.None };
+                yield return new object[] { "{\r\n  //comment\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowComments };
+                yield return new object[] { "{\r\n  \"cica\": 1 //comment\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowComments };
+                yield return new object[] { "{\r\n  \"cica\": 1, //comment\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowComments | JsonReaderFlags.AllowTrailingComma };
                 yield return new object[] { "{\"nested\": {}}", new Dictionary<string, object?> { { "nested", new Dictionary<string, object?> { } } }, JsonReaderFlags.None };
             }
         }
@@ -624,6 +629,24 @@ namespace Solti.Utils.Json.Tests
 
             Assert.That(rdr.ParseObject(0, DeserializationContext.Untyped, default), Is.EquivalentTo(expected));
             Assert.That(rdr.Content.PeekChar(), Is.EqualTo(-1));
+        }
+
+        [Test]
+        public void ParseObject_ShouldSkipUnknownItems([Values("{\"1\": 1, \"2\": 2, \"3\": 3}", "{\"1\": 1, \"2\": [2], \"3\": 3}", "{\"1\": 1, \"2\": {}, \"3\": 3}")] string input)
+        {
+            using JsonReader rdr = CreateReader(input);
+
+            Assert.That(rdr.ParseObject(0, DeserializationContext.Untyped with { GetPropertyContext = (name, comp) => !name.AsString().Equals("2", comp) ? DeserializationContext.Untyped.GetPropertyContext!(name, comp) : null }, default), Is.EquivalentTo(new Dictionary<string, object?> { { "1", 1 }, { "3", 3 } }));
+            Assert.That(rdr.Content.PeekChar(), Is.EqualTo(-1));
+        }
+
+        [Test]
+        public void ParseObject_ShouldThrowOnUnknownItems([Values("{\"1\": 1, \"2\": 2, \"3\": 3}", "{\"1\": 1, \"2\": [2], \"3\": 3}", "{\"1\": 1, \"2\": {}, \"3\": 3}")] string input)
+        {
+            using JsonReader rdr = CreateReader(input, JsonReaderFlags.ThrowOnUnknownProperty);
+
+            Assert.Throws<FormatException>(() => rdr.ParseObject(0, DeserializationContext.Untyped with { GetPropertyContext = (name, comp) => !name.AsString().Equals("2", comp) ? DeserializationContext.Untyped.GetPropertyContext!(name, comp) : null }, default));
+            Assert.That(rdr.Column, Is.EqualTo(12));
         }
 
         [TestCase("true", JsonReaderFlags.None, JsonDataTypes.Boolean, true)]

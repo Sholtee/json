@@ -142,22 +142,6 @@ namespace Solti.Utils.Json
         }
 
         /// <summary>
-        /// Consumes the current token which the reader is positioned on. Throws a <see cref="FormatException"/> if the token is not in the given range.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal JsonTokens ConsumeAndValidate(JsonTokens expected)
-        {
-            JsonTokens got = Consume();
-            if (!expected.HasFlag(got) || got is JsonTokens.Unknown)
-                //
-                // Concatenation of "expected" flags are done by the system
-                //
-
-                ThrowFormatException(string.Format(MALFORMED_INPUT, expected, got, Row, Column));
-            return got;
-        }
-
-        /// <summary>
         /// Consumes the current token which the reader is positioned on.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -186,9 +170,50 @@ namespace Solti.Utils.Json
             };
         }
 
-        internal ReadOnlySpan<char> ParseString(int initialBufferSize = 128 /*for debug*/)
+        /// <summary>
+        /// Consumes the current token which the reader is positioned on. Throws a <see cref="FormatException"/> if the token is not in the given range.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal JsonTokens Consume(JsonTokens expected)
         {
-            ConsumeAndValidate(JsonTokens.DoubleQuote | JsonTokens.SingleQuote);
+            JsonTokens got = Consume();
+            if (!expected.HasFlag(got) || got is JsonTokens.Unknown)
+                //
+                // Concatenation of "expected" flags are done by the system
+                //
+
+                ThrowFormatException(string.Format(MALFORMED_INPUT, expected, got, Row, Column));
+            return got;
+        }
+
+        /// <summary>
+        /// Consumes the current token which the reader is positioned on. Throws a <see cref="FormatException"/> if the token is not in the given range.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal JsonTokens Consume(JsonTokens expected, DeserializationContext currentContext)
+        {
+            if (!flags.HasFlag(JsonReaderFlags.AllowComments))
+                //
+                // MALFORMED_INPUT can be confusing if it says we expect a DoubleSlash as well while
+                // "flags" doesn't allow comments
+                //
+
+                return Consume(expected);
+
+            start:
+            JsonTokens got = Consume(expected | JsonTokens.DoubleSlash);
+
+            if (got is JsonTokens.DoubleSlash)
+            {
+                ParseComment(currentContext);
+                goto start;
+            }
+
+            return got;
+        }
+
+        internal ReadOnlySpan<char> ParseString(DeserializationContext currentContext, int initialBufferSize = 128 /*for debug*/)
+        {
             int quote = FContent.PeekChar();
             Advance(1);
 
@@ -354,8 +379,6 @@ namespace Solti.Utils.Json
 
         internal object ParseNumber(DeserializationContext currentContext, int initialBufferSize = 16 /*for debug*/)
         {
-            ConsumeAndValidate(JsonTokens.Number);
-
             Span<char> buffer;
             bool isFloating = false;
 
@@ -444,11 +467,10 @@ namespace Solti.Utils.Json
         }
 
         /// <summary>
-        /// Returns null if the whole list had to be skipped.
+        /// Returns null if the whole list had to be ingored.
         /// </summary>
         internal object? ParseList(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
-            ConsumeAndValidate(JsonTokens.SquaredOpen);
             Advance(1);
 
             //
@@ -463,31 +485,26 @@ namespace Solti.Utils.Json
 
             int i = 0;
 
-            for (JsonTokens token = Consume(); token is not JsonTokens.SquaredClose; i++)
+            for (JsonTokens token = Consume((JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, currentContext); token is not JsonTokens.SquaredClose; i++)
             {
+                DeserializationContext? childContext = null;
                 if (getListItemContext is not null)
                 {
-                    DeserializationContext? childContext = getListItemContext(i);
-                    if (childContext is null)
-                    {
-                        if (flags.HasFlag(JsonReaderFlags.ThrowOnUnknownListItem))
-                            MalformedValue("list", UNEXPECTED_LIST_ITEM);
-                        Skip(currentDepth, cancellation);
-                    }
-                    else
-                    {
-                        Assert(list is not null, "CAnnot extend a NULL list");
-                        VerifyDelegate(childContext.Push)(list!, Parse(currentDepth, childContext, cancellation));
-                    }
+                    childContext = getListItemContext(i);
+                    if (childContext is null && flags.HasFlag(JsonReaderFlags.ThrowOnUnknownListItem))
+                        MalformedValue("list", UNEXPECTED_LIST_ITEM);
                 }
+
+                if (childContext is null)
+                    Skip(currentDepth, cancellation);                   
                 else
-                    Skip(currentDepth, cancellation);
+                    VerifyDelegate(childContext.Push)(list!, Parse(currentDepth, childContext, cancellation));
 
                 //
                 // Check if we reached the end of the list or we have a next element.
                 //
 
-                token = ConsumeAndValidate(JsonTokens.SquaredClose | JsonTokens.Comma);
+                token = Consume(JsonTokens.SquaredClose | JsonTokens.Comma, currentContext);
                 if (token is JsonTokens.Comma)
                 {
                     //
@@ -495,7 +512,7 @@ namespace Solti.Utils.Json
                     //
 
                     Advance(1);
-                    token = Consume();
+                    token = Consume((JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, currentContext);
 
                     if (token is JsonTokens.SquaredClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
                         MalformedValue("list", MISSING_ITEM);
@@ -507,33 +524,45 @@ namespace Solti.Utils.Json
             return list;
         }
 
-        internal object ParseObject(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
+        /// <summary>
+        /// Returns null if the whole object had to be ingored.
+        /// </summary>
+        internal object? ParseObject(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
-            ConsumeAndValidate(JsonTokens.CurlyOpen);
             Advance(1);
 
-            GetPropertyContextDelegate getPropertyContext = VerifyDelegate(currentContext.GetPropertyContext);
+            object? obj = currentContext.CreateRawObject?.Invoke();
 
-            object obj = VerifyDelegate(currentContext.CreateRawObject)();
-
-            for (JsonTokens token = Consume(); token is not JsonTokens.CurlyClose;)
+            GetPropertyContextDelegate? getPropertyContext = obj is not null
+                ? VerifyDelegate(currentContext.GetPropertyContext)
+                : null;
+        
+            for (JsonTokens token = Consume(JsonTokens.CurlyClose | JsonTokens.SingleQuote | JsonTokens.DoubleQuote, currentContext); token is not JsonTokens.CurlyClose;)
             {
-                DeserializationContext childContext = getPropertyContext
-                (
-                    ParseString(),
-                    FComparison
-                )!;
+                Consume(JsonTokens.SingleQuote | JsonTokens.DoubleQuote, currentContext);  // ensure we have a string
+                ReadOnlySpan<char> propertyName = ParseString(currentContext);
 
-                ConsumeAndValidate(JsonTokens.Colon);
+                DeserializationContext? childContext = null;
+                if (getPropertyContext is not null)
+                {
+                    childContext = getPropertyContext(propertyName, FComparison);
+                    if (childContext is null && flags.HasFlag(JsonReaderFlags.ThrowOnUnknownProperty))
+                        MalformedValue("object", UNEXPECTED_PROPERTY);
+                }
+
+                Consume(JsonTokens.Colon, currentContext);
                 Advance(1);
 
-                VerifyDelegate(childContext!.Push)(obj, Parse(currentDepth, childContext, cancellation));
+                if (childContext is null)
+                    Skip(currentDepth, cancellation);
+                else
+                    VerifyDelegate(childContext.Push)(obj!, Parse(currentDepth, childContext, cancellation));
 
                 //
                 // Check if we reached the end of the object or we have a next element.
                 //
 
-                token = ConsumeAndValidate(JsonTokens.CurlyClose | JsonTokens.Comma);
+                token = Consume(JsonTokens.CurlyClose | JsonTokens.Comma, currentContext);
                 if (token is JsonTokens.Comma)
                 {
                     //
@@ -541,7 +570,7 @@ namespace Solti.Utils.Json
                     //
 
                     Advance(1);
-                    token = Consume();
+                    token = Consume(JsonTokens.CurlyClose | JsonTokens.DoubleQuote | JsonTokens.SingleQuote, currentContext);
 
                     if (token is JsonTokens.CurlyClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
                         MalformedValue("object", MISSING_PROP);
@@ -555,7 +584,6 @@ namespace Solti.Utils.Json
 
         internal void ParseComment(DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
-            ConsumeAndValidate(JsonTokens.DoubleSlash);
             Advance(2);
 
             Span<char> buffer;
@@ -610,8 +638,7 @@ namespace Solti.Utils.Json
 
             object? result;
 
-            start:
-            switch (ConsumeAndValidate((JsonTokens) currentContext.SupportedTypes | JsonTokens.DoubleSlash)) 
+            switch (Consume((JsonTokens) currentContext.SupportedTypes | JsonTokens.DoubleSlash, currentContext)) 
             {
                 case JsonTokens.CurlyOpen:
                     result = ParseObject(Deeper(currentDepth), currentContext, cancellation);
@@ -620,11 +647,8 @@ namespace Solti.Utils.Json
                     result = ParseList(Deeper(currentDepth), currentContext, cancellation);
                     break;
                 case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
-                    result = currentContext.ConvertString(ParseString());
+                    result = currentContext.ConvertString(ParseString(currentContext));
                     break;
-                case JsonTokens.DoubleSlash:
-                    ParseComment(currentContext);
-                    goto start;
                 case JsonTokens.Number:
                     result = ParseNumber(currentContext);
                     break;
@@ -648,7 +672,7 @@ namespace Solti.Utils.Json
             currentContext.Verify?.Invoke(result);
             return result;
         }
-#endregion
+        #endregion
 
         /// <summary>
         /// Gets the current row which is the reader is positioned on
@@ -673,8 +697,7 @@ namespace Solti.Utils.Json
                 // Parse trailing comments properly.
                 //
 
-                while (ConsumeAndValidate(JsonTokens.Eof | JsonTokens.DoubleSlash) is JsonTokens.DoubleSlash)
-                    ParseComment(context);
+                Consume(JsonTokens.Eof, context);
             }
             return FResult;
         }
