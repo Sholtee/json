@@ -212,6 +212,9 @@ namespace Solti.Utils.Json
             return got;
         }
 
+        /// <summary>
+        /// Parses the string which the reader is positioned on. The returned <see cref="ReadOnlySpan{char}"/> is valid until the next <see cref="Consume()"/> call. 
+        /// </summary>
         internal ReadOnlySpan<char> ParseString(DeserializationContext currentContext, int initialBufferSize = 128 /*for debug*/)
         {
             int quote = FContent.PeekChar();
@@ -370,13 +373,17 @@ namespace Solti.Utils.Json
             }
         }
 
-        //
-        // a) 100
-        // b) 100.0
-        // c) 1.0E+2
-        // d) 1E+2
-        //
-
+        /// <summary>
+        /// Parses the number which the reader is positioned on. The number can be signed integer or floating as well:
+        /// <list type="bullet">
+        /// <item>-100</item>
+        /// <item>-100.0</item>
+        /// <item>100</item>
+        /// <item>100.0</item>
+        /// <item>1.0E+2</item>
+        /// <item>1E+2</item>
+        /// </list>
+        /// </summary>
         internal object ParseNumber(DeserializationContext currentContext, int initialBufferSize = 16 /*for debug*/)
         {
             Span<char> buffer;
@@ -467,7 +474,7 @@ namespace Solti.Utils.Json
         }
 
         /// <summary>
-        /// Returns null if the whole list had to be ingored.
+        /// Parses the list which the reader is positioned on. Returns null if the whole list had to be ingored.
         /// </summary>
         internal object? ParseList(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
@@ -525,7 +532,7 @@ namespace Solti.Utils.Json
         }
 
         /// <summary>
-        /// Returns null if the whole object had to be ingored.
+        /// Parses the object which the reader is positioned on. Returns null if the whole object had to be ingored.
         /// </summary>
         internal object? ParseObject(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
@@ -537,9 +544,9 @@ namespace Solti.Utils.Json
                 ? VerifyDelegate(currentContext.GetPropertyContext)
                 : null;
         
-            for (JsonTokens token = Consume(JsonTokens.CurlyClose | JsonTokens.SingleQuote | JsonTokens.DoubleQuote, currentContext); token is not JsonTokens.CurlyClose;)
+            for (JsonTokens token = Consume(JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, currentContext); token is not JsonTokens.CurlyClose;)
             {
-                Consume(JsonTokens.SingleQuote | JsonTokens.DoubleQuote, currentContext);  // ensure we have a string
+                Consume((JsonTokens) JsonDataTypes.String, currentContext);  // ensure we have a string
                 ReadOnlySpan<char> propertyName = ParseString(currentContext);
 
                 DeserializationContext? childContext = null;
@@ -570,7 +577,7 @@ namespace Solti.Utils.Json
                     //
 
                     Advance(1);
-                    token = Consume(JsonTokens.CurlyClose | JsonTokens.DoubleQuote | JsonTokens.SingleQuote, currentContext);
+                    token = Consume(JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, currentContext);
 
                     if (token is JsonTokens.CurlyClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
                         MalformedValue("object", MISSING_PROP);
@@ -582,6 +589,9 @@ namespace Solti.Utils.Json
             return obj;
         }
 
+        /// <summary>
+        /// Parses the comment which the reader is positioned on. This method is also responsible for invoking the corresponding comment processor function.   
+        /// </summary>
         internal void ParseComment(DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
             Advance(2);
@@ -632,6 +642,9 @@ namespace Solti.Utils.Json
             currentContext.CommentParser?.Invoke(buffer.Slice(0, lineEnd));
         }
 
+        /// <summary>
+        /// Parses the input then validates the result.
+        /// </summary>
         internal object? Parse(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
             cancellation.ThrowIfCancellationRequested();
@@ -685,8 +698,9 @@ namespace Solti.Utils.Json
         public int Column { get; private set; }
 
         /// <summary>
-        /// Parses the <see cref="input"/>
+        /// Parses the input
         /// </summary>
+        /// <remarks>This method processes the input only once. Subsequent calls will return the same object that was created on the first invocation.</remarks>
         public object? Parse(in CancellationToken cancellation)
         {
             if (FResult == UNSET)
