@@ -125,7 +125,7 @@ namespace Solti.Utils.Json
             for (Span<char> read; (read = FContent.PeekText(bufferSize)).Length > 0;)
             {
                 int skip;
-                for (skip = 0; skip < read.Length && char.IsWhiteSpace(read[skip]); skip++)
+                for (skip = 0; skip < read.Length && IsWhiteSpace(read[skip]); skip++)
                 {
                     if (read[skip] is '\n')
                     {
