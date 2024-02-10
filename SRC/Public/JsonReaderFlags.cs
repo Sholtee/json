@@ -37,5 +37,15 @@ namespace Solti.Utils.Json
         /// Instructs the parser to use case insensitive comparison.
         /// </summary>
         CaseInsensitive = 1 << 3,
+
+        /// <summary>
+        /// Instructs the system to throw if it encounters an unknown list item. If this flag is not set the item will be ignored.
+        /// </summary>
+        ThrowOnUnknownListItem = 1 << 4,
+
+        /// <summary>
+        /// Instructs the system to throw if it encounters an unknown property. If this flag is not set the property will be ignored.
+        /// </summary>
+        ThrowOnUnknownProperty = 1 << 5
     }
 }

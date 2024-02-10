@@ -73,7 +73,7 @@ namespace Solti.Utils.Json.Perf
         [Benchmark]
         public void Parse()
         {
-            using JsonReader rdr = new(Input(), UntypedDeserializationContext.Instance, JsonReaderFlags.None, 256);
+            using JsonReader rdr = new(Input(), DeserializationContext.Untyped, JsonReaderFlags.None, 256);
             _ = rdr.Parse(CancellationToken.None);
         }
     }
@@ -84,7 +84,7 @@ namespace Solti.Utils.Json.Perf
         [Benchmark]
         public void CreateAndDestroyReader()
         {
-            using JsonReader rdr = new(new StringReader(""), UntypedDeserializationContext.Instance, JsonReaderFlags.None, 256);
+            using JsonReader rdr = new(new StringReader(""), DeserializationContext.Untyped, JsonReaderFlags.None, 256);
         }
     }
 }

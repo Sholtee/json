@@ -31,11 +31,15 @@ namespace Solti.Utils.Json
             NULL = "null",
             DOUBLE_SLASH = "//";
 
+        private static readonly object UNSET = new();
+
         private readonly StringComparison FComparison = flags.HasFlag(JsonReaderFlags.CaseInsensitive)
             ? StringComparison.OrdinalIgnoreCase
             : StringComparison.Ordinal;
 
         private readonly TextReaderWrapper FContent = new(content);
+
+        private object? FResult = UNSET;
 
         /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
@@ -91,7 +95,13 @@ namespace Solti.Utils.Json
         /// Verifies the given <paramref name="delegate"/>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static T VerifyDelegate<T>(T? @delegate) where T: Delegate => @delegate ?? throw new InvalidOperationException(INVALID_CONTEXT);
+        static T VerifyDelegate<T>(T? @delegate) where T : Delegate => @delegate ?? throw new InvalidOperationException(INVALID_CONTEXT);
+
+        /// <summary>
+        /// Skips the value on which the reader is positioned.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void Skip(int currentDepth, in CancellationToken cancellation) => Parse(currentDepth, Default, cancellation);
 
         void IDisposable.Dispose()
         {
@@ -433,21 +443,45 @@ namespace Solti.Utils.Json
             return result!;
         }
 
-        internal object ParseList(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
+        /// <summary>
+        /// Returns null if the whole list had to be skipped.
+        /// </summary>
+        internal object? ParseList(int currentDepth, DeserializationContext currentContext, in CancellationToken cancellation)
         {
             ConsumeAndValidate(JsonTokens.SquaredOpen);
             Advance(1);
- 
-            GetListItemContextDelegate getListItemContext = VerifyDelegate(currentContext.GetListItemContext);
 
-            object list = VerifyDelegate(currentContext.CreateRawList)();
+            //
+            // If CreateRawList is null OR returns null we won't deserialize the list at all
+            //
+
+            object? list = currentContext.CreateRawList?.Invoke();
+
+            GetListItemContextDelegate? getListItemContext = list is not null
+                ? VerifyDelegate(currentContext.GetListItemContext)
+                : null;
+
             int i = 0;
 
-            for (JsonTokens token = Consume(); token is not JsonTokens.SquaredClose;)
+            for (JsonTokens token = Consume(); token is not JsonTokens.SquaredClose; i++)
             {
-                DeserializationContext childContext = getListItemContext(i++);
-
-                VerifyDelegate(childContext.Push)(list, Parse(currentDepth, childContext, cancellation));
+                if (getListItemContext is not null)
+                {
+                    DeserializationContext? childContext = getListItemContext(i);
+                    if (childContext is null)
+                    {
+                        if (flags.HasFlag(JsonReaderFlags.ThrowOnUnknownListItem))
+                            MalformedValue("list", UNEXPECTED_LIST_ITEM);
+                        Skip(currentDepth, cancellation);
+                    }
+                    else
+                    {
+                        Assert(list is not null, "CAnnot extend a NULL list");
+                        VerifyDelegate(childContext.Push)(list!, Parse(currentDepth, childContext, cancellation));
+                    }
+                }
+                else
+                    Skip(currentDepth, cancellation);
 
                 //
                 // Check if we reached the end of the list or we have a next element.
@@ -488,12 +522,12 @@ namespace Solti.Utils.Json
                 (
                     ParseString(),
                     FComparison
-                );
+                )!;
 
                 ConsumeAndValidate(JsonTokens.Colon);
                 Advance(1);
 
-                VerifyDelegate(childContext.Push)(obj, Parse(currentDepth, childContext, cancellation));
+                VerifyDelegate(childContext!.Push)(obj, Parse(currentDepth, childContext, cancellation));
 
                 //
                 // Check if we reached the end of the object or we have a next element.
@@ -631,16 +665,18 @@ namespace Solti.Utils.Json
         /// </summary>
         public object? Parse(in CancellationToken cancellation)
         {
-            object? result = Parse(0, context, cancellation);
+            if (FResult == UNSET)
+            {
+                FResult = Parse(0, context, cancellation);
 
-            //
-            // Parse trailing comments properly.
-            //
+                //
+                // Parse trailing comments properly.
+                //
 
-            while(ConsumeAndValidate(JsonTokens.Eof | JsonTokens.DoubleSlash) is JsonTokens.DoubleSlash)
-                ParseComment(context);
-
-            return result;
+                while (ConsumeAndValidate(JsonTokens.Eof | JsonTokens.DoubleSlash) is JsonTokens.DoubleSlash)
+                    ParseComment(context);
+            }
+            return FResult;
         }
     }
 }

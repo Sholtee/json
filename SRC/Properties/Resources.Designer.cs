@@ -133,6 +133,15 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unexpected list item..
+        /// </summary>
+        internal static string UNEXPECTED_LIST_ITEM {
+            get {
+                return ResourceManager.GetString("UNEXPECTED_LIST_ITEM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unexpected white space.
         /// </summary>
         internal static string UNEXPECTED_WHITE_SPACE {

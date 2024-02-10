@@ -141,6 +141,9 @@
   <data name="NOT_NUMBER" xml:space="preserve">
     <value>Not a number</value>
   </data>
+  <data name="UNEXPECTED_LIST_ITEM" xml:space="preserve">
+    <value>Unexpected list item.</value>
+  </data>
   <data name="UNEXPECTED_WHITE_SPACE" xml:space="preserve">
     <value>Unexpected white space</value>
   </data>

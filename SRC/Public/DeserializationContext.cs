@@ -9,18 +9,21 @@ namespace Solti.Utils.Json
 {
     using Internals;
 
-    public sealed record DeserializationContext
+    public sealed partial record DeserializationContext
     {
         #region Delegates
-        public delegate DeserializationContext GetPropertyContextDelegate(ReadOnlySpan<char> property, StringComparison comparison);
+        public delegate DeserializationContext? GetPropertyContextDelegate(ReadOnlySpan<char> property, StringComparison comparison);
 
-        public delegate DeserializationContext GetListItemContextDelegate(int index);
+        /// <summary>
+        /// Gets the nested context belongs to the list item being parsed. If returns null the item being processed will be skipped.
+        /// </summary>
+        public delegate DeserializationContext? GetListItemContextDelegate(int index);
 
         public delegate void CommentParserDelegate(ReadOnlySpan<char> value);
 
         public delegate object RawObjectFavtoryDelegate();
 
-        public delegate void VerifyDelegate(object? value);
+        public delegate bool VerifyDelegate(object? value);
 
         public delegate void PushDelegate(object instance, object? value);
 
@@ -79,6 +82,6 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Converts the given value to a user specified type. For instance you can implement <see cref="int"/> to <see cref="DateTime"/> conversation here.
         /// </summary>
-        public ConvertNumberDelegate? ConvertNumber { get; init; }
+        public ConvertNumberDelegate? ConvertNumber { get; init; }  // TBD: universal Convert() instead?
     }
 }
