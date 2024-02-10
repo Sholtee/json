@@ -1114,21 +1114,15 @@ references:
   commentId: Overload:Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke
   fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke
   nameWithType: SerializationContext.ToStringDelegate.Invoke
-- uid: Solti.Utils.Json.UntypedSerializationContext
-  name: UntypedSerializationContext
-  href: Solti.Utils.Json.UntypedSerializationContext.html
-  commentId: T:Solti.Utils.Json.UntypedSerializationContext
-  fullName: Solti.Utils.Json.UntypedSerializationContext
-  nameWithType: UntypedSerializationContext
-- uid: Solti.Utils.Json.UntypedSerializationContext.Instance
-  name: Instance
-  href: Solti.Utils.Json.UntypedSerializationContext.html#Solti_Utils_Json_UntypedSerializationContext_Instance
-  commentId: P:Solti.Utils.Json.UntypedSerializationContext.Instance
-  fullName: Solti.Utils.Json.UntypedSerializationContext.Instance
-  nameWithType: UntypedSerializationContext.Instance
-- uid: Solti.Utils.Json.UntypedSerializationContext.Instance*
-  name: Instance
-  href: Solti.Utils.Json.UntypedSerializationContext.html#Solti_Utils_Json_UntypedSerializationContext_Instance_
-  commentId: Overload:Solti.Utils.Json.UntypedSerializationContext.Instance
-  fullName: Solti.Utils.Json.UntypedSerializationContext.Instance
-  nameWithType: UntypedSerializationContext.Instance
+- uid: Solti.Utils.Json.SerializationContext.Untyped
+  name: Untyped
+  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Untyped
+  commentId: P:Solti.Utils.Json.SerializationContext.Untyped
+  fullName: Solti.Utils.Json.SerializationContext.Untyped
+  nameWithType: SerializationContext.Untyped
+- uid: Solti.Utils.Json.SerializationContext.Untyped*
+  name: Untyped
+  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Untyped_
+  commentId: Overload:Solti.Utils.Json.SerializationContext.Untyped
+  fullName: Solti.Utils.Json.SerializationContext.Untyped
+  nameWithType: SerializationContext.Untyped
