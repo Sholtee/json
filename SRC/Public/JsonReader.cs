@@ -17,6 +17,7 @@ namespace Solti.Utils.Json
     using Internals;
 
     using static DeserializationContext;
+    using static Internals.Consts; 
     using static Properties.Resources;
 
     /// <summary>
@@ -25,12 +26,6 @@ namespace Solti.Utils.Json
     public sealed class JsonReader(TextReader content, DeserializationContext context, JsonReaderFlags flags, int maxDepth): IDisposable
     {
         #region Private
-        private static readonly string
-            TRUE = "true",
-            FALSE = "false",
-            NULL = "null",
-            DOUBLE_SLASH = "//";
-
         private static readonly object UNSET = new();
 
         private readonly StringComparison FComparison = flags.HasFlag(JsonReaderFlags.CaseInsensitive)

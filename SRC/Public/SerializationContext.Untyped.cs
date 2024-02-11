@@ -9,20 +9,27 @@ using System.Globalization;
 
 namespace Solti.Utils.Json
 {
+    using static Internals.Consts;
+
     public sealed partial record SerializationContext
     {
         public static SerializationContext Untyped { get; } = new()
         {
-            ConvertToString = static val => Convert.ToString(val, CultureInfo.InvariantCulture),
-
-            GetTypeOf = static val => val switch
+            ConvertToString = static val => val switch
             {
-                IDictionary<string, object?> => JsonDataTypes.Object,
-                IList<object?> => JsonDataTypes.List,
-                null => JsonDataTypes.Null,
-                bool => JsonDataTypes.Boolean,
-                string => JsonDataTypes.String,
-                ValueType when Convert.GetTypeCode(val) is >= TypeCode.SByte and <= TypeCode.Double => JsonDataTypes.Number,
+                bool b => b ? TRUE : FALSE,  // b.ToString() should be lowercased
+                null => NULL,
+                _ => Convert.ToString(val, CultureInfo.InvariantCulture)
+            },
+
+            GetTypeOf = static val => Convert.GetTypeCode(val) switch
+            {
+                TypeCode.Empty => JsonDataTypes.Null,
+                TypeCode.Boolean => JsonDataTypes.Boolean,
+                TypeCode.String => JsonDataTypes.String,
+                >= TypeCode.SByte and <= TypeCode.Double => JsonDataTypes.Number,
+                TypeCode.Object when val is IDictionary<string, object?> => JsonDataTypes.Object,
+                TypeCode.Object when val is IList<object?> => JsonDataTypes.List,
                 _ => JsonDataTypes.Unkown
             }
         }; 

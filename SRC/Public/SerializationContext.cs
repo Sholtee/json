@@ -11,7 +11,7 @@ namespace Solti.Utils.Json
     {
         public delegate JsonDataTypes GetTypeDelegate(object? obj);
 
-        public delegate string ToStringDelegate(object obj);
+        public delegate string ToStringDelegate(object? obj);
 
         /// <summary>
         /// Gets the type of the given value.

@@ -63,13 +63,6 @@ namespace Solti.Utils.Json.Tests
         }
 
         [Test]
-        public void WriteString_ShouldThrowOnInvalidInput()
-        {
-            using JsonWriter writer = new(new StringWriter());
-            Assert.Throws<InvalidCastException>(() => writer.WriteString(new object(), SerializationContext.Untyped));
-        }
-
-        [Test]
         public void WriteString_ShouldConvert()
         {
             StringWriter store = new();
@@ -80,45 +73,19 @@ namespace Solti.Utils.Json.Tests
             Assert.That(store.ToString(), Is.EqualTo($"\"1986\""));
         }
 
-        [TestCase(1986, "1986")]
-        [TestCase(1986.1026, "1986.1026")]
-        public void WriteNumber_ShouldStringifyTheGivenNumber(object input, string expected)
-        {
-            StringWriter store = new();
-            using JsonWriter writer = new(store);
-
-            writer.WriteNumber(input, SerializationContext.Untyped);
-
-            Assert.That(store.ToString(), Is.EqualTo(expected));
-        }
-
-        [Test]
-        public void WriteNumber_ShouldThrowOnInvalidNumber()
-        {
-            using JsonWriter writer = new(new StringWriter());
-
-            Assert.Throws<InvalidCastException>(() => writer.WriteNumber("invalid", SerializationContext.Untyped));
-        }
-
         [TestCase(null, "null")]
         [TestCase(true, "true")]
         [TestCase(false, "false")]
-        public void WriteLiteral_ShouldStringifyTheGivenValue(object input, string expected)
+        [TestCase(1986, "1986")]
+        [TestCase(1986.1026, "1986.1026")]
+        public void WriteValue_ShouldStringifyTheGivenValue(object input, string expected)
         {
             StringWriter store = new();
             using JsonWriter writer = new(store);
 
-            writer.WriteLiteral(input, SerializationContext.Untyped);
+            writer.WriteValue(input, SerializationContext.Untyped);
 
             Assert.That(store.ToString(), Is.EqualTo(expected));
-        }
-
-        [Test]
-        public void WriteLiteral_ShouldThrowOnInvalidValue()
-        {
-            using JsonWriter writer = new(new StringWriter());
-
-            Assert.Throws<InvalidCastException>(() => writer.WriteLiteral("invalid", SerializationContext.Untyped));
         }
     }
 }

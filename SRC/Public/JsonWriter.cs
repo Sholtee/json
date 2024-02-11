@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -20,11 +19,11 @@ namespace Solti.Utils.Json
     public sealed class JsonWriter(TextWriter dest) : IDisposable
     {
         #region Private
-        private static readonly IReadOnlyDictionary<int, char[]> FSpaces = GetSpacesDict(256);
+        private static readonly char[][] FSpaces = GetSpacesDict(256);
 
-        private static IReadOnlyDictionary<int, char[]> GetSpacesDict(int maxLength)  // slow but will be called only once
+        private static char[][] GetSpacesDict(int maxLength)  // slow but will be called only once
         {
-            Dictionary<int, char[]> spaces = new(maxLength);
+            char[][] spaces = new char[maxLength][];
             for (int i = 0; i < maxLength; i++)
             {
                 spaces[i] = GetSpacesAr(i);
@@ -32,33 +31,17 @@ namespace Solti.Utils.Json
             return spaces;
         }
 
-        private static char[] GetSpacesAr(int len) => Enumerable.Repeat(' ', len).ToArray();
+        private static char[] GetSpacesAr(int len) => [..Environment.NewLine, ..Enumerable.Repeat(' ', len)];
 
         private static char[] GetSpaces(int currentDepth)
         {
             int required = currentDepth * 2; // TODO: "2" from config
 
-            if (FSpaces.TryGetValue(required, out char[] spaces))
-                return spaces;
-
-            return GetSpacesAr(required);
+            return required < FSpaces.Length
+                ? GetSpacesAr(required)
+                : FSpaces[required];
         }
         #endregion
-
-        /// <summary>
-        /// Writes the gven number to the underlying buffer.
-        /// </summary>
-        internal void WriteNumber(object num, SerializationContext currentContext)
-        {
-            if (currentContext.GetTypeOf(num) is not JsonDataTypes.Number)
-                throw new InvalidCastException();
-
-            //dest.Write(GetSpaces(currentDepth));  // TODO: move to Write(obj)          
-            dest.Write
-            (
-                currentContext.ConvertToString(num)
-            );
-        }
 
         /// <summary>
         /// Writes a JSON string to the underlying buffer representing the given <paramref name="str"/>.
@@ -66,9 +49,6 @@ namespace Solti.Utils.Json
         /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
         internal void WriteString(object str, SerializationContext currentContext)
         {
-            if (currentContext.GetTypeOf(str) is not JsonDataTypes.String)
-                throw new InvalidCastException();
-
             if (str is not string s)
                 s = currentContext.ConvertToString(str);
 
@@ -159,22 +139,12 @@ namespace Solti.Utils.Json
         }
 
         /// <summary>
-        /// Writes the given literal to the underlying buffer.
+        /// Writes the given value to the underlying buffer.
         /// </summary>
-        internal void WriteLiteral(object? val, SerializationContext currentContext)
-        {
-            switch (val)
-            {
-                case null:
-                    dest.Write("null");
-                    break;
-                case bool b:
-                    dest.Write(b ? "true" : "false");
-                    break;
-                default:
-                    throw new InvalidCastException();
-            }
-        }
+        internal void WriteValue(object? val, SerializationContext currentContext) => dest.Write
+        (
+            currentContext.ConvertToString(val)
+        );
 
         void IDisposable.Dispose()
         {
