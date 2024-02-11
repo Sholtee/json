@@ -49,21 +49,23 @@ namespace Solti.Utils.Json
         }
 
         /// <summary>
-        /// Throws a <see cref="FormatException"/>. The exception being thrown is augmented by the actual row and column count.
+        /// Throws the given <see cref="Exception"/> extending the <see cref="Exception.Data"/> with reader's position
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void ThrowFormatException(string msg)
+        private void Throw(Exception ex)
         {
-            FormatException ex = new(msg);
             ex.Data["row"] = Row;
             ex.Data["column"] = Column;
             throw ex;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void MalformedValue(string type, string reason) => ThrowFormatException
+        private void MalformedValue(string type, string reason) => Throw
         (
-            string.Format(MALFORMED, type, Row, Column, reason)
+            new FormatException
+            (
+                string.Format(MALFORMED, type, Row, Column, reason)
+            )
         );
 
         /// <summary>
@@ -178,7 +180,13 @@ namespace Solti.Utils.Json
                 // Concatenation of "expected" flags are done by the system
                 //
 
-                ThrowFormatException(string.Format(MALFORMED_INPUT, expected, got, Row, Column));
+                Throw
+                (
+                    new FormatException
+                    (
+                        string.Format(MALFORMED_INPUT, expected, got, Row, Column)
+                    )
+                );
             return got;
         }
 
@@ -686,7 +694,7 @@ namespace Solti.Utils.Json
                 {
                     InvalidOperationException ex = new(VALIDATION_FAILED);
                     ex.Data[nameof(errors)] = coll;
-                    throw ex;
+                    Throw(ex);
                 }
             }
 
