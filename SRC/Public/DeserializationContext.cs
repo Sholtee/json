@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.Json
 {
@@ -23,7 +24,7 @@ namespace Solti.Utils.Json
 
         public delegate object RawObjectFavtoryDelegate();
 
-        public delegate bool VerifyDelegate(object? value);
+        public delegate IEnumerable<string>? VerifyDelegate(object? value);
 
         public delegate void PushDelegate(object instance, object? value);
 
@@ -66,7 +67,7 @@ namespace Solti.Utils.Json
         public required JsonDataTypes SupportedTypes { get; init; }
 
         /// <summary>
-        /// Runs custom validators against the given <paramref name="value"/>.
+        /// Runs custom validators against the given <paramref name="value"/>. If the delegate returns any errors the system will throw a validation exception.
         /// </summary>
         /// <remarks>You can check if a value falls in a particular range or an object has all its required properties set.</remarks>
         public VerifyDelegate? Verify { get; init; }

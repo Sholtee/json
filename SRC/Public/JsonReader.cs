@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -677,7 +678,18 @@ namespace Solti.Utils.Json
                     return null!;
             };
 
-            currentContext.Verify?.Invoke(result);
+            IEnumerable<string>? errors = currentContext.Verify?.Invoke(result);
+            if (errors is not null)
+            {
+                ICollection<string> coll = errors as ICollection<string> ?? new List<string>(errors);
+                if (coll.Count > 0)
+                {
+                    InvalidOperationException ex = new(VALIDATION_FAILED);
+                    ex.Data[nameof(errors)] = coll;
+                    throw ex;
+                }
+            }
+
             return result;
         }
         #endregion

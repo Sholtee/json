@@ -133,7 +133,7 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected list item..
+        ///   Looks up a localized string similar to Unexpected list item.
         /// </summary>
         internal static string UNEXPECTED_LIST_ITEM {
             get {
@@ -165,6 +165,15 @@ namespace Solti.Utils.Json.Properties {
         internal static string UNKNOWN_CTRL {
             get {
                 return ResourceManager.GetString("UNKNOWN_CTRL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation failed.
+        /// </summary>
+        internal static string VALIDATION_FAILED {
+            get {
+                return ResourceManager.GetString("VALIDATION_FAILED", resourceCulture);
             }
         }
     }

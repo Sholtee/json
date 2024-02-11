@@ -729,13 +729,28 @@ namespace Solti.Utils.Json.Tests
             Mock<DeserializationContext.VerifyDelegate> mockValidator = new(MockBehavior.Strict);
             mockValidator
                 .Setup(v => v.Invoke((long) 1986))
-                .Returns(true);
+                .Returns((IEnumerable<string>?) null);
 
             using JsonReader rdr = new(new StringReader("1986"), new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, JsonReaderFlags.None, 0);
 
             rdr.Parse(default);
 
             mockValidator.Verify(v => v.Invoke((long) 1986), Times.Once);
+        }
+
+        [Test]
+        public void Parse_ShouldThrowIfVerificationFailed()
+        {
+            Mock<DeserializationContext.VerifyDelegate> mockValidator = new(MockBehavior.Strict);
+            mockValidator
+                .Setup(v => v.Invoke((long)1986))
+                .Returns(new string[] { "some error" });
+
+            using JsonReader rdr = new(new StringReader("1986"), new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, JsonReaderFlags.None, 0);
+
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => rdr.Parse(default))!;
+            Assert.That(ex.Data, Does.ContainKey("errors"));
+            Assert.That(ex.Data["errors"], Is.EquivalentTo(new string[] { "some error" }));
         }
 
         [Test]
