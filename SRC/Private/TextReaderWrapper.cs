@@ -124,19 +124,7 @@ namespace Solti.Utils.Json.Internals
                 FBuffer = null!;
             }
 
-            if (textReader is not null)
-            {
-                textReader.Dispose();
-                textReader = null!;
-            }
-
             FPosition = FCharsRead = 0;
-        }
-
-        public bool Disposed
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => FBuffer is null;
         }
 
         /// <summary>
@@ -165,5 +153,7 @@ namespace Solti.Utils.Json.Internals
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => FBuffer.Length;
         }
+
+        public static implicit operator TextReaderWrapper(TextReader reader) => new(reader);
     }
 }

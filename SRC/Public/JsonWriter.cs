@@ -223,7 +223,7 @@ namespace Solti.Utils.Json
                     break;
                 default:
                     throw new NotSupportedException(NOT_SERIALIZABLE);
-            }             
+            }
         }
     }
 }

@@ -70,21 +70,17 @@ namespace Solti.Utils.Json.Perf
         [ParamsSource(nameof(Params))]
         public Func<TextReader> Input { get; set; } = null!;
 
+        public JsonReader Reader { get; set; } = null!;
+
+        [GlobalSetup(Target = nameof(Parse))]
+        public void SetupParse() => Reader = new(DeserializationContext.Untyped, JsonReaderFlags.None, 256);
+
         [Benchmark]
         public void Parse()
         {
-            using JsonReader rdr = new(Input(), DeserializationContext.Untyped, JsonReaderFlags.None, 256);
-            _ = rdr.Parse(CancellationToken.None);
-        }
-    }
+            using TextReader content = Input();
 
-    [MemoryDiagnoser]
-    public class JsonReaderInstantiationTests
-    {
-        [Benchmark]
-        public void CreateAndDestroyReader()
-        {
-            using JsonReader rdr = new(new StringReader(""), DeserializationContext.Untyped, JsonReaderFlags.None, 256);
+            _ = Reader.Parse(content, CancellationToken.None);
         }
     }
 }
