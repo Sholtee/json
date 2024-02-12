@@ -93,7 +93,7 @@ namespace Solti.Utils.Json
         /// Verifies the given <paramref name="delegate"/>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static T VerifyDelegate<T>(T? @delegate) where T : Delegate => @delegate ?? throw new InvalidOperationException(INVALID_CONTEXT);
+        private static T VerifyDelegate<T>(T? @delegate) where T : Delegate => @delegate ?? throw new InvalidOperationException(INVALID_CONTEXT);
 
         /// <summary>
         /// Skips the value on which the reader is positioned.

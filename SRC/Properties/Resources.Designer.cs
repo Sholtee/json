@@ -79,6 +79,15 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid value.
+        /// </summary>
+        internal static string INVALID_VALUE {
+            get {
+                return ResourceManager.GetString("INVALID_VALUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Malformed {0} found (row: {1}, col: {2}). Reason: &quot;{3}&quot;.
         /// </summary>
         internal static string MALFORMED {
@@ -129,6 +138,15 @@ namespace Solti.Utils.Json.Properties {
         internal static string NOT_NUMBER {
             get {
                 return ResourceManager.GetString("NOT_NUMBER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The given value is not serializable.
+        /// </summary>
+        internal static string NOT_SERIALIZABLE {
+            get {
+                return ResourceManager.GetString("NOT_SERIALIZABLE", resourceCulture);
             }
         }
         

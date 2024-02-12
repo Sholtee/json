@@ -34,12 +34,12 @@ namespace Solti.Utils.Json
         #endregion
 
         /// <summary>
-        /// If applicable, gets the nested context belongs to the property being parsed.
+        /// If supported, gets the nested context belongs to the property being parsed.
         /// </summary>
         public GetPropertyContextDelegate? GetPropertyContext { get; init; }
 
         /// <summary>
-        /// If applicable, gets the nested context belongs to the list item being parsed.
+        /// If supported, gets the nested context belongs to the list item being parsed.
         /// </summary>
         public GetListItemContextDelegate? GetListItemContext { get; init; }
 

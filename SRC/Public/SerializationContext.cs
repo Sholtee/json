@@ -4,11 +4,14 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 namespace Solti.Utils.Json
 {
     public sealed partial record SerializationContext
     {
+        public delegate IEnumerable<(SerializationContext?, object?)> EnumValuesDelegate(object value);
+
         public delegate JsonDataTypes GetTypeDelegate(object? obj);
 
         public delegate string ToStringDelegate(object? obj);
@@ -16,6 +19,15 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Gets the type of the given value.
         /// </summary>
+        /// <remarks>
+        /// <code>
+        /// new SerializationContext  // context that supports string serialization only
+        /// {
+        ///     GetTypeOf = static val => val is string ? JsonDataTypes.String : JsonDataTypes.Unknown,
+        ///     ...
+        /// }
+        /// </code>
+        /// </remarks>
         public required GetTypeDelegate GetTypeOf { get; init; }
 
         /// <summary>
@@ -23,5 +35,10 @@ namespace Solti.Utils.Json
         /// </summary>
         /// <remarks>You can implement -for instance- <see cref="DateTime"/> to <see cref="string"/> conversation here.</remarks>
         public required ToStringDelegate ConvertToString { get; init; }
+
+        /// <summary>
+        /// If supported, enumerates the items alongside their serialization context.
+        /// </summary>
+        public EnumValuesDelegate? EnumValues { get; init; }
     }
 }

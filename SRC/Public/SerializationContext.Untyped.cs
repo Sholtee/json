@@ -10,6 +10,7 @@ using System.Globalization;
 namespace Solti.Utils.Json
 {
     using static Internals.Consts;
+    using static Properties.Resources;
 
     public sealed partial record SerializationContext
     {
@@ -31,7 +32,20 @@ namespace Solti.Utils.Json
                 TypeCode.Object when val is IDictionary<string, object?> => JsonDataTypes.Object,
                 TypeCode.Object when val is IList<object?> => JsonDataTypes.List,
                 _ => JsonDataTypes.Unkown
+            },
+
+            EnumValues = EnumValuesImpl
+        };
+
+        private static IEnumerable<(SerializationContext?, object?)> EnumValuesImpl(object val)
+        {
+            if (val is not IList<object?> lst)
+                throw new ArgumentException(INVALID_VALUE, nameof(val));
+
+            foreach (object? item in lst)
+            {
+                yield return (Untyped, item);
             }
-        }; 
+        }
     }
 }

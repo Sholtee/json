@@ -11,6 +11,8 @@ namespace Solti.Utils.Json
 {
     using Internals;
 
+    using static Properties.Resources;
+
     public sealed partial record DeserializationContext
     {
         /// <summary>
@@ -28,8 +30,7 @@ namespace Solti.Utils.Json
                 Push = static (object instance, object? val) =>
                 {
                     if (instance is not List<object?> lst)
-                        throw new NotSupportedException();
-
+                        throw new ArgumentException(INVALID_VALUE, nameof(val));
                     lst.Add(val);
                 }
             },
@@ -43,7 +44,7 @@ namespace Solti.Utils.Json
                     Push = (object instance, object? val) =>
                     {
                         if (instance is not Dictionary<string, object?> dict)
-                            throw new NotSupportedException();
+                            throw new ArgumentException(INVALID_VALUE, nameof(val));
                         dict[propStr] = val;
                     }
                 };

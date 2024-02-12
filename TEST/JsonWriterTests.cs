@@ -46,7 +46,7 @@ namespace Solti.Utils.Json.Tests
             StringWriter store = new();  // will be closed by the writer
             using JsonWriter writer = new(store);
 
-            writer.WriteString(input, SerializationContext.Untyped);
+            writer.WriteString(input, SerializationContext.Untyped, 0);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"{expected}\""));
         }
@@ -57,7 +57,7 @@ namespace Solti.Utils.Json.Tests
             StringWriter store = new();  // will be closed by the writer
             using JsonWriter writer = new(store);
 
-            writer.WriteString(input, SerializationContext.Untyped);
+            writer.WriteString(input, SerializationContext.Untyped, 0);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"{input}\""));
         }
@@ -68,7 +68,7 @@ namespace Solti.Utils.Json.Tests
             StringWriter store = new();
             using JsonWriter writer = new(store);
 
-            writer.WriteString(1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String });
+            writer.WriteString(1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String }, 0);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"1986\""));
         }
@@ -83,7 +83,55 @@ namespace Solti.Utils.Json.Tests
             StringWriter store = new();
             using JsonWriter writer = new(store);
 
-            writer.WriteValue(input, SerializationContext.Untyped);
+            writer.WriteValue(input, SerializationContext.Untyped, 0);
+
+            Assert.That(store.ToString(), Is.EqualTo(expected));
+        }
+
+        [TestCase(new object[] { }, 0, "[]")]
+        [TestCase(new object[] { }, 2, "[]")]
+        [TestCase(new object[] { 1 }, 0, "[1]")]
+        [TestCase(new object[] { 1 }, 2, "[\r\n  1]")]
+        [TestCase(new object[] { 1, 2 }, 0, "[1,2]")]
+        [TestCase(new object[] { 1, 2 }, 2, "[\r\n  1,\r\n  2]")]
+        public void WriteList_ShouldStringifyTheGivenList(object[] input, byte spaces, string expected)
+        {
+            StringWriter store = new();
+            using JsonWriter writer = new(store, indent: spaces);
+
+            writer.WriteList(input, SerializationContext.Untyped, 0, default);
+
+            Assert.That(store.ToString(), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void WriteList_ShouldThrowIfWeReachTheMaxDepth()
+        {
+            using JsonWriter writer = new(new StringWriter(), maxDepth: 1);
+
+            Assert.DoesNotThrow(() => writer.WriteList(new object[] { 1 }, SerializationContext.Untyped, 0, default));
+            Assert.Throws<InvalidOperationException>(() => writer.WriteList(new object[] { new object[] { 1 } }, SerializationContext.Untyped, 0, default));
+        }
+
+        [Test]
+        public void Write_ShouldThrowIfTheInputIsNotSerializable()
+        {
+            using JsonWriter writer = new(new StringWriter());
+
+            Assert.Throws<NotSupportedException>(() => writer.Write(new { }, SerializationContext.Untyped, 0, default));
+        }
+
+        [TestCase(1, "1")]
+        [TestCase(true, "true")]
+        [TestCase(null, "null")]
+        [TestCase("1", "\"1\"")]
+        [TestCase(new object[] { }, "[]")]
+        public void Write_ShouldStringify(object? input, string expected)
+        {
+            StringWriter store = new();
+            using JsonWriter writer = new(store);
+
+            writer.Write(input, SerializationContext.Untyped, 0, default);
 
             Assert.That(store.ToString(), Is.EqualTo(expected));
         }

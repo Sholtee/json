@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 using static System.Char;
 
@@ -16,7 +17,9 @@ namespace Solti.Utils.Json
 {
     using Internals;
 
-    public sealed class JsonWriter(TextWriter dest) : IDisposable
+    using static Properties.Resources;
+
+    public sealed class JsonWriter(TextWriter dest, int maxDepth = 64, byte indent = 2) : IDisposable
     {
         #region Private
         private static readonly char[][] FSpaces = GetSpacesDict(256);
@@ -33,13 +36,42 @@ namespace Solti.Utils.Json
 
         private static char[] GetSpacesAr(int len) => [..Environment.NewLine, ..Enumerable.Repeat(' ', len)];
 
-        private static char[] GetSpaces(int currentDepth)
+        private char[] GetSpaces(int currentDepth)
         {
-            int required = currentDepth * 2; // TODO: "2" from config
+            int required = currentDepth * indent;
+            if (required is 0)
+                return [];
 
             return required < FSpaces.Length
                 ? GetSpacesAr(required)
                 : FSpaces[required];
+        }
+
+        /// <summary>
+        /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private int Deeper(int currentDepth)
+        {
+            if (++currentDepth > maxDepth)
+                throw new InvalidOperationException(MAX_DEPTH_REACHED);
+            return currentDepth;
+        }
+
+
+        /// <summary>
+        /// Verifies the given <paramref name="delegate"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static T VerifyDelegate<T>(T? @delegate) where T : Delegate => @delegate ?? throw new InvalidOperationException(INVALID_CONTEXT);
+
+        void IDisposable.Dispose()
+        {
+            if (dest is not null)
+            {
+                dest.Dispose();
+                dest = null!;
+            }
         }
         #endregion
 
@@ -47,11 +79,12 @@ namespace Solti.Utils.Json
         /// Writes a JSON string to the underlying buffer representing the given <paramref name="str"/>.
         /// </summary>
         /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
-        internal void WriteString(object str, SerializationContext currentContext)
+        internal void WriteString(object str, SerializationContext currentContext, int currentDepth)
         {
             if (str is not string s)
                 s = currentContext.ConvertToString(str);
 
+            dest.Write(GetSpaces(currentDepth));
             dest.Write('"');
     
             for (int pos = 0; pos < s.Length;)
@@ -141,18 +174,56 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Writes the given value to the underlying buffer.
         /// </summary>
-        internal void WriteValue(object? val, SerializationContext currentContext) => dest.Write
-        (
-            currentContext.ConvertToString(val)
-        );
-
-        void IDisposable.Dispose()
+        internal void WriteValue(object? val, SerializationContext currentContext, int currentDepth)
         {
-            if (dest is not null)
+            dest.Write(GetSpaces(currentDepth));
+            dest.Write
+            (
+                currentContext.ConvertToString(val)
+            );
+        }
+
+        internal void WriteList(object val, SerializationContext currentContext, int currentDepth, in CancellationToken cancellation)
+        {
+            char[] spaces = GetSpaces(currentDepth);
+
+            dest.Write(spaces);
+            dest.Write('[');
+
+            bool firstItem = true;
+            foreach ((SerializationContext? childContext, object? item) in VerifyDelegate(currentContext.EnumValues)(val))
             {
-                dest.Dispose();
-                dest = null!;
+                if (firstItem) firstItem = false;
+                else dest.Write(",");
+
+                if (childContext is not null)
+                    Write(item, childContext, Deeper(currentDepth), cancellation);
             }
+
+            dest.Write(spaces);
+            dest.Write(']');
+        }
+
+        internal void Write(object? val, SerializationContext currentContext, int currentDepth, in CancellationToken cancellation)
+        {
+            cancellation.ThrowIfCancellationRequested();
+
+            switch (VerifyDelegate(currentContext.GetTypeOf)(val))
+            {
+                case JsonDataTypes.Number:
+                case JsonDataTypes.Boolean:
+                case JsonDataTypes.Null:
+                    WriteValue(val, currentContext, currentDepth);
+                    break;
+                case JsonDataTypes.String:
+                    WriteString(val!, currentContext, currentDepth);
+                    break;
+                case JsonDataTypes.List:
+                    WriteList(val!, currentContext, currentDepth, cancellation);
+                    break;
+                default:
+                    throw new NotSupportedException(NOT_SERIALIZABLE);
+            }             
         }
     }
 }
