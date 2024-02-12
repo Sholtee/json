@@ -763,57 +763,33 @@ references:
   commentId: T:Solti.Utils.Json.JsonReader
   fullName: Solti.Utils.Json.JsonReader
   nameWithType: JsonReader
-- uid: Solti.Utils.Json.JsonReader.#ctor(System.IO.TextReader,Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
-  name: JsonReader(TextReader, DeserializationContext, JsonReaderFlags, Int32)
-  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_System_IO_TextReader_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_JsonReaderFlags_System_Int32_
-  commentId: M:Solti.Utils.Json.JsonReader.#ctor(System.IO.TextReader,Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
-  fullName: Solti.Utils.Json.JsonReader.JsonReader(System.IO.TextReader, Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.JsonReaderFlags, System.Int32)
-  nameWithType: JsonReader.JsonReader(TextReader, DeserializationContext, JsonReaderFlags, Int32)
+- uid: Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
+  name: JsonReader(DeserializationContext, JsonReaderFlags, Int32)
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_JsonReaderFlags_System_Int32_
+  commentId: M:Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
+  fullName: Solti.Utils.Json.JsonReader.JsonReader(Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.JsonReaderFlags, System.Int32)
+  nameWithType: JsonReader.JsonReader(DeserializationContext, JsonReaderFlags, Int32)
 - uid: Solti.Utils.Json.JsonReader.#ctor*
   name: JsonReader
   href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_
   commentId: Overload:Solti.Utils.Json.JsonReader.#ctor
   fullName: Solti.Utils.Json.JsonReader.JsonReader
   nameWithType: JsonReader.JsonReader
-- uid: Solti.Utils.Json.JsonReader.Column
-  name: Column
-  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Column
-  commentId: P:Solti.Utils.Json.JsonReader.Column
-  fullName: Solti.Utils.Json.JsonReader.Column
-  nameWithType: JsonReader.Column
-- uid: Solti.Utils.Json.JsonReader.Column*
-  name: Column
-  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Column_
-  commentId: Overload:Solti.Utils.Json.JsonReader.Column
-  fullName: Solti.Utils.Json.JsonReader.Column
-  nameWithType: JsonReader.Column
-- uid: Solti.Utils.Json.JsonReader.Parse(System.Threading.CancellationToken@)
-  name: Parse(in CancellationToken)
-  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Parse_System_Threading_CancellationToken__
-  commentId: M:Solti.Utils.Json.JsonReader.Parse(System.Threading.CancellationToken@)
-  name.vb: Parse(ByRef CancellationToken)
-  fullName: Solti.Utils.Json.JsonReader.Parse(in System.Threading.CancellationToken)
-  fullName.vb: Solti.Utils.Json.JsonReader.Parse(ByRef System.Threading.CancellationToken)
-  nameWithType: JsonReader.Parse(in CancellationToken)
-  nameWithType.vb: JsonReader.Parse(ByRef CancellationToken)
+- uid: Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader,System.Threading.CancellationToken@)
+  name: Parse(TextReader, in CancellationToken)
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Parse_System_IO_TextReader_System_Threading_CancellationToken__
+  commentId: M:Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader,System.Threading.CancellationToken@)
+  name.vb: Parse(TextReader, ByRef CancellationToken)
+  fullName: Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader, in System.Threading.CancellationToken)
+  fullName.vb: Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader, ByRef System.Threading.CancellationToken)
+  nameWithType: JsonReader.Parse(TextReader, in CancellationToken)
+  nameWithType.vb: JsonReader.Parse(TextReader, ByRef CancellationToken)
 - uid: Solti.Utils.Json.JsonReader.Parse*
   name: Parse
   href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Parse_
   commentId: Overload:Solti.Utils.Json.JsonReader.Parse
   fullName: Solti.Utils.Json.JsonReader.Parse
   nameWithType: JsonReader.Parse
-- uid: Solti.Utils.Json.JsonReader.Row
-  name: Row
-  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Row
-  commentId: P:Solti.Utils.Json.JsonReader.Row
-  fullName: Solti.Utils.Json.JsonReader.Row
-  nameWithType: JsonReader.Row
-- uid: Solti.Utils.Json.JsonReader.Row*
-  name: Row
-  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Row_
-  commentId: Overload:Solti.Utils.Json.JsonReader.Row
-  fullName: Solti.Utils.Json.JsonReader.Row
-  nameWithType: JsonReader.Row
 - uid: Solti.Utils.Json.JsonReaderFlags
   name: JsonReaderFlags
   href: Solti.Utils.Json.JsonReaderFlags.html
