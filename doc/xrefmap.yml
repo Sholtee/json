@@ -874,12 +874,12 @@ references:
   commentId: T:Solti.Utils.Json.JsonWriter
   fullName: Solti.Utils.Json.JsonWriter
   nameWithType: JsonWriter
-- uid: Solti.Utils.Json.JsonWriter.#ctor(System.IO.TextWriter)
-  name: JsonWriter(TextWriter)
-  href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter__ctor_System_IO_TextWriter_
-  commentId: M:Solti.Utils.Json.JsonWriter.#ctor(System.IO.TextWriter)
-  fullName: Solti.Utils.Json.JsonWriter.JsonWriter(System.IO.TextWriter)
-  nameWithType: JsonWriter.JsonWriter(TextWriter)
+- uid: Solti.Utils.Json.JsonWriter.#ctor(System.IO.TextWriter,System.Int32,System.Byte)
+  name: JsonWriter(TextWriter, Int32, Byte)
+  href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter__ctor_System_IO_TextWriter_System_Int32_System_Byte_
+  commentId: M:Solti.Utils.Json.JsonWriter.#ctor(System.IO.TextWriter,System.Int32,System.Byte)
+  fullName: Solti.Utils.Json.JsonWriter.JsonWriter(System.IO.TextWriter, System.Int32, System.Byte)
+  nameWithType: JsonWriter.JsonWriter(TextWriter, Int32, Byte)
 - uid: Solti.Utils.Json.JsonWriter.#ctor*
   name: JsonWriter
   href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter__ctor_
@@ -928,6 +928,72 @@ references:
   commentId: Overload:Solti.Utils.Json.SerializationContext.ConvertToString
   fullName: Solti.Utils.Json.SerializationContext.ConvertToString
   nameWithType: SerializationContext.ConvertToString
+- uid: Solti.Utils.Json.SerializationContext.EnumValues
+  name: EnumValues
+  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_EnumValues
+  commentId: P:Solti.Utils.Json.SerializationContext.EnumValues
+  fullName: Solti.Utils.Json.SerializationContext.EnumValues
+  nameWithType: SerializationContext.EnumValues
+- uid: Solti.Utils.Json.SerializationContext.EnumValues*
+  name: EnumValues
+  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_EnumValues_
+  commentId: Overload:Solti.Utils.Json.SerializationContext.EnumValues
+  fullName: Solti.Utils.Json.SerializationContext.EnumValues
+  nameWithType: SerializationContext.EnumValues
+- uid: Solti.Utils.Json.SerializationContext.EnumValuesDelegate
+  name: SerializationContext.EnumValuesDelegate
+  href: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.html
+  commentId: T:Solti.Utils.Json.SerializationContext.EnumValuesDelegate
+  fullName: Solti.Utils.Json.SerializationContext.EnumValuesDelegate
+  nameWithType: SerializationContext.EnumValuesDelegate
+- uid: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.#ctor(System.Object,System.IntPtr)
+  name: EnumValuesDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.html#Solti_Utils_Json_SerializationContext_EnumValuesDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.SerializationContext.EnumValuesDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.EnumValuesDelegate(System.Object, System.IntPtr)
+  nameWithType: SerializationContext.EnumValuesDelegate.EnumValuesDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.#ctor*
+  name: EnumValuesDelegate
+  href: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.html#Solti_Utils_Json_SerializationContext_EnumValuesDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.SerializationContext.EnumValuesDelegate.#ctor
+  fullName: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.EnumValuesDelegate
+  nameWithType: SerializationContext.EnumValuesDelegate.EnumValuesDelegate
+- uid: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
+  name: BeginInvoke(Object, AsyncCallback, Object)
+  href: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.html#Solti_Utils_Json_SerializationContext_EnumValuesDelegate_BeginInvoke_System_Object_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.SerializationContext.EnumValuesDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.BeginInvoke(System.Object, System.AsyncCallback, System.Object)
+  nameWithType: SerializationContext.EnumValuesDelegate.BeginInvoke(Object, AsyncCallback, Object)
+- uid: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.html#Solti_Utils_Json_SerializationContext_EnumValuesDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.SerializationContext.EnumValuesDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.BeginInvoke
+  nameWithType: SerializationContext.EnumValuesDelegate.BeginInvoke
+- uid: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.html#Solti_Utils_Json_SerializationContext_EnumValuesDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.SerializationContext.EnumValuesDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: SerializationContext.EnumValuesDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.html#Solti_Utils_Json_SerializationContext_EnumValuesDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.SerializationContext.EnumValuesDelegate.EndInvoke
+  fullName: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.EndInvoke
+  nameWithType: SerializationContext.EnumValuesDelegate.EndInvoke
+- uid: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.Invoke(System.Object)
+  name: Invoke(Object)
+  href: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.html#Solti_Utils_Json_SerializationContext_EnumValuesDelegate_Invoke_System_Object_
+  commentId: M:Solti.Utils.Json.SerializationContext.EnumValuesDelegate.Invoke(System.Object)
+  fullName: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.Invoke(System.Object)
+  nameWithType: SerializationContext.EnumValuesDelegate.Invoke(Object)
+- uid: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.html#Solti_Utils_Json_SerializationContext_EnumValuesDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.SerializationContext.EnumValuesDelegate.Invoke
+  fullName: Solti.Utils.Json.SerializationContext.EnumValuesDelegate.Invoke
+  nameWithType: SerializationContext.EnumValuesDelegate.Invoke
 - uid: Solti.Utils.Json.SerializationContext.Equals(Solti.Utils.Json.SerializationContext)
   name: Equals(SerializationContext)
   href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Equals_Solti_Utils_Json_SerializationContext_
