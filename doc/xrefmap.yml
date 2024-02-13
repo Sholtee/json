@@ -850,12 +850,12 @@ references:
   commentId: T:Solti.Utils.Json.JsonWriter
   fullName: Solti.Utils.Json.JsonWriter
   nameWithType: JsonWriter
-- uid: Solti.Utils.Json.JsonWriter.#ctor(System.IO.TextWriter,System.Int32,System.Byte)
-  name: JsonWriter(TextWriter, Int32, Byte)
-  href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter__ctor_System_IO_TextWriter_System_Int32_System_Byte_
-  commentId: M:Solti.Utils.Json.JsonWriter.#ctor(System.IO.TextWriter,System.Int32,System.Byte)
-  fullName: Solti.Utils.Json.JsonWriter.JsonWriter(System.IO.TextWriter, System.Int32, System.Byte)
-  nameWithType: JsonWriter.JsonWriter(TextWriter, Int32, Byte)
+- uid: Solti.Utils.Json.JsonWriter.#ctor(System.Int32,System.Byte)
+  name: JsonWriter(Int32, Byte)
+  href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter__ctor_System_Int32_System_Byte_
+  commentId: M:Solti.Utils.Json.JsonWriter.#ctor(System.Int32,System.Byte)
+  fullName: Solti.Utils.Json.JsonWriter.JsonWriter(System.Int32, System.Byte)
+  nameWithType: JsonWriter.JsonWriter(Int32, Byte)
 - uid: Solti.Utils.Json.JsonWriter.#ctor*
   name: JsonWriter
   href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter__ctor_
