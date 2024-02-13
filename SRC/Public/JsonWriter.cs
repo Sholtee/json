@@ -19,7 +19,7 @@ namespace Solti.Utils.Json
 
     using static Properties.Resources;
 
-    public sealed class JsonWriter(TextWriter dest, int maxDepth = 64, byte indent = 2) : IDisposable
+    public sealed class JsonWriter(int maxDepth = 64, byte indent = 2)
     {
         #region Private
         private static readonly char[][] FSpaces = GetSpacesDict(256);
@@ -64,22 +64,13 @@ namespace Solti.Utils.Json
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static T VerifyDelegate<T>(T? @delegate) where T : Delegate => @delegate ?? throw new InvalidOperationException(INVALID_CONTEXT);
-
-        void IDisposable.Dispose()
-        {
-            if (dest is not null)
-            {
-                dest.Dispose();
-                dest = null!;
-            }
-        }
         #endregion
 
         /// <summary>
         /// Writes a JSON string to the underlying buffer representing the given <paramref name="str"/>.
         /// </summary>
         /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
-        internal void WriteString(object str, SerializationContext currentContext, int currentDepth)
+        internal void WriteString(TextWriter dest, object str, SerializationContext currentContext, int currentDepth)
         {
             if (str is not string s)
                 s = currentContext.ConvertToString(str);
@@ -174,7 +165,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Writes the given value to the underlying buffer.
         /// </summary>
-        internal void WriteValue(object? val, SerializationContext currentContext, int currentDepth)
+        internal void WriteValue(TextWriter dest, object? val, SerializationContext currentContext, int currentDepth)
         {
             dest.Write(GetSpaces(currentDepth));
             dest.Write
@@ -183,7 +174,7 @@ namespace Solti.Utils.Json
             );
         }
 
-        internal void WriteList(object val, SerializationContext currentContext, int currentDepth, in CancellationToken cancellation)
+        internal void WriteList(TextWriter dest, object val, SerializationContext currentContext, int currentDepth, in CancellationToken cancellation)
         {
             char[] spaces = GetSpaces(currentDepth);
 
@@ -197,14 +188,14 @@ namespace Solti.Utils.Json
                 else dest.Write(",");
 
                 if (childContext is not null)
-                    Write(item, childContext, Deeper(currentDepth), cancellation);
+                    Write(dest, item, childContext, Deeper(currentDepth), cancellation);
             }
 
             dest.Write(spaces);
             dest.Write(']');
         }
 
-        internal void Write(object? val, SerializationContext currentContext, int currentDepth, in CancellationToken cancellation)
+        internal void Write(TextWriter dest, object? val, SerializationContext currentContext, int currentDepth, in CancellationToken cancellation)
         {
             cancellation.ThrowIfCancellationRequested();
 
@@ -213,13 +204,13 @@ namespace Solti.Utils.Json
                 case JsonDataTypes.Number:
                 case JsonDataTypes.Boolean:
                 case JsonDataTypes.Null:
-                    WriteValue(val, currentContext, currentDepth);
+                    WriteValue(dest, val, currentContext, currentDepth);
                     break;
                 case JsonDataTypes.String:
-                    WriteString(val!, currentContext, currentDepth);
+                    WriteString(dest, val!, currentContext, currentDepth);
                     break;
                 case JsonDataTypes.List:
-                    WriteList(val!, currentContext, currentDepth, cancellation);
+                    WriteList(dest, val!, currentContext, currentDepth, cancellation);
                     break;
                 default:
                     throw new NotSupportedException(NOT_SERIALIZABLE);
