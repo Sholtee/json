@@ -19,7 +19,7 @@ namespace Solti.Utils.Json
 
     using static Properties.Resources;
 
-    public sealed class JsonWriter(int maxDepth = 64, byte indent = 2)
+    public sealed class JsonWriter(SerializationContext context, int maxDepth = 64, byte indent = 2)
     {
         #region Private
         private static readonly char[][] FSpaces = GetAllSpaces(256);
@@ -67,6 +67,7 @@ namespace Solti.Utils.Json
         private static T VerifyDelegate<T>(T? @delegate) where T : Delegate => @delegate ?? throw new InvalidOperationException(INVALID_CONTEXT);
         #endregion
 
+        #region Internal
         /// <summary>
         /// Writes a JSON string to the underlying buffer representing the given <paramref name="str"/>.
         /// </summary>
@@ -261,5 +262,16 @@ namespace Solti.Utils.Json
                     throw new NotSupportedException(NOT_SERIALIZABLE);
             }
         }
+        #endregion
+
+        public void Write(TextWriter dest, object? val, in CancellationToken cancellation) => Write
+        (
+            dest ?? throw new ArgumentNullException(nameof(dest)),
+            val,
+            context,
+            0,
+            null,
+            cancellation
+        );
     }
 }
