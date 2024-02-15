@@ -201,8 +201,8 @@ namespace Solti.Utils.Json.Tests
             new JsonWriter().Write(store, input, SerializationContext.Untyped, 0, default, default);
 
             string
-                serialized = store.ToString(),
-                expected = content.ReadToEnd().Substring(1);
+                serialized = store.ToString().Replace("\r", string.Empty),
+                expected = content.ReadToEnd().Substring(1).Replace("\r", string.Empty);
 
             Assert.That(serialized, Is.EqualTo(expected));
         }
