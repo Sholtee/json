@@ -850,18 +850,33 @@ references:
   commentId: T:Solti.Utils.Json.JsonWriter
   fullName: Solti.Utils.Json.JsonWriter
   nameWithType: JsonWriter
-- uid: Solti.Utils.Json.JsonWriter.#ctor(System.Int32,System.Byte)
-  name: JsonWriter(Int32, Byte)
-  href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter__ctor_System_Int32_System_Byte_
-  commentId: M:Solti.Utils.Json.JsonWriter.#ctor(System.Int32,System.Byte)
-  fullName: Solti.Utils.Json.JsonWriter.JsonWriter(System.Int32, System.Byte)
-  nameWithType: JsonWriter.JsonWriter(Int32, Byte)
+- uid: Solti.Utils.Json.JsonWriter.#ctor(Solti.Utils.Json.SerializationContext,System.Int32,System.Byte)
+  name: JsonWriter(SerializationContext, Int32, Byte)
+  href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter__ctor_Solti_Utils_Json_SerializationContext_System_Int32_System_Byte_
+  commentId: M:Solti.Utils.Json.JsonWriter.#ctor(Solti.Utils.Json.SerializationContext,System.Int32,System.Byte)
+  fullName: Solti.Utils.Json.JsonWriter.JsonWriter(Solti.Utils.Json.SerializationContext, System.Int32, System.Byte)
+  nameWithType: JsonWriter.JsonWriter(SerializationContext, Int32, Byte)
 - uid: Solti.Utils.Json.JsonWriter.#ctor*
   name: JsonWriter
   href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter__ctor_
   commentId: Overload:Solti.Utils.Json.JsonWriter.#ctor
   fullName: Solti.Utils.Json.JsonWriter.JsonWriter
   nameWithType: JsonWriter.JsonWriter
+- uid: Solti.Utils.Json.JsonWriter.Write(System.IO.TextWriter,System.Object,System.Threading.CancellationToken@)
+  name: Write(TextWriter, Object, in CancellationToken)
+  href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter_Write_System_IO_TextWriter_System_Object_System_Threading_CancellationToken__
+  commentId: M:Solti.Utils.Json.JsonWriter.Write(System.IO.TextWriter,System.Object,System.Threading.CancellationToken@)
+  name.vb: Write(TextWriter, Object, ByRef CancellationToken)
+  fullName: Solti.Utils.Json.JsonWriter.Write(System.IO.TextWriter, System.Object, in System.Threading.CancellationToken)
+  fullName.vb: Solti.Utils.Json.JsonWriter.Write(System.IO.TextWriter, System.Object, ByRef System.Threading.CancellationToken)
+  nameWithType: JsonWriter.Write(TextWriter, Object, in CancellationToken)
+  nameWithType.vb: JsonWriter.Write(TextWriter, Object, ByRef CancellationToken)
+- uid: Solti.Utils.Json.JsonWriter.Write*
+  name: Write
+  href: Solti.Utils.Json.JsonWriter.html#Solti_Utils_Json_JsonWriter_Write_
+  commentId: Overload:Solti.Utils.Json.JsonWriter.Write
+  fullName: Solti.Utils.Json.JsonWriter.Write
+  nameWithType: JsonWriter.Write
 - uid: Solti.Utils.Json.SerializationContext
   name: SerializationContext
   href: Solti.Utils.Json.SerializationContext.html
