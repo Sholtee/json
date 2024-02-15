@@ -34,10 +34,12 @@ namespace Solti.Utils.Json
                 _ => JsonDataTypes.Unkown
             },
 
-            EnumValues = EnumValuesImpl
+            EnumListEntries = EnumListEntriesImpl,
+
+            EnumObjectEntries = EnumObjectEntriesImpl,
         };
 
-        private static IEnumerable<(SerializationContext?, object?)> EnumValuesImpl(object val)
+        private static IEnumerable<(SerializationContext?, object?)> EnumListEntriesImpl(object val)
         {
             if (val is not IList<object?> lst)
                 throw new ArgumentException(INVALID_VALUE, nameof(val));
@@ -45,6 +47,17 @@ namespace Solti.Utils.Json
             foreach (object? item in lst)
             {
                 yield return (Untyped, item);
+            }
+        }
+
+        private static IEnumerable<(SerializationContext?, string, object?)> EnumObjectEntriesImpl(object val)
+        {
+            if (val is not IDictionary<string, object?> lst)
+                throw new ArgumentException(INVALID_VALUE, nameof(val));
+
+            foreach (KeyValuePair<string, object?> item in lst)
+            {
+                yield return (Untyped, item.Key, item.Value);
             }
         }
     }

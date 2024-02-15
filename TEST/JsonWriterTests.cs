@@ -4,8 +4,10 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 using NUnit.Framework;
 
@@ -45,7 +47,7 @@ namespace Solti.Utils.Json.Tests
         {
             StringWriter store = new();  // will be closed by the writer
 
-            new JsonWriter().WriteString(store, input, SerializationContext.Untyped, 0);
+            new JsonWriter().WriteString(store, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"{expected}\""));
         }
@@ -55,7 +57,7 @@ namespace Solti.Utils.Json.Tests
         {
             StringWriter store = new();  // will be closed by the writer
  
-            new JsonWriter().WriteString(store, input, SerializationContext.Untyped, 0);
+            new JsonWriter().WriteString(store, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"{input}\""));
         }
@@ -65,7 +67,7 @@ namespace Solti.Utils.Json.Tests
         {
             StringWriter store = new();
 
-            new JsonWriter().WriteString(store, 1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String }, 0);
+            new JsonWriter().WriteString(store, 1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String }, 0, default);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"1986\""));
         }
@@ -79,22 +81,32 @@ namespace Solti.Utils.Json.Tests
         {
             StringWriter store = new();
 
-            new JsonWriter().WriteValue(store, input, SerializationContext.Untyped, 0);
+            new JsonWriter().WriteValue(store, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(store.ToString(), Is.EqualTo(expected));
         }
 
-        [TestCase(new object[] { }, 0, "[]")]
-        [TestCase(new object[] { }, 2, "[]")]
-        [TestCase(new object[] { 1 }, 0, "[1]")]
-        [TestCase(new object[] { 1 }, 2, "[\r\n  1]")]
-        [TestCase(new object[] { 1, 2 }, 0, "[1,2]")]
-        [TestCase(new object[] { 1, 2 }, 2, "[\r\n  1,\r\n  2]")]
-        public void WriteList_ShouldStringifyTheGivenList(object[] input, byte spaces, string expected)
+        public static IEnumerable<object[]> WriteList_ShouldStringifyTheGivenList_Params
+        {
+            get
+            {
+                yield return new object[] { new List<object> { }, (byte) 0, "[]" };
+                yield return new object[] { new List<object> { }, (byte) 2, $"[{Environment.NewLine}]" };
+                yield return new object[] { new List<object> { 1 }, (byte) 0, "[1]" };
+                yield return new object[] { new List<object> { 1 }, (byte) 2, $"[{Environment.NewLine}  1{Environment.NewLine}]" };
+                yield return new object[] { new List<object> { 1, 2 }, (byte) 0, "[1,2]" };
+                yield return new object[] { new List<object> { 1, 2 }, (byte) 2, $"[{Environment.NewLine}  1,{Environment.NewLine}  2{Environment.NewLine}]" };
+                yield return new object[] { new List<object> { 1, new Dictionary<string, object> { { "prop", "val" } }, 2 }, (byte) 0, "[1,{\"prop\":\"val\"},2]" };
+                yield return new object[] { new List<object> { 1, new Dictionary<string, object> { { "prop", "val" } }, 2 }, (byte) 2, $"[{Environment.NewLine}  1,{Environment.NewLine}  {{{Environment.NewLine}    \"prop\": \"val\"{Environment.NewLine}  }},{Environment.NewLine}  2{Environment.NewLine}]" };
+            }
+        }
+
+        [TestCaseSource(nameof(WriteList_ShouldStringifyTheGivenList_Params))]
+        public void WriteList_ShouldStringifyTheGivenList(IList<object> input, byte spaces, string expected)
         {
             StringWriter store = new();
 
-            new JsonWriter(indent: spaces).WriteList(store, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(indent: spaces).WriteList(store, input, SerializationContext.Untyped, 0, default, default);
 
             Assert.That(store.ToString(), Is.EqualTo(expected));
         }
@@ -104,28 +116,95 @@ namespace Solti.Utils.Json.Tests
         {
             JsonWriter writer = new(maxDepth: 1);
 
-            Assert.DoesNotThrow(() => writer.WriteList(new StringWriter(), new object[] { 1 }, SerializationContext.Untyped, 0, default));
-            Assert.Throws<InvalidOperationException>(() => writer.WriteList(new StringWriter(), new object[] { new object[] { 1 } }, SerializationContext.Untyped, 0, default));
+            Assert.DoesNotThrow(() => writer.WriteList(new StringWriter(), new object[] { 1 }, SerializationContext.Untyped, 0, default, default));
+            Assert.Throws<InvalidOperationException>(() => writer.WriteList(new StringWriter(), new object[] { new object[] { 1 } }, SerializationContext.Untyped, 0, default, default));
+        }
+
+        public static IEnumerable<object[]> WriteObject_ShouldStringifyTheGivenObject_Params
+        {
+            get
+            {
+                yield return new object[] { new Dictionary<string, object>(), (byte) 0, "{}" };
+                yield return new object[] { new Dictionary<string, object>(), (byte) 2, $"{{{Environment.NewLine}}}" };
+                yield return new object[] { new Dictionary<string, object> { { "prop_1", "val_1"} }, (byte) 0, "{\"prop_1\":\"val_1\"}" };
+                yield return new object[] { new Dictionary<string, object> { { "prop_1", "val_1" } }, (byte) 2, $"{{{Environment.NewLine}  \"prop_1\": \"val_1\"{Environment.NewLine}}}" };
+                yield return new object[] { new Dictionary<string, object> { { "prop_1", "val_1" }, { "prop_2", "val_2" } }, (byte) 0, "{\"prop_1\":\"val_1\",\"prop_2\":\"val_2\"}" };
+                yield return new object[] { new Dictionary<string, object> { { "prop_1", "val_1" }, { "prop_2", "val_2" } }, (byte) 2, $"{{{Environment.NewLine}  \"prop_1\": \"val_1\",{Environment.NewLine}  \"prop_2\": \"val_2\"{Environment.NewLine}}}" };
+                yield return new object[] { new Dictionary<string, object> { { "prop_1", new Dictionary<string, object> { {"prop_2", 1986 } } } }, (byte) 0, "{\"prop_1\":{\"prop_2\":1986}}" };
+                yield return new object[] { new Dictionary<string, object> { { "prop_1", new Dictionary<string, object> { { "prop_2", 1986 } } } }, (byte) 2, $"{{{Environment.NewLine}  \"prop_1\": {{{Environment.NewLine}    \"prop_2\": 1986{Environment.NewLine}  }}{Environment.NewLine}}}" };
+            }
+        }
+
+        [TestCaseSource(nameof(WriteObject_ShouldStringifyTheGivenObject_Params))]
+        public void WriteObject_ShouldStringifyTheGivenObject(IDictionary<string, object?> input, byte spaces, string expected)
+        {
+            StringWriter store = new();
+
+            new JsonWriter(indent: spaces).WriteObject(store, input, SerializationContext.Untyped, 0, default, default);
+
+            Assert.That(store.ToString(), Is.EqualTo(expected));
         }
 
         [Test]
         public void Write_ShouldThrowIfTheInputIsNotSerializable()
         {
-            Assert.Throws<NotSupportedException>(() => new JsonWriter().Write(new StringWriter(), new { }, SerializationContext.Untyped, 0, default));
+            Assert.Throws<NotSupportedException>(() => new JsonWriter().Write(new StringWriter(), new { }, SerializationContext.Untyped, 0, default, default));
         }
 
-        [TestCase(1, "1")]
-        [TestCase(true, "true")]
-        [TestCase(null, "null")]
-        [TestCase("1", "\"1\"")]
-        [TestCase(new object[] { }, "[]")]
+        public static IEnumerable<object[]> Write_ShouldStringify_Params
+        {
+            get
+            {
+                yield return new object[] { 1, "1" };
+                yield return new object[] { true, "true" };
+                yield return new object[] { null!, "null" };
+                yield return new object[] { "1", "\"1\"" };
+                yield return new object[] { new List<object>(), $"[{Environment.NewLine}]" };
+            }
+        }
+
+        [TestCaseSource(nameof(Write_ShouldStringify_Params))]
         public void Write_ShouldStringify(object? input, string expected)
         {
             StringWriter store = new();
 
-            new JsonWriter().Write(store, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter().Write(store, input, SerializationContext.Untyped, 0, default, default);
 
             Assert.That(store.ToString(), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void Write_ShouldHandleLargeContent()
+        {
+            JsonReader rdr = new
+            (
+                DeserializationContext.Untyped,
+                JsonReaderFlags.None,
+                int.MaxValue
+            );
+
+            using StreamReader content = new
+            (
+                Path.Combine
+                (
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+                    "large.json"
+                )
+            );
+
+            IList? input = rdr.Parse(content, default) as IList;
+
+            content.BaseStream.Position = 0;
+
+            StringWriter store = new();
+
+            new JsonWriter().Write(store, input, SerializationContext.Untyped, 0, default, default);
+
+            string
+                serialized = store.ToString(),
+                expected = content.ReadToEnd().Substring(1);
+
+            Assert.That(serialized, Is.EqualTo(expected));
         }
     }
 }

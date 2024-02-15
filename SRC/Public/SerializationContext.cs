@@ -10,7 +10,9 @@ namespace Solti.Utils.Json
 {
     public sealed partial record SerializationContext
     {
-        public delegate IEnumerable<(SerializationContext?, object?)> EnumValuesDelegate(object value);
+        public delegate IEnumerable<(SerializationContext?, object?)> EnumListEntriesDelegate(object value);
+
+        public delegate IEnumerable<(SerializationContext?, string, object?)> EnumObjectEntriesDelegate(object value);
 
         public delegate JsonDataTypes GetTypeDelegate(object? obj);
 
@@ -39,6 +41,11 @@ namespace Solti.Utils.Json
         /// <summary>
         /// If supported, enumerates the items alongside their serialization context.
         /// </summary>
-        public EnumValuesDelegate? EnumValues { get; init; }
+        public EnumListEntriesDelegate? EnumListEntries { get; init; }
+
+        /// <summary>
+        /// If supported, enumerates the items alongside their serialization context.
+        /// </summary>
+        public EnumObjectEntriesDelegate? EnumObjectEntries { get; init; }
     }
 }
