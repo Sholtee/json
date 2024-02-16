@@ -30,7 +30,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="large.json">
+	  <None Update="large1.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="large2.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

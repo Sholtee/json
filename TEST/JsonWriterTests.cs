@@ -173,8 +173,9 @@ namespace Solti.Utils.Json.Tests
             Assert.That(store.ToString(), Is.EqualTo(expected));
         }
 
-        [Test]
-        public void Write_ShouldHandleLargeContent()
+        [TestCase("large1.json", 2)]
+        [TestCase("large2.json", 0)]
+        public void Write_ShouldHandleLargeContent(string file, byte indent)
         {
             JsonReader rdr = new
             (
@@ -188,7 +189,7 @@ namespace Solti.Utils.Json.Tests
                 Path.Combine
                 (
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
-                    "large.json"
+                    file
                 )
             );
 
@@ -198,13 +199,26 @@ namespace Solti.Utils.Json.Tests
 
             StringWriter store = new();
 
-            new JsonWriter().Write(store, input, SerializationContext.Untyped, default);
+            new JsonWriter(indent: indent).Write(store, input, SerializationContext.Untyped, default);
+
+            //
+            // Skip BOM
+            //
+
+            if (content.Peek() == content.CurrentEncoding.GetString(content.CurrentEncoding.GetPreamble())[0])
+            {
+                content.Read();
+            }
 
             string
                 serialized = store.ToString().Replace("\r", string.Empty),
-                expected = content.ReadToEnd().Substring(1).Replace("\r", string.Empty);
+                expected = content.ReadToEnd().Replace("\r", string.Empty);
 
             Assert.That(serialized, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void Write_ShouldBeNullChecked() =>
+            Assert.Throws<ArgumentNullException>(() => new JsonWriter().Write(null!, new object(), SerializationContext.Untyped, default));
     }
 }

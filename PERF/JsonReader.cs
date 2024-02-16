@@ -60,7 +60,7 @@ namespace Solti.Utils.Json.Perf
                 string location = Path.Combine
                 (
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
-                    "large.json"
+                    "large1.json"
                 );
 
                 yield return () => new StreamReader(location);

@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\TEST\large.json" Link="large.json">
+    <Content Include="..\TEST\large1.json" Link="large1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

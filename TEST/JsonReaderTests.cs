@@ -294,7 +294,7 @@ namespace Solti.Utils.Json.Tests
             });
         }
 
-        public static IEnumerable<object[]> ParseString_ShouldThrowOnUnescapedSpace_Params
+        public static IEnumerable<object[]> ParseString_ShouldThrowOnUnescapedControl_Params
         {
             get
             {
@@ -308,7 +308,7 @@ namespace Solti.Utils.Json.Tests
             }
         }
 
-        private static void ParseString_ShouldThrowOnUnescapedSpace(string input, int position, int bufferSize)
+        private static void ParseString_ShouldThrowOnUnescapedControl(string input, int position, int bufferSize)
         {
             using TextReaderWrapper content = new StringReader(input);
           
@@ -322,13 +322,13 @@ namespace Solti.Utils.Json.Tests
             Assert.That(ex.Data["column"], Is.EqualTo(position));
         }
 
-        [TestCaseSource(nameof(ParseString_ShouldThrowOnUnescapedSpace_Params))]
-        public void ParseString_ShouldThrowOnUnescapedSpace(string input, int position) =>
-            ParseString_ShouldThrowOnUnescapedSpace(input, position, 128);
+        [TestCaseSource(nameof(ParseString_ShouldThrowOnUnescapedControl_Params))]
+        public void ParseString_ShouldThrowOnUnescapedControl(string input, int position) =>
+            ParseString_ShouldThrowOnUnescapedControl(input, position, 128);
 
-        [TestCaseSource(nameof(ParseString_ShouldThrowOnUnescapedSpace_Params))]
-        public void ParseString_ShouldThrowOnUnescapedSpaceInMultipleIterations(string input, int position) =>
-            ParseString_ShouldThrowOnUnescapedSpace(input, position, 1);
+        [TestCaseSource(nameof(ParseString_ShouldThrowOnUnescapedControl_Params))]
+        public void ParseString_ShouldThrowOnUnescapedControlInMultipleIterations(string input, int position) =>
+            ParseString_ShouldThrowOnUnescapedControl(input, position, 1);
 
         public static IEnumerable<object[]> ParseString_ShouldThrowOnUnterminatedString_Params
         {
@@ -882,8 +882,9 @@ namespace Solti.Utils.Json.Tests
             Assert.That(ex.Data["errors"], Is.EquivalentTo(new string[] { "some error" }));
         }
 
-        [Test]
-        public void Parse_ShouldHandleLargeInput()
+        [TestCase("large1.json", 5000)]
+        [TestCase("large2.json", 11351)]
+        public void Parse_ShouldHandleLargeInput(string file, int expectedLength)
         {
             JsonReader rdr = new
             (         
@@ -897,13 +898,13 @@ namespace Solti.Utils.Json.Tests
                 Path.Combine
                 (
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
-                    "large.json"
+                    file
                 )
             );
 
             IList? result = rdr.Parse(content, default) as IList;
             Assert.That(result, Is.Not.Null);
-            Assert.That(result!.Count, Is.EqualTo(5000));
+            Assert.That(result!.Count, Is.EqualTo(expectedLength));
         }
     }
 }

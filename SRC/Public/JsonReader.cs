@@ -242,7 +242,7 @@ namespace Solti.Utils.Json
                         return buffer.Slice(0, outputSize);
                     }
 
-                    if (IsWhiteSpace(c) && c is not ' ')
+                    if (IsControl(c))
                     {
                         //
                         // Unexpected white space
@@ -251,7 +251,7 @@ namespace Solti.Utils.Json
                         Assert(parsed < session.Content.CharsLeft, "Miscalculated 'parsed' value");
                         Advance(ref session, parsed + 1);
 
-                        MalformedValue(session, "string", UNEXPECTED_WHITE_SPACE);
+                        MalformedValue(session, "string", UNEXPECTED_CONTROL);
                     }
 
                     if (c == '\\')

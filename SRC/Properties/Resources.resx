@@ -147,14 +147,14 @@
   <data name="NOT_SERIALIZABLE" xml:space="preserve">
     <value>The given value is not serializable</value>
   </data>
+  <data name="UNEXPECTED_CONTROL" xml:space="preserve">
+    <value>Unexpected control character</value>
+  </data>
   <data name="UNEXPECTED_LIST_ITEM" xml:space="preserve">
     <value>Unexpected list item</value>
   </data>
   <data name="UNEXPECTED_PROPERTY" xml:space="preserve">
     <value>Unexpected property</value>
-  </data>
-  <data name="UNEXPECTED_WHITE_SPACE" xml:space="preserve">
-    <value>Unexpected white space</value>
   </data>
   <data name="UNKNOWN_CTRL" xml:space="preserve">
     <value>Unknwon control character</value>
