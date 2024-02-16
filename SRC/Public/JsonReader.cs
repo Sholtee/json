@@ -25,7 +25,7 @@ namespace Solti.Utils.Json
     /// Represents a generic, cancellable JSON reader.
     /// </summary>
     /// <remarks>This class is thread safe.</remarks>
-    public sealed class JsonReader(DeserializationContext context, JsonReaderFlags flags, int maxDepth)
+    public sealed class JsonReader(DeserializationContext context, JsonReaderFlags flags = JsonReaderFlags.None, int maxDepth = 64)
     {
         #region Private
         private readonly StringComparison FComparison = flags.HasFlag(JsonReaderFlags.CaseInsensitive)

@@ -14,7 +14,7 @@ using BenchmarkDotNet.Attributes;
 namespace Solti.Utils.Json.Perf
 {
     [MemoryDiagnoser]
-    public class JsonReaderParsingTests
+    public class JsonReaderTests
     {
         public static IEnumerable<Func<TextReader>> Params
         {
@@ -57,13 +57,17 @@ namespace Solti.Utils.Json.Perf
                 // Mixed, large
                 //
 
-                string location = Path.Combine
-                (
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
-                    "large1.json"
-                );
-
-                yield return () => new StreamReader(location);
+                foreach (string file in new string[] { "large1.json", "large2.json" })
+                {
+                    yield return () => new StreamReader
+                    (
+                        Path.Combine
+                        (
+                            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+                            file
+                        )
+                    );
+                }
             }
         }
 
