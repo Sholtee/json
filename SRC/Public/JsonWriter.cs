@@ -17,9 +17,10 @@ namespace Solti.Utils.Json
 {
     using Internals;
 
+    using static SerializationContext;
     using static Properties.Resources;
 
-    public sealed class JsonWriter(SerializationContext context, int maxDepth = 64, byte indent = 2)
+    public sealed class JsonWriter(int maxDepth = 64, byte indent = 2)
     {
         #region Private
         private static readonly char[][] FSpaces = GetAllSpaces(256);
@@ -72,7 +73,7 @@ namespace Solti.Utils.Json
         /// Writes a JSON string to the underlying buffer representing the given <paramref name="str"/>.
         /// </summary>
         /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
-        internal void WriteString(TextWriter dest, object str, SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteString(TextWriter dest, object str, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
             if (str is not string s)
                 s = currentContext.ConvertToString(str);
@@ -167,7 +168,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Writes the given value to the underlying buffer.
         /// </summary>
-        internal void WriteValue(TextWriter dest, object? val, SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteValue(TextWriter dest, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
             dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             dest.Write
@@ -179,21 +180,21 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Writes the list value to the underlying buffer.
         /// </summary>
-        internal void WriteList(TextWriter dest, object val, SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
+        internal void WriteList(TextWriter dest, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
         {
             dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             dest.Write('[');
 
             bool firstItem = true;
-            foreach ((SerializationContext? childContext, object? item) in VerifyDelegate(currentContext.EnumListEntries)(val))
+            foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
-                if (childContext is null)
+                if (entry.Context == Empty)
                     continue;
 
                 if (firstItem) firstItem = false;
                 else dest.Write(",");
 
-                Write(dest, item, childContext, Deeper(currentDepth), null, cancellation);
+                Write(dest, entry.Value, entry.Context, Deeper(currentDepth), null, cancellation);
             }
 
             dest.Write(GetSpaces(currentDepth));
@@ -205,27 +206,27 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Writes the given object to the underlying buffer.
         /// </summary>
-        internal void WriteObject(TextWriter dest, object val, SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
+        internal void WriteObject(TextWriter dest, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
         {
             dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             dest.Write('{');
 
             bool firstItem = true;
-            foreach ((SerializationContext? childContext, string name, object? item) in VerifyDelegate(currentContext.EnumObjectEntries)(val))
+            foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
-                if (childContext is null)
+                if (entry.Context == Empty)
                     continue;
 
                 if (firstItem) firstItem = false;
                 else dest.Write(",");
 
-                WriteString(dest, name, childContext, Deeper(currentDepth), null);
+                WriteString(dest, entry.Name!, entry.Context, Deeper(currentDepth), null);
                 dest.Write(":");
                 Write
                 (
                     dest,
-                    item,
-                    childContext,
+                    entry.Value,
+                    entry.Context,
                     Deeper(currentDepth),
                     FValueSeparator,
                     cancellation
@@ -238,7 +239,7 @@ namespace Solti.Utils.Json
             dest.Write('}');
         }
 
-        internal void Write(TextWriter dest, object? val, SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
+        internal void Write(TextWriter dest, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
         {
             cancellation.ThrowIfCancellationRequested();
 
@@ -264,7 +265,7 @@ namespace Solti.Utils.Json
         }
         #endregion
 
-        public void Write(TextWriter dest, object? val, in CancellationToken cancellation) => Write
+        public void Write(TextWriter dest, object? val, in SerializationContext context, in CancellationToken cancellation) => Write
         (
             dest ?? throw new ArgumentNullException(nameof(dest)),
             val,

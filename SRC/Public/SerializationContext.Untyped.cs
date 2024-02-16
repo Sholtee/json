@@ -12,7 +12,7 @@ namespace Solti.Utils.Json
     using static Internals.Consts;
     using static Properties.Resources;
 
-    public sealed partial record SerializationContext
+    public readonly partial struct SerializationContext
     {
         public static SerializationContext Untyped { get; } = new()
         {
@@ -34,30 +34,26 @@ namespace Solti.Utils.Json
                 _ => JsonDataTypes.Unkown
             },
 
-            EnumListEntries = EnumListEntriesImpl,
-
-            EnumObjectEntries = EnumObjectEntriesImpl,
+            EnumEntries = EnumEntriesImpl
         };
 
-        private static IEnumerable<(SerializationContext?, object?)> EnumListEntriesImpl(object val)
+        private static IEnumerable<Entry> EnumEntriesImpl(object val)
         {
-            if (val is not IList<object?> lst)
-                throw new ArgumentException(INVALID_VALUE, nameof(val));
-
-            foreach (object? item in lst)
+            switch (val)
             {
-                yield return (Untyped, item);
-            }
-        }
-
-        private static IEnumerable<(SerializationContext?, string, object?)> EnumObjectEntriesImpl(object val)
-        {
-            if (val is not IDictionary<string, object?> lst)
-                throw new ArgumentException(INVALID_VALUE, nameof(val));
-
-            foreach (KeyValuePair<string, object?> item in lst)
-            {
-                yield return (Untyped, item.Key, item.Value);
+                case IList<object?> lst:
+                    foreach (object? item in lst)
+                    {
+                        yield return new Entry { Context = Untyped, Value = item };
+                    }
+                    break;
+                case IDictionary<string, object?> dict:
+                    foreach (KeyValuePair<string, object?> entry in dict)
+                    {
+                        yield return new Entry { Context = Untyped, Name = entry.Key, Value = entry.Value };
+                    }
+                    break;
+                default: throw new ArgumentException(INVALID_VALUE, nameof(val));
             }
         }
     }

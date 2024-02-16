@@ -8,11 +8,16 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.Json
 {
-    public sealed partial record SerializationContext
+    public readonly partial struct SerializationContext
     {
-        public delegate IEnumerable<(SerializationContext?, object?)> EnumListEntriesDelegate(object value);
+        public readonly struct Entry
+        {
+            public required SerializationContext Context { get; init; }
+            public readonly string? Name { get; init; }
+            public required object? Value { get; init; }
+        }
 
-        public delegate IEnumerable<(SerializationContext?, string, object?)> EnumObjectEntriesDelegate(object value);
+        public delegate IEnumerable<Entry> EnumEntriesDelegate(object value);
 
         public delegate JsonDataTypes GetTypeDelegate(object? obj);
 
@@ -39,13 +44,24 @@ namespace Solti.Utils.Json
         public required ToStringDelegate ConvertToString { get; init; }
 
         /// <summary>
-        /// If supported, enumerates the items alongside their serialization context.
+        /// If supported, enumerates the list/object entries alongside their serialization context.
         /// </summary>
-        public EnumListEntriesDelegate? EnumListEntries { get; init; }
+        public EnumEntriesDelegate? EnumEntries { get; init; }
 
         /// <summary>
-        /// If supported, enumerates the items alongside their serialization context.
+        /// Empty context. Using this context instructs the system to skip the fragment of object tree on which the writer is positioned.
         /// </summary>
-        public EnumObjectEntriesDelegate? EnumObjectEntries { get; init; }
+        public static SerializationContext Empty { get; } = new() { ConvertToString = null!, GetTypeOf = null! };
+
+        public static bool operator ==(in SerializationContext left, in SerializationContext right) =>
+            left.GetTypeOf == right.GetTypeOf &&
+            left.ConvertToString == right.ConvertToString &&
+            left.EnumEntries == right.EnumEntries;
+
+        public static bool operator !=(in SerializationContext left, in SerializationContext right) => !(left == right);
+
+        public override bool Equals(object obj) => throw new NotSupportedException();
+
+        public override int GetHashCode() => throw new NotSupportedException();
     }
 }
