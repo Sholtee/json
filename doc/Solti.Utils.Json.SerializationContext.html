@@ -49,25 +49,11 @@
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">SerializationContext</span></div>
   </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Solti.Utils.Json.SerializationContext.html">SerializationContext</a>&gt;</div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.Json.html">Solti.Utils.Json</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.Json.dll</h6>
   <h5 id="Solti_Utils_Json_SerializationContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class SerializationContext : Object</code></pre>
-  </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  <a id="Solti_Utils_Json_SerializationContext__ctor_" data-uid="Solti.Utils.Json.SerializationContext.#ctor*"></a>
-  <h4 id="Solti_Utils_Json_SerializationContext__ctor" data-uid="Solti.Utils.Json.SerializationContext.#ctor">SerializationContext()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SerializationContext()</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class SerializationContext : ValueType</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -94,13 +80,13 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_Json_SerializationContext_EnumListEntries_" data-uid="Solti.Utils.Json.SerializationContext.EnumListEntries*"></a>
-  <h4 id="Solti_Utils_Json_SerializationContext_EnumListEntries" data-uid="Solti.Utils.Json.SerializationContext.EnumListEntries">EnumListEntries</h4>
+  <a id="Solti_Utils_Json_SerializationContext_Empty_" data-uid="Solti.Utils.Json.SerializationContext.Empty*"></a>
+  <h4 id="Solti_Utils_Json_SerializationContext_Empty" data-uid="Solti.Utils.Json.SerializationContext.Empty">Empty</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SerializationContext.EnumListEntriesDelegate EnumListEntries { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static SerializationContext Empty { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -112,18 +98,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.Json.SerializationContext.EnumListEntriesDelegate.html">SerializationContext.EnumListEntriesDelegate</a></td>
+        <td><a class="xref" href="Solti.Utils.Json.SerializationContext.html">SerializationContext</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_Json_SerializationContext_EnumObjectEntries_" data-uid="Solti.Utils.Json.SerializationContext.EnumObjectEntries*"></a>
-  <h4 id="Solti_Utils_Json_SerializationContext_EnumObjectEntries" data-uid="Solti.Utils.Json.SerializationContext.EnumObjectEntries">EnumObjectEntries</h4>
+  <a id="Solti_Utils_Json_SerializationContext_EnumEntries_" data-uid="Solti.Utils.Json.SerializationContext.EnumEntries*"></a>
+  <h4 id="Solti_Utils_Json_SerializationContext_EnumEntries" data-uid="Solti.Utils.Json.SerializationContext.EnumEntries">EnumEntries</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SerializationContext.EnumObjectEntriesDelegate EnumObjectEntries { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public SerializationContext.EnumEntriesDelegate EnumEntries { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -135,7 +121,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.Json.SerializationContext.EnumObjectEntriesDelegate.html">SerializationContext.EnumObjectEntriesDelegate</a></td>
+        <td><a class="xref" href="Solti.Utils.Json.SerializationContext.EnumEntriesDelegate.html">SerializationContext.EnumEntriesDelegate</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -188,69 +174,6 @@
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_Json_SerializationContext__Clone___" data-uid="Solti.Utils.Json.SerializationContext.{Clone}$*"></a>
-  <h4 id="Solti_Utils_Json_SerializationContext__Clone__" data-uid="Solti.Utils.Json.SerializationContext.{Clone}$">&lt;Clone&gt;$()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SerializationContext &lt;Clone&gt;$()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.Json.SerializationContext.html">SerializationContext</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_Json_SerializationContext_Equals_" data-uid="Solti.Utils.Json.SerializationContext.Equals*"></a>
-  <h4 id="Solti_Utils_Json_SerializationContext_Equals_Solti_Utils_Json_SerializationContext_" data-uid="Solti.Utils.Json.SerializationContext.Equals(Solti.Utils.Json.SerializationContext)">Equals(SerializationContext)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Equals(SerializationContext other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.Json.SerializationContext.html">SerializationContext</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <a id="Solti_Utils_Json_SerializationContext_Equals_" data-uid="Solti.Utils.Json.SerializationContext.Equals*"></a>
   <h4 id="Solti_Utils_Json_SerializationContext_Equals_System_Object_" data-uid="Solti.Utils.Json.SerializationContext.Equals(System.Object)">Equals(Object)</h4>
   <div class="markdown level1 summary"></div>
@@ -314,38 +237,15 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_Json_SerializationContext_ToString_" data-uid="Solti.Utils.Json.SerializationContext.ToString*"></a>
-  <h4 id="Solti_Utils_Json_SerializationContext_ToString" data-uid="Solti.Utils.Json.SerializationContext.ToString">ToString()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="operators">Operators
   </h3>
   <a id="Solti_Utils_Json_SerializationContext_op_Equality_" data-uid="Solti.Utils.Json.SerializationContext.op_Equality*"></a>
-  <h4 id="Solti_Utils_Json_SerializationContext_op_Equality_Solti_Utils_Json_SerializationContext_Solti_Utils_Json_SerializationContext_" data-uid="Solti.Utils.Json.SerializationContext.op_Equality(Solti.Utils.Json.SerializationContext,Solti.Utils.Json.SerializationContext)">Equality(SerializationContext, SerializationContext)</h4>
+  <h4 id="Solti_Utils_Json_SerializationContext_op_Equality_Solti_Utils_Json_SerializationContext__Solti_Utils_Json_SerializationContext__" data-uid="Solti.Utils.Json.SerializationContext.op_Equality(Solti.Utils.Json.SerializationContext@,Solti.Utils.Json.SerializationContext@)">Equality(in SerializationContext, in SerializationContext)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator ==(SerializationContext left, SerializationContext right)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator ==(in SerializationContext left, in SerializationContext right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -385,12 +285,12 @@
     </tbody>
   </table>
   <a id="Solti_Utils_Json_SerializationContext_op_Inequality_" data-uid="Solti.Utils.Json.SerializationContext.op_Inequality*"></a>
-  <h4 id="Solti_Utils_Json_SerializationContext_op_Inequality_Solti_Utils_Json_SerializationContext_Solti_Utils_Json_SerializationContext_" data-uid="Solti.Utils.Json.SerializationContext.op_Inequality(Solti.Utils.Json.SerializationContext,Solti.Utils.Json.SerializationContext)">Inequality(SerializationContext, SerializationContext)</h4>
+  <h4 id="Solti_Utils_Json_SerializationContext_op_Inequality_Solti_Utils_Json_SerializationContext__Solti_Utils_Json_SerializationContext__" data-uid="Solti.Utils.Json.SerializationContext.op_Inequality(Solti.Utils.Json.SerializationContext@,Solti.Utils.Json.SerializationContext@)">Inequality(in SerializationContext, in SerializationContext)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator !=(SerializationContext left, SerializationContext right)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator !=(in SerializationContext left, in SerializationContext right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -429,10 +329,6 @@
       </tr>
     </tbody>
   </table>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
-  </div>
 </article>
           </div>
           
