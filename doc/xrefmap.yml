@@ -25,18 +25,6 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.#ctor
   fullName: Solti.Utils.Json.DeserializationContext.DeserializationContext
   nameWithType: DeserializationContext.DeserializationContext
-- uid: Solti.Utils.Json.DeserializationContext.{Clone}$
-  name: <Clone>$()
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext__Clone__
-  commentId: M:Solti.Utils.Json.DeserializationContext.{Clone}$
-  fullName: Solti.Utils.Json.DeserializationContext.<Clone>$()
-  nameWithType: DeserializationContext.<Clone>$()
-- uid: Solti.Utils.Json.DeserializationContext.{Clone}$*
-  name: <Clone>$
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext__Clone___
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.{Clone}$
-  fullName: Solti.Utils.Json.DeserializationContext.<Clone>$
-  nameWithType: DeserializationContext.<Clone>$
 - uid: Solti.Utils.Json.DeserializationContext.CommentParser
   name: CommentParser
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CommentParser
@@ -283,36 +271,6 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.Default
   fullName: Solti.Utils.Json.DeserializationContext.Default
   nameWithType: DeserializationContext.Default
-- uid: Solti.Utils.Json.DeserializationContext.Equals(Solti.Utils.Json.DeserializationContext)
-  name: Equals(DeserializationContext)
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Equals_Solti_Utils_Json_DeserializationContext_
-  commentId: M:Solti.Utils.Json.DeserializationContext.Equals(Solti.Utils.Json.DeserializationContext)
-  fullName: Solti.Utils.Json.DeserializationContext.Equals(Solti.Utils.Json.DeserializationContext)
-  nameWithType: DeserializationContext.Equals(DeserializationContext)
-- uid: Solti.Utils.Json.DeserializationContext.Equals(System.Object)
-  name: Equals(Object)
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Equals_System_Object_
-  commentId: M:Solti.Utils.Json.DeserializationContext.Equals(System.Object)
-  fullName: Solti.Utils.Json.DeserializationContext.Equals(System.Object)
-  nameWithType: DeserializationContext.Equals(Object)
-- uid: Solti.Utils.Json.DeserializationContext.Equals*
-  name: Equals
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Equals_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.Equals
-  fullName: Solti.Utils.Json.DeserializationContext.Equals
-  nameWithType: DeserializationContext.Equals
-- uid: Solti.Utils.Json.DeserializationContext.GetHashCode
-  name: GetHashCode()
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetHashCode
-  commentId: M:Solti.Utils.Json.DeserializationContext.GetHashCode
-  fullName: Solti.Utils.Json.DeserializationContext.GetHashCode()
-  nameWithType: DeserializationContext.GetHashCode()
-- uid: Solti.Utils.Json.DeserializationContext.GetHashCode*
-  name: GetHashCode
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetHashCode_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.GetHashCode
-  fullName: Solti.Utils.Json.DeserializationContext.GetHashCode
-  nameWithType: DeserializationContext.GetHashCode
 - uid: Solti.Utils.Json.DeserializationContext.GetListItemContext
   name: GetListItemContext
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetListItemContext
@@ -451,30 +409,6 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
   fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
   nameWithType: DeserializationContext.GetPropertyContextDelegate.Invoke
-- uid: Solti.Utils.Json.DeserializationContext.op_Equality(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.DeserializationContext)
-  name: Equality(DeserializationContext, DeserializationContext)
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_op_Equality_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_DeserializationContext_
-  commentId: M:Solti.Utils.Json.DeserializationContext.op_Equality(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.DeserializationContext)
-  fullName: Solti.Utils.Json.DeserializationContext.Equality(Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.DeserializationContext)
-  nameWithType: DeserializationContext.Equality(DeserializationContext, DeserializationContext)
-- uid: Solti.Utils.Json.DeserializationContext.op_Equality*
-  name: Equality
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_op_Equality_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.op_Equality
-  fullName: Solti.Utils.Json.DeserializationContext.Equality
-  nameWithType: DeserializationContext.Equality
-- uid: Solti.Utils.Json.DeserializationContext.op_Inequality(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.DeserializationContext)
-  name: Inequality(DeserializationContext, DeserializationContext)
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_op_Inequality_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_DeserializationContext_
-  commentId: M:Solti.Utils.Json.DeserializationContext.op_Inequality(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.DeserializationContext)
-  fullName: Solti.Utils.Json.DeserializationContext.Inequality(Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.DeserializationContext)
-  nameWithType: DeserializationContext.Inequality(DeserializationContext, DeserializationContext)
-- uid: Solti.Utils.Json.DeserializationContext.op_Inequality*
-  name: Inequality
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_op_Inequality_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.op_Inequality
-  fullName: Solti.Utils.Json.DeserializationContext.Inequality
-  nameWithType: DeserializationContext.Inequality
 - uid: Solti.Utils.Json.DeserializationContext.Push
   name: Push
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Push
@@ -607,18 +541,6 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.SupportedTypes
   fullName: Solti.Utils.Json.DeserializationContext.SupportedTypes
   nameWithType: DeserializationContext.SupportedTypes
-- uid: Solti.Utils.Json.DeserializationContext.ToString
-  name: ToString()
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ToString
-  commentId: M:Solti.Utils.Json.DeserializationContext.ToString
-  fullName: Solti.Utils.Json.DeserializationContext.ToString()
-  nameWithType: DeserializationContext.ToString()
-- uid: Solti.Utils.Json.DeserializationContext.ToString*
-  name: ToString
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ToString_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.ToString
-  fullName: Solti.Utils.Json.DeserializationContext.ToString
-  nameWithType: DeserializationContext.ToString
 - uid: Solti.Utils.Json.DeserializationContext.Untyped
   name: Untyped
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Untyped
@@ -763,27 +685,27 @@ references:
   commentId: T:Solti.Utils.Json.JsonReader
   fullName: Solti.Utils.Json.JsonReader
   nameWithType: JsonReader
-- uid: Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
-  name: JsonReader(DeserializationContext, JsonReaderFlags, Int32)
-  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_Solti_Utils_Json_DeserializationContext_Solti_Utils_Json_JsonReaderFlags_System_Int32_
-  commentId: M:Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.DeserializationContext,Solti.Utils.Json.JsonReaderFlags,System.Int32)
-  fullName: Solti.Utils.Json.JsonReader.JsonReader(Solti.Utils.Json.DeserializationContext, Solti.Utils.Json.JsonReaderFlags, System.Int32)
-  nameWithType: JsonReader.JsonReader(DeserializationContext, JsonReaderFlags, Int32)
+- uid: Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.JsonReaderFlags,System.Int32)
+  name: JsonReader(JsonReaderFlags, Int32)
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_Solti_Utils_Json_JsonReaderFlags_System_Int32_
+  commentId: M:Solti.Utils.Json.JsonReader.#ctor(Solti.Utils.Json.JsonReaderFlags,System.Int32)
+  fullName: Solti.Utils.Json.JsonReader.JsonReader(Solti.Utils.Json.JsonReaderFlags, System.Int32)
+  nameWithType: JsonReader.JsonReader(JsonReaderFlags, Int32)
 - uid: Solti.Utils.Json.JsonReader.#ctor*
   name: JsonReader
   href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader__ctor_
   commentId: Overload:Solti.Utils.Json.JsonReader.#ctor
   fullName: Solti.Utils.Json.JsonReader.JsonReader
   nameWithType: JsonReader.JsonReader
-- uid: Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader,System.Threading.CancellationToken@)
-  name: Parse(TextReader, in CancellationToken)
-  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Parse_System_IO_TextReader_System_Threading_CancellationToken__
-  commentId: M:Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader,System.Threading.CancellationToken@)
-  name.vb: Parse(TextReader, ByRef CancellationToken)
-  fullName: Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader, in System.Threading.CancellationToken)
-  fullName.vb: Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader, ByRef System.Threading.CancellationToken)
-  nameWithType: JsonReader.Parse(TextReader, in CancellationToken)
-  nameWithType.vb: JsonReader.Parse(TextReader, ByRef CancellationToken)
+- uid: Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader,Solti.Utils.Json.DeserializationContext@,System.Threading.CancellationToken@)
+  name: Parse(TextReader, in DeserializationContext, in CancellationToken)
+  href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Parse_System_IO_TextReader_Solti_Utils_Json_DeserializationContext__System_Threading_CancellationToken__
+  commentId: M:Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader,Solti.Utils.Json.DeserializationContext@,System.Threading.CancellationToken@)
+  name.vb: Parse(TextReader, ByRef DeserializationContext, ByRef CancellationToken)
+  fullName: Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader, in Solti.Utils.Json.DeserializationContext, in System.Threading.CancellationToken)
+  fullName.vb: Solti.Utils.Json.JsonReader.Parse(System.IO.TextReader, ByRef Solti.Utils.Json.DeserializationContext, ByRef System.Threading.CancellationToken)
+  nameWithType: JsonReader.Parse(TextReader, in DeserializationContext, in CancellationToken)
+  nameWithType.vb: JsonReader.Parse(TextReader, ByRef DeserializationContext, ByRef CancellationToken)
 - uid: Solti.Utils.Json.JsonReader.Parse*
   name: Parse
   href: Solti.Utils.Json.JsonReader.html#Solti_Utils_Json_JsonReader_Parse_
@@ -895,18 +817,18 @@ references:
   commentId: Overload:Solti.Utils.Json.SerializationContext.ConvertToString
   fullName: Solti.Utils.Json.SerializationContext.ConvertToString
   nameWithType: SerializationContext.ConvertToString
-- uid: Solti.Utils.Json.SerializationContext.Empty
-  name: Empty
-  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Empty
-  commentId: P:Solti.Utils.Json.SerializationContext.Empty
-  fullName: Solti.Utils.Json.SerializationContext.Empty
-  nameWithType: SerializationContext.Empty
-- uid: Solti.Utils.Json.SerializationContext.Empty*
-  name: Empty
-  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Empty_
-  commentId: Overload:Solti.Utils.Json.SerializationContext.Empty
-  fullName: Solti.Utils.Json.SerializationContext.Empty
-  nameWithType: SerializationContext.Empty
+- uid: Solti.Utils.Json.SerializationContext.Default
+  name: Default
+  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Default
+  commentId: P:Solti.Utils.Json.SerializationContext.Default
+  fullName: Solti.Utils.Json.SerializationContext.Default
+  nameWithType: SerializationContext.Default
+- uid: Solti.Utils.Json.SerializationContext.Default*
+  name: Default
+  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Default_
+  commentId: Overload:Solti.Utils.Json.SerializationContext.Default
+  fullName: Solti.Utils.Json.SerializationContext.Default
+  nameWithType: SerializationContext.Default
 - uid: Solti.Utils.Json.SerializationContext.Entry
   name: SerializationContext.Entry
   href: Solti.Utils.Json.SerializationContext.Entry.html
