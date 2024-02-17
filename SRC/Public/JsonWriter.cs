@@ -30,7 +30,7 @@ namespace Solti.Utils.Json
         private static char[][] GetAllSpaces(int maxLength)  // slow but will be called only once
         {
             char[][] spaces = new char[maxLength][];
-            for (int i = 0; i < maxLength; i++)
+            for (int i = 1 /*0 is handled by GetSpaces()*/; i < maxLength; i++)
             {
                 spaces[i] = GetSpacesAr(i);
             }
