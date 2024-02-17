@@ -8,8 +8,6 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.Json
 {
-    using Internals;
-
     public readonly partial struct DeserializationContext
     {
         #region Delegates
@@ -35,8 +33,6 @@ namespace Solti.Utils.Json
 
         public delegate object? ConvertNumberDelegate(object? value);
         #endregion
-
-        public DeserializationContext() { }
 
         /// <summary>
         /// If supported, gets the nested context belongs to the property being parsed. If returns null the property and all its children won't be processed.
@@ -85,7 +81,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Converts the given <see cref="ReadOnlySpan{char}"/> to a user specified type, for instance <see cref="string"/>, <see cref="DateTime"/> or <see cref="Guid"/>.
         /// </summary>
-        public ConvertStringDelegate ConvertString { get; init; } = static chars => chars.AsString();
+        public ConvertStringDelegate? ConvertString { get; init; }
 
         /// <summary>
         /// Converts the given value to a user specified type. For instance you can implement <see cref="int"/> to <see cref="DateTime"/> conversation here.
