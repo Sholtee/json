@@ -58,7 +58,7 @@ namespace Solti.Utils.Json.Perf
 
                 foreach (string file in new string[] { "large1.json", "large2.json" })
                 {
-                    yield return new JsonReader(DeserializationContext.Untyped).Parse
+                    yield return new JsonReader().Parse
                     (
                         new StreamReader
                         (
@@ -68,6 +68,7 @@ namespace Solti.Utils.Json.Perf
                                 file
                             )
                         ),
+                        DeserializationContext.Untyped,
                         default
                     )!;
                 }

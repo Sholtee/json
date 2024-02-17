@@ -10,15 +10,18 @@ namespace Solti.Utils.Json
 {
     using Internals;
 
-    public sealed partial record DeserializationContext
+    public readonly partial struct DeserializationContext
     {
         #region Delegates
-        public delegate DeserializationContext? GetPropertyContextDelegate(ReadOnlySpan<char> property, StringComparison comparison);
+        /// <summary>
+        /// Gets the nested context belongs to the property being parsed. If returns Default the property and all its children won't be processed.
+        /// </summary>
+        public delegate DeserializationContext GetPropertyContextDelegate(ReadOnlySpan<char> property, StringComparison comparison);
 
         /// <summary>
-        /// Gets the nested context belongs to the list item being parsed. If returns null the item being processed will be skipped.
+        /// Gets the nested context belongs to the list item being parsed. If returns Default the list item and all its children won't be processed.
         /// </summary>
-        public delegate DeserializationContext? GetListItemContextDelegate(int index);
+        public delegate DeserializationContext GetListItemContextDelegate(int index);
 
         public delegate void CommentParserDelegate(ReadOnlySpan<char> value);
 
@@ -33,13 +36,15 @@ namespace Solti.Utils.Json
         public delegate object? ConvertNumberDelegate(object? value);
         #endregion
 
+        public DeserializationContext() { }
+
         /// <summary>
-        /// If supported, gets the nested context belongs to the property being parsed.
+        /// If supported, gets the nested context belongs to the property being parsed. If returns null the property and all its children won't be processed.
         /// </summary>
         public GetPropertyContextDelegate? GetPropertyContext { get; init; }
 
         /// <summary>
-        /// If supported, gets the nested context belongs to the list item being parsed.
+        /// If supported, gets the nested context belongs to the list item being parsed. If returns null the list item and all its children won't be processed.
         /// </summary>
         public GetListItemContextDelegate? GetListItemContext { get; init; }
 

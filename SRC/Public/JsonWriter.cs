@@ -188,7 +188,7 @@ namespace Solti.Utils.Json
             bool firstItem = true;
             foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
-                if (entry.Context == Empty)
+                if (entry.Context == Default)
                     continue;
 
                 if (firstItem) firstItem = false;
@@ -214,7 +214,7 @@ namespace Solti.Utils.Json
             bool firstItem = true;
             foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
-                if (entry.Context == Empty)
+                if (entry.Context == Default)
                     continue;
 
                 if (firstItem) firstItem = false;

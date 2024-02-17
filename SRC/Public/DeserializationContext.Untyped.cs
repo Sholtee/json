@@ -13,7 +13,7 @@ namespace Solti.Utils.Json
 
     using static Properties.Resources;
 
-    public sealed partial record DeserializationContext
+    public readonly partial struct DeserializationContext
     {
         /// <summary>
         /// Context used to create untyped result.

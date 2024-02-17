@@ -48,11 +48,6 @@ namespace Solti.Utils.Json
         /// </summary>
         public EnumEntriesDelegate? EnumEntries { get; init; }
 
-        /// <summary>
-        /// Empty context. Using this context instructs the system to skip the fragment of object tree on which the writer is positioned.
-        /// </summary>
-        public static SerializationContext Empty { get; } = default;
-
         public static bool operator ==(in SerializationContext left, in SerializationContext right) =>
             left.GetTypeOf == right.GetTypeOf &&
             left.ConvertToString == right.ConvertToString &&

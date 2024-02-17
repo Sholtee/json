@@ -177,12 +177,7 @@ namespace Solti.Utils.Json.Tests
         [TestCase("large2.json", 0)]
         public void Write_ShouldHandleLargeContent(string file, byte indent)
         {
-            JsonReader rdr = new
-            (
-                DeserializationContext.Untyped,
-                JsonReaderFlags.None,
-                int.MaxValue
-            );
+            JsonReader rdr = new();
 
             using StreamReader content = new
             (
@@ -193,7 +188,7 @@ namespace Solti.Utils.Json.Tests
                 )
             );
 
-            IList? input = rdr.Parse(content, default) as IList;
+            IList? input = rdr.Parse(content, DeserializationContext.Untyped, default) as IList;
 
             content.BaseStream.Position = 0;
 

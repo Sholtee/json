@@ -1,18 +1,15 @@
 ﻿/********************************************************************************
-* DeserializationContext.Default.cs                                             *
+* SerializationContext.Default.cs                                               *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 namespace Solti.Utils.Json
 {
-    public readonly partial struct DeserializationContext
+    public readonly partial struct SerializationContext
     {
         /// <summary>
-        /// Default deserialization context. It doesn't produce any output.
+        /// Default context. Using this context instructs the system to skip the fragment of object tree on which the writer is positioned.
         /// </summary>
-        public static DeserializationContext Default { get; } = new DeserializationContext
-        {
-            SupportedTypes = JsonDataTypes.Any
-        };
+        public static SerializationContext Default { get; } = default;
     }
 }
