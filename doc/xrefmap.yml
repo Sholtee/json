@@ -13,18 +13,6 @@ references:
   commentId: T:Solti.Utils.Json.DeserializationContext
   fullName: Solti.Utils.Json.DeserializationContext
   nameWithType: DeserializationContext
-- uid: Solti.Utils.Json.DeserializationContext.#ctor
-  name: DeserializationContext()
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext__ctor
-  commentId: M:Solti.Utils.Json.DeserializationContext.#ctor
-  fullName: Solti.Utils.Json.DeserializationContext.DeserializationContext()
-  nameWithType: DeserializationContext.DeserializationContext()
-- uid: Solti.Utils.Json.DeserializationContext.#ctor*
-  name: DeserializationContext
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext__ctor_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.#ctor
-  fullName: Solti.Utils.Json.DeserializationContext.DeserializationContext
-  nameWithType: DeserializationContext.DeserializationContext
 - uid: Solti.Utils.Json.DeserializationContext.CommentParser
   name: CommentParser
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CommentParser
