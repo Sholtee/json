@@ -25,7 +25,7 @@ namespace Solti.Utils.Json.Perf
 
         public class StringContentFactory(string str) : ContentFactory(str)
         {
-            public override TextReader CreateReader() => new StringReader(str);
+            public override TextReader CreateReader() => new StringReader(Name);
         }
 
         public class FileContentFactory(string fileName) : ContentFactory(fileName)
@@ -35,7 +35,7 @@ namespace Solti.Utils.Json.Perf
                 Path.Combine
                 (
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
-                    fileName
+                    Name
                 )
             );
         }
