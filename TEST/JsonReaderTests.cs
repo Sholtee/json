@@ -891,5 +891,9 @@ namespace Solti.Utils.Json.Tests
             Assert.That(result, Is.Not.Null);
             Assert.That(result!.Count, Is.EqualTo(expectedLength));
         }
+
+        [Test]
+        public void Parse_ShouldBeNullChecked() =>
+            Assert.Throws<ArgumentNullException>(() => new JsonReader().Parse(null!, DeserializationContext.Default, default));
     }
 }
