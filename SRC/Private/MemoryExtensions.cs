@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.IO.Hashing;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json.Internals
@@ -26,7 +27,18 @@ namespace Solti.Utils.Json.Internals
 #endif
         }
 
+        private static readonly int FSeed = new Random().Next();
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string AsString(this Span<char> self) => ((ReadOnlySpan<char>) self).AsString();
+        unsafe public static int GetXxHashCode(this ReadOnlySpan<char> self)
+        {
+            fixed (void* ptr = self)
+            {
+                return (int) XxHash32.HashToUInt32(new ReadOnlySpan<byte>(ptr, self.Length * sizeof(char)), FSeed);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string AsString(this Span<char> self) => AsString((ReadOnlySpan<char>) self);
     }
 }
