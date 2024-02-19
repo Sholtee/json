@@ -17,10 +17,10 @@ namespace Solti.Utils.Json.Internals.Tests
             Assert.That(str.AsSpan().AsString(), Is.EqualTo(str));
 
         [Test]
-        public void GetXxHashCode_ShouldHash([Values("", "1", "1986", "cica", "😁")] string str)
+        public void GetXxHashCode_ShouldHash([Values("", "1", "1986", "cica", "😁", "loooooooooooooooooooooooooooooooooooooooooong")] string str, [Values(1, 2, 4, 10, 16)] byte bufferSize)
         {
-            Assert.AreEqual(str.AsSpan().GetXxHashCode(), str.Substring(0).AsSpan().GetXxHashCode());
-            Assert.AreNotEqual(str.AsSpan().GetXxHashCode(), (str + "_").AsSpan().GetXxHashCode());
+            Assert.AreEqual(str.AsSpan().GetXxHashCode(bufferSize), str.Substring(0).AsSpan().GetXxHashCode(bufferSize));
+            Assert.AreNotEqual(str.AsSpan().GetXxHashCode(bufferSize), (str + "_").AsSpan().GetXxHashCode(bufferSize));
         }
     }
 }

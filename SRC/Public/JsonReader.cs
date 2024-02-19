@@ -38,10 +38,6 @@ namespace Solti.Utils.Json
 
         private static readonly ConvertStringDelegate FDefaultConvertStringDelegate = static chars => chars.AsString();
 
-        private readonly StringComparison FComparison = flags.HasFlag(JsonReaderFlags.CaseInsensitive)
-            ? StringComparison.OrdinalIgnoreCase
-            : StringComparison.Ordinal;
-
         /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
         /// </summary>
@@ -92,7 +88,9 @@ namespace Solti.Utils.Json
         private bool IsLiteral(in Session session, string literal) => literal.AsSpan().Equals
         (
             session.Content.PeekText(literal.Length),
-            FComparison
+            flags.HasFlag(JsonReaderFlags.CaseInsensitive)
+                ? StringComparison.OrdinalIgnoreCase
+                : StringComparison.Ordinal
         );
 
         /// <summary>
@@ -552,7 +550,7 @@ namespace Solti.Utils.Json
                 Consume(ref session, (JsonTokens) JsonDataTypes.String, currentContext);  // ensure we have a string
                 ReadOnlySpan<char> propertyName = ParseString(ref session, currentContext);
 
-                DeserializationContext childContext = getPropertyContext(propertyName, FComparison);
+                DeserializationContext childContext = getPropertyContext(propertyName, flags.HasFlag(JsonReaderFlags.CaseInsensitive));
                 if (childContext.Push is null && flags.HasFlag(JsonReaderFlags.ThrowOnUnknownProperty))
                     MalformedValue(session, OBJECT_ID, UNEXPECTED_PROPERTY);
 

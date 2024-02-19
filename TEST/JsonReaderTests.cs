@@ -734,7 +734,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new() { Content = content };
 
-            Assert.That(rdr.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, comp) => !name.AsString().Equals("2", comp) ? DeserializationContext.Untyped.GetPropertyContext!(name, comp) : DeserializationContext.Default }, default), Is.EquivalentTo(new Dictionary<string, object?> { { "1", 1 }, { "3", 3 } }));
+            Assert.That(rdr.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, ignoreCase) => !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ? DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase) : DeserializationContext.Default }, default), Is.EquivalentTo(new Dictionary<string, object?> { { "1", 1 }, { "3", 3 } }));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -748,7 +748,7 @@ namespace Solti.Utils.Json.Tests
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
                 Session session = new() { Content = content };
-                rdr.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, comp) => !name.AsString().Equals("2", comp) ? DeserializationContext.Untyped.GetPropertyContext!(name, comp) : DeserializationContext.Default }, default);
+                rdr.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, ignoreCase) => !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ? DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase) : DeserializationContext.Default }, default);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(12));
         }

@@ -14,7 +14,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Gets the nested context belongs to the property being parsed. If returns Default the property and all its children won't be processed.
         /// </summary>
-        public delegate DeserializationContext GetPropertyContextDelegate(ReadOnlySpan<char> property, StringComparison comparison);
+        public delegate DeserializationContext GetPropertyContextDelegate(ReadOnlySpan<char> property, bool ignoreCase);
 
         /// <summary>
         /// Gets the nested context belongs to the list item being parsed. If returns Default the list item and all its children won't be processed.

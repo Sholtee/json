@@ -27,18 +27,55 @@ namespace Solti.Utils.Json.Internals
 #endif
         }
 
-        private static readonly int FSeed = new Random().Next();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        unsafe public static int GetXxHashCode(this ReadOnlySpan<char> self)
-        {
-            fixed (void* ptr = self)
-            {
-                return (int) XxHash32.HashToUInt32(new ReadOnlySpan<byte>(ptr, self.Length * sizeof(char)), FSeed);
-            }
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string AsString(this Span<char> self) => AsString((ReadOnlySpan<char>) self);
+
+        private static readonly int FSeed = new Random().Next();
+
+        /// <summary>
+        /// Hashes the given text. The algorithm is case insensitive.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GetXxHashCode(this ReadOnlySpan<char> self, byte bufferSize = 32 /*for testing*/)
+        {
+            XxHash32 hash = new(FSeed);
+
+            Span<char> buffer = stackalloc char[bufferSize];
+
+            int j = 0;
+            for (int i = 0; i < self.Length; i++)
+            {
+                buffer[j] = char.ToUpper(self[i]);
+
+                if (j == buffer.Length - 1)
+                {
+                    AppendHash(buffer, buffer.Length, hash);
+                    j = 0;
+                    continue;
+                }
+                j++;
+            }
+
+            if (j > 0)
+                AppendHash(buffer, j, hash);
+
+            return (int) hash.GetCurrentHashAsUInt32();
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static unsafe void AppendHash(Span<char> buffer, int length, XxHash32 hash)
+            {
+                fixed (void* ptr = buffer)
+                {
+                    hash.Append
+                    (
+                        new ReadOnlySpan<byte>
+                        (
+                            ptr,
+                            length * sizeof(char)
+                        )
+                    );
+                }
+            }
+        }
     }
 }

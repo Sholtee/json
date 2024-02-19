@@ -35,7 +35,7 @@ namespace Solti.Utils.Json
                 }
             },
 
-            GetPropertyContext = static (ReadOnlySpan<char> prop, StringComparison _) =>
+            GetPropertyContext = static (ReadOnlySpan<char> prop, bool _) =>
             {
                 string propStr = prop.AsString();
 
