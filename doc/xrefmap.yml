@@ -355,15 +355,15 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.#ctor
   fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.GetPropertyContextDelegate
   nameWithType: DeserializationContext.GetPropertyContextDelegate.GetPropertyContextDelegate
-- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.StringComparison,System.AsyncCallback,System.Object)
-  name: BeginInvoke(ReadOnlySpan<Char>, StringComparison, AsyncCallback, Object)
-  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_StringComparison_System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.StringComparison,System.AsyncCallback,System.Object)
-  name.vb: BeginInvoke(ReadOnlySpan(Of Char), StringComparison, AsyncCallback, Object)
-  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan<System.Char>, System.StringComparison, System.AsyncCallback, System.Object)
-  fullName.vb: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan(Of System.Char), System.StringComparison, System.AsyncCallback, System.Object)
-  nameWithType: DeserializationContext.GetPropertyContextDelegate.BeginInvoke(ReadOnlySpan<Char>, StringComparison, AsyncCallback, Object)
-  nameWithType.vb: DeserializationContext.GetPropertyContextDelegate.BeginInvoke(ReadOnlySpan(Of Char), StringComparison, AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.Boolean,System.AsyncCallback,System.Object)
+  name: BeginInvoke(ReadOnlySpan<Char>, Boolean, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_Boolean_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.Boolean,System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(ReadOnlySpan(Of Char), Boolean, AsyncCallback, Object)
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan<System.Char>, System.Boolean, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan(Of System.Char), System.Boolean, System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.BeginInvoke(ReadOnlySpan<Char>, Boolean, AsyncCallback, Object)
+  nameWithType.vb: DeserializationContext.GetPropertyContextDelegate.BeginInvoke(ReadOnlySpan(Of Char), Boolean, AsyncCallback, Object)
 - uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke*
   name: BeginInvoke
   href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_BeginInvoke_
@@ -382,15 +382,15 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.EndInvoke
   fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.EndInvoke
   nameWithType: DeserializationContext.GetPropertyContextDelegate.EndInvoke
-- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan{System.Char},System.StringComparison)
-  name: Invoke(ReadOnlySpan<Char>, StringComparison)
-  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_Invoke_System_ReadOnlySpan_System_Char__System_StringComparison_
-  commentId: M:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan{System.Char},System.StringComparison)
-  name.vb: Invoke(ReadOnlySpan(Of Char), StringComparison)
-  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan<System.Char>, System.StringComparison)
-  fullName.vb: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan(Of System.Char), System.StringComparison)
-  nameWithType: DeserializationContext.GetPropertyContextDelegate.Invoke(ReadOnlySpan<Char>, StringComparison)
-  nameWithType.vb: DeserializationContext.GetPropertyContextDelegate.Invoke(ReadOnlySpan(Of Char), StringComparison)
+- uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan{System.Char},System.Boolean)
+  name: Invoke(ReadOnlySpan<Char>, Boolean)
+  href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_Invoke_System_ReadOnlySpan_System_Char__System_Boolean_
+  commentId: M:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan{System.Char},System.Boolean)
+  name.vb: Invoke(ReadOnlySpan(Of Char), Boolean)
+  fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan<System.Char>, System.Boolean)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan(Of System.Char), System.Boolean)
+  nameWithType: DeserializationContext.GetPropertyContextDelegate.Invoke(ReadOnlySpan<Char>, Boolean)
+  nameWithType.vb: DeserializationContext.GetPropertyContextDelegate.Invoke(ReadOnlySpan(Of Char), Boolean)
 - uid: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke*
   name: Invoke
   href: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.html#Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_Invoke_

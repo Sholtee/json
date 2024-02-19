@@ -90,12 +90,12 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_BeginInvoke_" data-uid="Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_StringComparison_System_AsyncCallback_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.StringComparison,System.AsyncCallback,System.Object)">BeginInvoke(ReadOnlySpan&lt;Char&gt;, StringComparison, AsyncCallback, Object)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_Boolean_System_AsyncCallback_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.Boolean,System.AsyncCallback,System.Object)">BeginInvoke(ReadOnlySpan&lt;Char&gt;, Boolean, AsyncCallback, Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(ReadOnlySpan&lt;char&gt; property, StringComparison comparison, AsyncCallback callback, object object)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(ReadOnlySpan&lt;char&gt; property, bool ignoreCase, AsyncCallback callback, object object)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -113,8 +113,8 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a></td>
-        <td><span class="parametername">comparison</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">ignoreCase</span></td>
         <td></td>
       </tr>
       <tr>
@@ -185,12 +185,12 @@
     </tbody>
   </table>
   <a id="Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_Invoke_" data-uid="Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_Invoke_System_ReadOnlySpan_System_Char__System_StringComparison_" data-uid="Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan{System.Char},System.StringComparison)">Invoke(ReadOnlySpan&lt;Char&gt;, StringComparison)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_GetPropertyContextDelegate_Invoke_System_ReadOnlySpan_System_Char__System_Boolean_" data-uid="Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke(System.ReadOnlySpan{System.Char},System.Boolean)">Invoke(ReadOnlySpan&lt;Char&gt;, Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual DeserializationContext Invoke(ReadOnlySpan&lt;char&gt; property, StringComparison comparison)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual DeserializationContext Invoke(ReadOnlySpan&lt;char&gt; property, bool ignoreCase)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -208,8 +208,8 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a></td>
-        <td><span class="parametername">comparison</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">ignoreCase</span></td>
         <td></td>
       </tr>
     </tbody>
