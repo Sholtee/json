@@ -5,6 +5,8 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Solti.Utils.Json.Internals
 {
@@ -14,6 +16,42 @@ namespace Solti.Utils.Json.Internals
     /// <remarks>Logic of this class was mostly taken from <a href="https://github.com/dotnet/corefxlab/blob/archive/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs">here</a></remarks>
     internal sealed class StringKeyedDictionary<TValue>
     {
+        #region Private
+        private delegate int GetHashCodeDelegate(ReadOnlySpan<char> input);
+
+        private static GetHashCodeDelegate GetGetHashCodeDelegate()
+        {
+            //
+            // Modern systems must have this delegate built in
+            //
+
+            MethodInfo getHashCode = typeof(string).GetMethod
+            (
+                nameof(GetHashCode),
+                BindingFlags.Public | BindingFlags.Static,
+                null,
+                [typeof(ReadOnlySpan<char>),typeof(StringComparison)],
+                null
+            );
+
+            if (getHashCode is null)
+                return MemoryExtensions.GetXxHashCode;
+
+            ParameterExpression input = Expression.Parameter(typeof(ReadOnlySpan<char>), nameof(input));
+            return Expression.Lambda<GetHashCodeDelegate>
+            (
+                Expression.Call
+                (
+                    null,
+                    getHashCode,
+                    input,
+                    Expression.Constant(StringComparison.OrdinalIgnoreCase)
+                ),
+                input
+            ).Compile();
+        }
+
+        private static readonly GetHashCodeDelegate FGetHashCodeDelegate = GetGetHashCodeDelegate();
         private static readonly Entry[] FInitialEntries = new Entry[1];
         private static readonly int[] FInitialBuckets = new int[1];
 
@@ -46,21 +84,19 @@ namespace Solti.Utils.Json.Internals
 
             while (count-- > 0)
             {
-                int bucketIndex = FEntries[count].Key.AsSpan().GetXxHashCode() & (FBuckets.Length - 1);
+                int bucketIndex = FGetHashCodeDelegate(FEntries[count].Key.AsSpan()) & (FBuckets.Length - 1);
                 FEntries[count].Next = FBuckets[bucketIndex] - 1;
                 FBuckets[bucketIndex] = count + 1;
             }
         }
+        #endregion
 
         public void Add(string key, TValue value)
         {
-            int bucketIndex = key.AsSpan().GetXxHashCode() & (FBuckets.Length - 1);
-
             if (FCount == FEntries.Length || FEntries.Length == 1)
-            {
                 Resize();
-                bucketIndex = key.AsSpan().GetXxHashCode() & (FBuckets.Length - 1);
-            }
+
+            int bucketIndex = FGetHashCodeDelegate(key.AsSpan()) & (FBuckets.Length - 1);
 
             FEntries[FCount].Key = key;
             FEntries[FCount].Value = value;
@@ -73,7 +109,7 @@ namespace Solti.Utils.Json.Internals
         {
             StringComparison comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 
-            for (int i = FBuckets[key.GetXxHashCode() & (FBuckets.Length - 1)] - 1; (uint) i < FEntries.Length; i = FEntries[i].Next)
+            for (int i = FBuckets[FGetHashCodeDelegate(key) & (FBuckets.Length - 1)] - 1; (uint) i < FEntries.Length; i = FEntries[i].Next)
             {
                 if (key.Equals(FEntries[i].Key.AsSpan(), comparison))
                 {
