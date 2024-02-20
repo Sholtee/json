@@ -18,7 +18,6 @@ namespace Solti.Utils.Json.Internals
         private static readonly int[] FInitialBuckets = new int[1];
 
         private int FCount;
-        private int FFreeList = -1;  // -1 means empty
         private int[] FBuckets = FInitialBuckets;  // the first add will cause a resize so this assignment is safe
         private Entry[] FEntries = FInitialEntries;  // as is this one
 
@@ -26,9 +25,13 @@ namespace Solti.Utils.Json.Internals
         {
             public string Key;
             public TValue Value;
+
+            //
             // 0-based index of next entry in chain: -1 means end of chain
             // also encodes whether this entry _itself_ is part of the free list by changing sign and subtracting 3,
             // so -2 means end of free list, -3 means index 0 but on free list, -4 means index 1 but on free list, etc.
+            //
+
             public int Next;
         }
 
@@ -53,30 +56,17 @@ namespace Solti.Utils.Json.Internals
         {
             int bucketIndex = key.AsSpan().GetXxHashCode() & (FBuckets.Length - 1);
 
-            int entryIndex;
-            if (FFreeList != -1)
+            if (FCount == FEntries.Length || FEntries.Length == 1)
             {
-                entryIndex = FFreeList;
-                FFreeList = -3 - FEntries[FFreeList].Next;
-            }
-            else
-            {
-                if (FCount == FEntries.Length || FEntries.Length == 1)
-                {
-                    Resize();
-                    bucketIndex = key.AsSpan().GetXxHashCode() & (FBuckets.Length - 1);
-                    // entry indexes were not changed by Resize
-                }
-                entryIndex = FCount;
+                Resize();
+                bucketIndex = key.AsSpan().GetXxHashCode() & (FBuckets.Length - 1);
             }
 
-            FEntries[entryIndex].Key = key;
-            FEntries[entryIndex].Value = value;
-            FEntries[entryIndex].Next = FBuckets[bucketIndex] - 1;
+            FEntries[FCount].Key = key;
+            FEntries[FCount].Value = value;
+            FEntries[FCount].Next = FBuckets[bucketIndex] - 1;
             
-            FBuckets[bucketIndex] = entryIndex + 1;
-
-            FCount++;       
+            FBuckets[bucketIndex] = ++FCount; 
         }
 
         public bool TryGetValue(ReadOnlySpan<char> key, bool ignoreCase, out TValue value)

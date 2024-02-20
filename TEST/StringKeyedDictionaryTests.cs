@@ -42,5 +42,22 @@ namespace Solti.Utils.Json.Internals.Tests
             Assert.That(dict.TryGetValue("B".AsSpan(), ignoreCase: true, out int val));
             Assert.That(val, Is.EqualTo(20));
         }
+
+        [Test]
+        public void ManyEntry_Test([Values(1, 2, 3, 5, 10, 20, 100, 1000)] int count)
+        {
+            StringKeyedDictionary<int> dict = new();
+
+            for (int i = 0; i < count; i++)
+            {
+                dict.Add(i.ToString(), i);
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                Assert.That(dict.TryGetValue(i.ToString().AsSpan(), ignoreCase: true, out int val));
+                Assert.That(val, Is.EqualTo(i));
+            }
+        }
     }
 }
