@@ -30,17 +30,35 @@ namespace Solti.Utils.Json.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string AsString(this Span<char> self) => AsString((ReadOnlySpan<char>) self);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe ReadOnlySpan<byte> ToByteSpan(this Span<char> buffer, int length)
+        {
+            fixed (void* ptr = buffer)
+            {
+                return new ReadOnlySpan<byte>
+                (
+                    ptr,
+                    Math.Min(length, buffer.Length) * sizeof(char)
+                );
+            }
+        }
+
         private static readonly int FSeed = new Random().Next();
 
         /// <summary>
         /// Hashes the given text. The algorithm is case insensitive.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int GetXxHashCode(this ReadOnlySpan<char> self, byte bufferSize = 32 /*for testing*/)
+        public static int GetXxHashCode(this ReadOnlySpan<char> self)
         {
             XxHash32 hash = new(FSeed);
 
-            Span<char> buffer = stackalloc char[bufferSize];
+            //
+            // XxHash32 uses 16 bytes long stripes. Due to performance considerations we don't want the engine
+            // to slice the input so we use 8 chars (16 bytes) long chunks
+            //
+
+            Span<char> buffer = stackalloc char[8];
 
             int j = 0;
             for (int i = 0; i < self.Length; i++)
@@ -49,7 +67,7 @@ namespace Solti.Utils.Json.Internals
 
                 if (j == buffer.Length - 1)
                 {
-                    AppendHash(buffer, buffer.Length, hash);
+                    hash.Append(buffer.ToByteSpan(buffer.Length));
                     j = 0;
                     continue;
                 }
@@ -57,25 +75,9 @@ namespace Solti.Utils.Json.Internals
             }
 
             if (j > 0)
-                AppendHash(buffer, j, hash);
+                hash.Append(buffer.ToByteSpan(j));
 
             return (int) hash.GetCurrentHashAsUInt32();
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static unsafe void AppendHash(Span<char> buffer, int length, XxHash32 hash)
-            {
-                fixed (void* ptr = buffer)
-                {
-                    hash.Append
-                    (
-                        new ReadOnlySpan<byte>
-                        (
-                            ptr,
-                            length * sizeof(char)
-                        )
-                    );
-                }
-            }
         }
     }
 }

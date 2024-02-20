@@ -14,7 +14,7 @@ namespace Solti.Utils.Json.Perf
     [MemoryDiagnoser]
     public class XxHashTests
     {
-        [Params("a", "ab", "abcd", "abcdefgh", "abcdefghijklmnopqrstuvwz")]
+        [Params("", "a", "ab", "abcd", "abcdefgh", "abcdefghijklmnopqrstuvwz")]
         public string Input { get; set; } = null!;
 
         [Benchmark()]
