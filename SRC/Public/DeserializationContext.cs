@@ -31,7 +31,7 @@ namespace Solti.Utils.Json
 
         public delegate object? ConvertStringDelegate(ReadOnlySpan<char> value);
 
-        public delegate object? ConvertNumberDelegate(object? value);
+        public delegate object? ConvertDelegate(object? value);
         #endregion
 
         /// <summary>
@@ -86,6 +86,6 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Converts the given value to a user specified type. For instance you can implement <see cref="int"/> to <see cref="DateTime"/> conversation here.
         /// </summary>
-        public ConvertNumberDelegate? ConvertNumber { get; init; }  // TBD: universal Convert() instead?
+        public ConvertDelegate? Convert { get; init; }
     }
 }

@@ -469,10 +469,6 @@ namespace Solti.Utils.Json
             //
 
             Advance(ref session, parsed);
-
-            if (currentContext.ConvertNumber is not null)
-                result = currentContext.ConvertNumber(result);
-
             return result!;
         }
 
@@ -676,6 +672,9 @@ namespace Solti.Utils.Json
                     Fail("Got unexpected token");
                     return null!;
             };
+
+            if (currentContext.Convert is not null)
+                result = currentContext.Convert(result);
 
             IEnumerable<string>? errors = currentContext.Verify?.Invoke(result);
             if (errors is not null)

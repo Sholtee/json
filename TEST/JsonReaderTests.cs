@@ -544,24 +544,6 @@ namespace Solti.Utils.Json.Tests
             });
         }
 
-        [Test]
-        public void ParseNumber_ShouldInvokeTheConverterIfPassed()
-        {
-            Mock<DeserializationContext.ConvertNumberDelegate> mockConverter = new(MockBehavior.Strict);
-            mockConverter
-                .Setup(c => c.Invoke((long) 1986))
-                .Returns(1991);
-
-            using TextReaderWrapper content = new StringReader("1986");
-
-            Session session = new() { Content = content };
-
-            object ret = ParseNumber(ref session, DeserializationContext.Untyped with { ConvertNumber = mockConverter.Object });
-
-            Assert.That(ret, Is.EqualTo(1991));
-            mockConverter.Verify(c => c.Invoke((long) 1986), Times.Once);
-        }
-
         [TestCase("[", 1)]
         [TestCase("[,]", 1)]
         [TestCase("[x]", 1)]
@@ -853,6 +835,24 @@ namespace Solti.Utils.Json.Tests
             rdr.Parse(content, new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default);
 
             mockValidator.Verify(v => v.Invoke((long) 1986), Times.Once);
+        }
+
+        [Test]
+        public void Parse_ShouldConvert()
+        {
+            Mock<DeserializationContext.ConvertDelegate> mockConverter = new(MockBehavior.Strict);
+            mockConverter
+                .Setup(c => c.Invoke((long) 1986))
+                .Returns(1991);
+
+            JsonReader rdr = new(JsonReaderFlags.None, 0);
+
+            StringReader content = new("1986");
+
+            object? ret = rdr.Parse(content, DeserializationContext.Untyped with { Convert = mockConverter.Object }, default);
+
+            Assert.That(ret, Is.EqualTo(1991));
+            mockConverter.Verify(c => c.Invoke((long) 1986), Times.Once);
         }
 
         [Test]
