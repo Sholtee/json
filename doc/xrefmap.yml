@@ -85,72 +85,72 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke
   fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke
   nameWithType: DeserializationContext.CommentParserDelegate.Invoke
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumber
-  name: ConvertNumber
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ConvertNumber
-  commentId: P:Solti.Utils.Json.DeserializationContext.ConvertNumber
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumber
-  nameWithType: DeserializationContext.ConvertNumber
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumber*
-  name: ConvertNumber
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ConvertNumber_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumber
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumber
-  nameWithType: DeserializationContext.ConvertNumber
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate
-  name: DeserializationContext.ConvertNumberDelegate
-  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html
-  commentId: T:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate
-  nameWithType: DeserializationContext.ConvertNumberDelegate
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.#ctor(System.Object,System.IntPtr)
-  name: ConvertNumberDelegate(Object, IntPtr)
-  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate__ctor_System_Object_System_IntPtr_
-  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.#ctor(System.Object,System.IntPtr)
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.ConvertNumberDelegate(System.Object, System.IntPtr)
-  nameWithType: DeserializationContext.ConvertNumberDelegate.ConvertNumberDelegate(Object, IntPtr)
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.#ctor*
-  name: ConvertNumberDelegate
-  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate__ctor_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.#ctor
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.ConvertNumberDelegate
-  nameWithType: DeserializationContext.ConvertNumberDelegate.ConvertNumberDelegate
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
+- uid: Solti.Utils.Json.DeserializationContext.Convert
+  name: Convert
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Convert
+  commentId: P:Solti.Utils.Json.DeserializationContext.Convert
+  fullName: Solti.Utils.Json.DeserializationContext.Convert
+  nameWithType: DeserializationContext.Convert
+- uid: Solti.Utils.Json.DeserializationContext.Convert*
+  name: Convert
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Convert_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.Convert
+  fullName: Solti.Utils.Json.DeserializationContext.Convert
+  nameWithType: DeserializationContext.Convert
+- uid: Solti.Utils.Json.DeserializationContext.ConvertDelegate
+  name: DeserializationContext.ConvertDelegate
+  href: Solti.Utils.Json.DeserializationContext.ConvertDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.ConvertDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertDelegate
+  nameWithType: DeserializationContext.ConvertDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ConvertDelegate.#ctor(System.Object,System.IntPtr)
+  name: ConvertDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.ConvertDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertDelegate.ConvertDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.ConvertDelegate.ConvertDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertDelegate.#ctor*
+  name: ConvertDelegate
+  href: Solti.Utils.Json.DeserializationContext.ConvertDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertDelegate.ConvertDelegate
+  nameWithType: DeserializationContext.ConvertDelegate.ConvertDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ConvertDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
   name: BeginInvoke(Object, AsyncCallback, Object)
-  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_BeginInvoke_System_Object_System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke(System.Object, System.AsyncCallback, System.Object)
-  nameWithType: DeserializationContext.ConvertNumberDelegate.BeginInvoke(Object, AsyncCallback, Object)
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke*
+  href: Solti.Utils.Json.DeserializationContext.ConvertDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertDelegate_BeginInvoke_System_Object_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertDelegate.BeginInvoke(System.Object, System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.ConvertDelegate.BeginInvoke(Object, AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertDelegate.BeginInvoke*
   name: BeginInvoke
-  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_BeginInvoke_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.BeginInvoke
-  nameWithType: DeserializationContext.ConvertNumberDelegate.BeginInvoke
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke(System.IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.ConvertDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertDelegate.BeginInvoke
+  nameWithType: DeserializationContext.ConvertDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ConvertDelegate.EndInvoke(System.IAsyncResult)
   name: EndInvoke(IAsyncResult)
-  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_EndInvoke_System_IAsyncResult_
-  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke(System.IAsyncResult)
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke(System.IAsyncResult)
-  nameWithType: DeserializationContext.ConvertNumberDelegate.EndInvoke(IAsyncResult)
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke*
+  href: Solti.Utils.Json.DeserializationContext.ConvertDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.ConvertDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertDelegate.EndInvoke*
   name: EndInvoke
-  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_EndInvoke_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.EndInvoke
-  nameWithType: DeserializationContext.ConvertNumberDelegate.EndInvoke
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke(System.Object)
+  href: Solti.Utils.Json.DeserializationContext.ConvertDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertDelegate.EndInvoke
+  nameWithType: DeserializationContext.ConvertDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ConvertDelegate.Invoke(System.Object)
   name: Invoke(Object)
-  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_Invoke_System_Object_
-  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke(System.Object)
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke(System.Object)
-  nameWithType: DeserializationContext.ConvertNumberDelegate.Invoke(Object)
-- uid: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke*
+  href: Solti.Utils.Json.DeserializationContext.ConvertDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertDelegate_Invoke_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ConvertDelegate.Invoke(System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertDelegate.Invoke(System.Object)
+  nameWithType: DeserializationContext.ConvertDelegate.Invoke(Object)
+- uid: Solti.Utils.Json.DeserializationContext.ConvertDelegate.Invoke*
   name: Invoke
-  href: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertNumberDelegate_Invoke_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke
-  fullName: Solti.Utils.Json.DeserializationContext.ConvertNumberDelegate.Invoke
-  nameWithType: DeserializationContext.ConvertNumberDelegate.Invoke
+  href: Solti.Utils.Json.DeserializationContext.ConvertDelegate.html#Solti_Utils_Json_DeserializationContext_ConvertDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ConvertDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.ConvertDelegate.Invoke
+  nameWithType: DeserializationContext.ConvertDelegate.Invoke
 - uid: Solti.Utils.Json.DeserializationContext.ConvertString
   name: ConvertString
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ConvertString
