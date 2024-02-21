@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> | Benchmark Results </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content=" | Benchmark Results ">
+    <meta name="generator" content="docfx 2.59.3.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<pre><code>
+BenchmarkDotNet v0.13.12, Windows 10 (10.0.17763.5122/1809/October2018Update/Redstone5) (Hyper-V)
+Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
+.NET SDK 8.0.100
+  [Host]     : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
+
+</code></pre><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Input</th>
+<th style="text-align:right">Mean</th>
+<th style="text-align:right">Error</th>
+<th style="text-align:right">StdDev</th>
+<th style="text-align:right">Ratio</th>
+<th style="text-align:right">RatioSD</th>
+<th style="text-align:right">Gen0</th>
+<th style="text-align:right">Allocated</th>
+<th style="text-align:right">Alloc Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GetNativeHashCode</strong></td>
+<td>****</td>
+<td style="text-align:right"><strong>2.855 ns</strong></td>
+<td style="text-align:right"><strong>0.0687 ns</strong></td>
+<td style="text-align:right"><strong>0.0536 ns</strong></td>
+<td style="text-align:right"><strong>1.00</strong></td>
+<td style="text-align:right"><strong>0.00</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetXxHashCode</td>
+<td></td>
+<td style="text-align:right">18.615 ns</td>
+<td style="text-align:right">0.3867 ns</td>
+<td style="text-align:right">0.3617 ns</td>
+<td style="text-align:right">6.52</td>
+<td style="text-align:right">0.19</td>
+<td style="text-align:right">0.0035</td>
+<td style="text-align:right">64 B</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>GetNativeHashCode</strong></td>
+<td><strong>a</strong></td>
+<td style="text-align:right"><strong>4.860 ns</strong></td>
+<td style="text-align:right"><strong>0.1276 ns</strong></td>
+<td style="text-align:right"><strong>0.1131 ns</strong></td>
+<td style="text-align:right"><strong>1.00</strong></td>
+<td style="text-align:right"><strong>0.00</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetXxHashCode</td>
+<td>a</td>
+<td style="text-align:right">42.294 ns</td>
+<td style="text-align:right">0.8807 ns</td>
+<td style="text-align:right">1.2346 ns</td>
+<td style="text-align:right">8.87</td>
+<td style="text-align:right">0.22</td>
+<td style="text-align:right">0.0057</td>
+<td style="text-align:right">104 B</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>GetNativeHashCode</strong></td>
+<td><strong>ab</strong></td>
+<td style="text-align:right"><strong>6.054 ns</strong></td>
+<td style="text-align:right"><strong>0.1143 ns</strong></td>
+<td style="text-align:right"><strong>0.1069 ns</strong></td>
+<td style="text-align:right"><strong>1.00</strong></td>
+<td style="text-align:right"><strong>0.00</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetXxHashCode</td>
+<td>ab</td>
+<td style="text-align:right">49.578 ns</td>
+<td style="text-align:right">0.8970 ns</td>
+<td style="text-align:right">0.8390 ns</td>
+<td style="text-align:right">8.19</td>
+<td style="text-align:right">0.25</td>
+<td style="text-align:right">0.0057</td>
+<td style="text-align:right">104 B</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>GetNativeHashCode</strong></td>
+<td><strong>abcd</strong></td>
+<td style="text-align:right"><strong>9.020 ns</strong></td>
+<td style="text-align:right"><strong>0.1330 ns</strong></td>
+<td style="text-align:right"><strong>0.1179 ns</strong></td>
+<td style="text-align:right"><strong>1.00</strong></td>
+<td style="text-align:right"><strong>0.00</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetXxHashCode</td>
+<td>abcd</td>
+<td style="text-align:right">64.812 ns</td>
+<td style="text-align:right">1.3297 ns</td>
+<td style="text-align:right">2.0306 ns</td>
+<td style="text-align:right">7.04</td>
+<td style="text-align:right">0.26</td>
+<td style="text-align:right">0.0056</td>
+<td style="text-align:right">104 B</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>GetNativeHashCode</strong></td>
+<td><strong>abcdefgh</strong></td>
+<td style="text-align:right"><strong>12.629 ns</strong></td>
+<td style="text-align:right"><strong>0.1498 ns</strong></td>
+<td style="text-align:right"><strong>0.1328 ns</strong></td>
+<td style="text-align:right"><strong>1.00</strong></td>
+<td style="text-align:right"><strong>0.00</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetXxHashCode</td>
+<td>abcdefgh</td>
+<td style="text-align:right">83.562 ns</td>
+<td style="text-align:right">1.0019 ns</td>
+<td style="text-align:right">0.8881 ns</td>
+<td style="text-align:right">6.62</td>
+<td style="text-align:right">0.11</td>
+<td style="text-align:right">0.0035</td>
+<td style="text-align:right">64 B</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>GetNativeHashCode</strong></td>
+<td><strong>abcde(...)tuvwz [24]</strong></td>
+<td style="text-align:right"><strong>29.041 ns</strong></td>
+<td style="text-align:right"><strong>0.1565 ns</strong></td>
+<td style="text-align:right"><strong>0.1307 ns</strong></td>
+<td style="text-align:right"><strong>1.00</strong></td>
+<td style="text-align:right"><strong>0.00</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetXxHashCode</td>
+<td>abcde(...)tuvwz [24]</td>
+<td style="text-align:right">226.458 ns</td>
+<td style="text-align:right">2.4213 ns</td>
+<td style="text-align:right">2.2649 ns</td>
+<td style="text-align:right">7.81</td>
+<td style="text-align:right">0.08</td>
+<td style="text-align:right">0.0033</td>
+<td style="text-align:right">64 B</td>
+<td style="text-align:right">NA</td>
+</tr>
+</tbody>
+</table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

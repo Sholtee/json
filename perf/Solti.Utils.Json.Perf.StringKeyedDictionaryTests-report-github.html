@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> | Benchmark Results </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content=" | Benchmark Results ">
+    <meta name="generator" content="docfx 2.59.3.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<pre><code>
+BenchmarkDotNet v0.13.12, Windows 10 (10.0.17763.5122/1809/October2018Update/Redstone5) (Hyper-V)
+Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
+.NET SDK 8.0.100
+  [Host]     : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
+
+</code></pre><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>EntryCount</th>
+<th style="text-align:right">Mean</th>
+<th style="text-align:right">Error</th>
+<th style="text-align:right">StdDev</th>
+<th style="text-align:right">Ratio</th>
+<th style="text-align:right">RatioSD</th>
+<th style="text-align:right">Allocated</th>
+<th style="text-align:right">Alloc Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>1</strong></td>
+<td style="text-align:right"><strong>32.01 ns</strong></td>
+<td style="text-align:right"><strong>0.345 ns</strong></td>
+<td style="text-align:right"><strong>0.322 ns</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>1</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>2</strong></td>
+<td style="text-align:right"><strong>32.15 ns</strong></td>
+<td style="text-align:right"><strong>0.447 ns</strong></td>
+<td style="text-align:right"><strong>0.396 ns</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>2</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>3</strong></td>
+<td style="text-align:right"><strong>39.30 ns</strong></td>
+<td style="text-align:right"><strong>0.543 ns</strong></td>
+<td style="text-align:right"><strong>0.482 ns</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>3</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>5</strong></td>
+<td style="text-align:right"><strong>39.07 ns</strong></td>
+<td style="text-align:right"><strong>0.352 ns</strong></td>
+<td style="text-align:right"><strong>0.329 ns</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>5</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>10</strong></td>
+<td style="text-align:right"><strong>35.94 ns</strong></td>
+<td style="text-align:right"><strong>0.224 ns</strong></td>
+<td style="text-align:right"><strong>0.187 ns</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>10</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>100</strong></td>
+<td style="text-align:right"><strong>41.98 ns</strong></td>
+<td style="text-align:right"><strong>0.451 ns</strong></td>
+<td style="text-align:right"><strong>0.422 ns</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>100</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>1000</strong></td>
+<td style="text-align:right"><strong>52.30 ns</strong></td>
+<td style="text-align:right"><strong>0.765 ns</strong></td>
+<td style="text-align:right"><strong>0.679 ns</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>?</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>1000</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">?</td>
+<td style="text-align:right">NA</td>
+<td style="text-align:right">?</td>
+</tr>
+</tbody>
+</table>
+<p>Benchmarks with issues:
+  StringKeyedDictionaryTests.GetNative: DefaultJob [EntryCount=1]
+  StringKeyedDictionaryTests.GetNative: DefaultJob [EntryCount=2]
+  StringKeyedDictionaryTests.GetNative: DefaultJob [EntryCount=3]
+  StringKeyedDictionaryTests.GetNative: DefaultJob [EntryCount=5]
+  StringKeyedDictionaryTests.GetNative: DefaultJob [EntryCount=10]
+  StringKeyedDictionaryTests.GetNative: DefaultJob [EntryCount=100]
+  StringKeyedDictionaryTests.GetNative: DefaultJob [EntryCount=1000]</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
