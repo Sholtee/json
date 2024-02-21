@@ -56,6 +56,6 @@ namespace Solti.Utils.Json.Perf
         }
 
         [Benchmark(Baseline = true)]
-        public void GetNative() => Dict.TryGetValue(Keys[Random.Next(EntryCount)].AsSpan(), false, out _);
+        public void GetNative() => DictNative.TryGetValue(Keys[Random.Next(EntryCount)], out _);
     }
 }
