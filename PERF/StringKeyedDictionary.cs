@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 using BenchmarkDotNet.Attributes;
 
@@ -36,7 +37,25 @@ namespace Solti.Utils.Json.Perf
             }
         }
 
-        [Benchmark()]
+        [Benchmark]
         public void Get() => Dict.TryGetValue(Keys[Random.Next(EntryCount)].AsSpan(), false, out _);
+
+        private Dictionary<string, int> DictNative { get; set; } = null!;
+
+        [GlobalSetup(Target = nameof(GetNative))]
+        public void SetupGetNative()
+        {
+            DictNative = new Dictionary<string, int>();
+
+            Keys = new string[EntryCount];
+
+            for (int i = 0; i < EntryCount; i++)
+            {
+                DictNative.Add(Keys[i] = i.ToString(), i);
+            }
+        }
+
+        [Benchmark(Baseline = true)]
+        public void GetNative() => Dict.TryGetValue(Keys[Random.Next(EntryCount)].AsSpan(), false, out _);
     }
 }
