@@ -30,7 +30,7 @@ namespace Solti.Utils.Json
                 Push = static (object instance, object? val) =>
                 {
                     if (instance is not List<object?> lst)
-                        throw new ArgumentException(INVALID_VALUE, nameof(val));
+                        throw new ArgumentException(INVALID_INSTANCE, nameof(val));
                     lst.Add(val);
                 }
             },
@@ -44,7 +44,7 @@ namespace Solti.Utils.Json
                     Push = (object instance, object? val) =>
                     {
                         if (instance is not Dictionary<string, object?> dict)
-                            throw new ArgumentException(INVALID_VALUE, nameof(val));
+                            throw new ArgumentException(INVALID_INSTANCE, nameof(val));
                         dict[propStr] = val;
                     }
                 };

@@ -826,7 +826,7 @@ namespace Solti.Utils.Json.Tests
             Mock<DeserializationContext.VerifyDelegate> mockValidator = new(MockBehavior.Strict);
             mockValidator
                 .Setup(v => v.Invoke((long) 1986))
-                .Returns((IEnumerable<string>?) null);
+                .Returns((ICollection<string>?) null);
 
             JsonReader rdr = new(JsonReaderFlags.None, 0);
 
@@ -840,19 +840,41 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void Parse_ShouldConvert()
         {
+            object? ret;
+
             Mock<DeserializationContext.ConvertDelegate> mockConverter = new(MockBehavior.Strict);
             mockConverter
-                .Setup(c => c.Invoke((long) 1986))
-                .Returns(1991);
+                .Setup(c => c.Invoke((long) 1986, out ret))
+                .Returns((object? _, out object? ret) => { ret = 1991; return true; });
 
             JsonReader rdr = new(JsonReaderFlags.None, 0);
 
             StringReader content = new("1986");
 
-            object? ret = rdr.Parse(content, DeserializationContext.Untyped with { Convert = mockConverter.Object }, default);
+            ret = rdr.Parse(content, DeserializationContext.Untyped with { Convert = mockConverter.Object }, default);
 
             Assert.That(ret, Is.EqualTo(1991));
-            mockConverter.Verify(c => c.Invoke((long) 1986), Times.Once);
+            mockConverter.Verify(c => c.Invoke((long) 1986, out ret), Times.Once);
+        }
+
+        [Test]
+        public void Parse_ShouldThrowIfConversationFailed()
+        {
+            JsonReader rdr = new(JsonReaderFlags.None, 0);
+
+            StringReader content = new("1986");
+
+            Assert.Throws<InvalidOperationException>(() => rdr.Parse(content, DeserializationContext.Untyped with { Convert = (object? _, out object? ret) => { ret = null; return false; } }, default));
+        }
+
+        [Test]
+        public void Parse_ShouldThrowIfStringConversationFailed()
+        {
+            JsonReader rdr = new(JsonReaderFlags.None, 0);
+
+            StringReader content = new("\"1986\"");
+
+            Assert.Throws<InvalidOperationException>(() => rdr.Parse(content, DeserializationContext.Untyped with { ConvertString = (ReadOnlySpan<char> _, bool _, out object? ret) => { ret = null; return false; } }, default));
         }
 
         [Test]
@@ -860,7 +882,7 @@ namespace Solti.Utils.Json.Tests
         {
             Mock<DeserializationContext.VerifyDelegate> mockValidator = new(MockBehavior.Strict);
             mockValidator
-                .Setup(v => v.Invoke((long)1986))
+                .Setup(v => v.Invoke((long) 1986))
                 .Returns(new string[] { "some error" });
 
             JsonReader rdr = new(JsonReaderFlags.None, 0);

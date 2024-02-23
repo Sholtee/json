@@ -36,7 +36,11 @@ namespace Solti.Utils.Json
 
         private static readonly GetListItemContextDelegate FDefaultGetListItemContextDelegate = static _ => Default;
 
-        private static readonly ConvertStringDelegate FDefaultConvertStringDelegate = static chars => chars.AsString();
+        private static readonly ConvertStringDelegate FDefaultConvertStringDelegate = static (ReadOnlySpan<char> chars, bool ignoreCase, out object? val) =>
+        {
+            val = chars.AsString();
+            return true;
+        };
 
         /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
@@ -60,15 +64,34 @@ namespace Solti.Utils.Json
             throw ex;
         }
 
+        /// <summary>
+        /// Throws a <see cref="FormatException"/>
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void MalformedValue(in Session session, string type, string reason) => Throw
         (
             session,
             new FormatException
             (
-                string.Format(MALFORMED, type, session.Row, session.Column, reason)
+                string.Format(MALFORMED_VALUE, type, session.Row, session.Column, reason)
             )
         );
+
+        /// <summary>
+        /// Throws an <see cref="InvalidOperationException"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void InvalidValue(in Session session, string reason, ICollection<string>? errors = null)
+        {
+            InvalidOperationException ex = new
+            (
+                string.Format(INVALID_VALUE, session.Row, session.Column, reason)
+            );
+            if (errors is not null)
+                ex.Data[nameof(errors)] = errors;
+
+            Throw(session, ex);
+        }
 
         /// <summary>
         /// Advances the underlying text reader. It assumes that the row remains the same.
@@ -179,7 +202,7 @@ namespace Solti.Utils.Json
                     session,
                     new FormatException
                     (
-                        string.Format(MALFORMED_INPUT, expected, got, session.Row, session.Column)
+                        string.Format(UNEXPECTED_INPUT, expected, got, session.Row, session.Column)
                     )
                 );
             return got;
@@ -338,7 +361,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(ref session, parsed);
-                                    MalformedValue(session, STRING_ID, NOT_NUMBER);
+                                    MalformedValue(session, STRING_ID, NOT_A_NUMBER);
                                 }
 
                                 //
@@ -462,7 +485,7 @@ namespace Solti.Utils.Json
             }
 
             if (result is null)
-                MalformedValue(session, NUMBER_ID, NOT_NUMBER);
+                MalformedValue(session, NUMBER_ID, NOT_A_NUMBER);
 
             //
             // Advance the reader if everything was all right
@@ -651,7 +674,8 @@ namespace Solti.Utils.Json
                     result = ParseList(ref session, Deeper(currentDepth), currentContext, cancellation);
                     break;
                 case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
-                    result = (currentContext.ConvertString ?? FDefaultConvertStringDelegate)(ParseString(ref session, currentContext));
+                    if (!(currentContext.ConvertString ?? FDefaultConvertStringDelegate)(ParseString(ref session, currentContext), flags.HasFlag(JsonReaderFlags.CaseInsensitive), out result))
+                        InvalidValue(session, NOT_CONVERTIBLE);
                     break;
                 case JsonTokens.Number:
                     result = ParseNumber(ref session, currentContext);
@@ -673,20 +697,12 @@ namespace Solti.Utils.Json
                     return null!;
             };
 
-            if (currentContext.Convert is not null)
-                result = currentContext.Convert(result);
+            if (currentContext.Convert is not null && !currentContext.Convert(result, out result))
+                InvalidValue(session, NOT_CONVERTIBLE);
 
-            IEnumerable<string>? errors = currentContext.Verify?.Invoke(result);
-            if (errors is not null)
-            {
-                ICollection<string> coll = errors as ICollection<string> ?? new List<string>(errors);
-                if (coll.Count > 0)
-                {
-                    InvalidOperationException ex = new(VALIDATION_FAILED);
-                    ex.Data[nameof(errors)] = coll;
-                    Throw(session, ex);
-                }
-            }
+            ICollection<string>? errors = currentContext.Verify?.Invoke(result);
+            if (errors?.Count > 0)
+                InvalidValue(session, VALIDATION_FAILED, errors);
 
             return result;
         }

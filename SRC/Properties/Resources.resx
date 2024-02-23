@@ -123,14 +123,17 @@
   <data name="INVALID_CONTEXT" xml:space="preserve">
     <value>Invalid context</value>
   </data>
+  <data name="INVALID_INSTANCE" xml:space="preserve">
+    <value>Invalid instance</value>
+  </data>
+  <data name="INVALID_TYPE" xml:space="preserve">
+    <value>Invalid type</value>
+  </data>
   <data name="INVALID_VALUE" xml:space="preserve">
-    <value>Invalid value</value>
+    <value>Invalid value  (row: {0}, col: {1}). Reason: "{2}"</value>
   </data>
-  <data name="MALFORMED" xml:space="preserve">
+  <data name="MALFORMED_VALUE" xml:space="preserve">
     <value>Malformed {0} found (row: {1}, col: {2}). Reason: "{3}"</value>
-  </data>
-  <data name="MALFORMED_INPUT" xml:space="preserve">
-    <value>Invalid input. Expected "{0}", found "{1}" (row: {2}, col: {3}).</value>
   </data>
   <data name="MAX_DEPTH_REACHED" xml:space="preserve">
     <value>Max depth reached</value>
@@ -141,14 +144,20 @@
   <data name="MISSING_PROP" xml:space="preserve">
     <value>Missing property</value>
   </data>
-  <data name="NOT_NUMBER" xml:space="preserve">
+  <data name="NOT_A_NUMBER" xml:space="preserve">
     <value>Not a number</value>
+  </data>
+  <data name="NOT_CONVERTIBLE" xml:space="preserve">
+    <value>Not convertible</value>
   </data>
   <data name="NOT_SERIALIZABLE" xml:space="preserve">
     <value>The given value is not serializable</value>
   </data>
   <data name="UNEXPECTED_CONTROL" xml:space="preserve">
     <value>Unexpected control character</value>
+  </data>
+  <data name="UNEXPECTED_INPUT" xml:space="preserve">
+    <value>Invalid input. Expected "{0}", found "{1}" (row: {2}, col: {3}).</value>
   </data>
   <data name="UNEXPECTED_LIST_ITEM" xml:space="preserve">
     <value>Unexpected list item</value>

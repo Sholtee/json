@@ -25,13 +25,13 @@ namespace Solti.Utils.Json
 
         public delegate object RawObjectFavtoryDelegate();
 
-        public delegate IEnumerable<string>? VerifyDelegate(object? value);
+        public delegate ICollection<string>? VerifyDelegate(object? value);
 
         public delegate void PushDelegate(object instance, object? value);
 
-        public delegate object? ConvertStringDelegate(ReadOnlySpan<char> value);
+        public delegate bool ConvertStringDelegate(ReadOnlySpan<char> value, bool ignoreCase, out object? converted);
 
-        public delegate object? ConvertDelegate(object? value);
+        public delegate bool ConvertDelegate(object? value, out object? converted);
         #endregion
 
         /// <summary>

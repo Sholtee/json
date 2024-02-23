@@ -79,7 +79,25 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid value.
+        ///   Looks up a localized string similar to Invalid instance.
+        /// </summary>
+        internal static string INVALID_INSTANCE {
+            get {
+                return ResourceManager.GetString("INVALID_INSTANCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid type.
+        /// </summary>
+        internal static string INVALID_TYPE {
+            get {
+                return ResourceManager.GetString("INVALID_TYPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid value  (row: {0}, col: {1}). Reason: &quot;{2}&quot;.
         /// </summary>
         internal static string INVALID_VALUE {
             get {
@@ -90,18 +108,9 @@ namespace Solti.Utils.Json.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Malformed {0} found (row: {1}, col: {2}). Reason: &quot;{3}&quot;.
         /// </summary>
-        internal static string MALFORMED {
+        internal static string MALFORMED_VALUE {
             get {
-                return ResourceManager.GetString("MALFORMED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid input. Expected &quot;{0}&quot;, found &quot;{1}&quot; (row: {2}, col: {3})..
-        /// </summary>
-        internal static string MALFORMED_INPUT {
-            get {
-                return ResourceManager.GetString("MALFORMED_INPUT", resourceCulture);
+                return ResourceManager.GetString("MALFORMED_VALUE", resourceCulture);
             }
         }
         
@@ -135,9 +144,18 @@ namespace Solti.Utils.Json.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Not a number.
         /// </summary>
-        internal static string NOT_NUMBER {
+        internal static string NOT_A_NUMBER {
             get {
-                return ResourceManager.GetString("NOT_NUMBER", resourceCulture);
+                return ResourceManager.GetString("NOT_A_NUMBER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not convertible.
+        /// </summary>
+        internal static string NOT_CONVERTIBLE {
+            get {
+                return ResourceManager.GetString("NOT_CONVERTIBLE", resourceCulture);
             }
         }
         
@@ -156,6 +174,15 @@ namespace Solti.Utils.Json.Properties {
         internal static string UNEXPECTED_CONTROL {
             get {
                 return ResourceManager.GetString("UNEXPECTED_CONTROL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid input. Expected &quot;{0}&quot;, found &quot;{1}&quot; (row: {2}, col: {3})..
+        /// </summary>
+        internal static string UNEXPECTED_INPUT {
+            get {
+                return ResourceManager.GetString("UNEXPECTED_INPUT", resourceCulture);
             }
         }
         
