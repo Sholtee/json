@@ -90,12 +90,12 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_Json_DeserializationContext_ConvertDelegate_BeginInvoke_" data-uid="Solti.Utils.Json.DeserializationContext.ConvertDelegate.BeginInvoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_ConvertDelegate_BeginInvoke_System_Object_System_AsyncCallback_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.ConvertDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)">BeginInvoke(Object, AsyncCallback, Object)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_ConvertDelegate_BeginInvoke_System_Object_System_Object__System_AsyncCallback_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.ConvertDelegate.BeginInvoke(System.Object,System.Object@,System.AsyncCallback,System.Object)">BeginInvoke(Object, out Object, AsyncCallback, Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(object value, AsyncCallback callback, object object)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(object value, out object converted, AsyncCallback callback, object object)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -110,6 +110,11 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">converted</span></td>
         <td></td>
       </tr>
       <tr>
@@ -140,12 +145,12 @@
     </tbody>
   </table>
   <a id="Solti_Utils_Json_DeserializationContext_ConvertDelegate_EndInvoke_" data-uid="Solti.Utils.Json.DeserializationContext.ConvertDelegate.EndInvoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_ConvertDelegate_EndInvoke_System_IAsyncResult_" data-uid="Solti.Utils.Json.DeserializationContext.ConvertDelegate.EndInvoke(System.IAsyncResult)">EndInvoke(IAsyncResult)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_ConvertDelegate_EndInvoke_System_Object__System_IAsyncResult_" data-uid="Solti.Utils.Json.DeserializationContext.ConvertDelegate.EndInvoke(System.Object@,System.IAsyncResult)">EndInvoke(out Object, IAsyncResult)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual object EndInvoke(IAsyncResult result)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool EndInvoke(out object converted, IAsyncResult result)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,6 +162,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">converted</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncresult">IAsyncResult</a></td>
         <td><span class="parametername">result</span></td>
@@ -174,18 +184,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_Json_DeserializationContext_ConvertDelegate_Invoke_" data-uid="Solti.Utils.Json.DeserializationContext.ConvertDelegate.Invoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_ConvertDelegate_Invoke_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.ConvertDelegate.Invoke(System.Object)">Invoke(Object)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_ConvertDelegate_Invoke_System_Object_System_Object__" data-uid="Solti.Utils.Json.DeserializationContext.ConvertDelegate.Invoke(System.Object,System.Object@)">Invoke(Object, out Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual object Invoke(object value)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool Invoke(object value, out object converted)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -202,6 +212,11 @@
         <td><span class="parametername">value</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">converted</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -214,7 +229,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
