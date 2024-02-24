@@ -110,11 +110,10 @@ namespace Solti.Utils.Json
             return convertStringExpr.Compile();
         }
 
-        private static Func<object, object> CreateConvertDelegate(Type type)
+        private static Func<int, object> CreateConvertDelegate(Type type)
         {
-
-            ParameterExpression num = Expression.Parameter(typeof(object), nameof(num));
-            Expression<Func<object, object>> convertExpr = Expression.Lambda<Func<object, object>>
+            ParameterExpression num = Expression.Parameter(typeof(int), nameof(num));
+            Expression<Func<int, object>> convertExpr = Expression.Lambda<Func<int, object>>
             (
                 Expression.Convert
                 (
@@ -141,7 +140,7 @@ namespace Solti.Utils.Json
 
             ConvertStringDelegate convertString = CreateConvertStringDelegate(type);
 
-            Func<object, object> convert = CreateConvertDelegate(type);
+            Func<int, object> convert = CreateConvertDelegate(type);
 
             return new DeserializationContext
             {
@@ -159,13 +158,14 @@ namespace Solti.Utils.Json
                         return true;
                     }
 
-                    if (input is not long lng || !Enum.IsDefined(type, (int) lng))
+                    int @int;
+                    if (input is not long lng || lng > int.MaxValue || !Enum.IsDefined(type, @int = (int) lng))
                     {
                         ret = null;
                         return false;
                     }
 
-                    ret = convert((int) lng);
+                    ret = convert(@int);
                     return true;
                 }
             };
