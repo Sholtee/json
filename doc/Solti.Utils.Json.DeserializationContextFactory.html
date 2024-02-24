@@ -53,6 +53,7 @@
       <div class="level2"><a class="xref" href="Solti.Utils.Json.EnumDeserializationContextFactory.html">EnumDeserializationContextFactory</a></div>
       <div class="level2"><a class="xref" href="Solti.Utils.Json.GuidDeserializationContextFactory.html">GuidDeserializationContextFactory</a></div>
       <div class="level2"><a class="xref" href="Solti.Utils.Json.NumberDeserializationContextFactory.html">NumberDeserializationContextFactory</a></div>
+      <div class="level2"><a class="xref" href="Solti.Utils.Json.ObjectDeserializationContextFactory.html">ObjectDeserializationContextFactory</a></div>
       <div class="level2"><a class="xref" href="Solti.Utils.Json.StreamDeserializationContextFactory.html">StreamDeserializationContextFactory</a></div>
       <div class="level2"><a class="xref" href="Solti.Utils.Json.StringDeserializationContextFactory.html">StringDeserializationContextFactory</a></div>
   </div>
@@ -72,6 +73,31 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected DeserializationContextFactory()</code></pre>
   </div>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_Json_DeserializationContextFactory_Globals_" data-uid="Solti.Utils.Json.DeserializationContextFactory.Globals*"></a>
+  <h4 id="Solti_Utils_Json_DeserializationContextFactory_Globals" data-uid="Solti.Utils.Json.DeserializationContextFactory.Globals">Globals</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IList&lt;DeserializationContextFactory&gt; Globals { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="Solti.Utils.Json.DeserializationContextFactory.html">DeserializationContextFactory</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_Json_DeserializationContextFactory_CreateContext_" data-uid="Solti.Utils.Json.DeserializationContextFactory.CreateContext*"></a>
@@ -80,7 +106,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract DeserializationContext CreateContext(Type type, object config = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public DeserializationContext CreateContext(Type type, object config = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -119,13 +145,13 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_Json_DeserializationContextFactory_EnsureValidType_" data-uid="Solti.Utils.Json.DeserializationContextFactory.EnsureValidType*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContextFactory_EnsureValidType_System_Type_" data-uid="Solti.Utils.Json.DeserializationContextFactory.EnsureValidType(System.Type)">EnsureValidType(Type)</h4>
+  <a id="Solti_Utils_Json_DeserializationContextFactory_CreateContextCore_" data-uid="Solti.Utils.Json.DeserializationContextFactory.CreateContextCore*"></a>
+  <h4 id="Solti_Utils_Json_DeserializationContextFactory_CreateContextCore_System_Type_System_Object_" data-uid="Solti.Utils.Json.DeserializationContextFactory.CreateContextCore(System.Type,System.Object)">CreateContextCore(Type, Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void EnsureValidType(Type type)</code></pre>
+    <pre><code class="lang-csharp hljs">protected abstract DeserializationContext CreateContextCore(Type type, object config)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -140,6 +166,66 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">config</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.Json.DeserializationContext.html">DeserializationContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_Json_DeserializationContextFactory_CreateFor_" data-uid="Solti.Utils.Json.DeserializationContextFactory.CreateFor*"></a>
+  <h4 id="Solti_Utils_Json_DeserializationContextFactory_CreateFor_System_Type_" data-uid="Solti.Utils.Json.DeserializationContextFactory.CreateFor(System.Type)">CreateFor(Type)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DeserializationContext CreateFor(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.Json.DeserializationContext.html">DeserializationContext</a></td>
         <td></td>
       </tr>
     </tbody>

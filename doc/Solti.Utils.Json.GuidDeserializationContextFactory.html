@@ -53,7 +53,13 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_EnsureValidType_System_Type_">DeserializationContextFactory.EnsureValidType(Type)</a>
+      <a class="xref" href="Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateContext_System_Type_System_Object_">DeserializationContextFactory.CreateContext(Type, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateFor_System_Type_">DeserializationContextFactory.CreateFor(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_Globals">DeserializationContextFactory.Globals</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.Json.html">Solti.Utils.Json</a></h6>
@@ -74,13 +80,13 @@
   </div>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_Json_GuidDeserializationContextFactory_CreateContext_" data-uid="Solti.Utils.Json.GuidDeserializationContextFactory.CreateContext*"></a>
-  <h4 id="Solti_Utils_Json_GuidDeserializationContextFactory_CreateContext_System_Type_System_Object_" data-uid="Solti.Utils.Json.GuidDeserializationContextFactory.CreateContext(System.Type,System.Object)">CreateContext(Type, Object)</h4>
+  <a id="Solti_Utils_Json_GuidDeserializationContextFactory_CreateContextCore_" data-uid="Solti.Utils.Json.GuidDeserializationContextFactory.CreateContextCore*"></a>
+  <h4 id="Solti_Utils_Json_GuidDeserializationContextFactory_CreateContextCore_System_Type_System_Object_" data-uid="Solti.Utils.Json.GuidDeserializationContextFactory.CreateContextCore(System.Type,System.Object)">CreateContextCore(Type, Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override DeserializationContext CreateContext(Type type, object config = null)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override DeserializationContext CreateContextCore(Type type, object config = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -120,7 +126,7 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateContext_System_Type_System_Object_">DeserializationContextFactory.CreateContext(Type, Object)</a></div>
+  <div><a class="xref" href="Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateContextCore_System_Type_System_Object_">DeserializationContextFactory.CreateContextCore(Type, Object)</a></div>
   <a id="Solti_Utils_Json_GuidDeserializationContextFactory_IsSupported_" data-uid="Solti.Utils.Json.GuidDeserializationContextFactory.IsSupported*"></a>
   <h4 id="Solti_Utils_Json_GuidDeserializationContextFactory_IsSupported_System_Type_" data-uid="Solti.Utils.Json.GuidDeserializationContextFactory.IsSupported(System.Type)">IsSupported(Type)</h4>
   <div class="markdown level1 summary"></div>
