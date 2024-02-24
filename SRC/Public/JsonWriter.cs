@@ -20,6 +20,9 @@ namespace Solti.Utils.Json
     using static SerializationContext;
     using static Properties.Resources;
 
+    /// <summary>
+    /// Represents a low-level, cancellable JSON writer.
+    /// </summary>
     public sealed class JsonWriter(int maxDepth = 64, byte indent = 2)
     {
         #region Private

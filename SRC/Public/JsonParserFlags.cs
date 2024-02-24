@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* JsonReaderFlags.cs                                                            *
+* JsonParserFlags.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -11,7 +11,7 @@ namespace Solti.Utils.Json
     /// Contains flags for fine-tuning the JSON parser.
     /// </summary>
     [Flags]
-    public enum JsonReaderFlags
+    public enum JsonParserFlags
     {
         /// <summary>
         /// The default value.

@@ -47,7 +47,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Method to be called when a comment section has been parsed successfully.
         /// </summary>
-        /// <remarks>This method gets invoked only when the <see cref="JsonReaderFlags.AllowComments"/> flag is set.</remarks>
+        /// <remarks>This method gets invoked only when the <see cref="JsonParserFlags.AllowComments"/> flag is set.</remarks>
         public CommentParserDelegate? CommentParser { get; init; }
 
         /// <summary>

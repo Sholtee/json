@@ -58,7 +58,7 @@ namespace Solti.Utils.Json.Perf
 
                 foreach (string file in new string[] { "large1.json", "large2.json" })
                 {
-                    yield return new JsonReader().Parse
+                    yield return new JsonParser().Parse
                     (
                         new StreamReader
                         (

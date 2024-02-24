@@ -38,13 +38,13 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         [TestCaseSource(nameof(GetValidCases))]
         public void TestValidCase((Type TargetType, object? Config, string Input, object Expected) testCase)
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             StringReader content = new(testCase.Input);
 
             Assert.That(Factory.IsSupported(testCase.TargetType));
 
-            object? ret = rdr.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default);
+            object? ret = parser.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default);
 
             Assert.That(ret, Is.EqualTo(testCase.Expected));
         }
@@ -52,11 +52,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         [TestCaseSource(nameof(GetInvalidCases))]
         public void TestInvalidCase((Type TargetType, object? Config, string Input) testCase)
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             StringReader content = new(testCase.Input);
 
-            Assert.Throws<InvalidOperationException>(() => rdr.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default));
+            Assert.Throws<InvalidOperationException>(() => parser.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default));
         }
 
         [TestCaseSource(nameof(GetInvalidTypes))]

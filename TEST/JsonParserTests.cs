@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* JsonReaderTests.cs                                                            *
+* JsonParserTests.cs                                                            *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -17,12 +17,12 @@ namespace Solti.Utils.Json.Tests
 {
     using Internals;
 
-    using JsonTokenValue = (bool IsLiteral, string Value, JsonReaderFlags RequiredFlags);
+    using JsonTokenValue = (bool IsLiteral, string Value, JsonParserFlags RequiredFlags);
 
-    using static JsonReader;
+    using static JsonParser;
 
     [TestFixture]
-    public class JsonReaderTests
+    public class JsonParserTests
     {
         private static int CharsLeft(TextReaderWrapper content)
         {
@@ -122,52 +122,52 @@ namespace Solti.Utils.Json.Tests
             {
                 Dictionary<JsonTokens, JsonTokenValue> tokens = new()
                 {
-                    { JsonTokens.Comma, (IsLiteral: false, ",", JsonReaderFlags.None) },
-                    { JsonTokens.DoubleSlash, (IsLiteral: false, "//", JsonReaderFlags.AllowComments) },
-                    { JsonTokens.CurlyOpen, (IsLiteral: false, "{", JsonReaderFlags.None) },
-                    { JsonTokens.CurlyClose, (IsLiteral: false, "}", JsonReaderFlags.None) },
-                    { JsonTokens.SquaredOpen, (IsLiteral: false, "[", JsonReaderFlags.None) },
-                    { JsonTokens.SquaredClose, (IsLiteral: false, "]", JsonReaderFlags.None) },
-                    { JsonTokens.Colon, (IsLiteral: false, ":", JsonReaderFlags.None) },
-                    { JsonTokens.SingleQuote, (IsLiteral: false, "'", JsonReaderFlags.AllowSingleQuotedStrings) },
-                    { JsonTokens.DoubleQuote, (IsLiteral: false, "\"", JsonReaderFlags.None) },
-                    { JsonTokens.True, (IsLiteral: true, "true", JsonReaderFlags.None) },
-                    { JsonTokens.False, (IsLiteral: true, "false", JsonReaderFlags.None) },
-                    { JsonTokens.Null, (IsLiteral: true, "null", JsonReaderFlags.None) }
+                    { JsonTokens.Comma, (IsLiteral: false, ",", JsonParserFlags.None) },
+                    { JsonTokens.DoubleSlash, (IsLiteral: false, "//", JsonParserFlags.AllowComments) },
+                    { JsonTokens.CurlyOpen, (IsLiteral: false, "{", JsonParserFlags.None) },
+                    { JsonTokens.CurlyClose, (IsLiteral: false, "}", JsonParserFlags.None) },
+                    { JsonTokens.SquaredOpen, (IsLiteral: false, "[", JsonParserFlags.None) },
+                    { JsonTokens.SquaredClose, (IsLiteral: false, "]", JsonParserFlags.None) },
+                    { JsonTokens.Colon, (IsLiteral: false, ":", JsonParserFlags.None) },
+                    { JsonTokens.SingleQuote, (IsLiteral: false, "'", JsonParserFlags.AllowSingleQuotedStrings) },
+                    { JsonTokens.DoubleQuote, (IsLiteral: false, "\"", JsonParserFlags.None) },
+                    { JsonTokens.True, (IsLiteral: true, "true", JsonParserFlags.None) },
+                    { JsonTokens.False, (IsLiteral: true, "false", JsonParserFlags.None) },
+                    { JsonTokens.Null, (IsLiteral: true, "null", JsonParserFlags.None) }
                 };
 
                 foreach (KeyValuePair<JsonTokens, JsonTokenValue> token in tokens)
                 {
                     if (token.Value.IsLiteral)
                     {
-                        yield return new object[] { token.Value.Value.ToUpper(), token.Key, token.Value.RequiredFlags | JsonReaderFlags.CaseInsensitive };
+                        yield return new object[] { token.Value.Value.ToUpper(), token.Key, token.Value.RequiredFlags | JsonParserFlags.CaseInsensitive };
                         yield return new object[] { token.Value.Value.ToUpper(), JsonTokens.Unknown, token.Value.RequiredFlags };
                     }
                     yield return new object[] { token.Value.Value, token.Key, token.Value.RequiredFlags };
 
                     if (token.Value.IsLiteral)
                     {
-                        yield return new object[] { $" {token.Value.Value.ToUpper()}", token.Key, token.Value.RequiredFlags | JsonReaderFlags.CaseInsensitive };
+                        yield return new object[] { $" {token.Value.Value.ToUpper()}", token.Key, token.Value.RequiredFlags | JsonParserFlags.CaseInsensitive };
                         yield return new object[] { $" {token.Value.Value.ToUpper()}", JsonTokens.Unknown, token.Value.RequiredFlags };
                     }
                     yield return new object[] { $" {token.Value.Value}", token.Key, token.Value.RequiredFlags };
                 }
 
-                yield return new object[] { $"-", JsonTokens.Number, JsonReaderFlags.None };
-                yield return new object[] { $"5", JsonTokens.Number, JsonReaderFlags.None };
+                yield return new object[] { $"-", JsonTokens.Number, JsonParserFlags.None };
+                yield return new object[] { $"5", JsonTokens.Number, JsonParserFlags.None };
             }
         }
 
         [TestCaseSource(nameof(Consume_ShouldReturnTheCurrectToken_Params))]
-        public void Consume_ShouldReturnTheCurrectToken(string input, object expected, JsonReaderFlags flags)
+        public void Consume_ShouldReturnTheCurrectToken(string input, object expected, JsonParserFlags flags)
         {
             using TextReaderWrapper content = new StringReader(input);
 
             Session session = new() { Content = content };
 
-            JsonReader rdr = new(flags);
+            JsonParser parser = new(flags);
 
-            Assert.That(rdr.Consume(ref session), Is.EqualTo(expected));
+            Assert.That(parser.Consume(ref session), Is.EqualTo(expected));
         }
 
         [Test]
@@ -177,9 +177,9 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new() { Content = content };
 
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
-            Assert.That(rdr.Consume(ref session), Is.EqualTo(JsonTokens.Unknown));
+            Assert.That(parser.Consume(ref session), Is.EqualTo(JsonTokens.Unknown));
         }
 
         [Test]
@@ -187,18 +187,18 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader("{");
  
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             Assert.DoesNotThrow(() =>
             {
                 Session session = new() { Content = content };
-                Assert.That(rdr.Consume(ref session, JsonTokens.Eof | JsonTokens.CurlyOpen, DeserializationContext.Default), Is.EqualTo(JsonTokens.CurlyOpen));
+                Assert.That(parser.Consume(ref session, JsonTokens.Eof | JsonTokens.CurlyOpen, DeserializationContext.Default), Is.EqualTo(JsonTokens.CurlyOpen));
             });
 
             Assert.Throws<FormatException>(() =>
             {
                 Session session = new() { Content = content };
-                rdr.Consume(ref session, JsonTokens.Eof, DeserializationContext.Default);
+                parser.Consume(ref session, JsonTokens.Eof, DeserializationContext.Default);
             });
         }
 
@@ -555,14 +555,14 @@ namespace Solti.Utils.Json.Tests
         [TestCase("[\"cica\", \"mica\", x]", 17)]
         public void ParseList_ShouldThrowOnInvalidList(string input, int errorPos)
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             using TextReaderWrapper content = new StringReader(input);
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
                 Session session = new() { Content = content };
-                rdr.ParseList(ref session, 0, DeserializationContext.Untyped, default);
+                parser.ParseList(ref session, 0, DeserializationContext.Untyped, default);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(errorPos));
         }
@@ -570,14 +570,14 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void ParseList_ShouldThrowOnInvalidContext()
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             using TextReaderWrapper content = new StringReader("[]");
 
             Assert.Throws<InvalidOperationException>(() =>
             {
                 Session session = new() { Content = content };
-                rdr.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = null }, default);
+                parser.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = null }, default);
             });
         }
 
@@ -585,57 +585,57 @@ namespace Solti.Utils.Json.Tests
         {
             get
             {
-                yield return new object[] { "[]", new List<object?> { }, JsonReaderFlags.None };
-                yield return new object[] { "[1]", new List<object?> { 1 }, JsonReaderFlags.None };
-                yield return new object[] { "[\"1\"]", new List<object?> { "1" }, JsonReaderFlags.None };
-                yield return new object[] { "[1,]", new List<object?> { 1 }, JsonReaderFlags.AllowTrailingComma };
-                yield return new object[] { "[\"1\",]", new List<object?> { "1" }, JsonReaderFlags.AllowTrailingComma };
-                yield return new object[] { "[\"1\",//comment\r\n]", new List<object?> { "1" }, JsonReaderFlags.AllowTrailingComma | JsonReaderFlags.AllowComments };
-                yield return new object[] { "[\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonReaderFlags.None };
-                yield return new object[] { "[\r\n//comment\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonReaderFlags.AllowComments };
-                yield return new object[] { "[\r\n\"1\"\r\n//comment\r\n]", new List<object?> { "1" }, JsonReaderFlags.AllowComments };
-                yield return new object[] { "[null, true, false, 1, \"1\"]", new List<object?> { null, true, false, 1, "1" }, JsonReaderFlags.None };
-                yield return new object[] { "[[]]", new List<object?> { new List<object?> { } }, JsonReaderFlags.None };
+                yield return new object[] { "[]", new List<object?> { }, JsonParserFlags.None };
+                yield return new object[] { "[1]", new List<object?> { 1 }, JsonParserFlags.None };
+                yield return new object[] { "[\"1\"]", new List<object?> { "1" }, JsonParserFlags.None };
+                yield return new object[] { "[1,]", new List<object?> { 1 }, JsonParserFlags.AllowTrailingComma };
+                yield return new object[] { "[\"1\",]", new List<object?> { "1" }, JsonParserFlags.AllowTrailingComma };
+                yield return new object[] { "[\"1\",//comment\r\n]", new List<object?> { "1" }, JsonParserFlags.AllowTrailingComma | JsonParserFlags.AllowComments };
+                yield return new object[] { "[\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonParserFlags.None };
+                yield return new object[] { "[\r\n//comment\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonParserFlags.AllowComments };
+                yield return new object[] { "[\r\n\"1\"\r\n//comment\r\n]", new List<object?> { "1" }, JsonParserFlags.AllowComments };
+                yield return new object[] { "[null, true, false, 1, \"1\"]", new List<object?> { null, true, false, 1, "1" }, JsonParserFlags.None };
+                yield return new object[] { "[[]]", new List<object?> { new List<object?> { } }, JsonParserFlags.None };
             }
         }
 
         [TestCaseSource(nameof(ParseList_ShouldParse_Params))]
-        public void ParseList_ShouldParse(string input, List<object?> expected, JsonReaderFlags flags)
+        public void ParseList_ShouldParse(string input, List<object?> expected, JsonParserFlags flags)
         {
-            JsonReader rdr = new(flags);
+            JsonParser parser = new(flags);
 
             using TextReaderWrapper content = new StringReader(input);
 
             Session session = new() { Content = content };
 
-            Assert.That(rdr.ParseList(ref session, 0, DeserializationContext.Untyped, default), Is.EquivalentTo(expected));
+            Assert.That(parser.ParseList(ref session, 0, DeserializationContext.Untyped, default), Is.EquivalentTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
         [Test]
         public void ParseList_ShouldSkipUnknownItems([Values("[1, 2, 3]", "[1, [2], 3]", "[1, [[2]], 3]", "[1, {}, 3]", "[1, {\"a\": []}, 3]")] string input)
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             using TextReaderWrapper content = new StringReader(input);
 
             Session session = new() { Content = content };
 
-            Assert.That(rdr.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = i => i != 1 ? DeserializationContext.Untyped.GetListItemContext!(i) : DeserializationContext.Default }, default), Is.EquivalentTo(new List<object?> { 1, 3 }));
+            Assert.That(parser.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = i => i != 1 ? DeserializationContext.Untyped.GetListItemContext!(i) : DeserializationContext.Default }, default), Is.EquivalentTo(new List<object?> { 1, 3 }));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
         [Test]
         public void ParseList_ShouldThrowOnUnknownItems([Values("[1, 2, 3]", "[1, [2], 3]", "[1, [[2]], 3]", "[1, {}, 3]", "[1, {\"a\": []}, 3]")] string input)
         {
-            JsonReader rdr = new(JsonReaderFlags.ThrowOnUnknownListItem);
+            JsonParser parser = new(JsonParserFlags.ThrowOnUnknownListItem);
 
             using TextReaderWrapper content = new StringReader(input);
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
                 Session session = new() { Content = content };
-                rdr.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = i => i != 1 ? DeserializationContext.Untyped.GetListItemContext!(i) : DeserializationContext.Default }, default);
+                parser.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = i => i != 1 ? DeserializationContext.Untyped.GetListItemContext!(i) : DeserializationContext.Default }, default);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(4));
         }
@@ -650,14 +650,14 @@ namespace Solti.Utils.Json.Tests
         [TestCase("{\"cica\": 1,}", 11)]
         public void ParseObject_ShouldThrowOnInvalidObject(string input, int errorPos)
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             using TextReaderWrapper content = new StringReader(input);
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
                 Session session = new() { Content = content };
-                rdr.ParseObject(ref session, 0, DeserializationContext.Untyped, default);
+                parser.ParseObject(ref session, 0, DeserializationContext.Untyped, default);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(errorPos));
         }
@@ -665,14 +665,14 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void ParseObject_ShouldThrowOnInvalidContext()
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             using TextReaderWrapper content = new StringReader("{}");
 
             Assert.Throws<InvalidOperationException>(() =>
             {
                 Session session = new() { Content = content };
-                rdr.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = null }, default);
+                parser.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = null }, default);
             });
         }
 
@@ -680,85 +680,85 @@ namespace Solti.Utils.Json.Tests
         {
             get
             {
-                yield return new object[] { "{}", new Dictionary<string, object?> { }, JsonReaderFlags.None };
-                yield return new object[] { "{\"cica\": 1}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.None };
-                yield return new object[] { "{\"cica\": \"1\"}", new Dictionary<string, object?> { { "cica", "1" } }, JsonReaderFlags.None };
-                yield return new object[] { "{\"cica\": \"1\", \"cica\": 1986}", new Dictionary<string, object?> { { "cica", 1986 } }, JsonReaderFlags.None };
-                yield return new object[] { "{\"cica\": 1,}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowTrailingComma };
-                yield return new object[] { "{\"cica\": \"1\",}", new Dictionary<string, object?> { { "cica", "1" } }, JsonReaderFlags.AllowTrailingComma };
-                yield return new object[] { "{\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.None };
-                yield return new object[] { "{\r\n  //comment\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowComments };
-                yield return new object[] { "{\r\n  \"cica\": 1 //comment\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowComments };
-                yield return new object[] { "{\r\n  \"cica\": 1, //comment\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonReaderFlags.AllowComments | JsonReaderFlags.AllowTrailingComma };
-                yield return new object[] { "{\"nested\": {}}", new Dictionary<string, object?> { { "nested", new Dictionary<string, object?> { } } }, JsonReaderFlags.None };
+                yield return new object[] { "{}", new Dictionary<string, object?> { }, JsonParserFlags.None };
+                yield return new object[] { "{\"cica\": 1}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.None };
+                yield return new object[] { "{\"cica\": \"1\"}", new Dictionary<string, object?> { { "cica", "1" } }, JsonParserFlags.None };
+                yield return new object[] { "{\"cica\": \"1\", \"cica\": 1986}", new Dictionary<string, object?> { { "cica", 1986 } }, JsonParserFlags.None };
+                yield return new object[] { "{\"cica\": 1,}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowTrailingComma };
+                yield return new object[] { "{\"cica\": \"1\",}", new Dictionary<string, object?> { { "cica", "1" } }, JsonParserFlags.AllowTrailingComma };
+                yield return new object[] { "{\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.None };
+                yield return new object[] { "{\r\n  //comment\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowComments };
+                yield return new object[] { "{\r\n  \"cica\": 1 //comment\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowComments };
+                yield return new object[] { "{\r\n  \"cica\": 1, //comment\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowComments | JsonParserFlags.AllowTrailingComma };
+                yield return new object[] { "{\"nested\": {}}", new Dictionary<string, object?> { { "nested", new Dictionary<string, object?> { } } }, JsonParserFlags.None };
             }
         }
 
         [TestCaseSource(nameof(ParseObject_ShouldParse_Params))]
-        public void ParseObject_ShouldParse(string input, Dictionary<string, object?> expected, JsonReaderFlags flags)
+        public void ParseObject_ShouldParse(string input, Dictionary<string, object?> expected, JsonParserFlags flags)
         {
-            JsonReader rdr = new(flags);
+            JsonParser parser = new(flags);
 
             using TextReaderWrapper content = new StringReader(input);
 
             Session session = new() { Content = content };
 
-            Assert.That(rdr.ParseObject(ref session, 0, DeserializationContext.Untyped, default), Is.EquivalentTo(expected));
+            Assert.That(parser.ParseObject(ref session, 0, DeserializationContext.Untyped, default), Is.EquivalentTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
         [Test]
         public void ParseObject_ShouldSkipUnknownItems([Values("{\"1\": 1, \"2\": 2, \"3\": 3}", "{\"1\": 1, \"2\": [2], \"3\": 3}", "{\"1\": 1, \"2\": [[2]], \"3\": 3}", "{\"1\": 1, \"2\": {}, \"3\": 3}", "{\"1\": 1, \"2\": {\"2\": {}}, \"3\": 3}")] string input)
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             using TextReaderWrapper content = new StringReader(input);
 
             Session session = new() { Content = content };
 
-            Assert.That(rdr.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, ignoreCase) => !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ? DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase) : DeserializationContext.Default }, default), Is.EquivalentTo(new Dictionary<string, object?> { { "1", 1 }, { "3", 3 } }));
+            Assert.That(parser.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, ignoreCase) => !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ? DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase) : DeserializationContext.Default }, default), Is.EquivalentTo(new Dictionary<string, object?> { { "1", 1 }, { "3", 3 } }));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
         [Test]
         public void ParseObject_ShouldThrowOnUnknownItems([Values("{\"1\": 1, \"2\": 2, \"3\": 3}", "{\"1\": 1, \"2\": [2], \"3\": 3}", "{\"1\": 1, \"2\": [[2]], \"3\": 3}", "{\"1\": 1, \"2\": {}, \"3\": 3}", "{\"1\": 1, \"2\": {\"2\": {}}, \"3\": 3}")] string input)
         {
-            JsonReader rdr = new(JsonReaderFlags.ThrowOnUnknownProperty);
+            JsonParser parser = new(JsonParserFlags.ThrowOnUnknownProperty);
 
             using TextReaderWrapper content = new StringReader(input);
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
                 Session session = new() { Content = content };
-                rdr.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, ignoreCase) => !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ? DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase) : DeserializationContext.Default }, default);
+                parser.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, ignoreCase) => !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ? DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase) : DeserializationContext.Default }, default);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(12));
         }
 
-        [TestCase("true", JsonReaderFlags.None, JsonDataTypes.Boolean, true)]
-        [TestCase("false", JsonReaderFlags.None, JsonDataTypes.Boolean, false)]
-        [TestCase("null", JsonReaderFlags.None, JsonDataTypes.Null, null)]
-        [TestCase("True", JsonReaderFlags.CaseInsensitive, JsonDataTypes.Boolean, true)]
-        [TestCase("False", JsonReaderFlags.CaseInsensitive, JsonDataTypes.Boolean, false)]
-        [TestCase("Null", JsonReaderFlags.CaseInsensitive, JsonDataTypes.Null, null)]
-        public void Parse_ShouldParseLiterals(string input, JsonReaderFlags flags, JsonDataTypes supportedTypes, object expected)
+        [TestCase("true", JsonParserFlags.None, JsonDataTypes.Boolean, true)]
+        [TestCase("false", JsonParserFlags.None, JsonDataTypes.Boolean, false)]
+        [TestCase("null", JsonParserFlags.None, JsonDataTypes.Null, null)]
+        [TestCase("True", JsonParserFlags.CaseInsensitive, JsonDataTypes.Boolean, true)]
+        [TestCase("False", JsonParserFlags.CaseInsensitive, JsonDataTypes.Boolean, false)]
+        [TestCase("Null", JsonParserFlags.CaseInsensitive, JsonDataTypes.Null, null)]
+        public void Parse_ShouldParseLiterals(string input, JsonParserFlags flags, JsonDataTypes supportedTypes, object expected)
         {
-            JsonReader rdr = new(flags);
+            JsonParser parser = new(flags);
 
             StringReader content = new(input);
 
-            Assert.That(rdr.Parse(content, DeserializationContext.Untyped with { SupportedTypes = supportedTypes }, default), Is.EqualTo(expected));
+            Assert.That(parser.Parse(content, DeserializationContext.Untyped with { SupportedTypes = supportedTypes }, default), Is.EqualTo(expected));
             Assert.That(content.Peek(), Is.EqualTo(-1));
         }
 
         [Test]
         public void Parse_ShouldBeCaseSensitiveByDefault()
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             StringReader content = new("Null");
 
-            FormatException ex = Assert.Throws<FormatException>(() => rdr.Parse(content, DeserializationContext.Untyped, default))!;
+            FormatException ex = Assert.Throws<FormatException>(() => parser.Parse(content, DeserializationContext.Untyped, default))!;
             Assert.That(ex.Data["column"], Is.EqualTo(0));
         }
 
@@ -776,11 +776,11 @@ namespace Solti.Utils.Json.Tests
         {
             string? got = null;
 
-            JsonReader rdr = new(JsonReaderFlags.AllowComments, 0);
+            JsonParser parser = new(JsonParserFlags.AllowComments, 0);
 
             StringReader content = new(input);
 
-            Assert.That(rdr.Parse(content, DeserializationContext.Untyped with { CommentParser = chars => got = chars.AsString() }, default), Is.EqualTo(expected));
+            Assert.That(parser.Parse(content, DeserializationContext.Untyped with { CommentParser = chars => got = chars.AsString() }, default), Is.EqualTo(expected));
             Assert.That(got, Is.EqualTo(comment));
             Assert.That(content.Peek(), Is.EqualTo(-1));
         }
@@ -797,27 +797,27 @@ namespace Solti.Utils.Json.Tests
         [TestCase("{\"cica\": [1986]}", 2, false)]
         public void Parse_ShouldCheckTheDepth(string input, int maxDepth, bool shouldThrow)
         {
-            JsonReader rdr = new(maxDepth: maxDepth);
+            JsonParser parser = new(maxDepth: maxDepth);
 
             StringReader content = new(input);
 
             if (shouldThrow)
-                Assert.Throws<InvalidOperationException>(() => rdr.Parse(content, DeserializationContext.Untyped, default));
+                Assert.Throws<InvalidOperationException>(() => parser.Parse(content, DeserializationContext.Untyped, default));
             else
-                Assert.DoesNotThrow(() => rdr.Parse(content, DeserializationContext.Untyped, default));
+                Assert.DoesNotThrow(() => parser.Parse(content, DeserializationContext.Untyped, default));
         }
 
         [Test]
         public void Parse_CanBeCancelled([Values("{}", "5", "\"cica\"")] string input)
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             StringReader content = new(input);
 
             CancellationTokenSource cancellationTokenSource = new();
             cancellationTokenSource.Cancel();
 
-            Assert.Throws<OperationCanceledException>(() => rdr.Parse(content, DeserializationContext.Untyped, cancellationTokenSource.Token));
+            Assert.Throws<OperationCanceledException>(() => parser.Parse(content, DeserializationContext.Untyped, cancellationTokenSource.Token));
         }
 
         [Test]
@@ -828,11 +828,11 @@ namespace Solti.Utils.Json.Tests
                 .Setup(v => v.Invoke((long) 1986))
                 .Returns((ICollection<string>?) null);
 
-            JsonReader rdr = new(JsonReaderFlags.None, 0);
+            JsonParser parser = new(JsonParserFlags.None, 0);
 
             StringReader content = new("1986");
 
-            rdr.Parse(content, new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default);
+            parser.Parse(content, new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default);
 
             mockValidator.Verify(v => v.Invoke((long) 1986), Times.Once);
         }
@@ -847,11 +847,11 @@ namespace Solti.Utils.Json.Tests
                 .Setup(c => c.Invoke((long) 1986, out ret))
                 .Returns((object? _, out object? ret) => { ret = 1991; return true; });
 
-            JsonReader rdr = new(JsonReaderFlags.None, 0);
+            JsonParser parser = new(JsonParserFlags.None, 0);
 
             StringReader content = new("1986");
 
-            ret = rdr.Parse(content, DeserializationContext.Untyped with { Convert = mockConverter.Object }, default);
+            ret = parser.Parse(content, DeserializationContext.Untyped with { Convert = mockConverter.Object }, default);
 
             Assert.That(ret, Is.EqualTo(1991));
             mockConverter.Verify(c => c.Invoke((long) 1986, out ret), Times.Once);
@@ -860,21 +860,21 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void Parse_ShouldThrowIfConversationFailed()
         {
-            JsonReader rdr = new(JsonReaderFlags.None, 0);
+            JsonParser parser = new(JsonParserFlags.None, 0);
 
             StringReader content = new("1986");
 
-            Assert.Throws<InvalidOperationException>(() => rdr.Parse(content, DeserializationContext.Untyped with { Convert = (object? _, out object? ret) => { ret = null; return false; } }, default));
+            Assert.Throws<InvalidOperationException>(() => parser.Parse(content, DeserializationContext.Untyped with { Convert = (object? _, out object? ret) => { ret = null; return false; } }, default));
         }
 
         [Test]
         public void Parse_ShouldThrowIfStringConversationFailed()
         {
-            JsonReader rdr = new(JsonReaderFlags.None, 0);
+            JsonParser parser = new(JsonParserFlags.None, 0);
 
             StringReader content = new("\"1986\"");
 
-            Assert.Throws<InvalidOperationException>(() => rdr.Parse(content, DeserializationContext.Untyped with { ConvertString = (ReadOnlySpan<char> _, bool _, out object? ret) => { ret = null; return false; } }, default));
+            Assert.Throws<InvalidOperationException>(() => parser.Parse(content, DeserializationContext.Untyped with { ConvertString = (ReadOnlySpan<char> _, bool _, out object? ret) => { ret = null; return false; } }, default));
         }
 
         [Test]
@@ -885,11 +885,11 @@ namespace Solti.Utils.Json.Tests
                 .Setup(v => v.Invoke((long) 1986))
                 .Returns(new string[] { "some error" });
 
-            JsonReader rdr = new(JsonReaderFlags.None, 0);
+            JsonParser parser = new(JsonParserFlags.None, 0);
 
             StringReader content = new("1986");
 
-            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => rdr.Parse(content, new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default))!;
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => parser.Parse(content, new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default))!;
             Assert.That(ex.Data, Does.ContainKey("errors"));
             Assert.That(ex.Data["errors"], Is.EquivalentTo(new string[] { "some error" }));
         }
@@ -898,7 +898,7 @@ namespace Solti.Utils.Json.Tests
         [TestCase("large2.json", 11351)]
         public void Parse_ShouldHandleLargeInput(string file, int expectedLength)
         {
-            JsonReader rdr = new();
+            JsonParser parser = new();
 
             using StreamReader content = new
             (
@@ -909,13 +909,13 @@ namespace Solti.Utils.Json.Tests
                 )
             );
 
-            IList? result = rdr.Parse(content, DeserializationContext.Untyped, default) as IList;
+            IList? result = parser.Parse(content, DeserializationContext.Untyped, default) as IList;
             Assert.That(result, Is.Not.Null);
             Assert.That(result!.Count, Is.EqualTo(expectedLength));
         }
 
         [Test]
         public void Parse_ShouldBeNullChecked() =>
-            Assert.Throws<ArgumentNullException>(() => new JsonReader().Parse(null!, DeserializationContext.Default, default));
+            Assert.Throws<ArgumentNullException>(() => new JsonParser().Parse(null!, DeserializationContext.Default, default));
     }
 }

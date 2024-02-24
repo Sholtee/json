@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* JsonReader.cs                                                                 *
+* JsonParser.cs                                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,7 +13,7 @@ using BenchmarkDotNet.Attributes;
 namespace Solti.Utils.Json.Perf
 {
     [MemoryDiagnoser]
-    public class JsonReaderTests
+    public class JsonParserTests
     {
         public abstract class ContentFactory
         {
@@ -89,17 +89,17 @@ namespace Solti.Utils.Json.Perf
         [ParamsSource(nameof(Params))]
         public ContentFactory Input { get; set; } = null!;
 
-        public JsonReader Reader { get; set; } = null!;
+        public JsonParser Parser { get; set; } = null!;
 
         [GlobalSetup(Target = nameof(Parse))]
-        public void SetupParse() => Reader = new(JsonReaderFlags.None, 256);
+        public void SetupParse() => Parser = new(JsonParserFlags.None, 256);
 
         [Benchmark]
         public void Parse()
         {
             using TextReader content = Input.CreateReader();
 
-            _ = Reader.Parse(content, DeserializationContext.Untyped, CancellationToken.None);
+            _ = Parser.Parse(content, DeserializationContext.Untyped, CancellationToken.None);
         }
     }
 }

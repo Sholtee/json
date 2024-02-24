@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* JsonReader.cs                                                                 *
+* JsonParser.cs                                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -22,10 +22,10 @@ namespace Solti.Utils.Json
     using static Properties.Resources;
 
     /// <summary>
-    /// Represents a generic, cancellable JSON reader.
+    /// Represents a low-level, cancellable JSON parser.
     /// </summary>
     /// <remarks>This class is thread safe.</remarks>
-    public sealed class JsonReader(JsonReaderFlags flags = JsonReaderFlags.None, int maxDepth = 64)
+    public sealed class JsonParser(JsonParserFlags flags = JsonParserFlags.None, int maxDepth = 64)
     {
         #region Private
         //
@@ -111,7 +111,7 @@ namespace Solti.Utils.Json
         private bool IsLiteral(in Session session, string literal) => literal.AsSpan().Equals
         (
             session.Content.PeekText(literal.Length),
-            flags.HasFlag(JsonReaderFlags.CaseInsensitive)
+            flags.HasFlag(JsonParserFlags.CaseInsensitive)
                 ? StringComparison.OrdinalIgnoreCase
                 : StringComparison.Ordinal
         );
@@ -175,8 +175,8 @@ namespace Solti.Utils.Json
                 ',' => JsonTokens.Comma,
                 ':' => JsonTokens.Colon,
                 '"' => JsonTokens.DoubleQuote,
-                '\'' when flags.HasFlag(JsonReaderFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
-                '/' when flags.HasFlag(JsonReaderFlags.AllowComments) && IsLiteral(session, DOUBLE_SLASH) => JsonTokens.DoubleSlash,
+                '\'' when flags.HasFlag(JsonParserFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
+                '/' when flags.HasFlag(JsonParserFlags.AllowComments) && IsLiteral(session, DOUBLE_SLASH) => JsonTokens.DoubleSlash,
                 't' or 'T' when IsLiteral(session, TRUE) => JsonTokens.True,
                 'f' or 'F' when IsLiteral(session, FALSE) => JsonTokens.False,
                 'n' or 'N' when IsLiteral(session, NULL) => JsonTokens.Null,
@@ -214,7 +214,7 @@ namespace Solti.Utils.Json
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal JsonTokens Consume(ref Session session, JsonTokens expected, in DeserializationContext currentContext)
         {
-            if (!flags.HasFlag(JsonReaderFlags.AllowComments))
+            if (!flags.HasFlag(JsonParserFlags.AllowComments))
                 //
                 // MALFORMED_INPUT can be confusing if it says we expect a DoubleSlash as well while
                 // "flags" doesn't allow comments
@@ -519,7 +519,7 @@ namespace Solti.Utils.Json
             for (JsonTokens token = Consume(ref session, (JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, currentContext); token is not JsonTokens.SquaredClose; i++)
             {
                 DeserializationContext childContext = getListItemContext(i);
-                if (childContext.Push is null && flags.HasFlag(JsonReaderFlags.ThrowOnUnknownListItem))
+                if (childContext.Push is null && flags.HasFlag(JsonParserFlags.ThrowOnUnknownListItem))
                     MalformedValue(session, LIST_ID, UNEXPECTED_LIST_ITEM);
 
                 object? val = Parse(ref session, currentDepth, childContext, cancellation);
@@ -539,7 +539,7 @@ namespace Solti.Utils.Json
                     Advance(ref session, 1);
                     token = Consume(ref session, (JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, currentContext);
 
-                    if (token is JsonTokens.SquaredClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
+                    if (token is JsonTokens.SquaredClose && !flags.HasFlag(JsonParserFlags.AllowTrailingComma))
                         MalformedValue(session, LIST_ID, MISSING_ITEM);
                 }
             }
@@ -569,8 +569,8 @@ namespace Solti.Utils.Json
                 Consume(ref session, (JsonTokens) JsonDataTypes.String, currentContext);  // ensure we have a string
                 ReadOnlySpan<char> propertyName = ParseString(ref session, currentContext);
 
-                DeserializationContext childContext = getPropertyContext(propertyName, flags.HasFlag(JsonReaderFlags.CaseInsensitive));
-                if (childContext.Push is null && flags.HasFlag(JsonReaderFlags.ThrowOnUnknownProperty))
+                DeserializationContext childContext = getPropertyContext(propertyName, flags.HasFlag(JsonParserFlags.CaseInsensitive));
+                if (childContext.Push is null && flags.HasFlag(JsonParserFlags.ThrowOnUnknownProperty))
                     MalformedValue(session, OBJECT_ID, UNEXPECTED_PROPERTY);
 
                 Consume(ref session, JsonTokens.Colon, currentContext);
@@ -593,7 +593,7 @@ namespace Solti.Utils.Json
                     Advance(ref session, 1);
                     token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, currentContext);
 
-                    if (token is JsonTokens.CurlyClose && !flags.HasFlag(JsonReaderFlags.AllowTrailingComma))
+                    if (token is JsonTokens.CurlyClose && !flags.HasFlag(JsonParserFlags.AllowTrailingComma))
                         MalformedValue(session, OBJECT_ID, MISSING_PROP);
                 }
             }
@@ -674,7 +674,7 @@ namespace Solti.Utils.Json
                     result = ParseList(ref session, Deeper(currentDepth), currentContext, cancellation);
                     break;
                 case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
-                    if (!(currentContext.ConvertString ?? FDefaultConvertStringDelegate)(ParseString(ref session, currentContext), flags.HasFlag(JsonReaderFlags.CaseInsensitive), out result))
+                    if (!(currentContext.ConvertString ?? FDefaultConvertStringDelegate)(ParseString(ref session, currentContext), flags.HasFlag(JsonParserFlags.CaseInsensitive), out result))
                         InvalidValue(session, NOT_CONVERTIBLE);
                     break;
                 case JsonTokens.Number:
