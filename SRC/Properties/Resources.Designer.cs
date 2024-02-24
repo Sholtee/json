@@ -79,6 +79,15 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invald format sepcifier.
+        /// </summary>
+        internal static string INVALID_FORMAT_SPECIFIER {
+            get {
+                return ResourceManager.GetString("INVALID_FORMAT_SPECIFIER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid instance.
         /// </summary>
         internal static string INVALID_INSTANCE {

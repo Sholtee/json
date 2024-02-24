@@ -123,6 +123,9 @@
   <data name="INVALID_CONTEXT" xml:space="preserve">
     <value>Invalid context</value>
   </data>
+  <data name="INVALID_FORMAT_SPECIFIER" xml:space="preserve">
+    <value>Invald format sepcifier</value>
+  </data>
   <data name="INVALID_INSTANCE" xml:space="preserve">
     <value>Invalid instance</value>
   </data>

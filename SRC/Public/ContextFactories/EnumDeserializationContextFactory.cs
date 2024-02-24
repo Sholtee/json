@@ -14,10 +14,10 @@ namespace Solti.Utils.Json
     using Primitives;
 
     using static DeserializationContext;
-    using static Properties.Resources;
 
-    public class EnumDeserializationContextFactory : DeserializationContextFactory
+    public class EnumDeserializationContextFactory: DeserializationContextFactory
     {
+        #region Private
         private delegate string AsStringDelegate(ReadOnlySpan<char> input);
 
         private static ConvertStringDelegate CreateConvertStringDelegate(Type type)
@@ -129,11 +129,11 @@ namespace Solti.Utils.Json
             Debug.WriteLine(convertExpr.GetDebugView());
             return convertExpr.Compile();
         }
+        #endregion
 
         public override DeserializationContext CreateContext(Type type, object? config = null)
         {
-            if (!type.IsEnum)
-                throw new ArgumentException(INVALID_TYPE, nameof(type));
+            EnsureValidType(type);
 
             ConvertStringDelegate convertString = CreateConvertStringDelegate(type);
 
@@ -166,5 +166,7 @@ namespace Solti.Utils.Json
                 }
             };
         }
+
+        public override bool IsSupported(Type type) => type?.IsEnum is true;
     }
 }
