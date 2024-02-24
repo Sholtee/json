@@ -29,6 +29,10 @@ namespace Solti.Utils.Json
                 if (!prop.CanWrite)
                     continue;
 
+                //
+                // TODO: check if the "prop" has its own context defined by an attribute
+                //
+
                 ParameterExpression
                     instance = Expression.Parameter(typeof(object), nameof(instance)),
                     value = Expression.Parameter(typeof(object), nameof(value));
