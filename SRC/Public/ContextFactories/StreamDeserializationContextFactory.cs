@@ -11,8 +11,13 @@ namespace Solti.Utils.Json
     using Internals;
     using Properties;
 
+    /// <summary>
+    /// Creates context for <see cref="Stream"/> or <see cref="MemoryStream"/> deserialization.
+    /// </summary>
+    /// <remarks>Input data should be Base64 encoded string</remarks>
     public class StreamDeserializationContextFactory : DeserializationContextFactory
     {
+        /// <inheritdoc/>
         public override DeserializationContext CreateContext(Type type, object? config = null)
         {
             EnsureValidType(type);
@@ -54,6 +59,7 @@ namespace Solti.Utils.Json
             };
         }
 
+        /// <inheritdoc/>
         public override bool IsSupported(Type type) => type == typeof(Stream) || type == typeof(MemoryStream);
     }
 }

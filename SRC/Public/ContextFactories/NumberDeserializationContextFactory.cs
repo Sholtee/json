@@ -17,9 +17,22 @@ namespace Solti.Utils.Json
 
     using static DeserializationContext;
 
+    /// <summary>
+    /// Creates context for number (<see cref="byte"/>, <see cref="int"/>, <see cref="float"/>, etc) deserialization.
+    /// </summary>
     public class NumberDeserializationContextFactory : DeserializationContextFactory
     {
         #region Private
+        private static readonly HashSet<Type> FSupportedTypes =
+        [
+            typeof(byte),
+            typeof(ushort), typeof(short),
+            typeof(uint),   typeof(int),
+            typeof(ulong),  typeof(long),
+            typeof(float),
+            typeof(double)
+        ];
+
         private static ConvertDelegate CreateConvertDelegate(Type type)
         {
             Type expectedType = type == typeof(float) || type == typeof(double) ? typeof(double) : typeof(long);
@@ -99,6 +112,7 @@ namespace Solti.Utils.Json
         }
         #endregion
 
+        /// <inheritdoc/>
         public override DeserializationContext CreateContext(Type type, object? config = null)
         {
             EnsureValidType(type);
@@ -112,16 +126,7 @@ namespace Solti.Utils.Json
             };
         }
 
-        private static readonly HashSet<Type> FSupportedTypes =
-        [
-            typeof(byte),
-            typeof(ushort), typeof(short),
-            typeof(uint),   typeof(int),
-            typeof(ulong),  typeof(long),
-            typeof(float),
-            typeof(double)
-        ];
-
+        /// <inheritdoc/>
         public override bool IsSupported(Type type) => FSupportedTypes.Contains(type);
     }
 }

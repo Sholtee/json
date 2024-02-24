@@ -11,8 +11,12 @@ namespace Solti.Utils.Json
     using Internals;
     using Properties;
 
+    /// <summary>
+    /// Creates context for <see cref="DateTime"/> deserialization.
+    /// </summary>
     public class DateTimeDeserializationContextFactory : DeserializationContextFactory
     {
+        /// <inheritdoc/>
         public override DeserializationContext CreateContext(Type type, object? config = null)
         {
             EnsureValidType(type);
@@ -50,6 +54,7 @@ namespace Solti.Utils.Json
             };
         }
 
+        /// <inheritdoc/>
         public override bool IsSupported(Type type) => type == typeof(DateTime);
     }
 }

@@ -10,10 +10,14 @@ namespace Solti.Utils.Json
     using Internals;
     using Properties;
 
+    /// <summary>
+    /// Creates context for <see cref="Guid"/> deserialization.
+    /// </summary>
     public class GuidDeserializationContextFactory : DeserializationContextFactory
     {
         private static readonly string[] FValidStyles = ["N", "D", "B", "P", "X"];
 
+        /// <inheritdoc/>
         public override DeserializationContext CreateContext(Type type, object? config = null)
         {
             EnsureValidType(type);
@@ -52,6 +56,7 @@ namespace Solti.Utils.Json
             };
         }
 
+        /// <inheritdoc/>
         public override bool IsSupported(Type type) => type == typeof(Guid);
     }
 }

@@ -16,6 +16,9 @@ namespace Solti.Utils.Json
 
     using static DeserializationContext;
 
+    /// <summary>
+    /// Creates context for <see cref="Enum"/> deserialization.
+    /// </summary>
     public class EnumDeserializationContextFactory: DeserializationContextFactory
     {
         #region Private
@@ -131,6 +134,7 @@ namespace Solti.Utils.Json
         }
         #endregion
 
+        /// <inheritdoc/>
         public override DeserializationContext CreateContext(Type type, object? config = null)
         {
             EnsureValidType(type);
@@ -171,6 +175,7 @@ namespace Solti.Utils.Json
             };
         }
 
+        /// <inheritdoc/>
         public override bool IsSupported(Type type) => type?.IsEnum is true;
     }
 }
