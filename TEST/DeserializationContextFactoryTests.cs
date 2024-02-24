@@ -12,20 +12,28 @@ using NUnit.Framework;
 
 namespace Solti.Utils.Json.Tests
 {
-    public abstract class DeserializationContextFactoryTestsBase<TDescendant> where TDescendant: DeserializationContextFactoryTestsBase<TDescendant>, new()
+    public abstract class DeserializationContextFactoryTestsBase<TDescendant> where TDescendant : DeserializationContextFactoryTestsBase<TDescendant>, new()
     {
         public abstract IEnumerable<(Type targetType, object? Config, string Input, object Expected)> ValidCases { get; }
 
         public abstract IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases { get; }
+
+        public abstract IEnumerable<(Type Type, object? Config)> InvalidConfigs { get; }
+
+        public abstract IEnumerable<Type> InvalidTypes { get; }
 
         public abstract DeserializationContextFactory Factory { get; }
 
         public static DeserializationContextFactoryTestsBase<TDescendant> Instance { get; } = new TDescendant();
 
         // TestCaseSource requires static property
-        public static IEnumerable<(Type targetType, object? Config, string Input, object Expected)> GetValidCases => Instance.ValidCases;
+        public static IEnumerable<(Type TargetType, object? Config, string Input, object Expected)> GetValidCases => Instance.ValidCases;
 
-        public static IEnumerable<(Type targetType, object? Config, string Input)> GetInvalidCases => Instance.InvalidCases;
+        public static IEnumerable<(Type TargetType, object? Config, string Input)> GetInvalidCases => Instance.InvalidCases;
+
+        public static IEnumerable<(Type Type, object? Config)> GetInvalidConfigs => Instance.InvalidConfigs;
+
+        public static IEnumerable<Type> GetInvalidTypes => Instance.InvalidTypes;
 
         [TestCaseSource(nameof(GetValidCases))]
         public void TestValidCase((Type TargetType, object? Config, string Input, object Expected) testCase)
@@ -51,8 +59,13 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<InvalidOperationException>(() => rdr.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default));
         }
 
-        [Test]
-        public void CreateContext_ShouldThrowOnInvalidType() => Assert.Throws<ArgumentException>(() => Factory.CreateContext(null!, null));
+        [TestCaseSource(nameof(GetInvalidTypes))]
+        public void CreateContext_ShouldThrowOnInvalidType(Type type) =>
+            Assert.Throws<ArgumentException>(() => Factory.CreateContext(type, null));
+
+        [TestCaseSource(nameof(GetInvalidConfigs))]
+        public void CreateContext_ShouldThrowOnInvalidConfig((Type Type, object? Config) testCase) =>
+            Assert.Throws<ArgumentException>(() => Factory.CreateContext(testCase.Type, testCase.Config));
     }
 
     [TestFixture]
@@ -77,7 +90,25 @@ namespace Solti.Utils.Json.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new EnumDeserializationContextFactory();    
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(MethodImplOptions), "invalid");
+                yield return (typeof(MethodImplOptions), 1);
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+                yield return typeof(string);
+            }
+        }
+
+        public override DeserializationContextFactory Factory => new EnumDeserializationContextFactory();
     }
 
     [TestFixture]
@@ -105,9 +136,23 @@ namespace Solti.Utils.Json.Tests
             }
         }
 
-        [Test]
-        public void CreateContext_ShouldThrowOnInvalidConfig([Values("invalid", 1)] object config) =>
-            Assert.Throws<ArgumentException>(() => Factory.CreateContext(typeof(Guid), config));
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(Guid), "invalid");
+                yield return (typeof(Guid), 1);
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+                yield return typeof(string);
+            }
+        }
 
         public override DeserializationContextFactory Factory => new GuidDeserializationContextFactory();
     }

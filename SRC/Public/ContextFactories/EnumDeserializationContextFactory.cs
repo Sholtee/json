@@ -14,6 +14,7 @@ namespace Solti.Utils.Json
     using Primitives;
 
     using static DeserializationContext;
+    using static Properties.Resources;
 
     public class EnumDeserializationContextFactory: DeserializationContextFactory
     {
@@ -134,6 +135,9 @@ namespace Solti.Utils.Json
         public override DeserializationContext CreateContext(Type type, object? config = null)
         {
             EnsureValidType(type);
+
+            if (config is not null)
+                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
 
             ConvertStringDelegate convertString = CreateConvertStringDelegate(type);
 
