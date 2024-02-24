@@ -7,6 +7,48 @@ references:
   commentId: N:Solti.Utils.Json
   fullName: Solti.Utils.Json
   nameWithType: Solti.Utils.Json
+- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory
+  name: DateTimeDeserializationContextFactory
+  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html
+  commentId: T:Solti.Utils.Json.DateTimeDeserializationContextFactory
+  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory
+  nameWithType: DateTimeDeserializationContextFactory
+- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.#ctor
+  name: DateTimeDeserializationContextFactory()
+  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory__ctor
+  commentId: M:Solti.Utils.Json.DateTimeDeserializationContextFactory.#ctor
+  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.DateTimeDeserializationContextFactory()
+  nameWithType: DateTimeDeserializationContextFactory.DateTimeDeserializationContextFactory()
+- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.#ctor*
+  name: DateTimeDeserializationContextFactory
+  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.DateTimeDeserializationContextFactory.#ctor
+  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.DateTimeDeserializationContextFactory
+  nameWithType: DateTimeDeserializationContextFactory.DateTimeDeserializationContextFactory
+- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContext(System.Type,System.Object)
+  name: CreateContext(Type, Object)
+  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory_CreateContext_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContext(System.Type,System.Object)
+  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContext(System.Type, System.Object)
+  nameWithType: DateTimeDeserializationContextFactory.CreateContext(Type, Object)
+- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContext*
+  name: CreateContext
+  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory_CreateContext_
+  commentId: Overload:Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContext
+  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContext
+  nameWithType: DateTimeDeserializationContextFactory.CreateContext
+- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported(System.Type)
+  name: IsSupported(Type)
+  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory_IsSupported_System_Type_
+  commentId: M:Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported(System.Type)
+  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported(System.Type)
+  nameWithType: DateTimeDeserializationContextFactory.IsSupported(Type)
+- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported*
+  name: IsSupported
+  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory_IsSupported_
+  commentId: Overload:Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported
+  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported
+  nameWithType: DateTimeDeserializationContextFactory.IsSupported
 - uid: Solti.Utils.Json.DeserializationContext
   name: DeserializationContext
   href: Solti.Utils.Json.DeserializationContext.html
