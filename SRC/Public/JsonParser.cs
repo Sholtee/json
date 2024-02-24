@@ -32,9 +32,17 @@ namespace Solti.Utils.Json
         // Converting methods to delegates is a quite expensive operation so do it only once
         //
 
-        private static readonly GetPropertyContextDelegate FDefaultGetPropertyContextDelegate = static (_, _) => Default;
+        private static readonly GetPropertyContextDelegate FDefaultGetPropertyContextDelegate = static (ReadOnlySpan<char> prop, bool ignoreCase, out DeserializationContext context) =>
+        {
+            context = Default;
+            return false;
+        };
 
-        private static readonly GetListItemContextDelegate FDefaultGetListItemContextDelegate = static _ => Default;
+        private static readonly GetListItemContextDelegate FDefaultGetListItemContextDelegate = static (int _, out DeserializationContext context) =>
+        {
+            context = Default;
+            return false;
+        };
 
         private static readonly ConvertStringDelegate FDefaultConvertStringDelegate = static (ReadOnlySpan<char> chars, bool ignoreCase, out object? val) =>
         {
@@ -518,9 +526,13 @@ namespace Solti.Utils.Json
 
             for (JsonTokens token = Consume(ref session, (JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, currentContext); token is not JsonTokens.SquaredClose; i++)
             {
-                DeserializationContext childContext = getListItemContext(i);
-                if (childContext.Push is null && flags.HasFlag(JsonParserFlags.ThrowOnUnknownListItem))
-                    MalformedValue(in session, LIST_ID, UNEXPECTED_LIST_ITEM);
+                if (!getListItemContext(i, out DeserializationContext childContext))
+                {
+                    if (flags.HasFlag(JsonParserFlags.ThrowOnUnknownListItem))
+                        MalformedValue(in session, LIST_ID, UNEXPECTED_LIST_ITEM);
+
+                    childContext = DeserializationContext.Default;
+                }
 
                 object? val = Parse(ref session, currentDepth, in childContext, in cancellation);
                 childContext.Push?.Invoke(list!, val);
@@ -569,9 +581,13 @@ namespace Solti.Utils.Json
                 Consume(ref session, (JsonTokens) JsonDataTypes.String, in currentContext);  // ensure we have a string
                 ReadOnlySpan<char> propertyName = ParseString(ref session, in currentContext);
 
-                DeserializationContext childContext = getPropertyContext(propertyName, flags.HasFlag(JsonParserFlags.CaseInsensitive));
-                if (childContext.Push is null && flags.HasFlag(JsonParserFlags.ThrowOnUnknownProperty))
-                    MalformedValue(in session, OBJECT_ID, UNEXPECTED_PROPERTY);
+                if (!getPropertyContext(propertyName, flags.HasFlag(JsonParserFlags.CaseInsensitive), out DeserializationContext childContext))
+                {
+                    if (flags.HasFlag(JsonParserFlags.ThrowOnUnknownProperty))
+                        MalformedValue(in session, OBJECT_ID, UNEXPECTED_PROPERTY);
+
+                    childContext = DeserializationContext.Default;
+                }
 
                 Consume(ref session, JsonTokens.Colon, in currentContext);
                 Advance(ref session, 1);

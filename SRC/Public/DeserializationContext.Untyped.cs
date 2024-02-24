@@ -25,21 +25,25 @@ namespace Solti.Utils.Json
 
             CreateRawList = static () => new List<object?>(),
 
-            GetListItemContext = static _ => Untyped with
+            GetListItemContext = static (int _, out DeserializationContext context) =>
             {
-                Push = static (object instance, object? val) =>
+                context = Untyped with
                 {
-                    if (instance is not List<object?> lst)
-                        throw new ArgumentException(INVALID_INSTANCE, nameof(val));
-                    lst.Add(val);
-                }
+                    Push = static (object instance, object? val) =>
+                    {
+                        if (instance is not List<object?> lst)
+                            throw new ArgumentException(INVALID_INSTANCE, nameof(val));
+                        lst.Add(val);
+                    }
+                };
+                return true;
             },
 
-            GetPropertyContext = static (ReadOnlySpan<char> prop, bool _) =>
+            GetPropertyContext = static (ReadOnlySpan<char> prop, bool _, out DeserializationContext context) =>
             {
                 string propStr = prop.AsString();
 
-                return Untyped with
+                context = Untyped with
                 {
                     Push = (object instance, object? val) =>
                     {
@@ -48,6 +52,7 @@ namespace Solti.Utils.Json
                         dict[propStr] = val;
                     }
                 };
+                return true;
             }
         };
     }

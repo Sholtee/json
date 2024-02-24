@@ -12,14 +12,14 @@ namespace Solti.Utils.Json
     {
         #region Delegates
         /// <summary>
-        /// Gets the nested context belongs to the property being parsed. If returns Default the property and all its children won't be processed.
+        /// Gets the nested context belongs to the property being parsed. If returns false the property and all its children won't be processed.
         /// </summary>
-        public delegate DeserializationContext GetPropertyContextDelegate(ReadOnlySpan<char> property, bool ignoreCase);
+        public delegate bool GetPropertyContextDelegate(ReadOnlySpan<char> property, bool ignoreCase, out DeserializationContext context);
 
         /// <summary>
-        /// Gets the nested context belongs to the list item being parsed. If returns Default the list item and all its children won't be processed.
+        /// Gets the nested context belongs to the list item being parsed. If returns false the list item and all its children won't be processed.
         /// </summary>
-        public delegate DeserializationContext GetListItemContextDelegate(int index);
+        public delegate bool GetListItemContextDelegate(int index, out DeserializationContext context);
 
         public delegate void CommentParserDelegate(ReadOnlySpan<char> value);
 
