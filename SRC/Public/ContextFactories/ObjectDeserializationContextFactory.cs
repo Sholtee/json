@@ -96,6 +96,7 @@ namespace Solti.Utils.Json
         }
 
         /// <inheritdoc/>
-        public override bool IsSupported(Type type) => type?.IsClass is true && type.GetConstructor(Type.EmptyTypes) is not null;
+        public override bool IsSupported(Type type) =>
+            type?.IsClass is true && type.GetConstructor(Type.EmptyTypes) is not null;
     }
 }

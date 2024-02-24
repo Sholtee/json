@@ -406,6 +406,8 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             public Nested? Prop2 { get; set; }
         }
 
+        private record Empty { }
+
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
             get
@@ -413,6 +415,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
                 yield return (typeof(Parent), null, "{\"ToBeIgnored\": 0, \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.None);
                 yield return (typeof(Parent), null, "{\"tobeignored\": 0, \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.CaseInsensitive);
                 yield return (typeof(Parent), null, "null", null!, JsonParserFlags.None);
+                yield return (typeof(Empty), null, "{}", new Empty(), JsonParserFlags.None);
             }
         }
 
