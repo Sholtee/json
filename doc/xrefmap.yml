@@ -304,13 +304,7 @@ references:
 - uid: Solti.Utils.Json.DeserializationContext.Default
   name: Default
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Default
-  commentId: P:Solti.Utils.Json.DeserializationContext.Default
-  fullName: Solti.Utils.Json.DeserializationContext.Default
-  nameWithType: DeserializationContext.Default
-- uid: Solti.Utils.Json.DeserializationContext.Default*
-  name: Default
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Default_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.Default
+  commentId: F:Solti.Utils.Json.DeserializationContext.Default
   fullName: Solti.Utils.Json.DeserializationContext.Default
   nameWithType: DeserializationContext.Default
 - uid: Solti.Utils.Json.DeserializationContext.GetListItemContext
@@ -586,13 +580,7 @@ references:
 - uid: Solti.Utils.Json.DeserializationContext.Untyped
   name: Untyped
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Untyped
-  commentId: P:Solti.Utils.Json.DeserializationContext.Untyped
-  fullName: Solti.Utils.Json.DeserializationContext.Untyped
-  nameWithType: DeserializationContext.Untyped
-- uid: Solti.Utils.Json.DeserializationContext.Untyped*
-  name: Untyped
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Untyped_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.Untyped
+  commentId: F:Solti.Utils.Json.DeserializationContext.Untyped
   fullName: Solti.Utils.Json.DeserializationContext.Untyped
   nameWithType: DeserializationContext.Untyped
 - uid: Solti.Utils.Json.DeserializationContext.Verify
