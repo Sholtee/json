@@ -17,9 +17,8 @@ namespace Solti.Utils.Json
     public class DateTimeDeserializationContextFactory : DeserializationContextFactory
     {
         /// <inheritdoc/>
-        public override DeserializationContext CreateContext(Type type, object? config = null)
+        protected override DeserializationContext CreateContextCore(Type type, object? config = null)
         {
-            EnsureValidType(type);
             string? format = (config ?? "s") as string ?? throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
 
             return new DeserializationContext

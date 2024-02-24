@@ -169,7 +169,7 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The given value is not serializable.
+        ///   Looks up a localized string similar to Not serializable.
         /// </summary>
         internal static string NOT_SERIALIZABLE {
             get {

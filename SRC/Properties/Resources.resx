@@ -154,7 +154,7 @@
     <value>Not convertible</value>
   </data>
   <data name="NOT_SERIALIZABLE" xml:space="preserve">
-    <value>The given value is not serializable</value>
+    <value>Not serializable</value>
   </data>
   <data name="UNEXPECTED_CONTROL" xml:space="preserve">
     <value>Unexpected control character</value>

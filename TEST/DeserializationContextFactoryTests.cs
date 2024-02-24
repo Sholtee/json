@@ -390,4 +390,57 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
         public override DeserializationContextFactory Factory => new BooleanDeserializationContextFactory();
     }
+
+    [TestFixture]
+    public class ObjectDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<ObjectDeserializationContextFactoryTests>
+    {
+        private record Nested
+        {
+            public string? Prop3 { get; set; }
+        }
+
+        private record Parent
+        {
+            public int Prop1 { get; set; }
+
+            public Nested? Prop2 { get; set; }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(Parent), null, "{\"ToBeIgnored\": 0, \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.None);
+                yield return (typeof(Parent), null, "{\"tobeignored\": 0, \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.CaseInsensitive);
+                yield return (typeof(Parent), null, "null", null!, JsonParserFlags.None);
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases
+        {
+            get
+            {
+                yield break;
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(Parent), 1);
+                yield return (typeof(Parent), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+            }
+        }
+
+        public override DeserializationContextFactory Factory => new ObjectDeserializationContextFactory();
+    }
 }

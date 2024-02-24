@@ -18,10 +18,8 @@ namespace Solti.Utils.Json
         private static readonly string[] FValidStyles = ["N", "D", "B", "P", "X"];
 
         /// <inheritdoc/>
-        public override DeserializationContext CreateContext(Type type, object? config = null)
+        protected override DeserializationContext CreateContextCore(Type type, object? config = null)
         {
-            EnsureValidType(type);
-
             string? format = (config ?? "N") as string;
             if (Array.IndexOf(FValidStyles, format) is -1)
                 throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
