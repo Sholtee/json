@@ -16,7 +16,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 {
     public abstract class DeserializationContextFactoryTestsBase<TDescendant> where TDescendant : DeserializationContextFactoryTestsBase<TDescendant>, new()
     {
-        public abstract IEnumerable<(Type targetType, object? Config, string Input, object Expected)> ValidCases { get; }
+        public abstract IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases { get; }
 
         public abstract IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases { get; }
 
@@ -31,7 +31,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         public static DeserializationContextFactoryTestsBase<TDescendant> Instance { get; } = new TDescendant();
 
         // TestCaseSource requires static property
-        public static IEnumerable<(Type TargetType, object? Config, string Input, object Expected)> GetValidCases => Instance.ValidCases;
+        public static IEnumerable<(Type TargetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> GetValidCases => Instance.ValidCases;
 
         public static IEnumerable<(Type TargetType, object? Config, string Input)> GetInvalidCases => Instance.InvalidCases;
 
@@ -40,9 +40,9 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         public static IEnumerable<Type> GetInvalidTypes => Instance.InvalidTypes;
 
         [TestCaseSource(nameof(GetValidCases))]
-        public void Context_ShouldInstructTheParser((Type TargetType, object? Config, string Input, object Expected) testCase)
+        public void Context_ShouldInstructTheParser((Type TargetType, object? Config, string Input, object Expected, JsonParserFlags Flags) testCase)
         {
-            JsonParser parser = new();
+            JsonParser parser = new(testCase.Flags);
 
             StringReader content = new(testCase.Input);
 
@@ -75,12 +75,12 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     [TestFixture]
     public class EnumDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<EnumDeserializationContextFactoryTests>
     {
-        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected)> ValidCases
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
             get
             {
-                yield return (typeof(MethodImplOptions), null, "256", MethodImplOptions.AggressiveInlining);
-                yield return (typeof(MethodImplOptions), null, "\"AggressiveInlining\"", MethodImplOptions.AggressiveInlining);
+                yield return (typeof(MethodImplOptions), null, "256", MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
+                yield return (typeof(MethodImplOptions), null, "\"AggressiveInlining\"", MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
             }
         }
 
@@ -120,13 +120,15 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     {
         private static readonly Guid TestGuid = Guid.Parse("D6B6D5B5-826E-4362-A19A-219997E6D693");
 
-        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected)> ValidCases
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
             get
             {
-                yield return (typeof(Guid), "D", "\"D6B6D5B5-826E-4362-A19A-219997E6D693\"", TestGuid);
-                yield return (typeof(Guid), "N", "\"D6B6D5B5826E4362A19A219997E6D693\"", TestGuid);
-                yield return (typeof(Guid), null, "\"D6B6D5B5826E4362A19A219997E6D693\"", TestGuid);
+                yield return (typeof(Guid), "D", "\"D6B6D5B5-826E-4362-A19A-219997E6D693\"", TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid), "N", "\"D6B6D5B5826E4362A19A219997E6D693\"", TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid), "D", "\"d6b6d5b5-826e-4362-a19a-219997e6d693\"", TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid), "N", "\"d6b6d5b5826e4362a19a219997e6d693\"", TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid), null, "\"D6B6D5B5826E4362A19A219997E6D693\"", TestGuid, JsonParserFlags.None);
             }
         }
 
@@ -166,13 +168,13 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     {
         private static readonly DateTime TestDate = DateTime.ParseExact("2009-06-15T13:45:30", "s", null);
 
-        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected)> ValidCases
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
             get
             {
-                yield return (typeof(DateTime), "s", "\"2009-06-15T13:45:30\"", TestDate);
-                yield return (typeof(DateTime), "u", "\"2009-06-15 13:45:30Z\"", TestDate);
-                yield return (typeof(DateTime), null, "\"2009-06-15T13:45:30\"", TestDate);
+                yield return (typeof(DateTime), "s", "\"2009-06-15T13:45:30\"", TestDate, JsonParserFlags.None);
+                yield return (typeof(DateTime), "u", "\"2009-06-15 13:45:30Z\"", TestDate, JsonParserFlags.None);
+                yield return (typeof(DateTime), null, "\"2009-06-15T13:45:30\"", TestDate, JsonParserFlags.None);
             }
         }
 
@@ -224,12 +226,12 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             return false;
         }
 
-        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected)> ValidCases
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
             get
             {
-                yield return (typeof(Stream), null, "\"Y2ljYQ==\"", TestStream);
-                yield return (typeof(MemoryStream), null, "\"Y2ljYQ==\"", TestStream);
+                yield return (typeof(Stream), null, "\"Y2ljYQ==\"", TestStream, JsonParserFlags.None);
+                yield return (typeof(MemoryStream), null, "\"Y2ljYQ==\"", TestStream, JsonParserFlags.None);
             }
         }
 
