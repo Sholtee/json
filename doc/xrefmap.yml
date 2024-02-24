@@ -967,6 +967,48 @@ references:
   commentId: Overload:Solti.Utils.Json.JsonWriter.Write
   fullName: Solti.Utils.Json.JsonWriter.Write
   nameWithType: JsonWriter.Write
+- uid: Solti.Utils.Json.NumberDeserializationContextFactory
+  name: NumberDeserializationContextFactory
+  href: Solti.Utils.Json.NumberDeserializationContextFactory.html
+  commentId: T:Solti.Utils.Json.NumberDeserializationContextFactory
+  fullName: Solti.Utils.Json.NumberDeserializationContextFactory
+  nameWithType: NumberDeserializationContextFactory
+- uid: Solti.Utils.Json.NumberDeserializationContextFactory.#ctor
+  name: NumberDeserializationContextFactory()
+  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory__ctor
+  commentId: M:Solti.Utils.Json.NumberDeserializationContextFactory.#ctor
+  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.NumberDeserializationContextFactory()
+  nameWithType: NumberDeserializationContextFactory.NumberDeserializationContextFactory()
+- uid: Solti.Utils.Json.NumberDeserializationContextFactory.#ctor*
+  name: NumberDeserializationContextFactory
+  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.NumberDeserializationContextFactory.#ctor
+  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.NumberDeserializationContextFactory
+  nameWithType: NumberDeserializationContextFactory.NumberDeserializationContextFactory
+- uid: Solti.Utils.Json.NumberDeserializationContextFactory.CreateContext(System.Type,System.Object)
+  name: CreateContext(Type, Object)
+  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory_CreateContext_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.NumberDeserializationContextFactory.CreateContext(System.Type,System.Object)
+  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.CreateContext(System.Type, System.Object)
+  nameWithType: NumberDeserializationContextFactory.CreateContext(Type, Object)
+- uid: Solti.Utils.Json.NumberDeserializationContextFactory.CreateContext*
+  name: CreateContext
+  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory_CreateContext_
+  commentId: Overload:Solti.Utils.Json.NumberDeserializationContextFactory.CreateContext
+  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.CreateContext
+  nameWithType: NumberDeserializationContextFactory.CreateContext
+- uid: Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported(System.Type)
+  name: IsSupported(Type)
+  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory_IsSupported_System_Type_
+  commentId: M:Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported(System.Type)
+  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported(System.Type)
+  nameWithType: NumberDeserializationContextFactory.IsSupported(Type)
+- uid: Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported*
+  name: IsSupported
+  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory_IsSupported_
+  commentId: Overload:Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported
+  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported
+  nameWithType: NumberDeserializationContextFactory.IsSupported
 - uid: Solti.Utils.Json.SerializationContext
   name: SerializationContext
   href: Solti.Utils.Json.SerializationContext.html
