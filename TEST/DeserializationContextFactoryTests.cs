@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 using NUnit.Framework;
 
-namespace Solti.Utils.Json.Tests
+namespace Solti.Utils.Json.DeserializationContexts.Tests
 {
     public abstract class DeserializationContextFactoryTestsBase<TDescendant> where TDescendant : DeserializationContextFactoryTestsBase<TDescendant>, new()
     {
@@ -142,6 +142,51 @@ namespace Solti.Utils.Json.Tests
             {
                 yield return (typeof(Guid), "invalid");
                 yield return (typeof(Guid), 1);
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+                yield return typeof(string);
+            }
+        }
+
+        public override DeserializationContextFactory Factory => new GuidDeserializationContextFactory();
+    }
+
+    [TestFixture]
+    public class DateTimeDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<GuidDeserializationContextFactoryTests>
+    {
+        private static readonly DateTime TestDate = DateTime.ParseExact("2009-06-15T13:45:30", "s", null);
+
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(DateTime), "s", "\"2009-06-15T13:45:30\"", TestDate);
+                yield return (typeof(DateTime), "u", "\"2009-06-15 13:45:30Z\"", TestDate);
+                yield return (typeof(DateTime), null, "\"2009-06-15T13:45:30\"", TestDate);
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(DateTime), "s", "\"invalid\"");
+                yield return (typeof(DateTime), "u", "\"invalid\"");
+                yield return (typeof(DateTime), null, "\"invalid\"");
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(DateTime), 1);
             }
         }
 
