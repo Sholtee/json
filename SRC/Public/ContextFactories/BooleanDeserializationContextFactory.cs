@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* StringDeserializationContextFactory.cs                                        *
+* BooleanDeserializationContextFactory.cs                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -7,13 +7,12 @@ using System;
 
 namespace Solti.Utils.Json
 {
-    using Internals;
     using Properties;
 
     /// <summary>
-    /// Creates context for <see cref="string"/> deserialization.
+    /// Creates context for <see cref="bool"/> deserialization.
     /// </summary>
-    public class StringDeserializationContextFactory : DeserializationContextFactory
+    public class BooleanDeserializationContextFactory : DeserializationContextFactory
     {
         /// <inheritdoc/>
         public override DeserializationContext CreateContext(Type type, object? config = null)
@@ -24,16 +23,11 @@ namespace Solti.Utils.Json
 
             return new DeserializationContext
             {
-                SupportedTypes = JsonDataTypes.String | JsonDataTypes.Null,
-                ConvertString = static (ReadOnlySpan<char> input, bool _, out object? value) =>
-                {
-                    value = input.AsString();
-                    return true;
-                }
+                SupportedTypes = JsonDataTypes.Boolean
             };
         }
 
         /// <inheritdoc/>
-        public override bool IsSupported(Type type) => type == typeof(string);
+        public override bool IsSupported(Type type) => type == typeof(bool);
     }
 }

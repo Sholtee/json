@@ -319,6 +319,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             get
             {
                 yield return (typeof(string), null, "\"cica\"", "cica", JsonParserFlags.None);
+                yield return (typeof(string), null, "null", null!, JsonParserFlags.None);
             }
         }
 
@@ -348,5 +349,45 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         }
 
         public override DeserializationContextFactory Factory => new StringDeserializationContextFactory();
+    }
+
+    [TestFixture]
+    public class BooleanDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<BooleanDeserializationContextFactoryTests>
+    {
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(bool), null, "true", true, JsonParserFlags.None);
+                yield return (typeof(bool), null, "false", false, JsonParserFlags.None);
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases
+        {
+            get
+            {
+                yield break;
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(bool), 1);
+                yield return (typeof(bool), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+            }
+        }
+
+        public override DeserializationContextFactory Factory => new BooleanDeserializationContextFactory();
     }
 }
