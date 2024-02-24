@@ -12,9 +12,9 @@ using System.Reflection;
 namespace Solti.Utils.Json
 {
     using Primitives;
+    using Properties;
 
     using static DeserializationContext;
-    using static Properties.Resources;
 
     public class EnumDeserializationContextFactory: DeserializationContextFactory
     {
@@ -137,7 +137,7 @@ namespace Solti.Utils.Json
             EnsureValidType(type);
 
             if (config is not null)
-                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+                throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
 
             ConvertStringDelegate convertString = CreateConvertStringDelegate(type);
 

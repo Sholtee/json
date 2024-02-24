@@ -8,8 +8,7 @@ using System;
 namespace Solti.Utils.Json
 {
     using Internals;
-
-    using static Properties.Resources;
+    using Properties;
 
     public class GuidDeserializationContextFactory : DeserializationContextFactory
     {
@@ -21,7 +20,7 @@ namespace Solti.Utils.Json
 
             string? format = (config ?? "N") as string;
             if (Array.IndexOf(FValidStyles, format) is -1)
-                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+                throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
 
             return new DeserializationContext
             {

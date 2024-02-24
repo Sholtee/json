@@ -1,12 +1,14 @@
 ﻿/********************************************************************************
-* JsonReaderTests.cs                                                            *
+* DeserializationContextFactoryTests.cs                                         *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 using NUnit.Framework;
 
@@ -24,6 +26,8 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
         public abstract DeserializationContextFactory Factory { get; }
 
+        protected virtual bool Compare(object a, object b) => EqualityComparer<object>.Default.Equals(a, b);
+
         public static DeserializationContextFactoryTestsBase<TDescendant> Instance { get; } = new TDescendant();
 
         // TestCaseSource requires static property
@@ -36,7 +40,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         public static IEnumerable<Type> GetInvalidTypes => Instance.InvalidTypes;
 
         [TestCaseSource(nameof(GetValidCases))]
-        public void TestValidCase((Type TargetType, object? Config, string Input, object Expected) testCase)
+        public void Context_ShouldInstructTheParser((Type TargetType, object? Config, string Input, object Expected) testCase)
         {
             JsonParser parser = new();
 
@@ -46,11 +50,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
             object? ret = parser.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default);
 
-            Assert.That(ret, Is.EqualTo(testCase.Expected));
+            Assert.That(ret, Is.EqualTo(testCase.Expected).Using<object>(Compare));
         }
 
         [TestCaseSource(nameof(GetInvalidCases))]
-        public void TestInvalidCase((Type TargetType, object? Config, string Input) testCase)
+        public void Context_ShouldInstructTheParserToValidate((Type TargetType, object? Config, string Input) testCase)
         {
             JsonParser parser = new();
 
@@ -200,5 +204,62 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         }
 
         public override DeserializationContextFactory Factory => new GuidDeserializationContextFactory();
+    }
+
+    [TestFixture]
+    public class StreamDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<StreamDeserializationContextFactoryTests>
+    {
+        private static readonly Stream TestStream = new MemoryStream(Encoding.UTF8.GetBytes("cica"));
+
+        protected override bool Compare(object a, object b)
+        {
+            if (a is Stream s1 && b is Stream s2 && s1.Length == s2.Length)
+            {
+                byte[]
+                    content1 = new byte[s1.Length],
+                    content2 = new byte[s2.Length];
+
+                return content1.SequenceEqual(content2);
+            }
+            return false;
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(Stream), null, "\"Y2ljYQ==\"", TestStream);
+                yield return (typeof(MemoryStream), null, "\"Y2ljYQ==\"", TestStream);
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(Stream), null, "\"invalid\"");
+                yield return (typeof(MemoryStream), null, "\"invalid\"");
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(Stream), 1);
+                yield return (typeof(MemoryStream), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+                yield return typeof(string);
+            }
+        }
+
+        public override DeserializationContextFactory Factory => new StreamDeserializationContextFactory();
     }
 }

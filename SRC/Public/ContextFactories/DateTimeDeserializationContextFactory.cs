@@ -9,15 +9,14 @@ using System.Globalization;
 namespace Solti.Utils.Json
 {
     using Internals;
-
-    using static Properties.Resources;
+    using Properties;
 
     public class DateTimeDeserializationContextFactory : DeserializationContextFactory
     {
         public override DeserializationContext CreateContext(Type type, object? config = null)
         {
             EnsureValidType(type);
-            string? format = (config ?? "s") as string ?? throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+            string? format = (config ?? "s") as string ?? throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
 
             return new DeserializationContext
             {
