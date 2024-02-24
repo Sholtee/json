@@ -19,13 +19,13 @@ namespace Solti.Utils.Json
         /// Context used to create untyped result.
         /// </summary>
         /// <remarks>In untyped result objects are returned as <see cref="IDictionary"/> while lists as <see cref="IList"/>.</remarks>
-        public static DeserializationContext Untyped { get; } = Default with
+        public static readonly DeserializationContext Untyped = Default with
         {
             CreateRawObject = static () => new Dictionary<string, object?>(StringComparer.Ordinal),
 
             CreateRawList = static () => new List<object?>(),
 
-            GetListItemContext = static _ => Untyped! with
+            GetListItemContext = static _ => Untyped with
             {
                 Push = static (object instance, object? val) =>
                 {
@@ -39,7 +39,7 @@ namespace Solti.Utils.Json
             {
                 string propStr = prop.AsString();
 
-                return Untyped! with
+                return Untyped with
                 {
                     Push = (object instance, object? val) =>
                     {

@@ -10,7 +10,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Default deserialization context. It doesn't produce any output.
         /// </summary>
-        public static DeserializationContext Default { get; } = new DeserializationContext
+        public static readonly DeserializationContext Default = new()
         {
             SupportedTypes = JsonDataTypes.Any
         };
