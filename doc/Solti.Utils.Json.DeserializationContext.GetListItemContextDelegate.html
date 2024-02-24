@@ -90,12 +90,12 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_BeginInvoke_" data-uid="Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.BeginInvoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_BeginInvoke_System_Int32_System_AsyncCallback_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.BeginInvoke(System.Int32,System.AsyncCallback,System.Object)">BeginInvoke(Int32, AsyncCallback, Object)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_BeginInvoke_System_Int32_Solti_Utils_Json_DeserializationContext__System_AsyncCallback_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.BeginInvoke(System.Int32,Solti.Utils.Json.DeserializationContext@,System.AsyncCallback,System.Object)">BeginInvoke(Int32, out DeserializationContext, AsyncCallback, Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(int index, AsyncCallback callback, object object)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(int index, out DeserializationContext context, AsyncCallback callback, object object)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -110,6 +110,11 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.Json.DeserializationContext.html">DeserializationContext</a></td>
+        <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
       <tr>
@@ -140,12 +145,12 @@
     </tbody>
   </table>
   <a id="Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_EndInvoke_" data-uid="Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.EndInvoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_EndInvoke_System_IAsyncResult_" data-uid="Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.EndInvoke(System.IAsyncResult)">EndInvoke(IAsyncResult)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_EndInvoke_Solti_Utils_Json_DeserializationContext__System_IAsyncResult_" data-uid="Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.EndInvoke(Solti.Utils.Json.DeserializationContext@,System.IAsyncResult)">EndInvoke(out DeserializationContext, IAsyncResult)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual DeserializationContext EndInvoke(IAsyncResult result)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool EndInvoke(out DeserializationContext context, IAsyncResult result)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,6 +162,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.Json.DeserializationContext.html">DeserializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncresult">IAsyncResult</a></td>
         <td><span class="parametername">result</span></td>
@@ -174,18 +184,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.Json.DeserializationContext.html">DeserializationContext</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_Invoke_" data-uid="Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.Invoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_Invoke_System_Int32_" data-uid="Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.Invoke(System.Int32)">Invoke(Int32)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_GetListItemContextDelegate_Invoke_System_Int32_Solti_Utils_Json_DeserializationContext__" data-uid="Solti.Utils.Json.DeserializationContext.GetListItemContextDelegate.Invoke(System.Int32,Solti.Utils.Json.DeserializationContext@)">Invoke(Int32, out DeserializationContext)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual DeserializationContext Invoke(int index)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool Invoke(int index, out DeserializationContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -202,6 +212,11 @@
         <td><span class="parametername">index</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.Json.DeserializationContext.html">DeserializationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -214,7 +229,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.Json.DeserializationContext.html">DeserializationContext</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
