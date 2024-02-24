@@ -192,13 +192,13 @@ namespace Solti.Utils.Json
             bool firstItem = true;
             foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
-                if (entry.Context == Default)
+                if (entry.Context.Equals(in Default))
                     continue;
 
                 if (firstItem) firstItem = false;
                 else dest.Write(",");
 
-                Write(dest, entry.Value, entry.Context, Deeper(currentDepth), null, cancellation);
+                Write(dest, entry.Value, in entry.Context, Deeper(currentDepth), null, in cancellation);
             }
 
             dest.Write(GetSpaces(currentDepth));
@@ -218,22 +218,22 @@ namespace Solti.Utils.Json
             bool firstItem = true;
             foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
-                if (entry.Context == Default)
+                if (entry.Context.Equals(in Default))
                     continue;
 
                 if (firstItem) firstItem = false;
                 else dest.Write(",");
 
-                WriteString(dest, entry.Name!, entry.Context, Deeper(currentDepth), null);
+                WriteString(dest, entry.Name!, in entry.Context, Deeper(currentDepth), null);
                 dest.Write(":");
                 Write
                 (
                     dest,
                     entry.Value,
-                    entry.Context,
+                    in entry.Context,
                     Deeper(currentDepth),
                     FValueSeparator,
-                    cancellation
+                    in cancellation
                 );
             }
 
@@ -252,16 +252,16 @@ namespace Solti.Utils.Json
                 case JsonDataTypes.Number:
                 case JsonDataTypes.Boolean:
                 case JsonDataTypes.Null:
-                    WriteValue(dest, val, currentContext, currentDepth, explicitIndent);
+                    WriteValue(dest, val, in currentContext, currentDepth, explicitIndent);
                     break;
                 case JsonDataTypes.String:
-                    WriteString(dest, val!, currentContext, currentDepth, explicitIndent);
+                    WriteString(dest, val!, in currentContext, currentDepth, explicitIndent);
                     break;
                 case JsonDataTypes.List:
-                    WriteList(dest, val!, currentContext, currentDepth, explicitIndent, cancellation);
+                    WriteList(dest, val!, in currentContext, currentDepth, explicitIndent, in cancellation);
                     break;
                 case JsonDataTypes.Object:
-                    WriteObject(dest, val!, currentContext, currentDepth, explicitIndent, cancellation);
+                    WriteObject(dest, val!, in currentContext, currentDepth, explicitIndent, in cancellation);
                     break;
                 default:
                     throw new NotSupportedException(NOT_SERIALIZABLE);
@@ -273,10 +273,10 @@ namespace Solti.Utils.Json
         (
             dest ?? throw new ArgumentNullException(nameof(dest)),
             val,
-            context,
+            in context,
             0,
             null,
-            cancellation
+            in cancellation
         );
     }
 }

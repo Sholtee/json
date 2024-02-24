@@ -10,6 +10,6 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Default context. Using this context instructs the system to skip the fragment of object tree on which the writer is positioned.
         /// </summary>
-        public static SerializationContext Default { get; } = default;
+        public static readonly SerializationContext Default = default;
     }
 }

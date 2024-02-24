@@ -124,11 +124,11 @@ namespace Solti.Utils.Json
         #endregion
 
         #region Internal
-        internal ref struct Session
+        internal ref struct Session(TextReaderWrapper content)
         {
-            public required TextReaderWrapper Content { get; init; }
-            public int Row { get; set; }
-            public int Column { get; set; }
+            public readonly TextReaderWrapper Content = content;
+            public int Row;
+            public int Column;
         }
 
         /// <summary>
@@ -176,10 +176,10 @@ namespace Solti.Utils.Json
                 ':' => JsonTokens.Colon,
                 '"' => JsonTokens.DoubleQuote,
                 '\'' when flags.HasFlag(JsonParserFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
-                '/' when flags.HasFlag(JsonParserFlags.AllowComments) && IsLiteral(session, DOUBLE_SLASH) => JsonTokens.DoubleSlash,
-                't' or 'T' when IsLiteral(session, TRUE) => JsonTokens.True,
-                'f' or 'F' when IsLiteral(session, FALSE) => JsonTokens.False,
-                'n' or 'N' when IsLiteral(session, NULL) => JsonTokens.Null,
+                '/' when flags.HasFlag(JsonParserFlags.AllowComments) && IsLiteral(in session, DOUBLE_SLASH) => JsonTokens.DoubleSlash,
+                't' or 'T' when IsLiteral(in session, TRUE) => JsonTokens.True,
+                'f' or 'F' when IsLiteral(in session, FALSE) => JsonTokens.False,
+                'n' or 'N' when IsLiteral(in session, NULL) => JsonTokens.Null,
                 '-' or (>= '0' and <= '9') => JsonTokens.Number,
                 _ => JsonTokens.Unknown
             };
@@ -227,7 +227,7 @@ namespace Solti.Utils.Json
 
             if (got is JsonTokens.DoubleSlash)
             {
-                ParseComment(ref session, currentContext);
+                ParseComment(ref session, in currentContext);
                 goto start;
             }
 
@@ -250,7 +250,7 @@ namespace Solti.Utils.Json
                 if (parsed == buffer.Length)
                 {
                     Advance(ref session, parsed);
-                    MalformedValue(session, STRING_ID, INCOMPLETE_STR);
+                    MalformedValue(in session, STRING_ID, INCOMPLETE_STR);
                 }
 
                 for (; parsed < buffer.Length; parsed++)
@@ -278,7 +278,7 @@ namespace Solti.Utils.Json
                         Assert(parsed < session.Content.CharsLeft, "Miscalculated 'parsed' value");
                         Advance(ref session, parsed + 1);
 
-                        MalformedValue(session, STRING_ID, UNEXPECTED_CONTROL);
+                        MalformedValue(in session, STRING_ID, UNEXPECTED_CONTROL);
                     }
 
                     if (c == '\\')
@@ -297,7 +297,7 @@ namespace Solti.Utils.Json
                                 //
 
                                 Advance(ref session, parsed);
-                                MalformedValue(session, STRING_ID, INCOMPLETE_STR);
+                                MalformedValue(in session, STRING_ID, INCOMPLETE_STR);
                             }
                             bufferSize = buffer.Length;
                         }
@@ -336,7 +336,7 @@ namespace Solti.Utils.Json
                                         //
 
                                         Advance(ref session, parsed);
-                                        MalformedValue(session, STRING_ID, INCOMPLETE_STR);
+                                        MalformedValue(in session, STRING_ID, INCOMPLETE_STR);
                                     }
                                     bufferSize = buffer.Length;
                                 }
@@ -361,7 +361,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(ref session, parsed);
-                                    MalformedValue(session, STRING_ID, NOT_A_NUMBER);
+                                    MalformedValue(in session, STRING_ID, NOT_A_NUMBER);
                                 }
 
                                 //
@@ -386,7 +386,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(ref session, parsed);
-                                    MalformedValue(session, STRING_ID, UNKNOWN_CTRL);
+                                    MalformedValue(in session, STRING_ID, UNKNOWN_CTRL);
                                 }
                                 break;
                         }
@@ -485,7 +485,7 @@ namespace Solti.Utils.Json
             }
 
             if (result is null)
-                MalformedValue(session, NUMBER_ID, NOT_A_NUMBER);
+                MalformedValue(in session, NUMBER_ID, NOT_A_NUMBER);
 
             //
             // Advance the reader if everything was all right
@@ -520,16 +520,16 @@ namespace Solti.Utils.Json
             {
                 DeserializationContext childContext = getListItemContext(i);
                 if (childContext.Push is null && flags.HasFlag(JsonParserFlags.ThrowOnUnknownListItem))
-                    MalformedValue(session, LIST_ID, UNEXPECTED_LIST_ITEM);
+                    MalformedValue(in session, LIST_ID, UNEXPECTED_LIST_ITEM);
 
-                object? val = Parse(ref session, currentDepth, childContext, cancellation);
+                object? val = Parse(ref session, currentDepth, in childContext, in cancellation);
                 childContext.Push?.Invoke(list!, val);
 
                 //
                 // Check if we reached the end of the list or we have a next element.
                 //
 
-                token = Consume(ref session, JsonTokens.SquaredClose | JsonTokens.Comma, currentContext);
+                token = Consume(ref session, JsonTokens.SquaredClose | JsonTokens.Comma, in currentContext);
                 if (token is JsonTokens.Comma)
                 {
                     //
@@ -537,10 +537,10 @@ namespace Solti.Utils.Json
                     //
 
                     Advance(ref session, 1);
-                    token = Consume(ref session, (JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, currentContext);
+                    token = Consume(ref session, (JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, in currentContext);
 
                     if (token is JsonTokens.SquaredClose && !flags.HasFlag(JsonParserFlags.AllowTrailingComma))
-                        MalformedValue(session, LIST_ID, MISSING_ITEM);
+                        MalformedValue(in session, LIST_ID, MISSING_ITEM);
                 }
             }
 
@@ -566,24 +566,24 @@ namespace Solti.Utils.Json
         
             for (JsonTokens token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, currentContext); token is not JsonTokens.CurlyClose;)
             {
-                Consume(ref session, (JsonTokens) JsonDataTypes.String, currentContext);  // ensure we have a string
-                ReadOnlySpan<char> propertyName = ParseString(ref session, currentContext);
+                Consume(ref session, (JsonTokens) JsonDataTypes.String, in currentContext);  // ensure we have a string
+                ReadOnlySpan<char> propertyName = ParseString(ref session, in currentContext);
 
                 DeserializationContext childContext = getPropertyContext(propertyName, flags.HasFlag(JsonParserFlags.CaseInsensitive));
                 if (childContext.Push is null && flags.HasFlag(JsonParserFlags.ThrowOnUnknownProperty))
-                    MalformedValue(session, OBJECT_ID, UNEXPECTED_PROPERTY);
+                    MalformedValue(in session, OBJECT_ID, UNEXPECTED_PROPERTY);
 
-                Consume(ref session, JsonTokens.Colon, currentContext);
+                Consume(ref session, JsonTokens.Colon, in currentContext);
                 Advance(ref session, 1);
 
-                object? val = Parse(ref session, currentDepth, childContext, cancellation);
+                object? val = Parse(ref session, currentDepth, in childContext, in cancellation);
                 childContext.Push?.Invoke(obj!, val);
 
                 //
                 // Check if we reached the end of the object or we have a next element.
                 //
 
-                token = Consume(ref session, JsonTokens.CurlyClose | JsonTokens.Comma, currentContext);
+                token = Consume(ref session, JsonTokens.CurlyClose | JsonTokens.Comma, in currentContext);
                 if (token is JsonTokens.Comma)
                 {
                     //
@@ -591,10 +591,10 @@ namespace Solti.Utils.Json
                     //
 
                     Advance(ref session, 1);
-                    token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, currentContext);
+                    token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, in currentContext);
 
                     if (token is JsonTokens.CurlyClose && !flags.HasFlag(JsonParserFlags.AllowTrailingComma))
-                        MalformedValue(session, OBJECT_ID, MISSING_PROP);
+                        MalformedValue(in session, OBJECT_ID, MISSING_PROP);
                 }
             }
 
@@ -665,20 +665,20 @@ namespace Solti.Utils.Json
 
             object? result;
 
-            switch (Consume(ref session, (JsonTokens) currentContext.SupportedTypes | JsonTokens.DoubleSlash, currentContext)) 
+            switch (Consume(ref session, (JsonTokens) currentContext.SupportedTypes | JsonTokens.DoubleSlash, in currentContext)) 
             {
                 case JsonTokens.CurlyOpen:
-                    result = ParseObject(ref session, Deeper(currentDepth), currentContext, cancellation);
+                    result = ParseObject(ref session, Deeper(currentDepth), in currentContext, in cancellation);
                     break;
                 case JsonTokens.SquaredOpen:
-                    result = ParseList(ref session, Deeper(currentDepth), currentContext, cancellation);
+                    result = ParseList(ref session, Deeper(currentDepth), in currentContext, in cancellation);
                     break;
                 case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
-                    if (!(currentContext.ConvertString ?? FDefaultConvertStringDelegate)(ParseString(ref session, currentContext), flags.HasFlag(JsonParserFlags.CaseInsensitive), out result))
-                        InvalidValue(session, NOT_CONVERTIBLE);
+                    if (!(currentContext.ConvertString ?? FDefaultConvertStringDelegate)(ParseString(ref session, in currentContext), flags.HasFlag(JsonParserFlags.CaseInsensitive), out result))
+                        InvalidValue(in session, NOT_CONVERTIBLE);
                     break;
                 case JsonTokens.Number:
-                    result = ParseNumber(ref session, currentContext);
+                    result = ParseNumber(ref session, in currentContext);
                     break;
                 case JsonTokens.True:
                     Advance(ref session, TRUE.Length);
@@ -698,11 +698,11 @@ namespace Solti.Utils.Json
             };
 
             if (currentContext.Convert is not null && !currentContext.Convert(result, out result))
-                InvalidValue(session, NOT_CONVERTIBLE);
+                InvalidValue(in session, NOT_CONVERTIBLE);
 
             ICollection<string>? errors = currentContext.Verify?.Invoke(result);
             if (errors?.Count > 0)
-                InvalidValue(session, VALIDATION_FAILED, errors);
+                InvalidValue(in session, VALIDATION_FAILED, errors);
 
             return result;
         }
@@ -715,15 +715,15 @@ namespace Solti.Utils.Json
         {
             using TextReaderWrapper contentWrapper = content ?? throw new ArgumentNullException(nameof(content));
 
-            Session session = new() { Content = contentWrapper };
+            Session session = new(contentWrapper);
 
-            object? result = Parse(ref session, 0, context, cancellation);
+            object? result = Parse(ref session, 0, in context, in cancellation);
 
             //
             // Parse trailing comments properly.
             //
 
-            Consume(ref session, JsonTokens.Eof, context);
+            Consume(ref session, JsonTokens.Eof, in context);
 
             return result;
         }

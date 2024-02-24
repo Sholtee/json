@@ -10,11 +10,11 @@ namespace Solti.Utils.Json
 {
     public readonly partial struct SerializationContext
     {
-        public readonly struct Entry
+        public readonly struct Entry(in SerializationContext context, object? value, string? name = null)
         {
-            public required SerializationContext Context { get; init; }
-            public readonly string? Name { get; init; }
-            public required object? Value { get; init; }
+            public readonly SerializationContext Context = context;
+            public readonly string? Name = name;
+            public readonly object? Value = value;
         }
 
         public delegate IEnumerable<Entry> EnumEntriesDelegate(object value);
@@ -48,15 +48,13 @@ namespace Solti.Utils.Json
         /// </summary>
         public EnumEntriesDelegate? EnumEntries { get; init; }
 
-        public static bool operator ==(in SerializationContext left, in SerializationContext right) =>
-            left.GetTypeOf == right.GetTypeOf &&
-            left.ConvertToString == right.ConvertToString &&
-            left.EnumEntries == right.EnumEntries;
-
-        public static bool operator !=(in SerializationContext left, in SerializationContext right) => !(left == right);
-
         public override bool Equals(object obj) => throw new NotSupportedException();
 
         public override int GetHashCode() => throw new NotSupportedException();
+
+        public bool Equals(in SerializationContext other) =>
+            GetTypeOf == other.GetTypeOf &&
+            ConvertToString == other.ConvertToString &&
+            EnumEntries == other.EnumEntries;
     }
 }

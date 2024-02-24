@@ -56,7 +56,7 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             SkipSpaces(ref session, bufferSize);
 
@@ -95,7 +95,7 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             for (; content.PeekChar() is not -1;)
             {
@@ -163,7 +163,7 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             JsonParser parser = new(flags);
 
@@ -175,7 +175,7 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             JsonParser parser = new();
 
@@ -191,13 +191,13 @@ namespace Solti.Utils.Json.Tests
 
             Assert.DoesNotThrow(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 Assert.That(parser.Consume(ref session, JsonTokens.Eof | JsonTokens.CurlyOpen, DeserializationContext.Default), Is.EqualTo(JsonTokens.CurlyOpen));
             });
 
             Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 parser.Consume(ref session, JsonTokens.Eof, DeserializationContext.Default);
             });
         }
@@ -219,7 +219,7 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
@@ -258,7 +258,7 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
@@ -279,7 +279,7 @@ namespace Solti.Utils.Json.Tests
 
             Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 ParseString(ref session, DeserializationContext.Default);
             });
         }
@@ -304,7 +304,7 @@ namespace Solti.Utils.Json.Tests
           
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 ParseString(ref session, DeserializationContext.Default, bufferSize);
             })!;
             Assert.That(ex.Data.Contains("column"));
@@ -338,7 +338,7 @@ namespace Solti.Utils.Json.Tests
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 ParseString(ref session, DeserializationContext.Default, bufferSize);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(col));
@@ -368,7 +368,7 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).AsString(), Is.EqualTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
@@ -407,7 +407,7 @@ namespace Solti.Utils.Json.Tests
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 ParseString(ref session, DeserializationContext.Default, bufferSize);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(col));
@@ -456,7 +456,7 @@ namespace Solti.Utils.Json.Tests
 
             Assert.DoesNotThrow(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 ParseComment(ref session, ctx, bufferSize);
             });
             Assert.That(lastComment, Is.EqualTo(expected));
@@ -515,7 +515,7 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             object result = ParseNumber(ref session, DeserializationContext.Untyped, bufferSize);
 
@@ -539,7 +539,7 @@ namespace Solti.Utils.Json.Tests
 
             Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 ParseNumber(ref session, DeserializationContext.Untyped, bufferSize);
             });
         }
@@ -561,7 +561,7 @@ namespace Solti.Utils.Json.Tests
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 parser.ParseList(ref session, 0, DeserializationContext.Untyped, default);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(errorPos));
@@ -576,7 +576,7 @@ namespace Solti.Utils.Json.Tests
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 parser.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = null }, default);
             });
         }
@@ -606,7 +606,7 @@ namespace Solti.Utils.Json.Tests
 
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             Assert.That(parser.ParseList(ref session, 0, DeserializationContext.Untyped, default), Is.EquivalentTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
@@ -619,7 +619,7 @@ namespace Solti.Utils.Json.Tests
 
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             Assert.That(parser.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = i => i != 1 ? DeserializationContext.Untyped.GetListItemContext!(i) : DeserializationContext.Default }, default), Is.EquivalentTo(new List<object?> { 1, 3 }));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
@@ -634,7 +634,7 @@ namespace Solti.Utils.Json.Tests
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 parser.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = i => i != 1 ? DeserializationContext.Untyped.GetListItemContext!(i) : DeserializationContext.Default }, default);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(4));
@@ -656,7 +656,7 @@ namespace Solti.Utils.Json.Tests
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 parser.ParseObject(ref session, 0, DeserializationContext.Untyped, default);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(errorPos));
@@ -671,7 +671,7 @@ namespace Solti.Utils.Json.Tests
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 parser.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = null }, default);
             });
         }
@@ -701,7 +701,7 @@ namespace Solti.Utils.Json.Tests
 
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             Assert.That(parser.ParseObject(ref session, 0, DeserializationContext.Untyped, default), Is.EquivalentTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
@@ -714,7 +714,7 @@ namespace Solti.Utils.Json.Tests
 
             using TextReaderWrapper content = new StringReader(input);
 
-            Session session = new() { Content = content };
+            Session session = new(content);
 
             Assert.That(parser.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, ignoreCase) => !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ? DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase) : DeserializationContext.Default }, default), Is.EquivalentTo(new Dictionary<string, object?> { { "1", 1 }, { "3", 3 } }));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
@@ -729,7 +729,7 @@ namespace Solti.Utils.Json.Tests
 
             FormatException ex = Assert.Throws<FormatException>(() =>
             {
-                Session session = new() { Content = content };
+                Session session = new(content);
                 parser.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = (name, ignoreCase) => !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ? DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase) : DeserializationContext.Default }, default);
             })!;
             Assert.That(ex.Data["column"], Is.EqualTo(12));

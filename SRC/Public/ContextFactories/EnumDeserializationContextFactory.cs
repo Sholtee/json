@@ -159,7 +159,7 @@ namespace Solti.Utils.Json
                     }
 
                     int @int;
-                    if (input is not long lng || lng > int.MaxValue || !Enum.IsDefined(type, @int = (int) lng))
+                    if (input is not long lng || lng > int.MaxValue || lng < int.MinValue || !Enum.IsDefined(type, @int = (int) lng))
                     {
                         ret = null;
                         return false;

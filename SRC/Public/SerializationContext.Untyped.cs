@@ -14,7 +14,7 @@ namespace Solti.Utils.Json
 
     public readonly partial struct SerializationContext
     {
-        public static SerializationContext Untyped { get; } = new()
+        public static readonly SerializationContext Untyped = new()
         {
             ConvertToString = static val => val switch
             {
@@ -44,13 +44,13 @@ namespace Solti.Utils.Json
                 case IList<object?> lst:
                     foreach (object? item in lst)
                     {
-                        yield return new Entry { Context = Untyped, Value = item };
+                        yield return new Entry(in Untyped, item);
                     }
                     break;
                 case IDictionary<string, object?> dict:
                     foreach (KeyValuePair<string, object?> entry in dict)
                     {
-                        yield return new Entry { Context = Untyped, Name = entry.Key, Value = entry.Value };
+                        yield return new Entry(in Untyped, entry.Value, entry.Key);
                     }
                     break;
                 default: throw new ArgumentException(INVALID_VALUE, nameof(val));
