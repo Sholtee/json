@@ -264,4 +264,50 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
         public override DeserializationContextFactory Factory => new StreamDeserializationContextFactory();
     }
+
+    [TestFixture]
+    public class NumberDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<NumberDeserializationContextFactoryTests>
+    {
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(byte), null, "86", (byte) 86, JsonParserFlags.None);
+                yield return (typeof(int), null, "1986", (int) 1986, JsonParserFlags.None);
+                yield return (typeof(short), null, "1986", (short) 1986, JsonParserFlags.None);
+                yield return (typeof(long), null, "1986", (long) 1986, JsonParserFlags.None);
+
+                yield return (typeof(float), null, "1986.1026", (float) 1986.1026, JsonParserFlags.None);
+                yield return (typeof(double), null, "1986.1026", (double) 1986.1026, JsonParserFlags.None);
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(byte), null, "1986");
+                yield return (typeof(int), null, "1986.1026");
+                yield return (typeof(double), null, "1986");  // TBD: we should support this scenario?
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(int), 1);
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(string);
+            }
+        }
+
+        public override DeserializationContextFactory Factory => new NumberDeserializationContextFactory();
+    }
 }
