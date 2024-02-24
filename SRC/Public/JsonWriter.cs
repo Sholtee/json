@@ -23,6 +23,7 @@ namespace Solti.Utils.Json
     /// <summary>
     /// Represents a low-level, cancellable JSON writer.
     /// </summary>
+    /// <remarks>This class is thread safe.</remarks>
     public sealed class JsonWriter(int maxDepth = 64, byte indent = 2)
     {
         #region Private
