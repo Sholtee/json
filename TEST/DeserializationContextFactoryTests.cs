@@ -310,4 +310,43 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
         public override DeserializationContextFactory Factory => new NumberDeserializationContextFactory();
     }
+
+    [TestFixture]
+    public class StringDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<StringDeserializationContextFactoryTests>
+    {
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(string), null, "\"cica\"", "cica", JsonParserFlags.None);
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases
+        {
+            get
+            {
+                yield break;
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(string), 1);
+                yield return (typeof(string), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+            }
+        }
+
+        public override DeserializationContextFactory Factory => new StringDeserializationContextFactory();
+    }
 }

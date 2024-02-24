@@ -105,7 +105,10 @@ namespace Solti.Utils.Json
             (
                 Expression.Constant
                 (
-                    type.GetFields(BindingFlags.Public | BindingFlags.Static).Single(f => f.IsLiteral && f.Name == name).GetValue(null)
+                    type
+                        .GetFields(BindingFlags.Public | BindingFlags.Static)
+                        .Single(f => f.IsLiteral && f.Name == name)
+                        .GetValue(null)
                 ),
                 expectedType
             );
