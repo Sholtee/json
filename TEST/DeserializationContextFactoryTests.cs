@@ -164,7 +164,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class DateTimeDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<GuidDeserializationContextFactoryTests>
+    public class DateTimeDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<DateTimeDeserializationContextFactoryTests>
     {
         private static readonly DateTime TestDate = DateTime.ParseExact("2009-06-15T13:45:30", "s", null);
 
@@ -205,7 +205,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new GuidDeserializationContextFactory();
+        public override DeserializationContextFactory Factory => new DateTimeDeserializationContextFactory();
     }
 
     [TestFixture]
