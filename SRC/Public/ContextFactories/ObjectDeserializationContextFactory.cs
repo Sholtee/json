@@ -35,7 +35,7 @@ namespace Solti.Utils.Json
 
                 ParameterExpression
                     instance = Expression.Parameter(typeof(object), nameof(instance)),
-                    value = Expression.Parameter(typeof(object), nameof(value));
+                    value    = Expression.Parameter(typeof(object), nameof(value));
 
                 FutureDelegate<PushDelegate> push = compiler.Register
                 (

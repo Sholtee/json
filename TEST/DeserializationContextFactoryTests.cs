@@ -94,7 +94,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             get
             {
                 yield return (typeof(MethodImplOptions), null, "255");
-                yield return (typeof(MethodImplOptions), null, "256.0");
+                yield return (typeof(MethodImplOptions), null, "256.1");
                 yield return (typeof(MethodImplOptions), null, "\"AggressiveInlining_wrong\"");
             }
         }
@@ -294,6 +294,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
                 yield return (typeof(float), null, "1986.1026", (float) 1986.1026, JsonParserFlags.None);
                 yield return (typeof(double), null, "1986.1026", (double) 1986.1026, JsonParserFlags.None);
+                yield return (typeof(double), null, "1986", (double) 1986, JsonParserFlags.None); 
 
                 yield return (typeof(byte?), null, "86", (byte?) 86, JsonParserFlags.None);
                 yield return (typeof(int?), null, "1986", (int?) 1986, JsonParserFlags.None);
@@ -302,6 +303,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
                 yield return (typeof(float?), null, "1986.1026", (float?) 1986.1026, JsonParserFlags.None);
                 yield return (typeof(double?), null, "1986.1026", (double?) 1986.1026, JsonParserFlags.None);
+                yield return (typeof(double?), null, "1986", (double?) 1986, JsonParserFlags.None);
 
                 yield return (typeof(int?), null, "null", null!, JsonParserFlags.None);
             }
@@ -312,8 +314,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             get
             {
                 yield return (typeof(byte), null, "1986");
-                yield return (typeof(int), null, "1986.1026");
-                yield return (typeof(double), null, "1986");  // TBD: we should support this scenario?
+                yield return (typeof(int), null, "1986.1026");  
             }
         }
 

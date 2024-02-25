@@ -34,13 +34,13 @@ namespace Solti.Utils.Json
 
         private static readonly GetPropertyContextDelegate FDefaultGetPropertyContextDelegate = static (ReadOnlySpan<char> prop, bool ignoreCase, out DeserializationContext context) =>
         {
-            context = Default;
+            context = default;
             return false;
         };
 
         private static readonly GetListItemContextDelegate FDefaultGetListItemContextDelegate = static (int _, out DeserializationContext context) =>
         {
-            context = Default;
+            context = default;
             return false;
         };
 
@@ -48,6 +48,48 @@ namespace Solti.Utils.Json
         {
             val = chars.AsString();
             return true;
+        };
+
+        private static readonly ParseNumberDelegate FDefaultParseNumberDelegate = static (ReadOnlySpan<char> value, bool integral, out object parsed) =>
+        {
+            parsed = null!;
+            if (integral)
+            {
+                if
+                (
+                    long.TryParse
+                    (
+#if NETSTANDARD2_1_OR_GREATER
+                        value,
+#else
+                        value.AsString(),
+#endif
+                        NumberStyles.Number,
+                        CultureInfo.InvariantCulture,
+                        out long ret
+                    )
+                )
+                    parsed = ret;
+            }
+            else
+            {
+                if
+                (
+                    double.TryParse
+                    (
+#if NETSTANDARD2_1_OR_GREATER
+                        value,
+#else
+                        value.AsString(),
+#endif
+                        NumberStyles.Float,
+                        CultureInfo.InvariantCulture,
+                        out double ret
+                    )
+                )
+                    parsed = ret;
+            }       
+            return parsed != null;
         };
 
         /// <summary>
@@ -369,7 +411,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(ref session, parsed);
-                                    MalformedValue(in session, STRING_ID, NOT_A_NUMBER);
+                                    MalformedValue(in session, STRING_ID, CANNOT_PARSE);
                                 }
 
                                 //
@@ -418,13 +460,11 @@ namespace Solti.Utils.Json
         /// </summary>
         internal static object ParseNumber(ref Session session, in DeserializationContext currentContext, int initialBufferSize = 16 /*for debug*/)
         {
-            const string NUMBER_ID = "number";
-
             Span<char> buffer;
             bool isFloating = false;
 
             //
-            // Copy all promising chars
+            // Take all the promising chars
             //
 
             int parsed = 0;
@@ -453,47 +493,8 @@ namespace Solti.Utils.Json
 
             parse:
             buffer = buffer.Slice(0, parsed);
-            object? result = null;
-
-            if (isFloating)
-            {
-                if 
-                (
-                    double.TryParse
-                    (
-#if NETSTANDARD2_1_OR_GREATER
-                        buffer,
-#else
-                        buffer.AsString(),
-#endif
-                        NumberStyles.Float,
-                        CultureInfo.InvariantCulture,
-                        out double ret
-                    )
-                )
-                    result = ret;
-            }
-            else
-            {
-                if 
-                (
-                    long.TryParse
-                    (
-#if NETSTANDARD2_1_OR_GREATER
-                        buffer,
-#else
-                        buffer.AsString(),
-#endif
-                        NumberStyles.Number,
-                        CultureInfo.InvariantCulture,
-                        out long ret
-                    )
-                )
-                    result = ret;
-            }
-
-            if (result is null)
-                MalformedValue(in session, NUMBER_ID, NOT_A_NUMBER);
+            if (!(currentContext.ParseNumber ?? FDefaultParseNumberDelegate)(buffer, !isFloating, out object result))
+                InvalidValue(in session, CANNOT_PARSE);
 
             //
             // Advance the reader if everything was all right

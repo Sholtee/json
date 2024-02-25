@@ -537,7 +537,7 @@ namespace Solti.Utils.Json.Tests
         {
             using TextReaderWrapper content = new StringReader(input);
 
-            Assert.Throws<FormatException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 Session session = new(content);
                 ParseNumber(ref session, DeserializationContext.Untyped, bufferSize);

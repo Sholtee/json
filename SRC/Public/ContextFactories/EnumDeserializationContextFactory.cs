@@ -5,12 +5,14 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Solti.Utils.Json
 {
+    using Internals;
     using Primitives;
     using Properties;
 
@@ -24,7 +26,7 @@ namespace Solti.Utils.Json
         #region Private
         private delegate string AsStringDelegate(ReadOnlySpan<char> input);
 
-        private delegate bool CheckValidDelegate(object? input, ref int @int);
+        private delegate bool CheckValidDelegate(ReadOnlySpan<char> value, out int @int);
 
         private static FutureDelegate<ConvertStringDelegate> CreateConvertStringDelegate(Type type, DelegateCompiler compiler)
         {
@@ -124,55 +126,29 @@ namespace Solti.Utils.Json
             return compiler.Register(convertStringExpr);
         }
 
-        private static FutureDelegate<ConvertDelegate> CreateConvertDelegate(Type type, DelegateCompiler compiler)
+        private static FutureDelegate<ParseNumberDelegate> CreateParseNumberDelegate(Type type, DelegateCompiler compiler)
         {
             Type valueType = type.IsConstructedGenericType
                 ? type.GetGenericArguments().Single()
                 : type;
 
             ParameterExpression
-                input = Expression.Parameter(typeof(object), nameof(input)),
-                converted = Expression.Parameter(typeof(object).MakeByRefType(), nameof(converted)),
-                @int = Expression.Variable(typeof(int), nameof(@int));
+                input    = Expression.Parameter(typeof(ReadOnlySpan<char>), nameof(input)),
+                integral = Expression.Parameter(typeof(bool), nameof(integral)),
+                parsed   = Expression.Parameter(typeof(object).MakeByRefType(), nameof(parsed)),
+                @int     = Expression.Variable(typeof(int), nameof(@int));
 
             LabelTarget exit = Expression.Label(typeof(bool), nameof(exit));
 
-            Expression
-                convert = Expression.Convert(@int, valueType),
-                returnImmediately = Expression.TypeIs(input, valueType);
-
+            Expression convert = Expression.Convert(@int, valueType);
             if (valueType != type)
-            {
                 convert = Expression.Convert(convert, type);
-                returnImmediately = Expression.Or
-                (
-                    returnImmediately,
-                    Expression.Or
-                    (
-                        Expression.Equal
-                        (
-                            input,
-                            Expression.Default(typeof(object))
-                        ),
-                        Expression.TypeIs(input, type)
-                    )
-                );
-            }
 
-            Expression<ConvertDelegate> expr = Expression.Lambda<ConvertDelegate>
+            Expression<ParseNumberDelegate> expr = Expression.Lambda<ParseNumberDelegate>
             (
                 Expression.Block
                 (
                     variables: [@int],
-                    Expression.IfThen
-                    (
-                        returnImmediately,
-                        ifTrue: Expression.Block
-                        (
-                            Expression.Assign(converted, input),
-                            Expression.Goto(exit, Expression.Constant(true))
-                        )
-                    ),
                     Expression.IfThen
                     (
                         Expression.Not
@@ -186,21 +162,29 @@ namespace Solti.Utils.Json
                         ),
                         ifTrue: Expression.Goto(exit, Expression.Constant(false))
                     ),
-                    Expression.Assign(converted, Expression.Convert(convert, converted.Type)),
+                    Expression.Assign(parsed, Expression.Convert(convert, parsed.Type)),
                     Expression.Label(exit, Expression.Constant(true))
                 ),
                 input,
-                converted
+                integral,
+                parsed
             );
 
             Debug.WriteLine(expr.GetDebugView());
             return compiler.Register(expr);
 
-            static bool CheckValid<TEnum>(object? input, ref int @int) => 
-                input is long lng &&
-                lng <= int.MaxValue &&
-                lng >= int.MinValue &&
-                Enum.IsDefined(typeof(TEnum), @int = (int) lng);
+            static bool CheckValid<TEnum>(ReadOnlySpan<char> value, out int @int) => int.TryParse
+            (
+#if NETSTANDARD2_1_OR_GREATER
+                value,
+#else
+                value.AsString(),
+#endif
+                NumberStyles.Number,
+                CultureInfo.InvariantCulture,
+                out @int
+            )
+            && Enum.IsDefined(typeof(TEnum), @int);
         }
 
         private static DeserializationContext? CreateContextCore(Type type) => Cache.GetOrAdd(type, static type =>
@@ -209,7 +193,7 @@ namespace Solti.Utils.Json
 
             FutureDelegate<ConvertStringDelegate> convertString = CreateConvertStringDelegate(type, compiler);
 
-            FutureDelegate<ConvertDelegate> convert = CreateConvertDelegate(type, compiler);
+            FutureDelegate<ParseNumberDelegate> parseNumber = CreateParseNumberDelegate(type, compiler);
 
             compiler.Compile();
 
@@ -221,7 +205,7 @@ namespace Solti.Utils.Json
             {
                 SupportedTypes = supportedType,
                 ConvertString = convertString.Value,
-                Convert = convert.Value
+                ParseNumber = parseNumber.Value
             };
         });
         #endregion

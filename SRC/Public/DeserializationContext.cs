@@ -29,6 +29,8 @@ namespace Solti.Utils.Json
 
         public delegate void PushDelegate(object instance, object? value);
 
+        public delegate bool ParseNumberDelegate(ReadOnlySpan<char> value, bool integral, out object parsed);
+
         public delegate bool ConvertStringDelegate(ReadOnlySpan<char> value, bool ignoreCase, out object? converted);
 
         public delegate bool ConvertDelegate(object? value, out object? converted);
@@ -82,6 +84,11 @@ namespace Solti.Utils.Json
         /// Converts the given <see cref="ReadOnlySpan{char}"/> to a user specified type, for instance <see cref="string"/>, <see cref="DateTime"/> or <see cref="Guid"/>.
         /// </summary>
         public ConvertStringDelegate? ConvertString { get; init; }
+
+        /// <summary>
+        /// Parses the given number
+        /// </summary>
+        public ParseNumberDelegate? ParseNumber { get; init; }
 
         /// <summary>
         /// Converts the given value to a user specified type. For instance you can implement <see cref="int"/> to <see cref="DateTime"/> conversation here.

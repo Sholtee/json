@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -23,6 +24,8 @@ namespace Solti.Utils.Json
     public class NumberDeserializationContextFactory : DeserializationContextFactory
     {
         #region Private
+        private delegate string AsStringDelegate(ReadOnlySpan<char> input);
+
         private static readonly HashSet<Type> FSupportedTypes =
         [
             typeof(byte),
@@ -40,117 +43,94 @@ namespace Solti.Utils.Json
             typeof(double?)
         ];
 
-        private static ConvertDelegate CreateConvertDelegate(Type type)
+        private static ParseNumberDelegate CreateParseNumberDelegate(Type type)
         {
-            Type
-                valueType = type.IsConstructedGenericType
-                    ? type.GetGenericArguments().Single()
-                    : type,
-                expectedType = valueType == typeof(float) || valueType == typeof(double)
-                    ? typeof(double)
-                    : typeof(long);
+            Type valueType = type.IsConstructedGenericType
+                ? type.GetGenericArguments().Single()
+                : type;
+
+            bool legacy = false;
+            MethodInfo? tryParse = valueType.GetMethod
+            (
+                nameof(int.TryParse),
+                BindingFlags.Public | BindingFlags.Static,
+                null,
+                [typeof(ReadOnlySpan<char>), typeof(NumberStyles), typeof(IFormatProvider), valueType.MakeByRefType()],
+                null
+            );
+            if (tryParse is null)
+            {
+                tryParse = valueType.GetMethod
+                (
+                    nameof(int.TryParse),
+                    BindingFlags.Public | BindingFlags.Static,
+                    null,
+                    [typeof(string), typeof(NumberStyles), typeof(IFormatProvider), valueType.MakeByRefType()],
+                    null
+                );
+                legacy = true;
+            }
+            Debug.Assert(tryParse is not null, "Cannot grab the actual parser");
 
             ParameterExpression
-                value     = Expression.Parameter(typeof(object), nameof(value)),
-                converted = Expression.Parameter(typeof(object).MakeByRefType(), nameof(converted)),
-                tmp       = Expression.Variable(expectedType, nameof(tmp));
+                value     = Expression.Parameter(typeof(ReadOnlySpan<char>), nameof(value)),
+                integral  = Expression.Parameter(typeof(bool), nameof(integral)), 
+                parsed = Expression.Parameter(typeof(object).MakeByRefType(), nameof(parsed)),
+                tmp       = Expression.Variable(valueType, nameof(tmp));
 
             LabelTarget exit = Expression.Label(typeof(bool), nameof(exit));
 
-            List<Expression> block = [];
-
-            if (valueType != type) block.Add
-            (
-                Expression.IfThen
-                (
-                    Expression.Equal(value, Expression.Default(typeof(object))),
-                    ifTrue: Expression.Block
-                    (
-                        Expression.Assign(converted, value),
-                        Expression.Goto(exit, Expression.Constant(true))
-                    )
-                )
-            );
-
-            block.AddRange
-            ([
-                Expression.IfThen
-                (
-                    Expression.Not
-                    (
-                        Expression.TypeIs(value, expectedType)
-                    ),
-                    ifTrue: Expression.Goto(exit, Expression.Constant(false))
-                ),
-                Expression.Assign
-                (
-                    tmp,
-                    Expression.Convert
-                    (
-                        value,
-                        expectedType
-                    )
-                ),
-                Expression.IfThen
-                (
-                    Expression.Or
-                    (
-                        Expression.LessThan
-                        (
-                            tmp,
-                            GetConstant(nameof(int.MinValue))
-                        ),
-                        Expression.GreaterThan
-                        (
-                            tmp,
-                            GetConstant(nameof(int.MaxValue))
-                        )
-                    ),
-                    ifTrue: Expression.Goto(exit, Expression.Constant(false))
-                ),
-                Expression.Assign
-                (
-                    converted,
-                    Expression.Convert
-                    (
-                        valueType != type
-                            ? Expression.Convert
-                            (
-                                Expression.Convert(tmp, valueType),
-                                type
-                            )
-                            : Expression.Convert(tmp, valueType),
-                        typeof(object)
-                    )
-                ),
-                Expression.Label(exit, Expression.Constant(true))
-            ]);
-
-            Expression<ConvertDelegate> expr = Expression.Lambda<ConvertDelegate>
+            Expression<ParseNumberDelegate> expr = Expression.Lambda<ParseNumberDelegate>
             (
                 Expression.Block
                 (
                     variables: [tmp],
-                    block
+                    Expression.IfThen
+                    (
+                        Expression.Not
+                        (
+                            Expression.Call
+                            (
+                                tryParse,
+                                legacy
+                                    ? Expression.Invoke
+                                    (
+                                        Expression.Constant((AsStringDelegate) Internals.MemoryExtensions.AsString),
+                                        value
+                                    )
+                                    : value,
+                                Expression.Constant
+                                (
+                                    valueType == typeof(float) || valueType == typeof(double) 
+                                        ? NumberStyles.Float
+                                        : NumberStyles.Number
+                                ),
+                                Expression.Constant(CultureInfo.InvariantCulture),
+                                tmp
+                            )
+                        ),
+                        ifTrue: Expression.Goto(exit, Expression.Constant(false))
+                    ),
+                    Expression.Assign
+                    (
+                        parsed,
+                        Expression.Convert
+                        (
+                            valueType != type
+                                ? Expression.Convert(tmp, type)
+                                : tmp,
+                            parsed.Type
+                        )
+                    ),
+                    Expression.Label(exit, Expression.Constant(true))
                 ),
                 value,
-                converted
+                integral,
+                parsed
             );
 
             Debug.WriteLine(expr.GetDebugView());
             return expr.Compile();
-
-            Expression GetConstant(string name) => Expression.Convert
-            (
-                Expression.Constant
-                (
-                    valueType
-                        .GetFields(BindingFlags.Public | BindingFlags.Static)
-                        .Single(f => f.IsLiteral && f.Name == name)
-                        .GetValue(null)
-                ),
-                expectedType
-            );
         }
 
         private static DeserializationContext? CreateContextCore(Type type) => Cache.GetOrAdd(type, static type => (DeserializationContext?) new DeserializationContext
@@ -158,7 +138,7 @@ namespace Solti.Utils.Json
             SupportedTypes = type.IsConstructedGenericType
                     ? JsonDataTypes.Number | JsonDataTypes.Null
                     : JsonDataTypes.Number,
-            Convert = CreateConvertDelegate(type)
+            ParseNumber = CreateParseNumberDelegate(type)
         });
         #endregion
 

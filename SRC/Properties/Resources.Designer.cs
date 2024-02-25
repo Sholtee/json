@@ -61,6 +61,15 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot parse.
+        /// </summary>
+        internal static string CANNOT_PARSE {
+            get {
+                return ResourceManager.GetString("CANNOT_PARSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incomplete string definition.
         /// </summary>
         internal static string INCOMPLETE_STR {
@@ -147,15 +156,6 @@ namespace Solti.Utils.Json.Properties {
         internal static string MISSING_PROP {
             get {
                 return ResourceManager.GetString("MISSING_PROP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not a number.
-        /// </summary>
-        internal static string NOT_A_NUMBER {
-            get {
-                return ResourceManager.GetString("NOT_A_NUMBER", resourceCulture);
             }
         }
         
