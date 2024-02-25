@@ -499,6 +499,81 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
   fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
   nameWithType: DeserializationContext.GetPropertyContextDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumber
+  name: ParseNumber
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ParseNumber
+  commentId: P:Solti.Utils.Json.DeserializationContext.ParseNumber
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumber
+  nameWithType: DeserializationContext.ParseNumber
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumber*
+  name: ParseNumber
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ParseNumber_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseNumber
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumber
+  nameWithType: DeserializationContext.ParseNumber
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate
+  name: DeserializationContext.ParseNumberDelegate
+  href: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.ParseNumberDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate
+  nameWithType: DeserializationContext.ParseNumberDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.#ctor(System.Object,System.IntPtr)
+  name: ParseNumberDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ParseNumberDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.ParseNumberDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.ParseNumberDelegate.ParseNumberDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.#ctor*
+  name: ParseNumberDelegate
+  href: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ParseNumberDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.ParseNumberDelegate
+  nameWithType: DeserializationContext.ParseNumberDelegate.ParseNumberDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.Boolean,System.Object@,System.AsyncCallback,System.Object)
+  name: BeginInvoke(ReadOnlySpan<Char>, Boolean, out Object, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ParseNumberDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_Boolean_System_Object__System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.Boolean,System.Object@,System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(ReadOnlySpan(Of Char), Boolean, ByRef Object, AsyncCallback, Object)
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.BeginInvoke(System.ReadOnlySpan<System.Char>, System.Boolean, out System.Object, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.BeginInvoke(System.ReadOnlySpan(Of System.Char), System.Boolean, ByRef System.Object, System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.ParseNumberDelegate.BeginInvoke(ReadOnlySpan<Char>, Boolean, out Object, AsyncCallback, Object)
+  nameWithType.vb: DeserializationContext.ParseNumberDelegate.BeginInvoke(ReadOnlySpan(Of Char), Boolean, ByRef Object, AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ParseNumberDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.BeginInvoke
+  nameWithType: DeserializationContext.ParseNumberDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.EndInvoke(System.Object@,System.IAsyncResult)
+  name: EndInvoke(out Object, IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ParseNumberDelegate_EndInvoke_System_Object__System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.EndInvoke(System.Object@,System.IAsyncResult)
+  name.vb: EndInvoke(ByRef Object, IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.EndInvoke(out System.Object, System.IAsyncResult)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.EndInvoke(ByRef System.Object, System.IAsyncResult)
+  nameWithType: DeserializationContext.ParseNumberDelegate.EndInvoke(out Object, IAsyncResult)
+  nameWithType.vb: DeserializationContext.ParseNumberDelegate.EndInvoke(ByRef Object, IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ParseNumberDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.EndInvoke
+  nameWithType: DeserializationContext.ParseNumberDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.Invoke(System.ReadOnlySpan{System.Char},System.Boolean,System.Object@)
+  name: Invoke(ReadOnlySpan<Char>, Boolean, out Object)
+  href: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ParseNumberDelegate_Invoke_System_ReadOnlySpan_System_Char__System_Boolean_System_Object__
+  commentId: M:Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.Invoke(System.ReadOnlySpan{System.Char},System.Boolean,System.Object@)
+  name.vb: Invoke(ReadOnlySpan(Of Char), Boolean, ByRef Object)
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.Invoke(System.ReadOnlySpan<System.Char>, System.Boolean, out System.Object)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.Invoke(System.ReadOnlySpan(Of System.Char), System.Boolean, ByRef System.Object)
+  nameWithType: DeserializationContext.ParseNumberDelegate.Invoke(ReadOnlySpan<Char>, Boolean, out Object)
+  nameWithType.vb: DeserializationContext.ParseNumberDelegate.Invoke(ReadOnlySpan(Of Char), Boolean, ByRef Object)
+- uid: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.html#Solti_Utils_Json_DeserializationContext_ParseNumberDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.ParseNumberDelegate.Invoke
+  nameWithType: DeserializationContext.ParseNumberDelegate.Invoke
 - uid: Solti.Utils.Json.DeserializationContext.Push
   name: Push
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Push
