@@ -18,43 +18,57 @@ namespace Solti.Utils.Json
         private static readonly string[] FValidStyles = ["N", "D", "B", "P", "X"];
 
         /// <inheritdoc/>
-        protected override DeserializationContext CreateContextCore(Type type, object? config = null)
+        protected override DeserializationContext CreateContextCore(Type type, object? config)
         {
             string? format = (config ?? "N") as string;
             if (Array.IndexOf(FValidStyles, format) is -1)
                 throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
 
-            return new DeserializationContext
-            {
-                SupportedTypes = JsonDataTypes.String,
-                ConvertString = (ReadOnlySpan<char> input, bool _, out object? value) =>
+            return type == typeof(Guid?)
+                ? new DeserializationContext
                 {
-
-                    if
-                    (
-                        Guid.TryParseExact
-                        (
-#if NETSTANDARD2_1_OR_GREATER
-                            input,
-#else
-                            input.AsString(),
-#endif
-                            format,
-                            out Guid parsed
-                        )
-                    )
+                    SupportedTypes = JsonDataTypes.String | JsonDataTypes.Null,
+                    ConvertString = (ReadOnlySpan<char> input, bool _, out object? value) =>
                     {
-                        value = parsed;
-                        return true;
-                    }
+                        if (TryParse(input, out Guid parsed))
+                        {
+                            value = (Guid?) parsed;
+                            return true;
+                        }
 
-                    value = null;
-                    return false;
+                        value = null;
+                        return false;
+                    }
                 }
-            };
+                : new DeserializationContext
+                {
+                    SupportedTypes = JsonDataTypes.String,
+                    ConvertString = (ReadOnlySpan<char> input, bool _, out object? value) =>
+                    {
+                        if (TryParse(input, out Guid parsed))
+                        {
+                            value = parsed;
+                            return true;
+                        }
+
+                        value = null;
+                        return false;
+                    }
+                };
+
+            bool TryParse(ReadOnlySpan<char> input, out Guid parsed) => Guid.TryParseExact
+            (
+#if NETSTANDARD2_1_OR_GREATER
+                input,
+#else
+                input.AsString(),
+#endif
+                format,
+                out parsed
+            );
         }
 
         /// <inheritdoc/>
-        public override bool IsSupported(Type type) => type == typeof(Guid);
+        public override bool IsSupported(Type type) => type == typeof(Guid) || type == typeof(Guid?);
     }
 }

@@ -16,7 +16,7 @@ namespace Solti.Utils.Json
     public class StringDeserializationContextFactory : DeserializationContextFactory
     {
         /// <inheritdoc/>
-        protected override DeserializationContext CreateContextCore(Type type, object? config = null)
+        protected override DeserializationContext CreateContextCore(Type type, object? config)
         {
             if (config is not null)
                 throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));

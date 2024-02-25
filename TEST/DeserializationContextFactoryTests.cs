@@ -81,6 +81,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             {
                 yield return (typeof(MethodImplOptions), null, "256", MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
                 yield return (typeof(MethodImplOptions), null, "\"AggressiveInlining\"", MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
+
+                yield return (typeof(MethodImplOptions?), null, "256", (MethodImplOptions?) MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
+                yield return (typeof(MethodImplOptions?), null, "\"AggressiveInlining\"", (MethodImplOptions?) MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
+
+                yield return (typeof(MethodImplOptions?), null, "null", null!, JsonParserFlags.None);
             }
         }
 
@@ -129,6 +134,12 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
                 yield return (typeof(Guid), "D", "\"d6b6d5b5-826e-4362-a19a-219997e6d693\"", TestGuid, JsonParserFlags.None);
                 yield return (typeof(Guid), "N", "\"d6b6d5b5826e4362a19a219997e6d693\"", TestGuid, JsonParserFlags.None);
                 yield return (typeof(Guid), null, "\"D6B6D5B5826E4362A19A219997E6D693\"", TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid?), "D", "\"D6B6D5B5-826E-4362-A19A-219997E6D693\"", (Guid?) TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid?), "N", "\"D6B6D5B5826E4362A19A219997E6D693\"", (Guid?) TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid?), "D", "\"d6b6d5b5-826e-4362-a19a-219997e6d693\"", (Guid?) TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid?), "N", "\"d6b6d5b5826e4362a19a219997e6d693\"", (Guid?) TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid?), null, "\"D6B6D5B5826E4362A19A219997E6D693\"", (Guid?) TestGuid, JsonParserFlags.None);
+                yield return (typeof(Guid?), null, "null", null!, JsonParserFlags.None);
             }
         }
 
@@ -175,6 +186,10 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
                 yield return (typeof(DateTime), "s", "\"2009-06-15T13:45:30\"", TestDate, JsonParserFlags.None);
                 yield return (typeof(DateTime), "u", "\"2009-06-15 13:45:30Z\"", TestDate, JsonParserFlags.None);
                 yield return (typeof(DateTime), null, "\"2009-06-15T13:45:30\"", TestDate, JsonParserFlags.None);
+                yield return (typeof(DateTime?), "s", "\"2009-06-15T13:45:30\"", (DateTime?) TestDate, JsonParserFlags.None);
+                yield return (typeof(DateTime?), "u", "\"2009-06-15 13:45:30Z\"", (DateTime?) TestDate, JsonParserFlags.None);
+                yield return (typeof(DateTime?), null, "\"2009-06-15T13:45:30\"", (DateTime?) TestDate, JsonParserFlags.None);
+                yield return (typeof(DateTime?), null, "null", null!, JsonParserFlags.None);
             }
         }
 
@@ -279,6 +294,16 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
                 yield return (typeof(float), null, "1986.1026", (float) 1986.1026, JsonParserFlags.None);
                 yield return (typeof(double), null, "1986.1026", (double) 1986.1026, JsonParserFlags.None);
+
+                yield return (typeof(byte?), null, "86", (byte?) 86, JsonParserFlags.None);
+                yield return (typeof(int?), null, "1986", (int?) 1986, JsonParserFlags.None);
+                yield return (typeof(short?), null, "1986", (short?) 1986, JsonParserFlags.None);
+                yield return (typeof(long?), null, "1986", (long?) 1986, JsonParserFlags.None);
+
+                yield return (typeof(float?), null, "1986.1026", (float?) 1986.1026, JsonParserFlags.None);
+                yield return (typeof(double?), null, "1986.1026", (double?) 1986.1026, JsonParserFlags.None);
+
+                yield return (typeof(int?), null, "null", null!, JsonParserFlags.None);
             }
         }
 
@@ -360,6 +385,9 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             {
                 yield return (typeof(bool), null, "true", true, JsonParserFlags.None);
                 yield return (typeof(bool), null, "false", false, JsonParserFlags.None);
+                yield return (typeof(bool?), null, "true", (bool?) true, JsonParserFlags.None);
+                yield return (typeof(bool?), null, "false", (bool?) false, JsonParserFlags.None);
+                yield return (typeof(bool?), null, "null", null!, JsonParserFlags.None);
             }
         }
 

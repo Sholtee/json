@@ -26,73 +26,112 @@ namespace Solti.Utils.Json
         private static readonly HashSet<Type> FSupportedTypes =
         [
             typeof(byte),
-            typeof(ushort), typeof(short),
-            typeof(uint),   typeof(int),
-            typeof(ulong),  typeof(long),
+            typeof(ushort),  typeof(short),
+            typeof(uint),    typeof(int),
+            typeof(ulong),   typeof(long),
             typeof(float),
-            typeof(double)
+            typeof(double),
+
+            typeof(byte?),
+            typeof(ushort?), typeof(short?),
+            typeof(uint?),   typeof(int?),
+            typeof(ulong?),  typeof(long?),
+            typeof(float?),
+            typeof(double?)
         ];
 
         private static ConvertDelegate CreateConvertDelegate(Type type)
         {
-            Type expectedType = type == typeof(float) || type == typeof(double) ? typeof(double) : typeof(long);
+            Type
+                valueType = type.IsConstructedGenericType
+                    ? type.GetGenericArguments().Single()
+                    : type,
+                expectedType = valueType == typeof(float) || valueType == typeof(double)
+                    ? typeof(double)
+                    : typeof(long);
 
             ParameterExpression
-                value = Expression.Parameter(typeof(object), nameof(value)),
+                value     = Expression.Parameter(typeof(object), nameof(value)),
                 converted = Expression.Parameter(typeof(object).MakeByRefType(), nameof(converted)),
-                tmp = Expression.Variable(expectedType, nameof(tmp));
+                tmp       = Expression.Variable(expectedType, nameof(tmp));
 
             LabelTarget exit = Expression.Label(typeof(bool), nameof(exit));
+
+            List<Expression> block = [];
+
+            if (valueType != type) block.Add
+            (
+                Expression.IfThen
+                (
+                    Expression.Equal(value, Expression.Default(typeof(object))),
+                    ifTrue: Expression.Block
+                    (
+                        Expression.Assign(converted, value),
+                        Expression.Goto(exit, Expression.Constant(true))
+                    )
+                )
+            );
+
+            block.AddRange
+            ([
+                Expression.IfThen
+                (
+                    Expression.Not
+                    (
+                        Expression.TypeIs(value, expectedType)
+                    ),
+                    ifTrue: Expression.Goto(exit, Expression.Constant(false))
+                ),
+                Expression.Assign
+                (
+                    tmp,
+                    Expression.Convert
+                    (
+                        value,
+                        expectedType
+                    )
+                ),
+                Expression.IfThen
+                (
+                    Expression.Or
+                    (
+                        Expression.LessThan
+                        (
+                            tmp,
+                            GetConstant(nameof(int.MinValue))
+                        ),
+                        Expression.GreaterThan
+                        (
+                            tmp,
+                            GetConstant(nameof(int.MaxValue))
+                        )
+                    ),
+                    ifTrue: Expression.Goto(exit, Expression.Constant(false))
+                ),
+                Expression.Assign
+                (
+                    converted,
+                    Expression.Convert
+                    (
+                        valueType != type
+                            ? Expression.Convert
+                            (
+                                Expression.Convert(tmp, valueType),
+                                type
+                            )
+                            : Expression.Convert(tmp, valueType),
+                        typeof(object)
+                    )
+                ),
+                Expression.Label(exit, Expression.Constant(true))
+            ]);
 
             Expression<ConvertDelegate> expr = Expression.Lambda<ConvertDelegate>
             (
                 Expression.Block
                 (
                     variables: [tmp],
-                    Expression.IfThen
-                    (
-                        Expression.Not
-                        (
-                            Expression.TypeIs(value, expectedType)
-                        ),
-                        ifTrue: Expression.Goto(exit, Expression.Constant(false))
-                    ),
-                    Expression.Assign
-                    (
-                        tmp,
-                        Expression.Convert
-                        (
-                            value,
-                            expectedType
-                        )
-                    ),
-                    Expression.IfThen
-                    (
-                        Expression.Or
-                        (
-                            Expression.LessThan
-                            (
-                                tmp,
-                                GetConstant(nameof(int.MinValue))
-                            ),
-                            Expression.GreaterThan
-                            (
-                                tmp,
-                                GetConstant(nameof(int.MaxValue))  
-                            )
-                        ),
-                        ifTrue: Expression.Goto(exit, Expression.Constant(false))
-                    ),
-                    Expression.Assign
-                    (
-                        converted,
-                        Expression.Convert
-                        (
-                            Expression.Convert(tmp, type),
-                            typeof(object)
-                        )
-                    ),
-                    Expression.Label(exit, Expression.Constant(true))
+                    block
                 ),
                 value,
                 converted
@@ -105,7 +144,7 @@ namespace Solti.Utils.Json
             (
                 Expression.Constant
                 (
-                    type
+                    valueType
                         .GetFields(BindingFlags.Public | BindingFlags.Static)
                         .Single(f => f.IsLiteral && f.Name == name)
                         .GetValue(null)
@@ -113,19 +152,23 @@ namespace Solti.Utils.Json
                 expectedType
             );
         }
+
+        private static DeserializationContext? CreateContextCore(Type type) => Cache.GetOrAdd(type, static type => (DeserializationContext?) new DeserializationContext
+        {
+            SupportedTypes = type.IsConstructedGenericType
+                    ? JsonDataTypes.Number | JsonDataTypes.Null
+                    : JsonDataTypes.Number,
+            Convert = CreateConvertDelegate(type)
+        });
         #endregion
 
         /// <inheritdoc/>
-        protected override DeserializationContext CreateContextCore(Type type, object? config = null)
+        protected override DeserializationContext CreateContextCore(Type type, object? config)
         {
             if (config is not null)
                 throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
 
-            return new DeserializationContext
-            {
-                SupportedTypes = JsonDataTypes.Number,
-                Convert = CreateConvertDelegate(type)
-            };
+            return CreateContextCore(type)!.Value;
         }
 
         /// <inheritdoc/>

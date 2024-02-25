@@ -66,14 +66,9 @@ namespace Solti.Utils.Json
             }
             return props;
         }
-        #endregion
 
-        /// <inheritdoc/>
-        protected override DeserializationContext CreateContextCore(Type type, object? config = null)
+        private static DeserializationContext? CreateContextCore(Type type) => Cache.GetOrAdd(type, static type =>
         {
-            if (config is not null)
-                throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
-
             DelegateCompiler compiler = new();
 
             FutureDelegate<RawObjectFavtoryDelegate> createRaw = compiler.Register
@@ -91,12 +86,22 @@ namespace Solti.Utils.Json
 
             compiler.Compile();
 
-            return new DeserializationContext
+            return (DeserializationContext?) new DeserializationContext
             {
                 SupportedTypes = JsonDataTypes.Object | JsonDataTypes.Null,
                 CreateRawObject = () => createRaw.Value(),
                 GetPropertyContext = props.TryGetValue
             };
+        });
+        #endregion
+
+        /// <inheritdoc/>
+        protected override DeserializationContext CreateContextCore(Type type, object? config)
+        {
+            if (config is not null)
+                throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
+
+            return CreateContextCore(type)!.Value;
         }
 
         /// <inheritdoc/>
