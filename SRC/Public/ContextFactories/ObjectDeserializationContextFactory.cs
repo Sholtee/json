@@ -24,7 +24,7 @@ namespace Solti.Utils.Json
         private static StringKeyedDictionary<DeserializationContext> ProcessProperties(Type type, DelegateCompiler compiler)
         {
             StringKeyedDictionary<DeserializationContext> props = new();
-            foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy))
             {
                 if (!prop.CanWrite)
                     continue;

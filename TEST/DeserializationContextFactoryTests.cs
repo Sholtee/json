@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -474,5 +475,75 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         }
 
         public override DeserializationContextFactory Factory => new ObjectDeserializationContextFactory();
+    }
+
+    [TestFixture]
+    public class DictionaryDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<DictionaryDeserializationContextFactoryTests>
+    {
+        private record Value
+        {
+            public int Prop { get; set; }
+        }
+
+        protected override bool Compare(object a, object b)
+        {
+            if (ReferenceEquals(a, b))
+                return true;
+
+            if (a is not IDictionary dictA || b is not IDictionary dictB)
+                return false;
+
+            if (dictA.Count != dictB.Count)
+                return false;
+
+            foreach (object key in dictA.Keys)
+            {
+                if (!dictB.Contains(key))
+                    return false;
+
+                if (!dictA[key].Equals(dictB[key]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(Dictionary<string, Value>), null, "{\"1\": {\"Prop\": 1}, \"2\": {\"Prop\": 2}}", new Dictionary<string, Value> { {"1", new Value { Prop = 1 } }, { "2", new Value { Prop = 2 } } }, JsonParserFlags.None);
+                yield return (typeof(Dictionary<string, int>), null, "{\"1\": 1, \"2\": 2}", new Dictionary<string, int> { {"1", 1}, {"2", 2} }, JsonParserFlags.None);
+                yield return (typeof(Dictionary<string, string>), null, "{\"1\": \"1\", \"2\": \"2\"}", new Dictionary<string, string> { { "1", "1" }, { "2", "2" } }, JsonParserFlags.None);
+                yield return (typeof(Dictionary<string, string>), null, "null", null!, JsonParserFlags.None);
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases
+        {
+            get
+            {
+                yield break;
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(Dictionary<string, int>), 1);
+                yield return (typeof(Dictionary<string, int>), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+            }
+        }
+
+        public override DeserializationContextFactory Factory => new DictionaryDeserializationContextFactory();
     }
 }

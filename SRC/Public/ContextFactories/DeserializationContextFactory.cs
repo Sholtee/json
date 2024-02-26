@@ -48,6 +48,7 @@ namespace Solti.Utils.Json
             new EnumDeserializationContextFactory(),
             new DateTimeDeserializationContextFactory(),
             new GuidDeserializationContextFactory(),
+            new DictionaryDeserializationContextFactory(),
             new StreamDeserializationContextFactory(),
             new ObjectDeserializationContextFactory()
         ];
