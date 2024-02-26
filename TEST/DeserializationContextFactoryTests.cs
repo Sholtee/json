@@ -516,6 +516,16 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
                 yield return (typeof(Dictionary<string, int>), null, "{\"1\": 1, \"2\": 2}", new Dictionary<string, int> { {"1", 1}, {"2", 2} }, JsonParserFlags.None);
                 yield return (typeof(Dictionary<string, string>), null, "{\"1\": \"1\", \"2\": \"2\"}", new Dictionary<string, string> { { "1", "1" }, { "2", "2" } }, JsonParserFlags.None);
                 yield return (typeof(Dictionary<string, string>), null, "null", null!, JsonParserFlags.None);
+
+                yield return (typeof(IDictionary<string, Value>), null, "{\"1\": {\"Prop\": 1}, \"2\": {\"Prop\": 2}}", new Dictionary<string, Value> { { "1", new Value { Prop = 1 } }, { "2", new Value { Prop = 2 } } }, JsonParserFlags.None);
+                yield return (typeof(IDictionary<string, int>), null, "{\"1\": 1, \"2\": 2}", new Dictionary<string, int> { { "1", 1 }, { "2", 2 } }, JsonParserFlags.None);
+                yield return (typeof(IDictionary<string, string>), null, "{\"1\": \"1\", \"2\": \"2\"}", new Dictionary<string, string> { { "1", "1" }, { "2", "2" } }, JsonParserFlags.None);
+                yield return (typeof(IDictionary<string, string>), null, "null", null!, JsonParserFlags.None);
+
+                yield return (typeof(IReadOnlyDictionary<string, Value>), null, "{\"1\": {\"Prop\": 1}, \"2\": {\"Prop\": 2}}", new Dictionary<string, Value> { { "1", new Value { Prop = 1 } }, { "2", new Value { Prop = 2 } } }, JsonParserFlags.None);
+                yield return (typeof(IReadOnlyDictionary<string, int>), null, "{\"1\": 1, \"2\": 2}", new Dictionary<string, int> { { "1", 1 }, { "2", 2 } }, JsonParserFlags.None);
+                yield return (typeof(IReadOnlyDictionary<string, string>), null, "{\"1\": \"1\", \"2\": \"2\"}", new Dictionary<string, string> { { "1", "1" }, { "2", "2" } }, JsonParserFlags.None);
+                yield return (typeof(IReadOnlyDictionary<string, string>), null, "null", null!, JsonParserFlags.None);
             }
         }
 
@@ -541,6 +551,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             get
             {
                 yield return typeof(int);
+                yield return typeof(Dictionary<int, int>);
             }
         }
 
