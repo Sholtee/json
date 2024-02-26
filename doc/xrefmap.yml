@@ -7,6 +7,60 @@ references:
   commentId: N:Solti.Utils.Json
   fullName: Solti.Utils.Json
   nameWithType: Solti.Utils.Json
+- uid: Solti.Utils.Json.Attributes
+  name: Solti.Utils.Json.Attributes
+  href: Solti.Utils.Json.Attributes.html
+  commentId: N:Solti.Utils.Json.Attributes
+  fullName: Solti.Utils.Json.Attributes
+  nameWithType: Solti.Utils.Json.Attributes
+- uid: Solti.Utils.Json.Attributes.AliasAttribute
+  name: AliasAttribute
+  href: Solti.Utils.Json.Attributes.AliasAttribute.html
+  commentId: T:Solti.Utils.Json.Attributes.AliasAttribute
+  fullName: Solti.Utils.Json.Attributes.AliasAttribute
+  nameWithType: AliasAttribute
+- uid: Solti.Utils.Json.Attributes.AliasAttribute.#ctor
+  name: AliasAttribute()
+  href: Solti.Utils.Json.Attributes.AliasAttribute.html#Solti_Utils_Json_Attributes_AliasAttribute__ctor
+  commentId: M:Solti.Utils.Json.Attributes.AliasAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.AliasAttribute.AliasAttribute()
+  nameWithType: AliasAttribute.AliasAttribute()
+- uid: Solti.Utils.Json.Attributes.AliasAttribute.#ctor*
+  name: AliasAttribute
+  href: Solti.Utils.Json.Attributes.AliasAttribute.html#Solti_Utils_Json_Attributes_AliasAttribute__ctor_
+  commentId: Overload:Solti.Utils.Json.Attributes.AliasAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.AliasAttribute.AliasAttribute
+  nameWithType: AliasAttribute.AliasAttribute
+- uid: Solti.Utils.Json.Attributes.AliasAttribute.Name
+  name: Name
+  href: Solti.Utils.Json.Attributes.AliasAttribute.html#Solti_Utils_Json_Attributes_AliasAttribute_Name
+  commentId: P:Solti.Utils.Json.Attributes.AliasAttribute.Name
+  fullName: Solti.Utils.Json.Attributes.AliasAttribute.Name
+  nameWithType: AliasAttribute.Name
+- uid: Solti.Utils.Json.Attributes.AliasAttribute.Name*
+  name: Name
+  href: Solti.Utils.Json.Attributes.AliasAttribute.html#Solti_Utils_Json_Attributes_AliasAttribute_Name_
+  commentId: Overload:Solti.Utils.Json.Attributes.AliasAttribute.Name
+  fullName: Solti.Utils.Json.Attributes.AliasAttribute.Name
+  nameWithType: AliasAttribute.Name
+- uid: Solti.Utils.Json.Attributes.IgnoreAttribute
+  name: IgnoreAttribute
+  href: Solti.Utils.Json.Attributes.IgnoreAttribute.html
+  commentId: T:Solti.Utils.Json.Attributes.IgnoreAttribute
+  fullName: Solti.Utils.Json.Attributes.IgnoreAttribute
+  nameWithType: IgnoreAttribute
+- uid: Solti.Utils.Json.Attributes.IgnoreAttribute.#ctor
+  name: IgnoreAttribute()
+  href: Solti.Utils.Json.Attributes.IgnoreAttribute.html#Solti_Utils_Json_Attributes_IgnoreAttribute__ctor
+  commentId: M:Solti.Utils.Json.Attributes.IgnoreAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.IgnoreAttribute.IgnoreAttribute()
+  nameWithType: IgnoreAttribute.IgnoreAttribute()
+- uid: Solti.Utils.Json.Attributes.IgnoreAttribute.#ctor*
+  name: IgnoreAttribute
+  href: Solti.Utils.Json.Attributes.IgnoreAttribute.html#Solti_Utils_Json_Attributes_IgnoreAttribute__ctor_
+  commentId: Overload:Solti.Utils.Json.Attributes.IgnoreAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.IgnoreAttribute.IgnoreAttribute
+  nameWithType: IgnoreAttribute.IgnoreAttribute
 - uid: Solti.Utils.Json.BooleanDeserializationContextFactory
   name: BooleanDeserializationContextFactory
   href: Solti.Utils.Json.BooleanDeserializationContextFactory.html
