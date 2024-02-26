@@ -9,6 +9,7 @@ using System.Reflection;
 
 namespace Solti.Utils.Json
 {
+    using Attributes;
     using Internals;
     using Primitives;
     using Properties;
@@ -26,7 +27,7 @@ namespace Solti.Utils.Json
             StringKeyedDictionary<DeserializationContext> props = new();
             foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy))
             {
-                if (!prop.CanWrite)
+                if (!prop.CanWrite || prop.GetCustomAttribute<IgnoreAttribute>() is not null)
                     continue;
 
                 //
@@ -57,7 +58,7 @@ namespace Solti.Utils.Json
 
                 props.Add
                 (
-                    prop.Name,
+                    prop.GetCustomAttribute<AliasAttribute>()?.Name ?? prop.Name,
                     DeserializationContextFactory.CreateFor(prop.PropertyType) with
                     {
                         Push = (inst, val) => push.Value(inst, val)

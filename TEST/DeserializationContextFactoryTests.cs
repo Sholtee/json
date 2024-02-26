@@ -15,6 +15,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.Json.DeserializationContexts.Tests
 {
+    using Attributes;
+
     public abstract class DeserializationContextFactoryTestsBase<TDescendant> where TDescendant : DeserializationContextFactoryTestsBase<TDescendant>, new()
     {
         public abstract IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases { get; }
@@ -436,6 +438,15 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             public Nested? Prop2 { get; set; }
         }
 
+        private record CustomizedParent : Parent
+        {
+            [Ignore]
+            public int ToBeIgnored { get; set; }
+
+            [Alias(Name = "Alias")]
+            public string? Prop3 { get; set; }
+        }
+
         private record Empty { }
 
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
@@ -444,6 +455,8 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             {
                 yield return (typeof(Parent), null, "{\"ToBeIgnored\": 0, \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.None);
                 yield return (typeof(Parent), null, "{\"tobeignored\": 0, \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.CaseInsensitive);
+                yield return (typeof(CustomizedParent), null, "{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"} }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya" }, JsonParserFlags.None);
+                yield return (typeof(CustomizedParent), null, "{\"tobeignored\": 0, \"alias\": \"kutya\", \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"} }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya" }, JsonParserFlags.CaseInsensitive);
                 yield return (typeof(Parent), null, "null", null!, JsonParserFlags.None);
                 yield return (typeof(Empty), null, "{}", new Empty(), JsonParserFlags.None);
             }
