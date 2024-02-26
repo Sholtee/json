@@ -856,6 +856,48 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContextFactory.IsSupported
   fullName: Solti.Utils.Json.DeserializationContextFactory.IsSupported
   nameWithType: DeserializationContextFactory.IsSupported
+- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory
+  name: DictionaryDeserializationContextFactory
+  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html
+  commentId: T:Solti.Utils.Json.DictionaryDeserializationContextFactory
+  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory
+  nameWithType: DictionaryDeserializationContextFactory
+- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.#ctor
+  name: DictionaryDeserializationContextFactory()
+  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory__ctor
+  commentId: M:Solti.Utils.Json.DictionaryDeserializationContextFactory.#ctor
+  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.DictionaryDeserializationContextFactory()
+  nameWithType: DictionaryDeserializationContextFactory.DictionaryDeserializationContextFactory()
+- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.#ctor*
+  name: DictionaryDeserializationContextFactory
+  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.DictionaryDeserializationContextFactory.#ctor
+  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.DictionaryDeserializationContextFactory
+  nameWithType: DictionaryDeserializationContextFactory.DictionaryDeserializationContextFactory
+- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
+  name: CreateContextCore(Type, Object)
+  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
+  nameWithType: DictionaryDeserializationContextFactory.CreateContextCore(Type, Object)
+- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore*
+  name: CreateContextCore
+  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory_CreateContextCore_
+  commentId: Overload:Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore
+  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore
+  nameWithType: DictionaryDeserializationContextFactory.CreateContextCore
+- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported(System.Type)
+  name: IsSupported(Type)
+  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory_IsSupported_System_Type_
+  commentId: M:Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported(System.Type)
+  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported(System.Type)
+  nameWithType: DictionaryDeserializationContextFactory.IsSupported(Type)
+- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported*
+  name: IsSupported
+  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory_IsSupported_
+  commentId: Overload:Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported
+  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported
+  nameWithType: DictionaryDeserializationContextFactory.IsSupported
 - uid: Solti.Utils.Json.EnumDeserializationContextFactory
   name: EnumDeserializationContextFactory
   href: Solti.Utils.Json.EnumDeserializationContextFactory.html
