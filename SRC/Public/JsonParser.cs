@@ -28,70 +28,6 @@ namespace Solti.Utils.Json
     public sealed class JsonParser(JsonParserFlags flags = JsonParserFlags.None, int maxDepth = 64)
     {
         #region Private
-        //
-        // Converting methods to delegates is a quite expensive operation so do it only once
-        //
-
-        private static readonly GetPropertyContextDelegate FDefaultGetPropertyContextDelegate = static (ReadOnlySpan<char> prop, bool ignoreCase, out DeserializationContext context) =>
-        {
-            context = default;
-            return false;
-        };
-
-        private static readonly GetListItemContextDelegate FDefaultGetListItemContextDelegate = static (int _, out DeserializationContext context) =>
-        {
-            context = default;
-            return false;
-        };
-
-        private static readonly ConvertStringDelegate FDefaultConvertStringDelegate = static (ReadOnlySpan<char> chars, bool ignoreCase, out object? val) =>
-        {
-            val = chars.AsString();
-            return true;
-        };
-
-        private static readonly ParseNumberDelegate FDefaultParseNumberDelegate = static (ReadOnlySpan<char> value, bool integral, out object parsed) =>
-        {
-            parsed = null!;
-            if (integral)
-            {
-                if
-                (
-                    long.TryParse
-                    (
-#if NETSTANDARD2_1_OR_GREATER
-                        value,
-#else
-                        value.AsString(),
-#endif
-                        NumberStyles.Number,
-                        CultureInfo.InvariantCulture,
-                        out long ret
-                    )
-                )
-                    parsed = ret;
-            }
-            else
-            {
-                if
-                (
-                    double.TryParse
-                    (
-#if NETSTANDARD2_1_OR_GREATER
-                        value,
-#else
-                        value.AsString(),
-#endif
-                        NumberStyles.Float,
-                        CultureInfo.InvariantCulture,
-                        out double ret
-                    )
-                )
-                    parsed = ret;
-            }       
-            return parsed != null;
-        };
-
         /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
         /// </summary>
@@ -123,7 +59,7 @@ namespace Solti.Utils.Json
             session,
             new FormatException
             (
-                string.Format(MALFORMED_VALUE, type, session.Row, session.Column, reason)
+                string.Format(Culture, MALFORMED_VALUE, type, session.Row, session.Column, reason)
             )
         );
 
@@ -135,7 +71,7 @@ namespace Solti.Utils.Json
         {
             InvalidOperationException ex = new
             (
-                string.Format(INVALID_VALUE, session.Row, session.Column, reason)
+                string.Format(Culture, INVALID_VALUE, session.Row, session.Column, reason)
             );
             if (errors is not null)
                 ex.Data[nameof(errors)] = errors;
@@ -170,7 +106,10 @@ namespace Solti.Utils.Json
         /// Verifies the given <paramref name="delegate"/>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static T VerifyDelegate<T>(T? @delegate) where T : Delegate => @delegate ?? throw new InvalidOperationException(INVALID_CONTEXT);
+        private static T VerifyDelegate<T>(T? @delegate, string handler) where T : Delegate => @delegate ?? throw new InvalidOperationException
+        (
+            string.Format(Culture, INVALID_CONTEXT, handler)
+        );
         #endregion
 
         #region Internal
@@ -492,8 +431,7 @@ namespace Solti.Utils.Json
             //
 
             parse:
-            buffer = buffer.Slice(0, parsed);
-            if (!(currentContext.ParseNumber ?? FDefaultParseNumberDelegate)(buffer, !isFloating, out object result))
+            if (!VerifyDelegate(currentContext.ParseNumber, nameof(currentContext.ParseNumber))(buffer.Slice(0, parsed), !isFloating, out object result))
                 InvalidValue(in session, CANNOT_PARSE);
 
             //
@@ -517,11 +455,9 @@ namespace Solti.Utils.Json
             // If CreateRawList is null OR returns null we won't deserialize the list at all
             //
 
-            object? list = currentContext.CreateRawList?.Invoke();
+            object list = VerifyDelegate(currentContext.CreateRawList, nameof(currentContext.CreateRawList))();
 
-            GetListItemContextDelegate getListItemContext = list is not null
-                ? VerifyDelegate(currentContext.GetListItemContext)
-                : FDefaultGetListItemContextDelegate;
+            GetListItemContextDelegate getListItemContext = VerifyDelegate(currentContext.GetListItemContext, nameof(currentContext.GetListItemContext));
 
             int i = 0;
 
@@ -536,7 +472,7 @@ namespace Solti.Utils.Json
                 }
 
                 object? val = Parse(ref session, currentDepth, in childContext, in cancellation);
-                childContext.Push?.Invoke(list!, val);
+                VerifyDelegate(childContext.Push, nameof(childContext.Push))(list, val);
 
                 //
                 // Check if we reached the end of the list or we have a next element.
@@ -571,11 +507,9 @@ namespace Solti.Utils.Json
 
             Advance(ref session, 1);
 
-            object? obj = currentContext.CreateRawObject?.Invoke();
+            object obj = VerifyDelegate(currentContext.CreateRawObject, nameof(currentContext.CreateRawObject))();
 
-            GetPropertyContextDelegate getPropertyContext = obj is not null
-                ? VerifyDelegate(currentContext.GetPropertyContext)
-                : FDefaultGetPropertyContextDelegate;
+            GetPropertyContextDelegate getPropertyContext = VerifyDelegate(currentContext.GetPropertyContext, nameof(currentContext.GetPropertyContext));
         
             for (JsonTokens token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, currentContext); token is not JsonTokens.CurlyClose;)
             {
@@ -594,7 +528,7 @@ namespace Solti.Utils.Json
                 Advance(ref session, 1);
 
                 object? val = Parse(ref session, currentDepth, in childContext, in cancellation);
-                childContext.Push?.Invoke(obj!, val);
+                VerifyDelegate(childContext.Push, nameof(currentContext.Push))(obj, val);
 
                 //
                 // Check if we reached the end of the object or we have a next element.
@@ -691,7 +625,15 @@ namespace Solti.Utils.Json
                     result = ParseList(ref session, Deeper(currentDepth), in currentContext, in cancellation);
                     break;
                 case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
-                    if (!(currentContext.ConvertString ?? FDefaultConvertStringDelegate)(ParseString(ref session, in currentContext), flags.HasFlag(JsonParserFlags.CaseInsensitive), out result))
+                    if 
+                    (
+                        !VerifyDelegate(currentContext.ConvertString, nameof(currentContext.ConvertString))
+                        (
+                            ParseString(ref session, in currentContext),
+                            flags.HasFlag(JsonParserFlags.CaseInsensitive),
+                            out result
+                        )
+                    )
                         InvalidValue(in session, NOT_CONVERTIBLE);
                     break;
                 case JsonTokens.Number:

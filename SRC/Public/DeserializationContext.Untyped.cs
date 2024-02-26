@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Solti.Utils.Json
 {
@@ -19,8 +20,58 @@ namespace Solti.Utils.Json
         /// Context used to create untyped result.
         /// </summary>
         /// <remarks>In untyped result objects are returned as <see cref="IDictionary"/> while lists as <see cref="IList"/>.</remarks>
-        public static readonly DeserializationContext Untyped = Default with
+        public static readonly DeserializationContext Untyped = new()
         {
+            SupportedTypes = JsonDataTypes.Any,
+
+            ConvertString = static (ReadOnlySpan<char> chars, bool ignoreCase, out object? val) =>
+            {
+                val = chars.AsString();
+                return true;
+            },
+
+            ParseNumber = static (ReadOnlySpan<char> value, bool integral, out object parsed) =>
+            {
+                parsed = null!;
+                if (integral)
+                {
+                    if
+                    (
+                        long.TryParse
+                        (
+#if NETSTANDARD2_1_OR_GREATER
+                            value,
+#else
+                            value.AsString(),
+#endif
+                            NumberStyles.Number,
+                            CultureInfo.InvariantCulture,
+                            out long ret
+                        )
+                    )
+                        parsed = ret;
+                }
+                else
+                {
+                    if
+                    (
+                        double.TryParse
+                        (
+#if NETSTANDARD2_1_OR_GREATER
+                            value,
+#else
+                            value.AsString(),
+#endif
+                            NumberStyles.Float,
+                            CultureInfo.InvariantCulture,
+                            out double ret
+                        )
+                    )
+                        parsed = ret;
+                }
+                return parsed != null;
+            },
+
             CreateRawObject = static () => new Dictionary<string, object?>(StringComparer.Ordinal),
 
             CreateRawList = static () => new List<object?>(),

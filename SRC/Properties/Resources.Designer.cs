@@ -79,7 +79,7 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid context.
+        ///   Looks up a localized string similar to Invalid context: {0}.
         /// </summary>
         internal static string INVALID_CONTEXT {
             get {

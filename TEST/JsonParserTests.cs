@@ -891,7 +891,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new("1986");
 
-            parser.Parse(content, new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default);
+            parser.Parse(content, DeserializationContext.Untyped with { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default);
 
             mockValidator.Verify(v => v.Invoke((long) 1986), Times.Once);
         }
@@ -948,7 +948,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new("1986");
 
-            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => parser.Parse(content, new DeserializationContext { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default))!;
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => parser.Parse(content, DeserializationContext.Untyped with { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default))!;
             Assert.That(ex.Data, Does.ContainKey("errors"));
             Assert.That(ex.Data["errors"], Is.EquivalentTo(new string[] { "some error" }));
         }

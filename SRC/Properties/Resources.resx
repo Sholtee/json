@@ -124,7 +124,7 @@
     <value>Incomplete string definition</value>
   </data>
   <data name="INVALID_CONTEXT" xml:space="preserve">
-    <value>Invalid context</value>
+    <value>Invalid context: {0}</value>
   </data>
   <data name="INVALID_FORMAT_SPECIFIER" xml:space="preserve">
     <value>Invald format sepcifier</value>
