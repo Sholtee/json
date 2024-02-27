@@ -25,6 +25,7 @@ namespace Solti.Utils.Json
         private static StringKeyedDictionary<DeserializationContext> ProcessProperties(Type type, DelegateCompiler compiler)
         {
             StringKeyedDictionary<DeserializationContext> props = new();
+
             foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy))
             {
                 if (!prop.CanWrite || prop.GetCustomAttribute<IgnoreAttribute>() is not null)
@@ -65,6 +66,7 @@ namespace Solti.Utils.Json
                     }
                 );
             }
+
             return props;
         }
 
@@ -90,7 +92,7 @@ namespace Solti.Utils.Json
             return (DeserializationContext?) new DeserializationContext
             {
                 SupportedTypes = JsonDataTypes.Object | JsonDataTypes.Null,
-                CreateRawObject = () => createRaw.Value(),
+                CreateRawObject = createRaw.Value,
                 GetPropertyContext = props.TryGetValue
             };
         });
