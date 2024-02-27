@@ -445,6 +445,50 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
             [Alias(Name = "Alias")]
             public string? Prop3 { get; set; }
+#if !NETFRAMEWORK
+            [SerializationContext<AnyObjectDeserializationContextFactory>(Config = typeof(MyEnum))]
+#else
+            [SerializationContext(typeof(AnyObjectDeserializationContextFactory), Config = typeof(MyEnum))]
+#endif
+            public object? Prop4 { get; set; }
+
+            public Wrapped? Prop5 { get; set; }
+        }
+
+        private sealed class AnyObjectDeserializationContextFactory : DeserializationContextFactory
+        {
+            public override bool IsSupported(Type type) => true;
+
+            protected override DeserializationContext CreateContextCore(Type type, object? config) => CreateFor((Type) config!);
+        }
+
+        private sealed class WrappedObjectDeserializationContextFactory : DeserializationContextFactory
+        {
+            public override bool IsSupported(Type type) => type == typeof(Wrapped);
+
+            protected override DeserializationContext CreateContextCore(Type type, object? config) => CreateFor(typeof(string)) with
+            {
+                Convert = (object? value, out object? converted) =>
+                {
+                    converted = new Wrapped((string) value!);
+                    return true;
+                }
+            };
+        }
+
+        private enum MyEnum
+        {
+            Default = 0,
+            Value1 = 1
+        }
+
+#if !NETFRAMEWORK
+        [SerializationContext<WrappedObjectDeserializationContextFactory>()]
+#else
+        [SerializationContext(typeof(WrappedObjectDeserializationContextFactory))]
+#endif
+        private record Wrapped(string Value)
+        {
         }
 
         private record Empty { }
@@ -455,8 +499,8 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             {
                 yield return (typeof(Parent), null, "{\"ToBeIgnored\": 0, \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.None);
                 yield return (typeof(Parent), null, "{\"tobeignored\": 0, \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.CaseInsensitive);
-                yield return (typeof(CustomizedParent), null, "{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"} }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya" }, JsonParserFlags.None);
-                yield return (typeof(CustomizedParent), null, "{\"tobeignored\": 0, \"alias\": \"kutya\", \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"} }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya" }, JsonParserFlags.CaseInsensitive);
+                yield return (typeof(CustomizedParent), null, "{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"}, \"Prop4\": 1, \"Prop5\": \"desznaj\" }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya", Prop4 = MyEnum.Value1, Prop5 = new Wrapped("desznaj") }, JsonParserFlags.None);
+                yield return (typeof(CustomizedParent), null, "{\"tobeignored\": 0, \"alias\": \"kutya\", \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"}, \"prop4\": 1, \"prop5\": \"desznaj\" }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya", Prop4 = MyEnum.Value1, Prop5 = new Wrapped("desznaj") }, JsonParserFlags.CaseInsensitive);
                 yield return (typeof(Parent), null, "null", null!, JsonParserFlags.None);
                 yield return (typeof(Empty), null, "{}", new Empty(), JsonParserFlags.None);
             }
@@ -509,12 +553,12 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             if (dictA.Count != dictB.Count)
                 return false;
 
-            foreach (object key in dictA.Keys)
+            foreach (object? key in dictA.Keys)
             {
-                if (!dictB.Contains(key))
+                if (!dictB.Contains(key!))
                     return false;
 
-                if (!dictA[key].Equals(dictB[key]))
+                if (!dictA[key!]!.Equals(dictB[key!]))
                     return false;
             }
 

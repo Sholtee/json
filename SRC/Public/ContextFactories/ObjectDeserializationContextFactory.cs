@@ -31,10 +31,6 @@ namespace Solti.Utils.Json
                 if (!prop.CanWrite || prop.GetCustomAttribute<IgnoreAttribute>() is not null)
                     continue;
 
-                //
-                // TODO: check if the "prop" has its own context defined by an attribute
-                //
-
                 ParameterExpression
                     instance = Expression.Parameter(typeof(object), nameof(instance)),
                     value    = Expression.Parameter(typeof(object), nameof(value));
@@ -57,10 +53,16 @@ namespace Solti.Utils.Json
                     )
                 );
 
+                SerializationContextAttribute? fact = prop.GetCustomAttribute<SerializationContextAttribute>(inherit: true);
+
+                DeserializationContext deserializationContext = fact is not null
+                    ? fact.ContextFactory.CreateContext(prop.PropertyType, fact.Config)
+                    : CreateFor(prop.PropertyType);
+
                 props.Add
                 (
                     prop.GetCustomAttribute<AliasAttribute>()?.Name ?? prop.Name,
-                    DeserializationContextFactory.CreateFor(prop.PropertyType) with
+                    deserializationContext with
                     {
                         Push = (inst, val) => push.Value(inst, val)
                     }
@@ -78,10 +80,7 @@ namespace Solti.Utils.Json
             (
                 Expression.Lambda<RawObjectFavtoryDelegate>
                 (
-                    Expression.New
-                    (
-                        type.GetConstructor(Type.EmptyTypes)
-                    )
+                    Expression.New(type)
                 )
             );
 

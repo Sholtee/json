@@ -6,15 +6,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Solti.Utils.Json
 {
+    using Attributes;
     using static Properties.Resources;
 
     /// <summary>
     /// Base class of factories responsible for creating <see cref="DeserializationContext"/> instances
     /// </summary>
-    public abstract class DeserializationContextFactory
+    public abstract class DeserializationContextFactory  // TODO: rework to SerializationContextFactory supporting both direction
     {
         /// <summary>
         /// Creates the concrete <see cref="DeserializationContext"/>.
@@ -36,9 +38,6 @@ namespace Solti.Utils.Json
         /// </summary>
         public abstract bool IsSupported(Type type);
 
-        //
-        // TODO: Make it extensible
-        //
 
         public static IList<DeserializationContextFactory> Globals { get; } = 
         [
@@ -53,12 +52,15 @@ namespace Solti.Utils.Json
             new ObjectDeserializationContextFactory()
         ];
 
+        /// <summary>
+        /// Creates the <see cref="DeserializationContext"/> for a particular <paramref name="type"/>.
+        /// </summary>
         public static DeserializationContext CreateFor(Type type)
         {
-            //
-            // TODO: check if the "type" has its own context defined by an attribute
-            //
-
+            SerializationContextAttribute? attr = type.GetCustomAttribute<SerializationContextAttribute>(inherit: true);
+            if (attr is not null)
+                return attr.ContextFactory.CreateContext(type, attr.Config);
+                
             DeserializationContextFactory? fact = Globals.FirstOrDefault(fact => fact.IsSupported(type));
             if (fact is null)
             {
@@ -67,11 +69,7 @@ namespace Solti.Utils.Json
                 throw ex;
             }
 
-            //
-            // TODO: How to utilize CreateContext.config parameter?
-            //
-
-            return fact.CreateContext(type, null);
+            return fact.CreateContext(type);
         }
     }
 }
