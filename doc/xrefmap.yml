@@ -61,6 +61,73 @@ references:
   commentId: Overload:Solti.Utils.Json.Attributes.IgnoreAttribute.#ctor
   fullName: Solti.Utils.Json.Attributes.IgnoreAttribute.IgnoreAttribute
   nameWithType: IgnoreAttribute.IgnoreAttribute
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute
+  name: SerializationContextAttribute
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html
+  commentId: T:Solti.Utils.Json.Attributes.SerializationContextAttribute
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute
+  nameWithType: SerializationContextAttribute
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.#ctor(System.Type)
+  name: SerializationContextAttribute(Type)
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute__ctor_System_Type_
+  commentId: M:Solti.Utils.Json.Attributes.SerializationContextAttribute.#ctor(System.Type)
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.SerializationContextAttribute(System.Type)
+  nameWithType: SerializationContextAttribute.SerializationContextAttribute(Type)
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.#ctor*
+  name: SerializationContextAttribute
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute__ctor_
+  commentId: Overload:Solti.Utils.Json.Attributes.SerializationContextAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.SerializationContextAttribute
+  nameWithType: SerializationContextAttribute.SerializationContextAttribute
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
+  name: Config
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_Config
+  commentId: P:Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
+  nameWithType: SerializationContextAttribute.Config
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.Config*
+  name: Config
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_Config_
+  commentId: Overload:Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
+  nameWithType: SerializationContextAttribute.Config
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
+  name: ContextFactory
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_ContextFactory
+  commentId: P:Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
+  nameWithType: SerializationContextAttribute.ContextFactory
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory*
+  name: ContextFactory
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_ContextFactory_
+  commentId: Overload:Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
+  nameWithType: SerializationContextAttribute.ContextFactory
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute`1
+  name: SerializationContextAttribute<TContextFactory>
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute-1.html
+  commentId: T:Solti.Utils.Json.Attributes.SerializationContextAttribute`1
+  name.vb: SerializationContextAttribute(Of TContextFactory)
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute<TContextFactory>
+  fullName.vb: Solti.Utils.Json.Attributes.SerializationContextAttribute(Of TContextFactory)
+  nameWithType: SerializationContextAttribute<TContextFactory>
+  nameWithType.vb: SerializationContextAttribute(Of TContextFactory)
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute`1.#ctor
+  name: SerializationContextAttribute()
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute-1.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_1__ctor
+  commentId: M:Solti.Utils.Json.Attributes.SerializationContextAttribute`1.#ctor
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute<TContextFactory>.SerializationContextAttribute()
+  fullName.vb: Solti.Utils.Json.Attributes.SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute()
+  nameWithType: SerializationContextAttribute<TContextFactory>.SerializationContextAttribute()
+  nameWithType.vb: SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute()
+- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute`1.#ctor*
+  name: SerializationContextAttribute
+  href: Solti.Utils.Json.Attributes.SerializationContextAttribute-1.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_1__ctor_
+  commentId: Overload:Solti.Utils.Json.Attributes.SerializationContextAttribute`1.#ctor
+  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute<TContextFactory>.SerializationContextAttribute
+  fullName.vb: Solti.Utils.Json.Attributes.SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute
+  nameWithType: SerializationContextAttribute<TContextFactory>.SerializationContextAttribute
+  nameWithType.vb: SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute
 - uid: Solti.Utils.Json.BooleanDeserializationContextFactory
   name: BooleanDeserializationContextFactory
   href: Solti.Utils.Json.BooleanDeserializationContextFactory.html
