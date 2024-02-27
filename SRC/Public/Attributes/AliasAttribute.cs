@@ -10,7 +10,7 @@ namespace Solti.Utils.Json.Attributes
     /// <summary>
     /// Specifies the alternate name for the marked property.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public sealed class AliasAttribute : Attribute
     {
         /// <summary>
