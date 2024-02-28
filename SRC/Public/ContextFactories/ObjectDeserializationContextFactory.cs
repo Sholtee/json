@@ -28,8 +28,6 @@ namespace Solti.Utils.Json
             FValidate = MethodInfoExtractor.Extract<ValidatorAttribute, ICollection<string>>(static (va, errs) => va.Validate(null, out errs)),
             FAddRange = MethodInfoExtractor.Extract<List<string>>(static lst => lst.AddRange(default));
 
-        private static readonly PropertyInfo FCount = PropertyInfoExtractor.Extract<ICollection<string>, int>(static coll => coll.Count);
-
         private static void ProcessProperties(Type type, DelegateCompiler compiler, out StringKeyedDictionary<DeserializationContext> props, out FutureDelegate<VerifyDelegate>? verifyDelegate)
         {
             props = new();
