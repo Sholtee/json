@@ -251,18 +251,6 @@ references:
   commentId: T:Solti.Utils.Json.DeserializationContext
   fullName: Solti.Utils.Json.DeserializationContext
   nameWithType: DeserializationContext
-- uid: Solti.Utils.Json.DeserializationContext.CommentParser
-  name: CommentParser
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CommentParser
-  commentId: P:Solti.Utils.Json.DeserializationContext.CommentParser
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParser
-  nameWithType: DeserializationContext.CommentParser
-- uid: Solti.Utils.Json.DeserializationContext.CommentParser*
-  name: CommentParser
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_CommentParser_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParser
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParser
-  nameWithType: DeserializationContext.CommentParser
 - uid: Solti.Utils.Json.DeserializationContext.Convert
   name: Convert
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Convert
@@ -593,6 +581,18 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
   fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
   nameWithType: DeserializationContext.GetPropertyContextDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.ParseComment
+  name: ParseComment
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ParseComment
+  commentId: P:Solti.Utils.Json.DeserializationContext.ParseComment
+  fullName: Solti.Utils.Json.DeserializationContext.ParseComment
+  nameWithType: DeserializationContext.ParseComment
+- uid: Solti.Utils.Json.DeserializationContext.ParseComment*
+  name: ParseComment
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ParseComment_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseComment
+  fullName: Solti.Utils.Json.DeserializationContext.ParseComment
+  nameWithType: DeserializationContext.ParseComment
 - uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate
   name: DeserializationContext.ParseCommentDelegate
   href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html
