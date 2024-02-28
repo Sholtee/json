@@ -18,6 +18,6 @@ namespace Solti.Utils.Json.Attributes
         /// <summary>
         /// The concrete validator to be implemented.
         /// </summary>
-        public abstract bool Validate(object? value, out ICollection<string> errors);
+        public abstract bool Validate(object? value, string? name, out ICollection<string> errors);
     }
 }

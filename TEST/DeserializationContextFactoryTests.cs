@@ -16,6 +16,7 @@ using NUnit.Framework;
 namespace Solti.Utils.Json.DeserializationContexts.Tests
 {
     using Attributes;
+    using Properties;
 
     public abstract class DeserializationContextFactoryTestsBase<TDescendant> where TDescendant : DeserializationContextFactoryTestsBase<TDescendant>, new()
     {
@@ -458,11 +459,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
         private sealed class NotNullAttribute : ValidatorAttribute
         {
-            public override bool Validate(object? value, out ICollection<string> errors)
+            public override bool Validate(object? value, string? name, out ICollection<string> errors)
             {
                 if (value is null)
                 {
-                    errors = ["value cannot be null"];
+                    errors = [$"value of \"{name}\" cannot be null"];
                     return false;
                 }
 
@@ -486,7 +487,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             {
                 Convert = (object? value, out object? converted) =>
                 {
-                    converted = new Wrapped((string) value!);
+                    converted = value is string str ? new Wrapped(str) : value;
                     return true;
                 }
             };
@@ -548,6 +549,18 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         }
 
         public override DeserializationContextFactory Factory => new ObjectDeserializationContextFactory();
+
+        [Test]
+        public void Context_ShouldInstructTheParserToRunTheValidators()
+        {
+            JsonParser parser = new();
+
+            StringReader content = new("{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"}, \"Prop4\": 1, \"Prop5\": null }");
+
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => parser.Parse(content, Factory.CreateContext(typeof(CustomizedParent), null), default), Resources.VALIDATION_FAILED)!;
+            Assert.That(ex.Data, Contains.Key("errors"));
+            Assert.That(ex.Data["errors"], Has.One.With.EqualTo("value of \"Prop5\" cannot be null"));
+        }
     }
 
     [TestFixture]

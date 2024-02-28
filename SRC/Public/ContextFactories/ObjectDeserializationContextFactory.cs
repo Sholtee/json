@@ -25,7 +25,7 @@ namespace Solti.Utils.Json
     {
         #region Private
         private static readonly MethodInfo 
-            FValidate = MethodInfoExtractor.Extract<ValidatorAttribute, ICollection<string>>(static (va, errs) => va.Validate(null, out errs)),
+            FValidate = MethodInfoExtractor.Extract<ValidatorAttribute, ICollection<string>>(static (va, errs) => va.Validate(null, null, out errs)),
             FAddRange = MethodInfoExtractor.Extract<List<string>>(static lst => lst.AddRange(default));
 
         private static void ProcessProperties(Type type, DelegateCompiler compiler, out StringKeyedDictionary<DeserializationContext> props, out FutureDelegate<VerifyDelegate>? verifyDelegate)
@@ -106,6 +106,7 @@ namespace Solti.Utils.Json
                                         Expression.Property(instance, prop),
                                         typeof(object)
                                     ),
+                                    Expression.Constant(prop.Name),
                                     errorsSection
                                 )
                             ),
