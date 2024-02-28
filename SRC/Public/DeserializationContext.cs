@@ -25,7 +25,7 @@ namespace Solti.Utils.Json
 
         public delegate object RawObjectFavtoryDelegate();
 
-        public delegate ICollection<string>? VerifyDelegate(object? value);
+        public delegate bool VerifyDelegate(object? value, out ICollection<string> errors);
 
         public delegate void PushDelegate(object instance, object? value);
 

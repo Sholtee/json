@@ -659,8 +659,7 @@ namespace Solti.Utils.Json
             if (currentContext.Convert is not null && !currentContext.Convert(result, out result))
                 InvalidValue(in session, NOT_CONVERTIBLE);
 
-            ICollection<string>? errors = currentContext.Verify?.Invoke(result);
-            if (errors?.Count > 0)
+            if (currentContext.Verify?.Invoke(result, out ICollection<string> errors) is false)
                 InvalidValue(in session, VALIDATION_FAILED, errors);
 
             return result;

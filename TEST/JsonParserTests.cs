@@ -882,10 +882,12 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void Parse_ShouldVerify()
         {
+            ICollection<string> errors;
+
             Mock<DeserializationContext.VerifyDelegate> mockValidator = new(MockBehavior.Strict);
             mockValidator
-                .Setup(v => v.Invoke((long) 1986))
-                .Returns((ICollection<string>?) null);
+                .Setup(v => v.Invoke((long) 1986, out errors))
+                .Returns(true);
 
             JsonParser parser = new(JsonParserFlags.None, 0);
 
@@ -893,7 +895,7 @@ namespace Solti.Utils.Json.Tests
 
             parser.Parse(content, DeserializationContext.Untyped with { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default);
 
-            mockValidator.Verify(v => v.Invoke((long) 1986), Times.Once);
+            mockValidator.Verify(v => v.Invoke((long) 1986, out errors), Times.Once);
         }
 
         [Test]
@@ -939,16 +941,21 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void Parse_ShouldThrowIfVerificationFailed()
         {
-            Mock<DeserializationContext.VerifyDelegate> mockValidator = new(MockBehavior.Strict);
-            mockValidator
-                .Setup(v => v.Invoke((long) 1986))
-                .Returns(new string[] { "some error" });
+            DeserializationContext ctx = DeserializationContext.Untyped with
+            {
+                SupportedTypes = JsonDataTypes.Number,
+                Verify = (object? val, out ICollection<string> errors) =>
+                {
+                    errors = ["some error"];
+                    return false;
+                }
+            };
 
             JsonParser parser = new(JsonParserFlags.None, 0);
 
             StringReader content = new("1986");
 
-            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => parser.Parse(content, DeserializationContext.Untyped with { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default))!;
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => parser.Parse(content, ctx, default))!;
             Assert.That(ex.Data, Does.ContainKey("errors"));
             Assert.That(ex.Data["errors"], Is.EquivalentTo(new string[] { "some error" }));
         }

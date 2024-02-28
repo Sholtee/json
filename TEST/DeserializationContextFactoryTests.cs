@@ -452,7 +452,23 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 #endif
             public object? Prop4 { get; set; }
 
+            [NotNull]
             public Wrapped? Prop5 { get; set; }
+        }
+
+        private sealed class NotNullAttribute : ValidatorAttribute
+        {
+            public override bool Validate(object? value, out ICollection<string> errors)
+            {
+                if (value is null)
+                {
+                    errors = ["value cannot be null"];
+                    return false;
+                }
+
+                errors = null!;
+                return true;
+            }
         }
 
         private sealed class AnyObjectDeserializationContextFactory : DeserializationContextFactory
