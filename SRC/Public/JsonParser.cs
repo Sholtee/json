@@ -604,7 +604,7 @@ namespace Solti.Utils.Json
             Assert(parsed <= session.Content.CharsLeft, "Cannot advance more character than we have in the buffer");
             Advance(ref session, parsed);
 
-            currentContext.CommentParser?.Invoke(buffer.Slice(0, lineEnd));
+            currentContext.ParseComment?.Invoke(buffer.Slice(0, lineEnd));
         }
 
         /// <summary>

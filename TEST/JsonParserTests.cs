@@ -449,7 +449,7 @@ namespace Solti.Utils.Json.Tests
             DeserializationContext ctx = new()
             {
                 SupportedTypes = JsonDataTypes.Unkown,
-                CommentParser = chars => lastComment = chars.AsString()
+                ParseComment = chars => lastComment = chars.AsString()
             };
 
             using TextReaderWrapper content = new StringReader(input);
@@ -839,7 +839,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new(input);
 
-            Assert.That(parser.Parse(content, DeserializationContext.Untyped with { CommentParser = chars => got = chars.AsString() }, default), Is.EqualTo(expected));
+            Assert.That(parser.Parse(content, DeserializationContext.Untyped with { ParseComment = chars => got = chars.AsString() }, default), Is.EqualTo(expected));
             Assert.That(got, Is.EqualTo(comment));
             Assert.That(content.Peek(), Is.EqualTo(-1));
         }
