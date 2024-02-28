@@ -90,12 +90,12 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_Json_DeserializationContext_VerifyDelegate_BeginInvoke_" data-uid="Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_VerifyDelegate_BeginInvoke_System_Object_System_AsyncCallback_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)">BeginInvoke(Object, AsyncCallback, Object)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_VerifyDelegate_BeginInvoke_System_Object_System_Collections_Generic_ICollection_System_String___System_AsyncCallback_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object,System.Collections.Generic.ICollection{System.String}@,System.AsyncCallback,System.Object)">BeginInvoke(Object, out ICollection&lt;String&gt;, AsyncCallback, Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(object value, AsyncCallback callback, object object)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(object value, out ICollection&lt;string&gt; errors, AsyncCallback callback, object object)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -110,6 +110,11 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">errors</span></td>
         <td></td>
       </tr>
       <tr>
@@ -140,12 +145,12 @@
     </tbody>
   </table>
   <a id="Solti_Utils_Json_DeserializationContext_VerifyDelegate_EndInvoke_" data-uid="Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_VerifyDelegate_EndInvoke_System_IAsyncResult_" data-uid="Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.IAsyncResult)">EndInvoke(IAsyncResult)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_VerifyDelegate_EndInvoke_System_Collections_Generic_ICollection_System_String___System_IAsyncResult_" data-uid="Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.Collections.Generic.ICollection{System.String}@,System.IAsyncResult)">EndInvoke(out ICollection&lt;String&gt;, IAsyncResult)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual ICollection&lt;string&gt; EndInvoke(IAsyncResult result)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool EndInvoke(out ICollection&lt;string&gt; errors, IAsyncResult result)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,6 +162,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">errors</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncresult">IAsyncResult</a></td>
         <td><span class="parametername">result</span></td>
@@ -174,18 +184,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_Json_DeserializationContext_VerifyDelegate_Invoke_" data-uid="Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke*"></a>
-  <h4 id="Solti_Utils_Json_DeserializationContext_VerifyDelegate_Invoke_System_Object_" data-uid="Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object)">Invoke(Object)</h4>
+  <h4 id="Solti_Utils_Json_DeserializationContext_VerifyDelegate_Invoke_System_Object_System_Collections_Generic_ICollection_System_String___" data-uid="Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object,System.Collections.Generic.ICollection{System.String}@)">Invoke(Object, out ICollection&lt;String&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual ICollection&lt;string&gt; Invoke(object value)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool Invoke(object value, out ICollection&lt;string&gt; errors)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -202,6 +212,11 @@
         <td><span class="parametername">value</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">errors</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -214,7 +229,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>

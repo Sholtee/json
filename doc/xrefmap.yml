@@ -128,6 +128,39 @@ references:
   fullName.vb: Solti.Utils.Json.Attributes.SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute
   nameWithType: SerializationContextAttribute<TContextFactory>.SerializationContextAttribute
   nameWithType.vb: SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute
+- uid: Solti.Utils.Json.Attributes.ValidatorAttribute
+  name: ValidatorAttribute
+  href: Solti.Utils.Json.Attributes.ValidatorAttribute.html
+  commentId: T:Solti.Utils.Json.Attributes.ValidatorAttribute
+  fullName: Solti.Utils.Json.Attributes.ValidatorAttribute
+  nameWithType: ValidatorAttribute
+- uid: Solti.Utils.Json.Attributes.ValidatorAttribute.#ctor
+  name: ValidatorAttribute()
+  href: Solti.Utils.Json.Attributes.ValidatorAttribute.html#Solti_Utils_Json_Attributes_ValidatorAttribute__ctor
+  commentId: M:Solti.Utils.Json.Attributes.ValidatorAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.ValidatorAttribute.ValidatorAttribute()
+  nameWithType: ValidatorAttribute.ValidatorAttribute()
+- uid: Solti.Utils.Json.Attributes.ValidatorAttribute.#ctor*
+  name: ValidatorAttribute
+  href: Solti.Utils.Json.Attributes.ValidatorAttribute.html#Solti_Utils_Json_Attributes_ValidatorAttribute__ctor_
+  commentId: Overload:Solti.Utils.Json.Attributes.ValidatorAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.ValidatorAttribute.ValidatorAttribute
+  nameWithType: ValidatorAttribute.ValidatorAttribute
+- uid: Solti.Utils.Json.Attributes.ValidatorAttribute.Validate(System.Object,System.Collections.Generic.ICollection{System.String}@)
+  name: Validate(Object, out ICollection<String>)
+  href: Solti.Utils.Json.Attributes.ValidatorAttribute.html#Solti_Utils_Json_Attributes_ValidatorAttribute_Validate_System_Object_System_Collections_Generic_ICollection_System_String___
+  commentId: M:Solti.Utils.Json.Attributes.ValidatorAttribute.Validate(System.Object,System.Collections.Generic.ICollection{System.String}@)
+  name.vb: Validate(Object, ByRef ICollection(Of String))
+  fullName: Solti.Utils.Json.Attributes.ValidatorAttribute.Validate(System.Object, out System.Collections.Generic.ICollection<System.String>)
+  fullName.vb: Solti.Utils.Json.Attributes.ValidatorAttribute.Validate(System.Object, ByRef System.Collections.Generic.ICollection(Of System.String))
+  nameWithType: ValidatorAttribute.Validate(Object, out ICollection<String>)
+  nameWithType.vb: ValidatorAttribute.Validate(Object, ByRef ICollection(Of String))
+- uid: Solti.Utils.Json.Attributes.ValidatorAttribute.Validate*
+  name: Validate
+  href: Solti.Utils.Json.Attributes.ValidatorAttribute.html#Solti_Utils_Json_Attributes_ValidatorAttribute_Validate_
+  commentId: Overload:Solti.Utils.Json.Attributes.ValidatorAttribute.Validate
+  fullName: Solti.Utils.Json.Attributes.ValidatorAttribute.Validate
+  nameWithType: ValidatorAttribute.Validate
 - uid: Solti.Utils.Json.BooleanDeserializationContextFactory
   name: BooleanDeserializationContextFactory
   href: Solti.Utils.Json.BooleanDeserializationContextFactory.html
@@ -863,36 +896,45 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.VerifyDelegate.#ctor
   fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.VerifyDelegate
   nameWithType: DeserializationContext.VerifyDelegate.VerifyDelegate
-- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
-  name: BeginInvoke(Object, AsyncCallback, Object)
-  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_BeginInvoke_System_Object_System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object,System.AsyncCallback,System.Object)
-  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object, System.AsyncCallback, System.Object)
-  nameWithType: DeserializationContext.VerifyDelegate.BeginInvoke(Object, AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object,System.Collections.Generic.ICollection{System.String}@,System.AsyncCallback,System.Object)
+  name: BeginInvoke(Object, out ICollection<String>, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_BeginInvoke_System_Object_System_Collections_Generic_ICollection_System_String___System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object,System.Collections.Generic.ICollection{System.String}@,System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(Object, ByRef ICollection(Of String), AsyncCallback, Object)
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object, out System.Collections.Generic.ICollection<System.String>, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke(System.Object, ByRef System.Collections.Generic.ICollection(Of System.String), System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.VerifyDelegate.BeginInvoke(Object, out ICollection<String>, AsyncCallback, Object)
+  nameWithType.vb: DeserializationContext.VerifyDelegate.BeginInvoke(Object, ByRef ICollection(Of String), AsyncCallback, Object)
 - uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke*
   name: BeginInvoke
   href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_BeginInvoke_
   commentId: Overload:Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke
   fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.BeginInvoke
   nameWithType: DeserializationContext.VerifyDelegate.BeginInvoke
-- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.IAsyncResult)
-  name: EndInvoke(IAsyncResult)
-  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_EndInvoke_System_IAsyncResult_
-  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.IAsyncResult)
-  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.IAsyncResult)
-  nameWithType: DeserializationContext.VerifyDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.Collections.Generic.ICollection{System.String}@,System.IAsyncResult)
+  name: EndInvoke(out ICollection<String>, IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_EndInvoke_System_Collections_Generic_ICollection_System_String___System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(System.Collections.Generic.ICollection{System.String}@,System.IAsyncResult)
+  name.vb: EndInvoke(ByRef ICollection(Of String), IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(out System.Collections.Generic.ICollection<System.String>, System.IAsyncResult)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke(ByRef System.Collections.Generic.ICollection(Of System.String), System.IAsyncResult)
+  nameWithType: DeserializationContext.VerifyDelegate.EndInvoke(out ICollection<String>, IAsyncResult)
+  nameWithType.vb: DeserializationContext.VerifyDelegate.EndInvoke(ByRef ICollection(Of String), IAsyncResult)
 - uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke*
   name: EndInvoke
   href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_EndInvoke_
   commentId: Overload:Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke
   fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.EndInvoke
   nameWithType: DeserializationContext.VerifyDelegate.EndInvoke
-- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object)
-  name: Invoke(Object)
-  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_Invoke_System_Object_
-  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object)
-  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object)
-  nameWithType: DeserializationContext.VerifyDelegate.Invoke(Object)
+- uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object,System.Collections.Generic.ICollection{System.String}@)
+  name: Invoke(Object, out ICollection<String>)
+  href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_Invoke_System_Object_System_Collections_Generic_ICollection_System_String___
+  commentId: M:Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object,System.Collections.Generic.ICollection{System.String}@)
+  name.vb: Invoke(Object, ByRef ICollection(Of String))
+  fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object, out System.Collections.Generic.ICollection<System.String>)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke(System.Object, ByRef System.Collections.Generic.ICollection(Of System.String))
+  nameWithType: DeserializationContext.VerifyDelegate.Invoke(Object, out ICollection<String>)
+  nameWithType.vb: DeserializationContext.VerifyDelegate.Invoke(Object, ByRef ICollection(Of String))
 - uid: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke*
   name: Invoke
   href: Solti.Utils.Json.DeserializationContext.VerifyDelegate.html#Solti_Utils_Json_DeserializationContext_VerifyDelegate_Invoke_
