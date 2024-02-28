@@ -263,66 +263,6 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParser
   fullName: Solti.Utils.Json.DeserializationContext.CommentParser
   nameWithType: DeserializationContext.CommentParser
-- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate
-  name: DeserializationContext.CommentParserDelegate
-  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html
-  commentId: T:Solti.Utils.Json.DeserializationContext.CommentParserDelegate
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate
-  nameWithType: DeserializationContext.CommentParserDelegate
-- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.#ctor(System.Object,System.IntPtr)
-  name: CommentParserDelegate(Object, IntPtr)
-  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate__ctor_System_Object_System_IntPtr_
-  commentId: M:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.#ctor(System.Object,System.IntPtr)
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.CommentParserDelegate(System.Object, System.IntPtr)
-  nameWithType: DeserializationContext.CommentParserDelegate.CommentParserDelegate(Object, IntPtr)
-- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.#ctor*
-  name: CommentParserDelegate
-  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate__ctor_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.#ctor
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.CommentParserDelegate
-  nameWithType: DeserializationContext.CommentParserDelegate.CommentParserDelegate
-- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.AsyncCallback,System.Object)
-  name: BeginInvoke(ReadOnlySpan<Char>, AsyncCallback, Object)
-  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.AsyncCallback,System.Object)
-  name.vb: BeginInvoke(ReadOnlySpan(Of Char), AsyncCallback, Object)
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke(System.ReadOnlySpan<System.Char>, System.AsyncCallback, System.Object)
-  fullName.vb: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke(System.ReadOnlySpan(Of System.Char), System.AsyncCallback, System.Object)
-  nameWithType: DeserializationContext.CommentParserDelegate.BeginInvoke(ReadOnlySpan<Char>, AsyncCallback, Object)
-  nameWithType.vb: DeserializationContext.CommentParserDelegate.BeginInvoke(ReadOnlySpan(Of Char), AsyncCallback, Object)
-- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke*
-  name: BeginInvoke
-  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_BeginInvoke_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.BeginInvoke
-  nameWithType: DeserializationContext.CommentParserDelegate.BeginInvoke
-- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke(System.IAsyncResult)
-  name: EndInvoke(IAsyncResult)
-  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_EndInvoke_System_IAsyncResult_
-  commentId: M:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke(System.IAsyncResult)
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke(System.IAsyncResult)
-  nameWithType: DeserializationContext.CommentParserDelegate.EndInvoke(IAsyncResult)
-- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke*
-  name: EndInvoke
-  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_EndInvoke_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.EndInvoke
-  nameWithType: DeserializationContext.CommentParserDelegate.EndInvoke
-- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke(System.ReadOnlySpan{System.Char})
-  name: Invoke(ReadOnlySpan<Char>)
-  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_Invoke_System_ReadOnlySpan_System_Char__
-  commentId: M:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke(System.ReadOnlySpan{System.Char})
-  name.vb: Invoke(ReadOnlySpan(Of Char))
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke(System.ReadOnlySpan<System.Char>)
-  fullName.vb: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke(System.ReadOnlySpan(Of System.Char))
-  nameWithType: DeserializationContext.CommentParserDelegate.Invoke(ReadOnlySpan<Char>)
-  nameWithType.vb: DeserializationContext.CommentParserDelegate.Invoke(ReadOnlySpan(Of Char))
-- uid: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke*
-  name: Invoke
-  href: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.html#Solti_Utils_Json_DeserializationContext_CommentParserDelegate_Invoke_
-  commentId: Overload:Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke
-  fullName: Solti.Utils.Json.DeserializationContext.CommentParserDelegate.Invoke
-  nameWithType: DeserializationContext.CommentParserDelegate.Invoke
 - uid: Solti.Utils.Json.DeserializationContext.Convert
   name: Convert
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Convert
@@ -653,6 +593,66 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
   fullName: Solti.Utils.Json.DeserializationContext.GetPropertyContextDelegate.Invoke
   nameWithType: DeserializationContext.GetPropertyContextDelegate.Invoke
+- uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate
+  name: DeserializationContext.ParseCommentDelegate
+  href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html
+  commentId: T:Solti.Utils.Json.DeserializationContext.ParseCommentDelegate
+  fullName: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate
+  nameWithType: DeserializationContext.ParseCommentDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.#ctor(System.Object,System.IntPtr)
+  name: ParseCommentDelegate(Object, IntPtr)
+  href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html#Solti_Utils_Json_DeserializationContext_ParseCommentDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.ParseCommentDelegate(System.Object, System.IntPtr)
+  nameWithType: DeserializationContext.ParseCommentDelegate.ParseCommentDelegate(Object, IntPtr)
+- uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.#ctor*
+  name: ParseCommentDelegate
+  href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html#Solti_Utils_Json_DeserializationContext_ParseCommentDelegate__ctor_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.#ctor
+  fullName: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.ParseCommentDelegate
+  nameWithType: DeserializationContext.ParseCommentDelegate.ParseCommentDelegate
+- uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.AsyncCallback,System.Object)
+  name: BeginInvoke(ReadOnlySpan<Char>, AsyncCallback, Object)
+  href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html#Solti_Utils_Json_DeserializationContext_ParseCommentDelegate_BeginInvoke_System_ReadOnlySpan_System_Char__System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.BeginInvoke(System.ReadOnlySpan{System.Char},System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(ReadOnlySpan(Of Char), AsyncCallback, Object)
+  fullName: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.BeginInvoke(System.ReadOnlySpan<System.Char>, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.BeginInvoke(System.ReadOnlySpan(Of System.Char), System.AsyncCallback, System.Object)
+  nameWithType: DeserializationContext.ParseCommentDelegate.BeginInvoke(ReadOnlySpan<Char>, AsyncCallback, Object)
+  nameWithType.vb: DeserializationContext.ParseCommentDelegate.BeginInvoke(ReadOnlySpan(Of Char), AsyncCallback, Object)
+- uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html#Solti_Utils_Json_DeserializationContext_ParseCommentDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.BeginInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.BeginInvoke
+  nameWithType: DeserializationContext.ParseCommentDelegate.BeginInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html#Solti_Utils_Json_DeserializationContext_ParseCommentDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: DeserializationContext.ParseCommentDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html#Solti_Utils_Json_DeserializationContext_ParseCommentDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.EndInvoke
+  fullName: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.EndInvoke
+  nameWithType: DeserializationContext.ParseCommentDelegate.EndInvoke
+- uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.Invoke(System.ReadOnlySpan{System.Char})
+  name: Invoke(ReadOnlySpan<Char>)
+  href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html#Solti_Utils_Json_DeserializationContext_ParseCommentDelegate_Invoke_System_ReadOnlySpan_System_Char__
+  commentId: M:Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.Invoke(System.ReadOnlySpan{System.Char})
+  name.vb: Invoke(ReadOnlySpan(Of Char))
+  fullName: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.Invoke(System.ReadOnlySpan<System.Char>)
+  fullName.vb: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.Invoke(System.ReadOnlySpan(Of System.Char))
+  nameWithType: DeserializationContext.ParseCommentDelegate.Invoke(ReadOnlySpan<Char>)
+  nameWithType.vb: DeserializationContext.ParseCommentDelegate.Invoke(ReadOnlySpan(Of Char))
+- uid: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.html#Solti_Utils_Json_DeserializationContext_ParseCommentDelegate_Invoke_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.Invoke
+  fullName: Solti.Utils.Json.DeserializationContext.ParseCommentDelegate.Invoke
+  nameWithType: DeserializationContext.ParseCommentDelegate.Invoke
 - uid: Solti.Utils.Json.DeserializationContext.ParseNumber
   name: ParseNumber
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_ParseNumber
