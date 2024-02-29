@@ -1205,6 +1205,24 @@ references:
   commentId: F:Solti.Utils.Json.JsonDataTypes.value__
   fullName: Solti.Utils.Json.JsonDataTypes.value__
   nameWithType: JsonDataTypes.value__
+- uid: Solti.Utils.Json.JsonException
+  name: JsonException
+  href: Solti.Utils.Json.JsonException.html
+  commentId: T:Solti.Utils.Json.JsonException
+  fullName: Solti.Utils.Json.JsonException
+  nameWithType: JsonException
+- uid: Solti.Utils.Json.JsonException.#ctor(System.String)
+  name: JsonException(String)
+  href: Solti.Utils.Json.JsonException.html#Solti_Utils_Json_JsonException__ctor_System_String_
+  commentId: M:Solti.Utils.Json.JsonException.#ctor(System.String)
+  fullName: Solti.Utils.Json.JsonException.JsonException(System.String)
+  nameWithType: JsonException.JsonException(String)
+- uid: Solti.Utils.Json.JsonException.#ctor*
+  name: JsonException
+  href: Solti.Utils.Json.JsonException.html#Solti_Utils_Json_JsonException__ctor_
+  commentId: Overload:Solti.Utils.Json.JsonException.#ctor
+  fullName: Solti.Utils.Json.JsonException.JsonException
+  nameWithType: JsonException.JsonException
 - uid: Solti.Utils.Json.JsonParser
   name: JsonParser
   href: Solti.Utils.Json.JsonParser.html
@@ -1238,6 +1256,48 @@ references:
   commentId: Overload:Solti.Utils.Json.JsonParser.Parse
   fullName: Solti.Utils.Json.JsonParser.Parse
   nameWithType: JsonParser.Parse
+- uid: Solti.Utils.Json.JsonParserException
+  name: JsonParserException
+  href: Solti.Utils.Json.JsonParserException.html
+  commentId: T:Solti.Utils.Json.JsonParserException
+  fullName: Solti.Utils.Json.JsonParserException
+  nameWithType: JsonParserException
+- uid: Solti.Utils.Json.JsonParserException.#ctor(System.String,System.Int32,System.Int32)
+  name: JsonParserException(String, Int32, Int32)
+  href: Solti.Utils.Json.JsonParserException.html#Solti_Utils_Json_JsonParserException__ctor_System_String_System_Int32_System_Int32_
+  commentId: M:Solti.Utils.Json.JsonParserException.#ctor(System.String,System.Int32,System.Int32)
+  fullName: Solti.Utils.Json.JsonParserException.JsonParserException(System.String, System.Int32, System.Int32)
+  nameWithType: JsonParserException.JsonParserException(String, Int32, Int32)
+- uid: Solti.Utils.Json.JsonParserException.#ctor*
+  name: JsonParserException
+  href: Solti.Utils.Json.JsonParserException.html#Solti_Utils_Json_JsonParserException__ctor_
+  commentId: Overload:Solti.Utils.Json.JsonParserException.#ctor
+  fullName: Solti.Utils.Json.JsonParserException.JsonParserException
+  nameWithType: JsonParserException.JsonParserException
+- uid: Solti.Utils.Json.JsonParserException.Column
+  name: Column
+  href: Solti.Utils.Json.JsonParserException.html#Solti_Utils_Json_JsonParserException_Column
+  commentId: P:Solti.Utils.Json.JsonParserException.Column
+  fullName: Solti.Utils.Json.JsonParserException.Column
+  nameWithType: JsonParserException.Column
+- uid: Solti.Utils.Json.JsonParserException.Column*
+  name: Column
+  href: Solti.Utils.Json.JsonParserException.html#Solti_Utils_Json_JsonParserException_Column_
+  commentId: Overload:Solti.Utils.Json.JsonParserException.Column
+  fullName: Solti.Utils.Json.JsonParserException.Column
+  nameWithType: JsonParserException.Column
+- uid: Solti.Utils.Json.JsonParserException.Row
+  name: Row
+  href: Solti.Utils.Json.JsonParserException.html#Solti_Utils_Json_JsonParserException_Row
+  commentId: P:Solti.Utils.Json.JsonParserException.Row
+  fullName: Solti.Utils.Json.JsonParserException.Row
+  nameWithType: JsonParserException.Row
+- uid: Solti.Utils.Json.JsonParserException.Row*
+  name: Row
+  href: Solti.Utils.Json.JsonParserException.html#Solti_Utils_Json_JsonParserException_Row_
+  commentId: Overload:Solti.Utils.Json.JsonParserException.Row
+  fullName: Solti.Utils.Json.JsonParserException.Row
+  nameWithType: JsonParserException.Row
 - uid: Solti.Utils.Json.JsonParserFlags
   name: JsonParserFlags
   href: Solti.Utils.Json.JsonParserFlags.html
@@ -1325,6 +1385,24 @@ references:
   commentId: Overload:Solti.Utils.Json.JsonWriter.Write
   fullName: Solti.Utils.Json.JsonWriter.Write
   nameWithType: JsonWriter.Write
+- uid: Solti.Utils.Json.JsonWriterException
+  name: JsonWriterException
+  href: Solti.Utils.Json.JsonWriterException.html
+  commentId: T:Solti.Utils.Json.JsonWriterException
+  fullName: Solti.Utils.Json.JsonWriterException
+  nameWithType: JsonWriterException
+- uid: Solti.Utils.Json.JsonWriterException.#ctor(System.String)
+  name: JsonWriterException(String)
+  href: Solti.Utils.Json.JsonWriterException.html#Solti_Utils_Json_JsonWriterException__ctor_System_String_
+  commentId: M:Solti.Utils.Json.JsonWriterException.#ctor(System.String)
+  fullName: Solti.Utils.Json.JsonWriterException.JsonWriterException(System.String)
+  nameWithType: JsonWriterException.JsonWriterException(String)
+- uid: Solti.Utils.Json.JsonWriterException.#ctor*
+  name: JsonWriterException
+  href: Solti.Utils.Json.JsonWriterException.html#Solti_Utils_Json_JsonWriterException__ctor_
+  commentId: Overload:Solti.Utils.Json.JsonWriterException.#ctor
+  fullName: Solti.Utils.Json.JsonWriterException.JsonWriterException
+  nameWithType: JsonWriterException.JsonWriterException
 - uid: Solti.Utils.Json.NumberDeserializationContextFactory
   name: NumberDeserializationContextFactory
   href: Solti.Utils.Json.NumberDeserializationContextFactory.html
