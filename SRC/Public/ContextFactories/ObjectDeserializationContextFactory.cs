@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -134,19 +133,20 @@ namespace Solti.Utils.Json
                     Expression.Assign(errorsParam, errors),
                     Expression.Equal(errors, Expression.Default(errors.Type))  // return errors == null
                 ]);
-                Expression<VerifyDelegate> verify = Expression.Lambda<VerifyDelegate>
-                (
-                    Expression.Block
-                    (
-                        variables: [instance, errors, errorsSection],
-                        validatorBlock
-                    ),
-                    instanceParam,
-                    errorsParam
-                );
-                Debug.WriteLine(verify.GetDebugView());
 
-                verifyDelegate = compiler.Register(verify);
+                verifyDelegate = compiler.Register
+                (
+                    Expression.Lambda<VerifyDelegate>
+                    (
+                        Expression.Block
+                        (
+                            variables: [instance, errors, errorsSection],
+                            validatorBlock
+                        ),
+                        instanceParam,
+                        errorsParam
+                    )
+                );
             }
         }
 

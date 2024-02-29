@@ -642,4 +642,94 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
         public override DeserializationContextFactory Factory => new DictionaryDeserializationContextFactory();
     }
+
+    [TestFixture]
+    public class ListDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<ListDeserializationContextFactoryTests>
+    {
+        private record Value
+        {
+            public int Prop { get; set; }
+        }
+
+        private class ValueHavingListProp
+        {
+            public IList<int>? Prop { get; set; }
+
+            public override bool Equals(object obj) => obj is ValueHavingListProp other && other.Prop.SequenceEqual(Prop);
+
+            public override int GetHashCode() => base.GetHashCode();
+        }
+
+        protected override bool Compare(object a, object b)
+        {
+            if (ReferenceEquals(a, b))
+                return true;
+
+            if (a is not IList lstA || b is not IList lstB)
+                return false;
+
+            if (lstA.Count != lstB.Count)
+                return false;
+
+            for (int i = 0; i < lstA.Count; i++)
+            {
+                if (!lstA[i].Equals(lstB[i]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(List<ValueHavingListProp>), null, "[{\"Prop\": [1]}, {\"Prop\": [2]}]", new List<ValueHavingListProp> { new ValueHavingListProp { Prop = [1] }, new ValueHavingListProp { Prop = [2] } }, JsonParserFlags.None);
+                yield return (typeof(List<Value>), null, "[{\"Prop\": 1}, {\"Prop\": 2}]", new List<Value> { new Value { Prop = 1 }, new Value { Prop = 2 } }, JsonParserFlags.None);
+                yield return (typeof(List<int>), null, "[1, 2]", new List<int> { 1, 2 }, JsonParserFlags.None);
+                yield return (typeof(List<string>), null, "[\"1\", \"2\"]", new List<string> { "1", "2" }, JsonParserFlags.None);
+                yield return (typeof(List<string>), null, "null", null!, JsonParserFlags.None);
+
+                yield return (typeof(IList<ValueHavingListProp>), null, "[{\"Prop\": [1]}, {\"Prop\": [2]}]", new List<ValueHavingListProp> { new ValueHavingListProp { Prop = [1] }, new ValueHavingListProp { Prop = [2] } }, JsonParserFlags.None);
+                yield return (typeof(IList<Value>), null, "[{\"Prop\": 1}, {\"Prop\": 2}]", new List<Value> { new Value { Prop = 1 }, new Value { Prop = 2 } }, JsonParserFlags.None);
+                yield return (typeof(IList<int>), null, "[1, 2]", new List<int> { 1, 2 }, JsonParserFlags.None);
+                yield return (typeof(IList<string>), null, "[\"1\", \"2\"]", new List<string> { "1", "2" }, JsonParserFlags.None);
+                yield return (typeof(IList<string>), null, "null", null!, JsonParserFlags.None);
+
+                yield return (typeof(ICollection<ValueHavingListProp>), null, "[{\"Prop\": [1]}, {\"Prop\": [2]}]", new List<ValueHavingListProp> { new ValueHavingListProp { Prop = [1] }, new ValueHavingListProp { Prop = [2] } }, JsonParserFlags.None);
+                yield return (typeof(ICollection<Value>), null, "[{\"Prop\": 1}, {\"Prop\": 2}]", new List<Value> { new Value { Prop = 1 }, new Value { Prop = 2 } }, JsonParserFlags.None);
+                yield return (typeof(ICollection<int>), null, "[1, 2]", new List<int> { 1, 2 }, JsonParserFlags.None);
+                yield return (typeof(ICollection<string>), null, "[\"1\", \"2\"]", new List<string> { "1", "2" }, JsonParserFlags.None);
+                yield return (typeof(ICollection<string>), null, "null", null!, JsonParserFlags.None);
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, string Input)> InvalidCases
+        {
+            get
+            {
+                yield break;
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(List<int>), 1);
+                yield return (typeof(IList<int>), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+            }
+        }
+
+        public override DeserializationContextFactory Factory => new ListDeserializationContextFactory();
+    }
+
 }
