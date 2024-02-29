@@ -97,6 +97,15 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid {0} found. Reason: &quot;{1}&quot;.
+        /// </summary>
+        internal static string INVALID_INPUT {
+            get {
+                return ResourceManager.GetString("INVALID_INPUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid instance.
         /// </summary>
         internal static string INVALID_INSTANCE {
@@ -115,20 +124,11 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid value  (row: {0}, col: {1}). Reason: &quot;{2}&quot;.
+        ///   Looks up a localized string similar to Invalid value. Reason: &quot;{0}&quot;.
         /// </summary>
         internal static string INVALID_VALUE {
             get {
                 return ResourceManager.GetString("INVALID_VALUE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Malformed {0} found (row: {1}, col: {2}). Reason: &quot;{3}&quot;.
-        /// </summary>
-        internal static string MALFORMED_VALUE {
-            get {
-                return ResourceManager.GetString("MALFORMED_VALUE", resourceCulture);
             }
         }
         
@@ -187,15 +187,6 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid input. Expected &quot;{0}&quot;, found &quot;{1}&quot; (row: {2}, col: {3})..
-        /// </summary>
-        internal static string UNEXPECTED_INPUT {
-            get {
-                return ResourceManager.GetString("UNEXPECTED_INPUT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unexpected list item.
         /// </summary>
         internal static string UNEXPECTED_LIST_ITEM {
@@ -214,20 +205,20 @@ namespace Solti.Utils.Json.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid input. Expected &quot;{0}&quot;, found &quot;{1}&quot;..
+        /// </summary>
+        internal static string UNEXPECTED_TOKEN {
+            get {
+                return ResourceManager.GetString("UNEXPECTED_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknwon control character.
         /// </summary>
         internal static string UNKNOWN_CTRL {
             get {
                 return ResourceManager.GetString("UNKNOWN_CTRL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Validation failed.
-        /// </summary>
-        internal static string VALIDATION_FAILED {
-            get {
-                return ResourceManager.GetString("VALIDATION_FAILED", resourceCulture);
             }
         }
     }

@@ -129,6 +129,9 @@
   <data name="INVALID_FORMAT_SPECIFIER" xml:space="preserve">
     <value>Invald format sepcifier</value>
   </data>
+  <data name="INVALID_INPUT" xml:space="preserve">
+    <value>Invalid {0} found. Reason: "{1}"</value>
+  </data>
   <data name="INVALID_INSTANCE" xml:space="preserve">
     <value>Invalid instance</value>
   </data>
@@ -136,10 +139,7 @@
     <value>Invalid type</value>
   </data>
   <data name="INVALID_VALUE" xml:space="preserve">
-    <value>Invalid value  (row: {0}, col: {1}). Reason: "{2}"</value>
-  </data>
-  <data name="MALFORMED_VALUE" xml:space="preserve">
-    <value>Malformed {0} found (row: {1}, col: {2}). Reason: "{3}"</value>
+    <value>Invalid value. Reason: "{0}"</value>
   </data>
   <data name="MAX_DEPTH_REACHED" xml:space="preserve">
     <value>Max depth reached</value>
@@ -159,19 +159,16 @@
   <data name="UNEXPECTED_CONTROL" xml:space="preserve">
     <value>Unexpected control character</value>
   </data>
-  <data name="UNEXPECTED_INPUT" xml:space="preserve">
-    <value>Invalid input. Expected "{0}", found "{1}" (row: {2}, col: {3}).</value>
-  </data>
   <data name="UNEXPECTED_LIST_ITEM" xml:space="preserve">
     <value>Unexpected list item</value>
   </data>
   <data name="UNEXPECTED_PROPERTY" xml:space="preserve">
     <value>Unexpected property</value>
   </data>
+  <data name="UNEXPECTED_TOKEN" xml:space="preserve">
+    <value>Invalid input. Expected "{0}", found "{1}".</value>
+  </data>
   <data name="UNKNOWN_CTRL" xml:space="preserve">
     <value>Unknwon control character</value>
-  </data>
-  <data name="VALIDATION_FAILED" xml:space="preserve">
-    <value>Validation failed</value>
   </data>
 </root>

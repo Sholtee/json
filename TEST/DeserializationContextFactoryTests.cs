@@ -64,7 +64,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
             StringReader content = new(testCase.Input);
 
-            Assert.Throws<InvalidOperationException>(() => parser.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default));
+            Assert.Throws<JsonParserException>(() => parser.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default));
         }
 
         [TestCaseSource(nameof(GetInvalidTypes))]
@@ -557,9 +557,8 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
             StringReader content = new("{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"}, \"Prop4\": 1, \"Prop5\": null }");
 
-            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => parser.Parse(content, Factory.CreateContext(typeof(CustomizedParent), null), default), Resources.VALIDATION_FAILED)!;
-            Assert.That(ex.Data, Contains.Key("errors"));
-            Assert.That(ex.Data["errors"], Has.One.With.EqualTo("value of \"Prop5\" cannot be null"));
+            JsonParserException ex = Assert.Throws<JsonParserException>(() => parser.Parse(content, Factory.CreateContext(typeof(CustomizedParent), null), default))!;
+            Assert.That(ex.Message, Does.Contain("value of \"Prop5\" cannot be null"));
         }
     }
 

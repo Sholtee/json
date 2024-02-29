@@ -117,7 +117,7 @@ namespace Solti.Utils.Json.Tests
             JsonWriter writer = new(maxDepth: 1);
 
             Assert.DoesNotThrow(() => writer.WriteList(new StringWriter(), new object[] { 1 }, SerializationContext.Untyped, 0, default, default));
-            Assert.Throws<InvalidOperationException>(() => writer.WriteList(new StringWriter(), new object[] { new object[] { 1 } }, SerializationContext.Untyped, 0, default, default));
+            Assert.Throws<JsonWriterException>(() => writer.WriteList(new StringWriter(), new object[] { new object[] { 1 } }, SerializationContext.Untyped, 0, default, default));
         }
 
         public static IEnumerable<object[]> WriteObject_ShouldStringifyTheGivenObject_Params
@@ -148,7 +148,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void Write_ShouldThrowIfTheInputIsNotSerializable()
         {
-            Assert.Throws<NotSupportedException>(() => new JsonWriter().Write(new StringWriter(), new { }, SerializationContext.Untyped, default));
+            Assert.Throws<JsonWriterException>(() => new JsonWriter().Write(new StringWriter(), new { }, SerializationContext.Untyped, default));
         }
 
         public static IEnumerable<object[]> Write_ShouldStringify_Params

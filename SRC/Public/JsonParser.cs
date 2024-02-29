@@ -32,52 +32,45 @@ namespace Solti.Utils.Json
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private int Deeper(int currentDepth)
+        private int Deeper(in Session session, int currentDepth)
         {
             if (++currentDepth > maxDepth)
-                throw new InvalidOperationException(MAX_DEPTH_REACHED);
+                Throw(in session, MAX_DEPTH_REACHED);
             return currentDepth;
         }
 
         /// <summary>
-        /// Throws the given <see cref="Exception"/> extending the <see cref="Exception.Data"/> with reader's position
+        /// Throws a <see cref="JsonParserException"/>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Throw(in Session session, Exception ex)
-        {
-            ex.Data["row"] = session.Row;
-            ex.Data["column"] = session.Column;
-            throw ex;
-        }
-
-        /// <summary>
-        /// Throws a <see cref="FormatException"/>
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void MalformedValue(in Session session, string type, string reason) => Throw
+        private static void Throw(in Session session, string message) => throw new JsonParserException
         (
-            session,
-            new FormatException
-            (
-                string.Format(Culture, MALFORMED_VALUE, type, session.Row, session.Column, reason)
-            )
+            message,
+            session.Column,
+            session.Row
         );
 
         /// <summary>
-        /// Throws an <see cref="InvalidOperationException"/>
+        /// Throws a <see cref="JsonParserException"/> if the JSON input cannot be parsed.
         /// </summary>
+        /// <remarks>When throwing this exception the reader is supposed to be positioned before the improper value.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void InvalidValue(in Session session, string reason, ICollection<string>? errors = null)
-        {
-            InvalidOperationException ex = new
-            (
-                string.Format(Culture, INVALID_VALUE, session.Row, session.Column, reason)
-            );
-            if (errors is not null)
-                ex.Data[nameof(errors)] = errors;
+        private static void InvalidInput(in Session session, string type, string reason) => Throw
+        (
+            in session,
+            string.Format(Culture, INVALID_INPUT, type, reason)
+        );
 
-            Throw(session, ex);
-        }
+        /// <summary>
+        /// Throws a <see cref="JsonParserException"/> if a parsed value is invalid (for instance a validation or conversion failed)
+        /// </summary>
+        /// <remarks>When throwing this exception the reader is supposed to be positioned after the improper value.</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void InvalidValue(in Session session, params string[] errors) => Throw
+        (
+            in session,
+            string.Format(Culture, INVALID_VALUE, string.Join(", ", errors))
+        );
 
         /// <summary>
         /// Advances the underlying text reader. It assumes that the row remains the same.
@@ -103,7 +96,7 @@ namespace Solti.Utils.Json
         );
 
         /// <summary>
-        /// Verifies the given <paramref name="delegate"/>
+        /// Verifies the given <paramref name="delegate"/> taken from the actual context and throws an <see cref="InvalidOperationException"/> if it is null
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static T VerifyDelegate<T>(T? @delegate, string handler) where T : Delegate => @delegate ?? throw new InvalidOperationException
@@ -188,11 +181,8 @@ namespace Solti.Utils.Json
 
                 Throw
                 (
-                    session,
-                    new FormatException
-                    (
-                        string.Format(UNEXPECTED_INPUT, expected, got, session.Row, session.Column)
-                    )
+                    in session,
+                    string.Format(UNEXPECTED_TOKEN, expected, got)
                 );
             return got;
         }
@@ -239,7 +229,7 @@ namespace Solti.Utils.Json
                 if (parsed == buffer.Length)
                 {
                     Advance(ref session, parsed);
-                    MalformedValue(in session, STRING_ID, INCOMPLETE_STR);
+                    InvalidInput(in session, STRING_ID, INCOMPLETE_STR);
                 }
 
                 for (; parsed < buffer.Length; parsed++)
@@ -267,7 +257,7 @@ namespace Solti.Utils.Json
                         Assert(parsed < session.Content.CharsLeft, "Miscalculated 'parsed' value");
                         Advance(ref session, parsed + 1);
 
-                        MalformedValue(in session, STRING_ID, UNEXPECTED_CONTROL);
+                        InvalidInput(in session, STRING_ID, UNEXPECTED_CONTROL);
                     }
 
                     if (c == '\\')
@@ -286,7 +276,7 @@ namespace Solti.Utils.Json
                                 //
 
                                 Advance(ref session, parsed);
-                                MalformedValue(in session, STRING_ID, INCOMPLETE_STR);
+                                InvalidInput(in session, STRING_ID, INCOMPLETE_STR);
                             }
                             bufferSize = buffer.Length;
                         }
@@ -325,7 +315,7 @@ namespace Solti.Utils.Json
                                         //
 
                                         Advance(ref session, parsed);
-                                        MalformedValue(in session, STRING_ID, INCOMPLETE_STR);
+                                        InvalidInput(in session, STRING_ID, INCOMPLETE_STR);
                                     }
                                     bufferSize = buffer.Length;
                                 }
@@ -350,7 +340,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(ref session, parsed);
-                                    MalformedValue(in session, STRING_ID, CANNOT_PARSE);
+                                    InvalidInput(in session, STRING_ID, CANNOT_PARSE);
                                 }
 
                                 //
@@ -375,7 +365,7 @@ namespace Solti.Utils.Json
                                     //
 
                                     Advance(ref session, parsed);
-                                    MalformedValue(in session, STRING_ID, UNKNOWN_CTRL);
+                                    InvalidInput(in session, STRING_ID, UNKNOWN_CTRL);
                                 }
                                 break;
                         }
@@ -399,6 +389,8 @@ namespace Solti.Utils.Json
         /// </summary>
         internal static object ParseNumber(ref Session session, in DeserializationContext currentContext, int initialBufferSize = 16 /*for debug*/)
         {
+            const string NUMBER_ID = "number";
+
             Span<char> buffer;
             bool isFloating = false;
 
@@ -432,7 +424,7 @@ namespace Solti.Utils.Json
 
             parse:
             if (!VerifyDelegate(currentContext.ParseNumber, nameof(currentContext.ParseNumber))(buffer.Slice(0, parsed), !isFloating, out object result))
-                InvalidValue(in session, CANNOT_PARSE);
+                InvalidInput(in session, NUMBER_ID, CANNOT_PARSE);
 
             //
             // Advance the reader if everything was all right
@@ -466,7 +458,7 @@ namespace Solti.Utils.Json
                 if (!getListItemContext(i, out DeserializationContext childContext))
                 {
                     if (flags.HasFlag(JsonParserFlags.ThrowOnUnknownListItem))
-                        MalformedValue(in session, LIST_ID, UNEXPECTED_LIST_ITEM);
+                        InvalidInput(in session, LIST_ID, UNEXPECTED_LIST_ITEM);
 
                     childContext = DeserializationContext.Default;
                 }
@@ -489,7 +481,7 @@ namespace Solti.Utils.Json
                     token = Consume(ref session, (JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, in currentContext);
 
                     if (token is JsonTokens.SquaredClose && !flags.HasFlag(JsonParserFlags.AllowTrailingComma))
-                        MalformedValue(in session, LIST_ID, MISSING_ITEM);
+                        InvalidInput(in session, LIST_ID, MISSING_ITEM);
                 }
             }
 
@@ -519,7 +511,7 @@ namespace Solti.Utils.Json
                 if (!getPropertyContext(propertyName, flags.HasFlag(JsonParserFlags.CaseInsensitive), out DeserializationContext childContext))
                 {
                     if (flags.HasFlag(JsonParserFlags.ThrowOnUnknownProperty))
-                        MalformedValue(in session, OBJECT_ID, UNEXPECTED_PROPERTY);
+                        InvalidInput(in session, OBJECT_ID, UNEXPECTED_PROPERTY);
 
                     childContext = DeserializationContext.Default;
                 }
@@ -545,7 +537,7 @@ namespace Solti.Utils.Json
                     token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, in currentContext);
 
                     if (token is JsonTokens.CurlyClose && !flags.HasFlag(JsonParserFlags.AllowTrailingComma))
-                        MalformedValue(in session, OBJECT_ID, MISSING_PROP);
+                        InvalidInput(in session, OBJECT_ID, MISSING_PROP);
                 }
             }
 
@@ -619,10 +611,10 @@ namespace Solti.Utils.Json
             switch (Consume(ref session, (JsonTokens) currentContext.SupportedTypes | JsonTokens.DoubleSlash, in currentContext)) 
             {
                 case JsonTokens.CurlyOpen:
-                    result = ParseObject(ref session, Deeper(currentDepth), in currentContext, in cancellation);
+                    result = ParseObject(ref session, Deeper(in session, currentDepth), in currentContext, in cancellation);
                     break;
                 case JsonTokens.SquaredOpen:
-                    result = ParseList(ref session, Deeper(currentDepth), in currentContext, in cancellation);
+                    result = ParseList(ref session, Deeper(in session, currentDepth), in currentContext, in cancellation);
                     break;
                 case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
                     if 
@@ -660,7 +652,7 @@ namespace Solti.Utils.Json
                 InvalidValue(in session, NOT_CONVERTIBLE);
 
             if (currentContext.Verify?.Invoke(result, out ICollection<string> errors) is false)
-                InvalidValue(in session, VALIDATION_FAILED, errors);
+                InvalidValue(in session, [..errors]);
 
             return result;
         }

@@ -61,7 +61,7 @@ namespace Solti.Utils.Json
         private int Deeper(int currentDepth)
         {
             if (++currentDepth > maxDepth)
-                throw new InvalidOperationException(MAX_DEPTH_REACHED);
+                throw new JsonWriterException(MAX_DEPTH_REACHED);
             return currentDepth;
         }
 
@@ -264,7 +264,7 @@ namespace Solti.Utils.Json
                     WriteObject(dest, val!, in currentContext, currentDepth, explicitIndent, in cancellation);
                     break;
                 default:
-                    throw new NotSupportedException(NOT_SERIALIZABLE);
+                    throw new JsonWriterException(NOT_SERIALIZABLE);
             }
         }
         #endregion
