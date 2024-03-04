@@ -84,9 +84,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             get
             {
                 yield return (typeof(MethodImplOptions), null, "256", MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
+                yield return (typeof(MethodImplOptions), null, "4352", MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, JsonParserFlags.None);
                 yield return (typeof(MethodImplOptions), null, "\"AggressiveInlining\"", MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
 
                 yield return (typeof(MethodImplOptions?), null, "256", (MethodImplOptions?) MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
+                yield return (typeof(MethodImplOptions?), null, "4352", MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, JsonParserFlags.None);
                 yield return (typeof(MethodImplOptions?), null, "\"AggressiveInlining\"", (MethodImplOptions?) MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
 
                 yield return (typeof(MethodImplOptions?), null, "null", null!, JsonParserFlags.None);
