@@ -132,7 +132,7 @@ namespace Solti.Utils.Json
                 ? type.GetGenericArguments().Single()
                 : type;
 
-            Func<int, bool> isValid = GetValidator();
+            Func<int, bool> isValidEnum = GetEnumValidator();
 
             ParameterExpression
                 input    = Expression.Parameter(typeof(ReadOnlySpan<char>), nameof(input)),
@@ -185,9 +185,9 @@ namespace Solti.Utils.Json
                 NumberStyles.Number,
                 CultureInfo.InvariantCulture,
                 out @int
-            ) && isValid(@int) ;
+            ) && isValidEnum(@int) ;
 
-            Func<int, bool> GetValidator()
+            Func<int, bool> GetEnumValidator()
             {
                 if (valueType.GetCustomAttribute<FlagsAttribute>() is null)
                     return val => Enum.IsDefined(valueType, val);
