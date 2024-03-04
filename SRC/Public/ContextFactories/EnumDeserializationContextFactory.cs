@@ -132,6 +132,8 @@ namespace Solti.Utils.Json
                 ? type.GetGenericArguments().Single()
                 : type;
 
+            Func<int, bool> isValid = GetValidator();
+
             ParameterExpression
                 input    = Expression.Parameter(typeof(ReadOnlySpan<char>), nameof(input)),
                 integral = Expression.Parameter(typeof(bool), nameof(integral)),
@@ -153,9 +155,9 @@ namespace Solti.Utils.Json
                     (
                         Expression.Not
                         (
-                            Expression.Call
+                            Expression.Invoke
                             (
-                                ((CheckValidDelegate) (CheckValid<int>)).Method.GetGenericMethodDefinition().MakeGenericMethod(valueType),
+                                Expression.Constant((CheckValidDelegate) CheckValid),
                                 input,
                                 @int
                             )
@@ -173,7 +175,7 @@ namespace Solti.Utils.Json
             Debug.WriteLine(expr.GetDebugView());
             return compiler.Register(expr);
 
-            static bool CheckValid<TEnum>(ReadOnlySpan<char> value, out int @int) => int.TryParse
+            bool CheckValid(ReadOnlySpan<char> value, out int @int) => int.TryParse
             (
 #if NETSTANDARD2_1_OR_GREATER
                 value,
@@ -183,8 +185,19 @@ namespace Solti.Utils.Json
                 NumberStyles.Number,
                 CultureInfo.InvariantCulture,
                 out @int
-            )
-            && Enum.IsDefined(typeof(TEnum), @int);
+            ) && isValid(@int) ;
+
+            Func<int, bool> GetValidator()
+            {
+                if (valueType.GetCustomAttribute<FlagsAttribute>() is null)
+                    return val => Enum.IsDefined(valueType, val);
+
+                int mask = 0;
+                foreach (object definedValue in Enum.GetValues(valueType))
+                    mask |= Convert.ToInt32(definedValue);
+
+                return val => (mask & val) == val;
+            }
         }
 
         private static DeserializationContext? CreateContextCore(Type type) => Cache.GetOrAdd(type, static type =>
