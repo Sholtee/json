@@ -43,6 +43,7 @@ namespace Solti.Utils.Json
 
         private static char[] GetSpacesAr(int len) => [..Environment.NewLine, ..Enumerable.Repeat(' ', len)];
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private char[] GetSpaces(int currentDepth)
         {
             int required = currentDepth * indent;
@@ -77,49 +78,52 @@ namespace Solti.Utils.Json
         /// Writes a JSON string to the underlying buffer representing the given <paramref name="str"/>.
         /// </summary>
         /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
-        internal void WriteString(TextWriterWrapper dest, object str, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteString(TextWriter dest, object str, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
-            if (str is not string s)
-                s = currentContext.ConvertToString(str);
-
+            ReadOnlySpan<char> s = str is string @string
+                ? @string.AsSpan()
+                : currentContext.ConvertToString(str, default);
+#if NETSTANDARD2_1_OR_GREATER
+            Span<char> ordBuffer = stackalloc char[4];
+#endif
             dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             dest.Write('"');
     
             for (int pos = 0; pos < s.Length;)
             {
-                ReadOnlySpan<char> charsLeft = s.AsSpan(pos);
+                ReadOnlySpan<char> charsLeft = s.Slice(pos);
 
                 for (int i = 0; i < charsLeft.Length; i++)
                 {
                     switch (charsLeft[i])
                     {
                         case '"':
-                            dest.Write(charsLeft.Slice(0, i));
+                            dest.Write(charsLeft, 0, i);
                             pos += i + 1;
                             dest.Write("\\\"");
                             goto nextChunk;
                         case '\r':
-                            dest.Write(charsLeft.Slice(0, i));
+                            dest.Write(charsLeft, 0, i);
                             pos += i + 1;
                             dest.Write("\\r");
                             goto nextChunk;
                         case '\n':
-                            dest.Write(charsLeft.Slice(0, i));
+                            dest.Write(charsLeft, 0, i);
                             pos += i + 1;
                             dest.Write("\\n");
                             goto nextChunk;
                         case '\\':
-                            dest.Write(charsLeft.Slice(0, i));
+                            dest.Write(charsLeft, 0, i);
                             pos += i + 1;
                             dest.Write("\\\\");
                             goto nextChunk;
                         case '\b':
-                            dest.Write(charsLeft.Slice(0, i));
+                            dest.Write(charsLeft, 0, i);
                             pos += i + 1;
                             dest.Write("\\b");
                             goto nextChunk;
                         case '\t':
-                            dest.Write(charsLeft.Slice(0, i));
+                            dest.Write(charsLeft, 0, i);
                             pos += i + 1;
                             dest.Write("\\t");
                             goto nextChunk;
@@ -133,21 +137,25 @@ namespace Solti.Utils.Json
                             else
                                 break;
 
-                            dest.Write(charsLeft.Slice(0, i));
+                            dest.Write(charsLeft);
                             pos += i + escape;
 
                             for (byte j = 0; j < escape; j++, i++)
                             {
                                 int ord = charsLeft[i];
                                 dest.Write("\\u");
-                                dest.WriteFormat(ord, "X4", CultureInfo.InvariantCulture);
+#if NETSTANDARD2_1_OR_GREATER
+                                dest.Write(ord.Format("X4", ordBuffer, CultureInfo.InvariantCulture));
+#else
+                                dest.Write(ord.ToString("X4", CultureInfo.InvariantCulture));
+#endif
                             }
 
                             goto nextChunk;
                     }
                 }
 
-                dest.Write(charsLeft);
+                dest.Write(charsLeft, 0, charsLeft.Length);
                 pos += charsLeft.Length;
 
                 nextChunk:
@@ -160,19 +168,19 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Writes the given value to the underlying buffer.
         /// </summary>
-        internal void WriteValue(TextWriterWrapper dest, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteValue(TextWriter dest, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
             dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             dest.Write
             (
-                currentContext.ConvertToString(val)
+                currentContext.ConvertToString(val, default)
             );
         }
 
         /// <summary>
         /// Writes the list value to the underlying buffer.
         /// </summary>
-        internal void WriteList(TextWriterWrapper dest, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
+        internal void WriteList(TextWriter dest, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
         {
             dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             dest.Write('[');
@@ -198,7 +206,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Writes the given object to the underlying buffer.
         /// </summary>
-        internal void WriteObject(TextWriterWrapper dest, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
+        internal void WriteObject(TextWriter dest, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
         {
             dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             dest.Write('{');
@@ -231,7 +239,7 @@ namespace Solti.Utils.Json
             dest.Write('}');
         }
 
-        internal void Write(TextWriterWrapper dest, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
+        internal void Write(TextWriter dest, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
         {
             cancellation.ThrowIfCancellationRequested();
 
@@ -255,7 +263,7 @@ namespace Solti.Utils.Json
                     throw new JsonWriterException(NOT_SERIALIZABLE);
             }
         }
-        #endregion
+#endregion
 
         public void Write(TextWriter dest, object? val, in SerializationContext context, in CancellationToken cancellation) => Write
         (

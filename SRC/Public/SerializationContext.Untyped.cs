@@ -16,12 +16,15 @@ namespace Solti.Utils.Json
     {
         public static readonly SerializationContext Untyped = new()
         {
-            ConvertToString = static val => val switch
-            {
-                bool b => b ? TRUE : FALSE,  // b.ToString() should be lowercased
-                null => NULL,
-                _ => Convert.ToString(val, CultureInfo.InvariantCulture)
-            },
+            ConvertToString = static (val, _) =>
+            (
+                val switch
+                {
+                    bool b => b ? TRUE : FALSE,  // b.ToString() should be lowercased
+                    null => NULL,
+                    _ => Convert.ToString(val, CultureInfo.InvariantCulture)
+                }
+            ).AsSpan(),
 
             GetTypeOf = static val => Convert.GetTypeCode(val) switch
             {

@@ -1,19 +1,19 @@
 ﻿/********************************************************************************
-* TextWriterWrapper.cs                                                          *
+* IFormattableExtensions.cs                                                     *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Solti.Utils.Json.Internals
 {
+#if NETSTANDARD2_1_OR_GREATER
     using Primitives;
 
-    internal sealed class TextWriterWrapper(TextWriter writer)
+    internal static class IFormattableExtensions
     {
         private static class TryFromat<T> where T : struct, IFormattable
         {
@@ -66,46 +66,14 @@ namespace Solti.Utils.Json.Internals
             }
         }
 
-        //
-        // Size supposed to be enough, if not, WriteFormat will fallback to the standard implementation
-        //
-
-        private readonly char[] FBuffer = new char[128];
-
-        public TextWriter Writer { get; } = writer;
-
-        public void WriteFormat<T>(T formattable, string format, IFormatProvider formatProvider) where T: struct, IFormattable
+        public static ReadOnlySpan<char> Format<T>(this T self, string format, Span<char> buffer, IFormatProvider formatProvider) where T : struct, IFormattable
         {
-            if (TryFromat<T>.Delegate?.Invoke(formattable, FBuffer.AsSpan(), out int charsWritten, format.AsSpan(), formatProvider) is true)
-            {
-                Writer.Write(FBuffer, 0, charsWritten);
-            }
-            else
-            {
-                Writer.Write(formattable.ToString(format, formatProvider));
-            }
+            if (TryFromat<T>.Delegate?.Invoke(self, buffer, out int charsWritten, format.AsSpan(), formatProvider) is true)
+                return buffer.Slice(0, charsWritten);
+
+            Debug.WriteLine("Cannot format the input. Using the legacy ToString() implemetation");
+            return self.ToString(format, formatProvider).AsSpan();
         }
-
-        public void Write(string val)
-        {
-            if (val.Length > 0)
-                Writer.Write(val);
-        }
-
-        public void Write(char val) => Writer.Write(val);
-
-        public void Write(ReadOnlySpan<char> val)
-        {
-            if (val.Length > 0)
-                Writer.Write
-                (
-                    val
-#if !NETSTANDARD2_1_OR_GREATER
-                        .ToArray()
-#endif
-                );
-        }
-
-        public static implicit operator TextWriterWrapper(TextWriter writer) => new(writer);
     }
+#endif
 }
