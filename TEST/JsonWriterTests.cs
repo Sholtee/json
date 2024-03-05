@@ -20,12 +20,15 @@ namespace Solti.Utils.Json.Tests
         {
             get
             {
-                foreach ((string Input, string Expected) in ToBeEscaped())
+                foreach (int chunkSize in new int[] { 1, 2, 3, 1024 })
                 {
-                    yield return new object[] { Input, Expected };
-                    yield return new object[] { "prefix-" + Input, "prefix-" + Expected };
-                    yield return new object[] { Input + "-suffix", Expected + "-suffix" };
-                    yield return new object[] { "prefix-" + Input + "-suffix", "prefix-" + Expected + "-suffix" };
+                    foreach ((string Input, string Expected) in ToBeEscaped())
+                    {
+                        yield return new object[] { Input, Expected, chunkSize };
+                        yield return new object[] { "prefix-" + Input, "prefix-" + Expected, chunkSize };
+                        yield return new object[] { Input + "-suffix", Expected + "-suffix", chunkSize };
+                        yield return new object[] { "prefix-" + Input + "-suffix", "prefix-" + Expected + "-suffix", chunkSize };
+                    }
                 }
 
                 static IEnumerable<(string, string)> ToBeEscaped() =>
@@ -43,21 +46,21 @@ namespace Solti.Utils.Json.Tests
         }
 
         [TestCaseSource(nameof(WriteString_ShouldEscape_Params))]
-        public void WriteString_ShouldEscape(string input, string expected)
+        public void WriteString_ShouldEscape(string input, string expected, int maxChunkSize)
         {
             StringWriter store = new();  // will be closed by the writer
 
-            new JsonWriter().WriteString(store, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(store, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"{expected}\""));
         }
 
         [Test]
-        public void WriteString_ShouldHandleRegularStrings([Values("", "c", "cica", "1986")] string input)
+        public void WriteString_ShouldHandleRegularStrings([Values("", "c", "cica", "1986")] string input, [Values(1, 2, 3, 1024)] int maxChunkSize)
         {
             StringWriter store = new();  // will be closed by the writer
  
-            new JsonWriter().WriteString(store, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(store, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(store.ToString(), Is.EqualTo($"\"{input}\""));
         }

@@ -24,7 +24,7 @@ namespace Solti.Utils.Json
     /// Represents a low-level, cancellable JSON writer.
     /// </summary>
     /// <remarks>This class is thread safe.</remarks>
-    public sealed class JsonWriter(int maxDepth = 64, byte indent = 2)
+    public sealed class JsonWriter(int maxDepth = 64, byte indent = 2, int maxChunkSize = 1024)
     {
         #region Private
         private static readonly char[][] FSpaces = GetAllSpaces(256);
@@ -93,7 +93,9 @@ namespace Solti.Utils.Json
             {
                 ReadOnlySpan<char> charsLeft = s.Slice(pos);
 
-                for (int i = 0; i < charsLeft.Length; i++)
+                int len = Math.Min(charsLeft.Length, maxChunkSize);
+
+                for (int i = 0; i < len; i++)
                 {
                     switch (charsLeft[i])
                     {
@@ -132,12 +134,12 @@ namespace Solti.Utils.Json
 
                             if (IsControl(charsLeft[i]))
                                 escape = 1;
-                            else if (i < charsLeft.Length - 1 && IsSurrogatePair(charsLeft[i], charsLeft[i + 1]))
+                            else if (i < charsLeft.Length - 1 /*override "len"*/ && IsSurrogatePair(charsLeft[i], charsLeft[i + 1]))
                                 escape = 2;
                             else
                                 break;
 
-                            dest.Write(charsLeft);
+                            dest.Write(charsLeft, 0, i);
                             pos += i + escape;
 
                             for (byte j = 0; j < escape; j++, i++)
@@ -155,8 +157,8 @@ namespace Solti.Utils.Json
                     }
                 }
 
-                dest.Write(charsLeft, 0, charsLeft.Length);
-                pos += charsLeft.Length;
+                dest.Write(charsLeft, 0, len);
+                pos += len;
 
                 nextChunk:
                 Debug.Assert(pos <= s.Length, "Miscalculated position");
