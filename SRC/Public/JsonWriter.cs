@@ -244,14 +244,7 @@ namespace Solti.Utils.Json
 
                 WriteString(in session, entry.Name!, in entry.Context, Deeper(currentDepth), null);
                 session.Dest.Write(':');
-                Write
-                (
-                    in session,
-                    entry.Value,
-                    in entry.Context,
-                    Deeper(currentDepth),
-                    FValueSeparator
-                );
+                Write(in session, entry.Value, in entry.Context, Deeper(currentDepth), FValueSeparator);
             }
 
             session.Dest.Write(GetSpaces(currentDepth));
