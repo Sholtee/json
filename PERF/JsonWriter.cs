@@ -84,11 +84,13 @@ namespace Solti.Utils.Json.Perf
         public void SetupWrite() => Writer = new();
 
         [Benchmark]
-        public void Write()
-        {
-            using StringWriter dest = new();
-
-            Writer.Write(dest, Param, SerializationContext.Untyped, CancellationToken.None);
-        }
+        public void Write() => Writer.Write
+        (
+            new StringWriter(),
+            closeDest: true,
+            Param,
+            SerializationContext.Untyped,
+            CancellationToken.None
+        );
     }
 }

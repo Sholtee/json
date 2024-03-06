@@ -71,7 +71,7 @@ namespace Solti.Utils.Json.Internals
             if (TryFromat<T>.Delegate?.Invoke(self, buffer, out int charsWritten, format.AsSpan(), formatProvider) is true)
                 return buffer.Slice(0, charsWritten);
 
-            Debug.WriteLine("Cannot format the input. Using the legacy ToString() implemetation");
+            Debug.WriteLine("Cannot format the input. Using the legacy ToString() implementation");
             return self.ToString(format, formatProvider).AsSpan();
         }
     }

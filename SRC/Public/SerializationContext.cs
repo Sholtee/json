@@ -25,8 +25,8 @@ namespace Solti.Utils.Json
         /// Converts the given object to its string representation.
         /// </summary>
         /// <param name="obj">Object to be converted</param>
-        /// <param name="buffer">128 characters long buffer to hold the converted string. If the buffer is long enough the returned span may point to it.</param>
-        public delegate ReadOnlySpan<char> ToStringDelegate(object? obj, Span<char> buffer);
+        /// <param name="buffer">Buffer to hold the converted string. If the buffer is insufficient the implementation is supposed to resize it</param>
+        public delegate ReadOnlySpan<char> ToStringDelegate(object? obj, Buffer<char> buffer);
 
         /// <summary>
         /// Gets the type of the given value.

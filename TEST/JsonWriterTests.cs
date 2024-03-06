@@ -13,6 +13,8 @@ using NUnit.Framework;
 
 namespace Solti.Utils.Json.Tests
 {
+    using static JsonWriter;
+
     [TestFixture]
     public class JsonWriterTests
     {
@@ -48,31 +50,31 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(WriteString_ShouldEscape_Params))]
         public void WriteString_ShouldEscape(string input, string expected, int maxChunkSize)
         {
-            StringWriter store = new();  // will be closed by the writer
+            using Session session = new(new StringWriter());
 
-            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(store, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(in session, input, SerializationContext.Untyped, 0, default);
 
-            Assert.That(store.ToString(), Is.EqualTo($"\"{expected}\""));
+            Assert.That(session.Dest.ToString(), Is.EqualTo($"\"{expected}\""));
         }
 
         [Test]
         public void WriteString_ShouldHandleRegularStrings([Values("", "c", "cica", "1986")] string input, [Values(1, 2, 3, 1024)] int maxChunkSize)
         {
-            StringWriter store = new();  // will be closed by the writer
- 
-            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(store, input, SerializationContext.Untyped, 0, default);
+            using Session session = new(new StringWriter());
 
-            Assert.That(store.ToString(), Is.EqualTo($"\"{input}\""));
+            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(in session, input, SerializationContext.Untyped, 0, default);
+
+            Assert.That(session.Dest.ToString(), Is.EqualTo($"\"{input}\""));
         }
 
         [Test]
         public void WriteString_ShouldConvert()
         {
-            StringWriter store = new();
+            using Session session = new(new StringWriter());
 
-            new JsonWriter().WriteString(store, 1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String }, 0, default);
+            new JsonWriter().WriteString(in session, 1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String }, 0, default);
 
-            Assert.That(store.ToString(), Is.EqualTo($"\"1986\""));
+            Assert.That(session.Dest.ToString(), Is.EqualTo($"\"1986\""));
         }
 
         [TestCase(null, "null")]
@@ -82,11 +84,11 @@ namespace Solti.Utils.Json.Tests
         [TestCase(1986.1026, "1986.1026")]
         public void WriteValue_ShouldStringifyTheGivenValue(object input, string expected)
         {
-            StringWriter store = new();
+            using Session session = new(new StringWriter());
 
-            new JsonWriter().WriteValue(store, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter().WriteValue(in session, input, SerializationContext.Untyped, 0, default);
 
-            Assert.That(store.ToString(), Is.EqualTo(expected));
+            Assert.That(session.Dest.ToString(), Is.EqualTo(expected));
         }
 
         public static IEnumerable<object[]> WriteList_ShouldStringifyTheGivenList_Params
@@ -107,11 +109,11 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(WriteList_ShouldStringifyTheGivenList_Params))]
         public void WriteList_ShouldStringifyTheGivenList(IList<object> input, byte spaces, string expected)
         {
-            StringWriter store = new();
+            using Session session = new(new StringWriter());
 
-            new JsonWriter(indent: spaces).WriteList(store, input, SerializationContext.Untyped, 0, default, default);
+            new JsonWriter(indent: spaces).WriteList(in session, input, SerializationContext.Untyped, 0, default);
 
-            Assert.That(store.ToString(), Is.EqualTo(expected));
+            Assert.That(session.Dest.ToString(), Is.EqualTo(expected));
         }
 
         [Test]
@@ -119,8 +121,14 @@ namespace Solti.Utils.Json.Tests
         {
             JsonWriter writer = new(maxDepth: 1);
 
-            Assert.DoesNotThrow(() => writer.WriteList(new StringWriter(), new object[] { 1 }, SerializationContext.Untyped, 0, default, default));
-            Assert.Throws<JsonWriterException>(() => writer.WriteList(new StringWriter(), new object[] { new object[] { 1 } }, SerializationContext.Untyped, 0, default, default));
+            Assert.DoesNotThrow(() => WriteList([1]));
+            Assert.Throws<JsonWriterException>(() => WriteList([new object[] { 1 }]));
+
+            void WriteList(IList<object> lst)
+            {
+                using Session session = new(new StringWriter());
+                writer.WriteList(session, lst, SerializationContext.Untyped, 0, default);
+            }
         }
 
         public static IEnumerable<object[]> WriteObject_ShouldStringifyTheGivenObject_Params
@@ -141,17 +149,17 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(WriteObject_ShouldStringifyTheGivenObject_Params))]
         public void WriteObject_ShouldStringifyTheGivenObject(IDictionary<string, object?> input, byte spaces, string expected)
         {
-            StringWriter store = new();
+            using Session session = new(new StringWriter());
 
-            new JsonWriter(indent: spaces).WriteObject(store, input, SerializationContext.Untyped, 0, default, default);
+            new JsonWriter(indent: spaces).WriteObject(in session, input, SerializationContext.Untyped, 0, default);
 
-            Assert.That(store.ToString(), Is.EqualTo(expected));
+            Assert.That(session.Dest.ToString(), Is.EqualTo(expected));
         }
 
         [Test]
         public void Write_ShouldThrowIfTheInputIsNotSerializable()
         {
-            Assert.Throws<JsonWriterException>(() => new JsonWriter().Write(new StringWriter(), new { }, SerializationContext.Untyped, default));
+            Assert.Throws<JsonWriterException>(() => new JsonWriter().Write(new StringWriter(), true, new { }, SerializationContext.Untyped, default));
         }
 
         public static IEnumerable<object[]> Write_ShouldStringify_Params
@@ -171,7 +179,7 @@ namespace Solti.Utils.Json.Tests
         {
             StringWriter store = new();
 
-            new JsonWriter().Write(store, input, SerializationContext.Untyped, default);
+            new JsonWriter().Write(store, true, input, SerializationContext.Untyped, default);
 
             Assert.That(store.ToString(), Is.EqualTo(expected));
         }
@@ -197,7 +205,7 @@ namespace Solti.Utils.Json.Tests
 
             StringWriter store = new();
 
-            new JsonWriter(indent: indent).Write(store, input, SerializationContext.Untyped, default);
+            new JsonWriter(indent: indent).Write(store, true, input, SerializationContext.Untyped, default);
 
             //
             // Skip BOM
@@ -217,6 +225,6 @@ namespace Solti.Utils.Json.Tests
 
         [Test]
         public void Write_ShouldBeNullChecked() =>
-            Assert.Throws<ArgumentNullException>(() => new JsonWriter().Write(null!, new object(), SerializationContext.Untyped, default));
+            Assert.Throws<ArgumentNullException>(() => new JsonWriter().Write(null!, true, new object(), SerializationContext.Untyped, default));
     }
 }

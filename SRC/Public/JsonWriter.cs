@@ -74,20 +74,40 @@ namespace Solti.Utils.Json
         #endregion
 
         #region Internal
+        internal readonly ref struct Session(TextWriter dest, bool closeDest = true, in CancellationToken cancellation = default)
+        {
+            public readonly TextWriter Dest = dest;
+
+            public readonly Buffer<char> Buffer = new(128);
+
+            public readonly CancellationToken CancellationToken = cancellation;
+
+            public void Dispose()
+            {
+                Buffer.Dispose();
+                if (closeDest)
+                    Dest.Dispose();
+            }
+        }
+
         /// <summary>
         /// Writes a JSON string to the underlying buffer representing the given <paramref name="str"/>.
         /// </summary>
         /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
-        internal void WriteString(TextWriter dest, object str, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteString(in Session session, object str, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
             ReadOnlySpan<char> s = str is string @string
                 ? @string.AsSpan()
-                : currentContext.ConvertToString(str, default);
+                : currentContext.ConvertToString(str, session.Buffer);
 #if NETSTANDARD2_1_OR_GREATER
+            //
+            // "session.Buffer" might be already in use so we need a separate buffer
+            //
+
             Span<char> ordBuffer = stackalloc char[4];
 #endif
-            dest.Write(explicitIndent ?? GetSpaces(currentDepth));
-            dest.Write('"');
+            session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
+            session.Dest.Write('"');
     
             for (int pos = 0; pos < s.Length;)
             {
@@ -100,34 +120,34 @@ namespace Solti.Utils.Json
                     switch (charsLeft[i])
                     {
                         case '"':
-                            dest.Write(charsLeft, 0, i);
+                            session.Dest.Write(charsLeft, 0, i);
                             pos += i + 1;
-                            dest.Write("\\\"");
+                            session.Dest.Write("\\\"");
                             goto nextChunk;
                         case '\r':
-                            dest.Write(charsLeft, 0, i);
+                            session.Dest.Write(charsLeft, 0, i);
                             pos += i + 1;
-                            dest.Write("\\r");
+                            session.Dest.Write("\\r");
                             goto nextChunk;
                         case '\n':
-                            dest.Write(charsLeft, 0, i);
+                            session.Dest.Write(charsLeft, 0, i);
                             pos += i + 1;
-                            dest.Write("\\n");
+                            session.Dest.Write("\\n");
                             goto nextChunk;
                         case '\\':
-                            dest.Write(charsLeft, 0, i);
+                            session.Dest.Write(charsLeft, 0, i);
                             pos += i + 1;
-                            dest.Write("\\\\");
+                            session.Dest.Write("\\\\");
                             goto nextChunk;
                         case '\b':
-                            dest.Write(charsLeft, 0, i);
+                            session.Dest.Write(charsLeft, 0, i);
                             pos += i + 1;
-                            dest.Write("\\b");
+                            session.Dest.Write("\\b");
                             goto nextChunk;
                         case '\t':
-                            dest.Write(charsLeft, 0, i);
+                            session.Dest.Write(charsLeft, 0, i);
                             pos += i + 1;
-                            dest.Write("\\t");
+                            session.Dest.Write("\\t");
                             goto nextChunk;
                         default:
                             byte escape;
@@ -139,17 +159,17 @@ namespace Solti.Utils.Json
                             else
                                 break;
 
-                            dest.Write(charsLeft, 0, i);
+                            session.Dest.Write(charsLeft, 0, i);
                             pos += i + escape;
 
                             for (byte j = 0; j < escape; j++, i++)
                             {
                                 int ord = charsLeft[i];
-                                dest.Write("\\u");
+                                session.Dest.Write("\\u");
 #if NETSTANDARD2_1_OR_GREATER
-                                dest.Write(ord.Format("X4", ordBuffer, CultureInfo.InvariantCulture));
+                                session.Dest.Write(ord.Format("X4", ordBuffer, CultureInfo.InvariantCulture));
 #else
-                                dest.Write(ord.ToString("X4", CultureInfo.InvariantCulture));
+                                session.Dest.Write(ord.ToString("X4", CultureInfo.InvariantCulture));
 #endif
                             }
 
@@ -157,35 +177,35 @@ namespace Solti.Utils.Json
                     }
                 }
 
-                dest.Write(charsLeft, 0, len);
+                session.Dest.Write(charsLeft, 0, len);
                 pos += len;
 
                 nextChunk:
                 Debug.Assert(pos <= s.Length, "Miscalculated position");
             }
 
-            dest.Write('"');
+            session.Dest.Write('"');
         }
 
         /// <summary>
         /// Writes the given value to the underlying buffer.
         /// </summary>
-        internal void WriteValue(TextWriter dest, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteValue(in Session session, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
-            dest.Write(explicitIndent ?? GetSpaces(currentDepth));
-            dest.Write
+            session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
+            session.Dest.Write
             (
-                currentContext.ConvertToString(val, default)
+                currentContext.ConvertToString(val, session.Buffer)
             );
         }
 
         /// <summary>
         /// Writes the list value to the underlying buffer.
         /// </summary>
-        internal void WriteList(TextWriter dest, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
+        internal void WriteList(in Session session, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
-            dest.Write(explicitIndent ?? GetSpaces(currentDepth));
-            dest.Write('[');
+            session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
+            session.Dest.Write('[');
 
             bool firstItem = true;
             foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
@@ -194,24 +214,24 @@ namespace Solti.Utils.Json
                     continue;
 
                 if (firstItem) firstItem = false;
-                else dest.Write(',');
+                else session.Dest.Write(',');
 
-                Write(dest, entry.Value, in entry.Context, Deeper(currentDepth), null, in cancellation);
+                Write(in session, entry.Value, in entry.Context, Deeper(currentDepth), null);
             }
 
-            dest.Write(GetSpaces(currentDepth));
+            session.Dest.Write(GetSpaces(currentDepth));
             if (currentDepth is 0 && indent > 0)
-                dest.Write(Environment.NewLine);
-            dest.Write(']');
+                session.Dest.Write(Environment.NewLine);
+            session.Dest.Write(']');
         }
 
         /// <summary>
         /// Writes the given object to the underlying buffer.
         /// </summary>
-        internal void WriteObject(TextWriter dest, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
+        internal void WriteObject(in Session session, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
-            dest.Write(explicitIndent ?? GetSpaces(currentDepth));
-            dest.Write('{');
+            session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
+            session.Dest.Write('{');
 
             bool firstItem = true;
             foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
@@ -220,61 +240,64 @@ namespace Solti.Utils.Json
                     continue;
 
                 if (firstItem) firstItem = false;
-                else dest.Write(',');
+                else session.Dest.Write(',');
 
-                WriteString(dest, entry.Name!, in entry.Context, Deeper(currentDepth), null);
-                dest.Write(':');
+                WriteString(in session, entry.Name!, in entry.Context, Deeper(currentDepth), null);
+                session.Dest.Write(':');
                 Write
                 (
-                    dest,
+                    in session,
                     entry.Value,
                     in entry.Context,
                     Deeper(currentDepth),
-                    FValueSeparator,
-                    in cancellation
+                    FValueSeparator
                 );
             }
 
-            dest.Write(GetSpaces(currentDepth));
+            session.Dest.Write(GetSpaces(currentDepth));
             if (currentDepth is 0 && indent > 0)
-                dest.Write(Environment.NewLine);
-            dest.Write('}');
+                session.Dest.Write(Environment.NewLine);
+            session.Dest.Write('}');
         }
 
-        internal void Write(TextWriter dest, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent, in CancellationToken cancellation)
+        internal void Write(in Session session, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
-            cancellation.ThrowIfCancellationRequested();
+            session.CancellationToken.ThrowIfCancellationRequested();
 
             switch (VerifyDelegate(currentContext.GetTypeOf)(val))
             {
                 case JsonDataTypes.Number:
                 case JsonDataTypes.Boolean:
                 case JsonDataTypes.Null:
-                    WriteValue(dest, val, in currentContext, currentDepth, explicitIndent);
+                    WriteValue(in session, val, in currentContext, currentDepth, explicitIndent);
                     break;
                 case JsonDataTypes.String:
-                    WriteString(dest, val!, in currentContext, currentDepth, explicitIndent);
+                    WriteString(in session, val!, in currentContext, currentDepth, explicitIndent);
                     break;
                 case JsonDataTypes.List:
-                    WriteList(dest, val!, in currentContext, currentDepth, explicitIndent, in cancellation);
+                    WriteList(in session, val!, in currentContext, currentDepth, explicitIndent);
                     break;
                 case JsonDataTypes.Object:
-                    WriteObject(dest, val!, in currentContext, currentDepth, explicitIndent, in cancellation);
+                    WriteObject(in session, val!, in currentContext, currentDepth, explicitIndent);
                     break;
                 default:
                     throw new JsonWriterException(NOT_SERIALIZABLE);
             }
         }
-#endregion
+        #endregion
 
-        public void Write(TextWriter dest, object? val, in SerializationContext context, in CancellationToken cancellation) => Write
-        (
-            dest ?? throw new ArgumentNullException(nameof(dest)),
-            val,
-            in context,
-            0,
-            null,
-            in cancellation
-        );
+        /// <summary>
+        /// Serializes the given <paramref name="value"/>.
+        /// </summary>
+        /// <param name="dest">The destination that holds the serialized content.</param>
+        /// <param name="closeDest">If set to true, the system disposes the <paramref name="dest"/> before this function would return.</param>
+        /// <param name="value">Value to be serialized</param>
+        /// <param name="context">Context that instructs the system how to serialize the input.</param>
+        /// <param name="cancellation"><see cref="CancellationToken"/></param>
+        public void Write(TextWriter dest, bool closeDest, object? value, in SerializationContext context, in CancellationToken cancellation)
+        {
+            using Session session = new(dest ?? throw new ArgumentNullException(nameof(dest)), closeDest, in cancellation);
+            Write(in session, value, in context, 0, null);
+        }
     }
 }
