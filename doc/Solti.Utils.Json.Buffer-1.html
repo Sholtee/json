@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class JsonWriter
+    <title>Class Buffer&lt;T&gt;
    | Solti.Utils.Json </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class JsonWriter
+    <meta name="title" content="Class Buffer&lt;T&gt;
    | Solti.Utils.Json ">
     <meta name="generator" content="docfx 2.59.3.0">
     
@@ -37,33 +37,48 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.Json.JsonWriter">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.Json.Buffer`1">
   
   
-  <h1 id="Solti_Utils_Json_JsonWriter" data-uid="Solti.Utils.Json.JsonWriter" class="text-break">Class JsonWriter
+  <h1 id="Solti_Utils_Json_Buffer_1" data-uid="Solti.Utils.Json.Buffer`1" class="text-break">Class Buffer&lt;T&gt;
   </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">JsonWriter</span></div>
+    <div class="level1"><span class="xref">Buffer&lt;T&gt;</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.Json.html">Solti.Utils.Json</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.Json.dll</h6>
-  <h5 id="Solti_Utils_Json_JsonWriter_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_Json_Buffer_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class JsonWriter : Object</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class Buffer&lt;T&gt; : ValueType</code></pre>
   </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="constructors">Constructors
   </h3>
-  <a id="Solti_Utils_Json_JsonWriter__ctor_" data-uid="Solti.Utils.Json.JsonWriter.#ctor*"></a>
-  <h4 id="Solti_Utils_Json_JsonWriter__ctor_System_Int32_System_Byte_System_Int32_" data-uid="Solti.Utils.Json.JsonWriter.#ctor(System.Int32,System.Byte,System.Int32)">JsonWriter(Int32, Byte, Int32)</h4>
+  <a id="Solti_Utils_Json_Buffer_1__ctor_" data-uid="Solti.Utils.Json.Buffer`1.#ctor*"></a>
+  <h4 id="Solti_Utils_Json_Buffer_1__ctor_System_Int32_" data-uid="Solti.Utils.Json.Buffer`1.#ctor(System.Int32)">Buffer(Int32)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public JsonWriter(int maxDepth = 64, byte indent = 2, int maxChunkSize = 1024)</code></pre>
+    <pre><code class="lang-csharp hljs">public Buffer(int initialSize)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -77,30 +92,53 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">maxDepth</span></td>
+        <td><span class="parametername">initialSize</span></td>
         <td></td>
       </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_Json_Buffer_1_Value_" data-uid="Solti.Utils.Json.Buffer`1.Value*"></a>
+  <h4 id="Solti_Utils_Json_Buffer_1_Value" data-uid="Solti.Utils.Json.Buffer`1.Value">Value</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Span&lt;T&gt; Value { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a></td>
-        <td><span class="parametername">indent</span></td>
-        <td></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
+    </thead>
+    <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">maxChunkSize</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.span-1">Span</a>&lt;T&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
   </h3>
-  <a id="Solti_Utils_Json_JsonWriter_Write_" data-uid="Solti.Utils.Json.JsonWriter.Write*"></a>
-  <h4 id="Solti_Utils_Json_JsonWriter_Write_System_IO_TextWriter_System_Boolean_System_Object_Solti_Utils_Json_SerializationContext__System_Threading_CancellationToken__" data-uid="Solti.Utils.Json.JsonWriter.Write(System.IO.TextWriter,System.Boolean,System.Object,Solti.Utils.Json.SerializationContext@,System.Threading.CancellationToken@)">Write(TextWriter, Boolean, Object, in SerializationContext, in CancellationToken)</h4>
+  <a id="Solti_Utils_Json_Buffer_1_Dispose_" data-uid="Solti.Utils.Json.Buffer`1.Dispose*"></a>
+  <h4 id="Solti_Utils_Json_Buffer_1_Dispose" data-uid="Solti.Utils.Json.Buffer`1.Dispose">Dispose()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Write(TextWriter dest, bool closeDest, object value, in SerializationContext context, in CancellationToken cancellation)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <a id="Solti_Utils_Json_Buffer_1_Resize_" data-uid="Solti.Utils.Json.Buffer`1.Resize*"></a>
+  <h4 id="Solti_Utils_Json_Buffer_1_Resize_System_Int32_" data-uid="Solti.Utils.Json.Buffer`1.Resize(System.Int32)">Resize(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Resize(int newSize)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -113,28 +151,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a></td>
-        <td><span class="parametername">dest</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">closeDest</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">value</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.Json.SerializationContext.html">SerializationContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">cancellation</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">newSize</span></td>
         <td></td>
       </tr>
     </tbody>
