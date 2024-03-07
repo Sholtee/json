@@ -1731,15 +1731,6 @@ references:
   commentId: Overload:Solti.Utils.Json.SerializationContext.EnumEntriesDelegate.Invoke
   fullName: Solti.Utils.Json.SerializationContext.EnumEntriesDelegate.Invoke
   nameWithType: SerializationContext.EnumEntriesDelegate.Invoke
-- uid: Solti.Utils.Json.SerializationContext.Equals(Solti.Utils.Json.SerializationContext@)
-  name: Equals(in SerializationContext)
-  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Equals_Solti_Utils_Json_SerializationContext__
-  commentId: M:Solti.Utils.Json.SerializationContext.Equals(Solti.Utils.Json.SerializationContext@)
-  name.vb: Equals(ByRef SerializationContext)
-  fullName: Solti.Utils.Json.SerializationContext.Equals(in Solti.Utils.Json.SerializationContext)
-  fullName.vb: Solti.Utils.Json.SerializationContext.Equals(ByRef Solti.Utils.Json.SerializationContext)
-  nameWithType: SerializationContext.Equals(in SerializationContext)
-  nameWithType.vb: SerializationContext.Equals(ByRef SerializationContext)
 - uid: Solti.Utils.Json.SerializationContext.Equals(System.Object)
   name: Equals(Object)
   href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Equals_System_Object_
