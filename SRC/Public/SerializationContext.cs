@@ -52,9 +52,5 @@ namespace Solti.Utils.Json
         /// If supported, enumerates the list/object entries alongside their serialization context.
         /// </summary>
         public EnumEntriesDelegate? EnumEntries { get; init; }
-
-        public override bool Equals(object obj) => throw new NotSupportedException();
-
-        public override int GetHashCode() => throw new NotSupportedException();
     }
 }
