@@ -56,10 +56,5 @@ namespace Solti.Utils.Json
         public override bool Equals(object obj) => throw new NotSupportedException();
 
         public override int GetHashCode() => throw new NotSupportedException();
-
-        public bool Equals(in SerializationContext other) =>
-            GetTypeOf == other.GetTypeOf &&
-            ConvertToString == other.ConvertToString &&
-            EnumEntries == other.EnumEntries;
     }
 }

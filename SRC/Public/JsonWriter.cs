@@ -210,9 +210,6 @@ namespace Solti.Utils.Json
             bool firstItem = true;
             foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
-                if (entry.Context.Equals(in Default))
-                    continue;
-
                 if (firstItem) firstItem = false;
                 else session.Dest.Write(',');
 
@@ -236,9 +233,6 @@ namespace Solti.Utils.Json
             bool firstItem = true;
             foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
-                if (entry.Context.Equals(in Default))
-                    continue;
-
                 if (firstItem) firstItem = false;
                 else session.Dest.Write(',');
 
