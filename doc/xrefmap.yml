@@ -1731,30 +1731,6 @@ references:
   commentId: Overload:Solti.Utils.Json.SerializationContext.EnumEntriesDelegate.Invoke
   fullName: Solti.Utils.Json.SerializationContext.EnumEntriesDelegate.Invoke
   nameWithType: SerializationContext.EnumEntriesDelegate.Invoke
-- uid: Solti.Utils.Json.SerializationContext.Equals(System.Object)
-  name: Equals(Object)
-  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Equals_System_Object_
-  commentId: M:Solti.Utils.Json.SerializationContext.Equals(System.Object)
-  fullName: Solti.Utils.Json.SerializationContext.Equals(System.Object)
-  nameWithType: SerializationContext.Equals(Object)
-- uid: Solti.Utils.Json.SerializationContext.Equals*
-  name: Equals
-  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Equals_
-  commentId: Overload:Solti.Utils.Json.SerializationContext.Equals
-  fullName: Solti.Utils.Json.SerializationContext.Equals
-  nameWithType: SerializationContext.Equals
-- uid: Solti.Utils.Json.SerializationContext.GetHashCode
-  name: GetHashCode()
-  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_GetHashCode
-  commentId: M:Solti.Utils.Json.SerializationContext.GetHashCode
-  fullName: Solti.Utils.Json.SerializationContext.GetHashCode()
-  nameWithType: SerializationContext.GetHashCode()
-- uid: Solti.Utils.Json.SerializationContext.GetHashCode*
-  name: GetHashCode
-  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_GetHashCode_
-  commentId: Overload:Solti.Utils.Json.SerializationContext.GetHashCode
-  fullName: Solti.Utils.Json.SerializationContext.GetHashCode
-  nameWithType: SerializationContext.GetHashCode
 - uid: Solti.Utils.Json.SerializationContext.GetTypeDelegate
   name: SerializationContext.GetTypeDelegate
   href: Solti.Utils.Json.SerializationContext.GetTypeDelegate.html
