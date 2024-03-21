@@ -106,9 +106,10 @@ namespace Solti.Utils.Json
         #endregion
 
         #region Internal
-        internal ref struct Session(TextReaderWrapper content)
+        internal ref struct Session(TextReaderWrapper content, in CancellationToken cancellation = default)
         {
             public readonly TextReaderWrapper Content = content;
+            public readonly CancellationToken Cancellation = cancellation;
             public int Row;
             public int Column;
         }
@@ -437,7 +438,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the list which the reader is positioned on. Returns null if the whole list had to be ingored.
         /// </summary>
-        internal object? ParseList(ref Session session, int currentDepth, in DeserializationContext currentContext, in CancellationToken cancellation)
+        internal object? ParseList(ref Session session, int currentDepth, in DeserializationContext currentContext)
         {
             const string LIST_ID = "list";
 
@@ -463,7 +464,7 @@ namespace Solti.Utils.Json
                     childContext = DeserializationContext.Default;
                 }
 
-                object? val = Parse(ref session, currentDepth, in childContext, in cancellation);
+                object? val = Parse(ref session, currentDepth, in childContext);
                 VerifyDelegate(childContext.Push, nameof(childContext.Push))(list, val);
 
                 //
@@ -493,7 +494,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the object which the reader is positioned on. Returns null if the whole object had to be ingored.
         /// </summary>
-        internal object? ParseObject(ref Session session, int currentDepth, in DeserializationContext currentContext, in CancellationToken cancellation)
+        internal object? ParseObject(ref Session session, int currentDepth, in DeserializationContext currentContext)
         {
             const string OBJECT_ID = "object";
 
@@ -519,7 +520,7 @@ namespace Solti.Utils.Json
                 Consume(ref session, JsonTokens.Colon, in currentContext);
                 Advance(ref session, 1);
 
-                object? val = Parse(ref session, currentDepth, in childContext, in cancellation);
+                object? val = Parse(ref session, currentDepth, in childContext);
                 VerifyDelegate(childContext.Push, nameof(currentContext.Push))(obj, val);
 
                 //
@@ -602,19 +603,19 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the input then validates the result.
         /// </summary>
-        internal object? Parse(ref Session session, int currentDepth, in DeserializationContext currentContext, in CancellationToken cancellation)
+        internal object? Parse(ref Session session, int currentDepth, in DeserializationContext currentContext)
         {
-            cancellation.ThrowIfCancellationRequested();
+            session.Cancellation.ThrowIfCancellationRequested();
 
             object? result;
 
             switch (Consume(ref session, (JsonTokens) currentContext.SupportedTypes | JsonTokens.DoubleSlash, in currentContext)) 
             {
                 case JsonTokens.CurlyOpen:
-                    result = ParseObject(ref session, Deeper(in session, currentDepth), in currentContext, in cancellation);
+                    result = ParseObject(ref session, Deeper(in session, currentDepth), in currentContext);
                     break;
                 case JsonTokens.SquaredOpen:
-                    result = ParseList(ref session, Deeper(in session, currentDepth), in currentContext, in cancellation);
+                    result = ParseList(ref session, Deeper(in session, currentDepth), in currentContext);
                     break;
                 case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
                     if 
@@ -665,9 +666,9 @@ namespace Solti.Utils.Json
         {
             using TextReaderWrapper contentWrapper = content ?? throw new ArgumentNullException(nameof(content));
 
-            Session session = new(contentWrapper);
+            Session session = new(contentWrapper, in cancellation);
 
-            object? result = Parse(ref session, 0, in context, in cancellation);
+            object? result = Parse(ref session, 0, in context);
 
             //
             // Parse trailing comments properly.

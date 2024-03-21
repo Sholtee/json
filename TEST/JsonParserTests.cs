@@ -563,7 +563,7 @@ namespace Solti.Utils.Json.Tests
             JsonParserException ex = Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                parser.ParseList(ref session, 0, DeserializationContext.Untyped, default);
+                parser.ParseList(ref session, 0, DeserializationContext.Untyped);
             })!;
             Assert.That(ex.Column, Is.EqualTo(errorPos));
         }
@@ -578,7 +578,7 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<InvalidOperationException>(() =>
             {
                 Session session = new(content);
-                parser.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = null }, default);
+                parser.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = null });
             });
         }
 
@@ -609,7 +609,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(parser.ParseList(ref session, 0, DeserializationContext.Untyped, default), Is.EquivalentTo(expected));
+            Assert.That(parser.ParseList(ref session, 0, DeserializationContext.Untyped), Is.EquivalentTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -635,8 +635,7 @@ namespace Solti.Utils.Json.Tests
                             DeserializationContext.Untyped.GetListItemContext!(i, out ctx);
                             return i != 1;
                         }
-                    },
-                    default
+                    }
                 ), Is.EquivalentTo(new List<object?> { 1, 3 })
             );
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
@@ -663,8 +662,7 @@ namespace Solti.Utils.Json.Tests
                             DeserializationContext.Untyped.GetListItemContext!(i, out ctx);
                             return i != 1;
                         }
-                    },
-                    default
+                    }
                 );
             })!;
             Assert.That(ex.Column, Is.EqualTo(4));
@@ -687,7 +685,7 @@ namespace Solti.Utils.Json.Tests
             JsonParserException ex = Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                parser.ParseObject(ref session, 0, DeserializationContext.Untyped, default);
+                parser.ParseObject(ref session, 0, DeserializationContext.Untyped);
             })!;
             Assert.That(ex.Column, Is.EqualTo(errorPos));
         }
@@ -702,7 +700,7 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<InvalidOperationException>(() =>
             {
                 Session session = new(content);
-                parser.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = null }, default);
+                parser.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = null });
             });
         }
 
@@ -733,7 +731,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(parser.ParseObject(ref session, 0, DeserializationContext.Untyped, default), Is.EquivalentTo(expected));
+            Assert.That(parser.ParseObject(ref session, 0, DeserializationContext.Untyped), Is.EquivalentTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -759,8 +757,7 @@ namespace Solti.Utils.Json.Tests
                             DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase, out ctx);
                             return !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
                         }
-                    },
-                    default
+                    }
                 ),
                 Is.EquivalentTo(new Dictionary<string, object?> { { "1", 1 }, { "3", 3 } })
             );
@@ -788,8 +785,7 @@ namespace Solti.Utils.Json.Tests
                             DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase, out ctx);
                             return !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
                         }
-                    },
-                    default
+                    }
                 );
             })!;
             Assert.That(ex.Column, Is.EqualTo(12));
