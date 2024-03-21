@@ -4,20 +4,21 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
 
 namespace Solti.Utils.Json
 {
     public readonly partial struct SerializationContext
     {
-        public readonly struct Entry(in SerializationContext context, object? value, string? name = null)
+        public readonly ref struct Entry(in SerializationContext context, object? value, string? name = null)
         {
             public readonly SerializationContext Context = context;
             public readonly string? Name = name;
             public readonly object? Value = value;
         }
 
-        public delegate IEnumerable<Entry> EnumEntriesDelegate(object value);
+        public delegate bool EntryEnumerator(out Entry entry);
+
+        public delegate EntryEnumerator EnumEntriesDelegate(object value);
 
         public delegate JsonDataTypes GetTypeDelegate(object? obj);
 

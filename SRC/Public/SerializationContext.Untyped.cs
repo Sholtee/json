@@ -37,27 +37,51 @@ namespace Solti.Utils.Json
                 _ => JsonDataTypes.Unkown
             },
 
-            EnumEntries = EnumEntriesImpl
-        };
-
-        private static IEnumerable<Entry> EnumEntriesImpl(object val)
-        {
-            switch (val)
+            EnumEntries = static val =>
             {
-                case IList<object?> lst:
-                    foreach (object? item in lst)
+                switch (val)
+                {
+                    case IList<object?> lst:
                     {
-                        yield return new Entry(in Untyped, item);
+                        IEnumerator<object?>? values = lst.GetEnumerator(); 
+                        return (out Entry entry) =>
+                        {
+                            if (values is not null)
+                            {
+                                if (values.MoveNext())
+                                {
+                                    entry = new Entry(in Untyped, values.Current);
+                                    return true;
+                                }
+                                values.Dispose();
+                                values = null;
+                            }
+                            entry = default;
+                            return false;
+                        };
                     }
-                    break;
-                case IDictionary<string, object?> dict:
-                    foreach (KeyValuePair<string, object?> entry in dict)
+                    case IDictionary<string, object?> dict:
                     {
-                        yield return new Entry(in Untyped, entry.Value, entry.Key);
+                        IEnumerator<string>? keys = dict.Keys.GetEnumerator();
+                        return (out Entry entry) =>
+                        {
+                            if (keys is not null)
+                            {
+                                if (keys.MoveNext())
+                                {
+                                    entry = new Entry(in Untyped, dict[keys.Current], keys.Current);
+                                    return true;
+                                }
+                                keys.Dispose();
+                                keys = null;
+                            }
+                            entry = default;
+                            return false;
+                        };
                     }
-                    break;
-                default: throw new ArgumentException(INVALID_VALUE, nameof(val));
-            }
-        }
+                    default: throw new ArgumentException(INVALID_VALUE, nameof(val));
+                }
+            }!
+        };
     }
 }
