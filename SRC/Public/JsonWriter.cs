@@ -41,7 +41,6 @@ namespace Solti.Utils.Json
             return spaces;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static char[] GetSpacesAr(int len) => [..Environment.NewLine, ..Enumerable.Repeat(' ', len)];
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -208,8 +207,8 @@ namespace Solti.Utils.Json
             session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             session.Dest.Write('[');
 
-            EntryEnumerator nextEntry = VerifyDelegate(currentContext.EnumEntries)(val);
-            for (bool firstItem = true; nextEntry(out Entry entry);)
+            bool firstItem = true;
+            foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
                 if (firstItem) firstItem = false;
                 else session.Dest.Write(',');
@@ -231,8 +230,8 @@ namespace Solti.Utils.Json
             session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             session.Dest.Write('{');
 
-            EntryEnumerator nextEntry = VerifyDelegate(currentContext.EnumEntries)(val);
-            for (bool firstItem = true; nextEntry(out Entry entry);)
+            bool firstItem = true;
+            foreach (Entry entry in VerifyDelegate(currentContext.EnumEntries)(val))
             {
                 if (firstItem) firstItem = false;
                 else session.Dest.Write(',');
