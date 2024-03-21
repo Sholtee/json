@@ -68,31 +68,24 @@ namespace Solti.Utils.Json
         #endregion
 
         #region Internal
-        internal readonly ref struct Session(TextWriter dest, bool closeDest = true, in CancellationToken cancellation = default)
+        internal ref struct Session(TextWriter dest, in CancellationToken cancellation = default)
         {
             public readonly TextWriter Dest = dest;
 
-            public readonly Buffer<char> Buffer = new(128);
+            public char[] Buffer = MemoryPool<char>.Get();
 
             public readonly CancellationToken CancellationToken = cancellation;
-
-            public void Dispose()
-            {
-                Buffer.Dispose();
-                if (closeDest)
-                    Dest.Dispose();
-            }
         }
 
         /// <summary>
         /// Writes a JSON string to the underlying buffer representing the given <paramref name="str"/>.
         /// </summary>
         /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
-        internal void WriteString(in Session session, object str, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteString(ref Session session, object str, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
             ReadOnlySpan<char> s = str is string @string
                 ? @string.AsSpan()
-                : currentContext.ConvertToString(str, session.Buffer);
+                : currentContext.ConvertToString(str, ref session.Buffer);
 #if NETSTANDARD2_1_OR_GREATER
             //
             // "session.Buffer" might be already in use so we need a separate buffer
@@ -184,19 +177,19 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Writes the given value to the underlying buffer.
         /// </summary>
-        internal void WriteValue(in Session session, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteValue(ref Session session, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
             session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             session.Dest.Write
             (
-                currentContext.ConvertToString(val, session.Buffer)
+                currentContext.ConvertToString(val, ref session.Buffer)
             );
         }
 
         /// <summary>
         /// Writes the list value to the underlying buffer.
         /// </summary>
-        internal void WriteList(in Session session, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteList(ref Session session, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
             session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             session.Dest.Write('[');
@@ -207,7 +200,7 @@ namespace Solti.Utils.Json
                 if (firstItem) firstItem = false;
                 else session.Dest.Write(',');
 
-                Write(in session, entry.Value, in entry.Context, Deeper(currentDepth), null);
+                Write(ref session, entry.Value, in entry.Context, Deeper(currentDepth), null);
             }
 
             session.Dest.Write(GetSpaces(currentDepth));
@@ -219,7 +212,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Writes the given object to the underlying buffer.
         /// </summary>
-        internal void WriteObject(in Session session, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void WriteObject(ref Session session, object val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
             session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             session.Dest.Write('{');
@@ -230,9 +223,9 @@ namespace Solti.Utils.Json
                 if (firstItem) firstItem = false;
                 else session.Dest.Write(',');
 
-                WriteString(in session, entry.Name!, in entry.Context, Deeper(currentDepth), null);
+                WriteString(ref session, entry.Name!, in entry.Context, Deeper(currentDepth), null);
                 session.Dest.Write(':');
-                Write(in session, entry.Value, in entry.Context, Deeper(currentDepth), FValueSeparator);
+                Write(ref session, entry.Value, in entry.Context, Deeper(currentDepth), FValueSeparator);
             }
 
             session.Dest.Write(GetSpaces(currentDepth));
@@ -241,7 +234,7 @@ namespace Solti.Utils.Json
             session.Dest.Write('}');
         }
 
-        internal void Write(in Session session, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
+        internal void Write(ref Session session, object? val, in SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
             session.CancellationToken.ThrowIfCancellationRequested();
 
@@ -250,16 +243,16 @@ namespace Solti.Utils.Json
                 case JsonDataTypes.Number:
                 case JsonDataTypes.Boolean:
                 case JsonDataTypes.Null:
-                    WriteValue(in session, val, in currentContext, currentDepth, explicitIndent);
+                    WriteValue(ref session, val, in currentContext, currentDepth, explicitIndent);
                     break;
                 case JsonDataTypes.String:
-                    WriteString(in session, val!, in currentContext, currentDepth, explicitIndent);
+                    WriteString(ref session, val!, in currentContext, currentDepth, explicitIndent);
                     break;
                 case JsonDataTypes.List:
-                    WriteList(in session, val!, in currentContext, currentDepth, explicitIndent);
+                    WriteList(ref session, val!, in currentContext, currentDepth, explicitIndent);
                     break;
                 case JsonDataTypes.Object:
-                    WriteObject(in session, val!, in currentContext, currentDepth, explicitIndent);
+                    WriteObject(ref session, val!, in currentContext, currentDepth, explicitIndent);
                     break;
                 default:
                     throw new JsonWriterException(NOT_SERIALIZABLE);
@@ -277,8 +270,21 @@ namespace Solti.Utils.Json
         /// <param name="cancellation"><see cref="CancellationToken"/></param>
         public void Write(TextWriter dest, bool closeDest, object? value, in SerializationContext context, in CancellationToken cancellation)
         {
-            using Session session = new(dest ?? throw new ArgumentNullException(nameof(dest)), closeDest, in cancellation);
-            Write(in session, value, in context, 0, null);
+            if (dest is null)
+                throw new ArgumentNullException(nameof(dest));
+
+            char[] buffer = MemoryPool<char>.Get();
+            try
+            {
+                Session session = new(dest, in cancellation);
+                Write(ref session, value, in context, 0, null);
+            }
+            finally
+            {
+                MemoryPool<char>.Return(buffer);
+                if (closeDest)
+                    dest.Dispose();
+            }
         }
     }
 }

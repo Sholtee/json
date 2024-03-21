@@ -16,7 +16,7 @@ namespace Solti.Utils.Json
     {
         public static readonly SerializationContext Untyped = new()
         {
-            ConvertToString = static (val, _) =>
+            ConvertToString = static (object? val, ref char[] _) =>
             (
                 val switch
                 {
@@ -26,7 +26,7 @@ namespace Solti.Utils.Json
                 }
             ).AsSpan(),
 
-            GetTypeOf = static val => Convert.GetTypeCode(val) switch
+            GetTypeOf = static (object? val) => Convert.GetTypeCode(val) switch
             {
                 TypeCode.Empty => JsonDataTypes.Null,
                 TypeCode.Boolean => JsonDataTypes.Boolean,

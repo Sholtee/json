@@ -50,9 +50,9 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(WriteString_ShouldEscape_Params))]
         public void WriteString_ShouldEscape(string input, string expected, int maxChunkSize)
         {
-            using Session session = new(new StringWriter());
+            Session session = new(new StringWriter());
 
-            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(in session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(ref session, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo($"\"{expected}\""));
         }
@@ -60,9 +60,9 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void WriteString_ShouldHandleRegularStrings([Values("", "c", "cica", "1986")] string input, [Values(1, 2, 3, 1024)] int maxChunkSize)
         {
-            using Session session = new(new StringWriter());
+            Session session = new(new StringWriter());
 
-            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(in session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(ref session, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo($"\"{input}\""));
         }
@@ -70,9 +70,9 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void WriteString_ShouldConvert()
         {
-            using Session session = new(new StringWriter());
+            Session session = new(new StringWriter());
 
-            new JsonWriter().WriteString(in session, 1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String }, 0, default);
+            new JsonWriter().WriteString(ref session, 1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String }, 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo($"\"1986\""));
         }
@@ -84,9 +84,9 @@ namespace Solti.Utils.Json.Tests
         [TestCase(1986.1026, "1986.1026")]
         public void WriteValue_ShouldStringifyTheGivenValue(object input, string expected)
         {
-            using Session session = new(new StringWriter());
+            Session session = new(new StringWriter());
 
-            new JsonWriter().WriteValue(in session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter().WriteValue(ref session, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo(expected));
         }
@@ -109,9 +109,9 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(WriteList_ShouldStringifyTheGivenList_Params))]
         public void WriteList_ShouldStringifyTheGivenList(IList<object> input, byte spaces, string expected)
         {
-            using Session session = new(new StringWriter());
+            Session session = new(new StringWriter());
 
-            new JsonWriter(indent: spaces).WriteList(in session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(indent: spaces).WriteList(ref session, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo(expected));
         }
@@ -126,8 +126,8 @@ namespace Solti.Utils.Json.Tests
 
             void WriteList(IList<object> lst)
             {
-                using Session session = new(new StringWriter());
-                writer.WriteList(session, lst, SerializationContext.Untyped, 0, default);
+                Session session = new(new StringWriter());
+                writer.WriteList(ref session, lst, SerializationContext.Untyped, 0, default);
             }
         }
 
@@ -149,9 +149,9 @@ namespace Solti.Utils.Json.Tests
         [TestCaseSource(nameof(WriteObject_ShouldStringifyTheGivenObject_Params))]
         public void WriteObject_ShouldStringifyTheGivenObject(IDictionary<string, object?> input, byte spaces, string expected)
         {
-            using Session session = new(new StringWriter());
+            Session session = new(new StringWriter());
 
-            new JsonWriter(indent: spaces).WriteObject(in session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(indent: spaces).WriteObject(ref session, input, SerializationContext.Untyped, 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo(expected));
         }
