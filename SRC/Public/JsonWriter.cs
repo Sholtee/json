@@ -34,7 +34,8 @@ namespace Solti.Utils.Json
         private static char[][] GetAllSpaces(int maxLength)  // slow but will be called only once
         {
             char[][] spaces = new char[maxLength][];
-            for (int i = 1 /*0 is handled by GetSpaces()*/; i < maxLength; i++)
+            spaces[0] = [];
+            for (int i = 1; i < maxLength; i++)
             {
                 spaces[i] = GetSpacesAr(i);
             }
@@ -44,16 +45,9 @@ namespace Solti.Utils.Json
         private static char[] GetSpacesAr(int len) => [..Environment.NewLine, ..Enumerable.Repeat(' ', len)];
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private char[] GetSpaces(int currentDepth)
-        {
-            int required = currentDepth * indent;
-            if (required is 0)
-                return [];
-
-            return required < FSpaces.Length
-                ? FSpaces[required]
-                : GetSpacesAr(required);
-        }
+        private char[] GetSpaces(int val) => (val *= indent) < FSpaces.Length
+            ? FSpaces[val]
+            : GetSpacesAr(val);
 
         /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
