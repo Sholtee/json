@@ -215,7 +215,7 @@ namespace Solti.Utils.Json
         }
 
         /// <summary>
-        /// Parses the string which the reader is positioned on. The returned <see cref="ReadOnlySpan{char}"/> is valid until the next <see cref="Consume()"/> call. 
+        /// Parses the string which the reader is positioned on. The returned <see cref="ReadOnlySpan{char}"/> is valid until the next <see cref="Consume(ref Session)"/> call. 
         /// </summary>
         internal static ReadOnlySpan<char> ParseString(ref Session session, in DeserializationContext currentContext, int initialBufferSize = 128 /*for debug*/)
         {
