@@ -68,11 +68,11 @@ namespace Solti.Utils.Json
         #endregion
 
         #region Internal
-        internal ref struct Session(TextWriter dest, in CancellationToken cancellation = default)
+        internal ref struct Session(TextWriter dest, char[] buffer, in CancellationToken cancellation = default)
         {
             public readonly TextWriter Dest = dest;
 
-            public char[] Buffer = MemoryPool<char>.Get();
+            public char[] Buffer = buffer;
 
             public readonly CancellationToken CancellationToken = cancellation;
         }
@@ -273,15 +273,14 @@ namespace Solti.Utils.Json
             if (dest is null)
                 throw new ArgumentNullException(nameof(dest));
 
-            char[] buffer = MemoryPool<char>.Get();
+            Session session = new(dest, MemoryPool<char>.Get(), in cancellation);
             try
             {
-                Session session = new(dest, in cancellation);
                 Write(ref session, value, in context, 0, null);
             }
             finally
             {
-                MemoryPool<char>.Return(buffer);
+                MemoryPool<char>.Return(session.Buffer);
                 if (closeDest)
                     dest.Dispose();
             }
