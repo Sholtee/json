@@ -33,6 +33,14 @@ namespace Solti.Utils.Json.Internals.Tests
         }
 
         [Test]
+        public void TryGetValue_ShouldReturnFalseOnEmptyList()
+        {
+            StringKeyedDictionary<int> dict = new();
+            Assert.That(dict.TryGetValue("a".AsSpan(), false, out int val), Is.False);
+            Assert.That(val, Is.EqualTo(default(int)));
+        }
+
+        [Test]
         public void TryGetValue_ShouldTakeCaseIntoAccount()
         {
             StringKeyedDictionary<int> dict = new();
@@ -51,6 +59,7 @@ namespace Solti.Utils.Json.Internals.Tests
             for (int i = 0; i < count; i++)
             {
                 dict.Add(i.ToString(), i);
+                Assert.That(dict.Count, Is.EqualTo(i + 1));
             }
 
             for (int i = 0; i < count; i++)

@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 using BenchmarkDotNet.Attributes;
 
@@ -33,7 +34,7 @@ namespace Solti.Utils.Json.Perf
 
             for (int i = 0; i < EntryCount; i++)
             {
-                Dict.Add(Keys[i] = i.ToString(), i);
+                Dict.Add(Keys[i] = Path.GetRandomFileName(), i);
             }
         }
 
@@ -51,7 +52,7 @@ namespace Solti.Utils.Json.Perf
 
             for (int i = 0; i < EntryCount; i++)
             {
-                DictNative.Add(Keys[i] = i.ToString(), i);
+                DictNative.Add(Keys[i] = Path.GetRandomFileName(), i);
             }
         }
 

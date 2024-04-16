@@ -76,8 +76,9 @@ namespace Solti.Utils.Json.Internals
         private void Resize()
         {
             Debug.Assert(FEntries.Length == FCount || FEntries.Length == 1);
-            int count = FCount;
-            int newSize = FEntries.Length * 2;
+            int
+                count = FCount,
+                newSize = FEntries.Length * 2;
 
             Array.Resize(ref FEntries, newSize);
             FBuckets = new int[newSize];  // will contain 0s only
@@ -121,5 +122,7 @@ namespace Solti.Utils.Json.Internals
             value = default!;
             return false;
         }
+
+        public int Count => FCount;
     }
 }
