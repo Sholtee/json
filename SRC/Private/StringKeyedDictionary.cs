@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json.Internals
 {
@@ -73,6 +74,9 @@ namespace Solti.Utils.Json.Internals
             public int Next;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private int GetBucketIndex(ReadOnlySpan<char> key) => FGetHashCodeDelegate(key) & (FBuckets.Length - 1);
+
         private void Resize()
         {
             Debug.Assert(FEntries.Length == FCount || FEntries.Length == 1);
@@ -85,7 +89,7 @@ namespace Solti.Utils.Json.Internals
 
             while (count-- > 0)
             {
-                int bucketIndex = FGetHashCodeDelegate(FEntries[count].Key.AsSpan()) & (FBuckets.Length - 1);
+                int bucketIndex = GetBucketIndex(FEntries[count].Key.AsSpan());
                 FEntries[count].Next = FBuckets[bucketIndex] - 1;
                 FBuckets[bucketIndex] = count + 1;
             }
@@ -97,7 +101,7 @@ namespace Solti.Utils.Json.Internals
             if (FCount == FEntries.Length || FEntries.Length == 1)
                 Resize();
 
-            int bucketIndex = FGetHashCodeDelegate(key.AsSpan()) & (FBuckets.Length - 1);
+            int bucketIndex = GetBucketIndex(key.AsSpan());
 
             FEntries[FCount].Key = key;
             FEntries[FCount].Value = value;
@@ -110,7 +114,7 @@ namespace Solti.Utils.Json.Internals
         {
             StringComparison comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 
-            for (int i = FBuckets[FGetHashCodeDelegate(key) & (FBuckets.Length - 1)] - 1; (uint) i < FEntries.Length; i = FEntries[i].Next)
+            for (int i = FBuckets[GetBucketIndex(key)] - 1; (uint) i < FEntries.Length; i = FEntries[i].Next)
             {
                 if (key.Equals(FEntries[i].Key.AsSpan(), comparison))
                 {
