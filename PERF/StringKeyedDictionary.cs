@@ -52,7 +52,8 @@ namespace Solti.Utils.Json.Perf
 
             for (int i = 0; i < EntryCount; i++)
             {
-                DictNative.Add(Keys[i] = Path.GetRandomFileName(), i);
+                Keys[i] = Path.GetRandomFileName();
+                DictNative.Add(new string(Keys[i]), i);  // copy the string to avoid by ref comparison
             }
         }
 
