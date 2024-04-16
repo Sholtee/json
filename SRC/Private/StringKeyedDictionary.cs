@@ -89,9 +89,10 @@ namespace Solti.Utils.Json.Internals
 
             while (count-- > 0)
             {
-                int bucketIndex = GetBucketIndex(FEntries[count].Key.AsSpan());
-                FEntries[count].Next = FBuckets[bucketIndex] - 1;
-                FBuckets[bucketIndex] = count + 1;
+                ref int bucket = ref FBuckets[GetBucketIndex(FEntries[count].Key.AsSpan())];
+
+                FEntries[count].Next = bucket - 1;
+                bucket = count + 1;
             }
         }
         #endregion
@@ -101,24 +102,27 @@ namespace Solti.Utils.Json.Internals
             if (FCount == FEntries.Length || FEntries.Length == 1)
                 Resize();
 
-            int bucketIndex = GetBucketIndex(key.AsSpan());
+            ref Entry entry = ref FEntries[FCount];
+            ref int bucket = ref FBuckets[GetBucketIndex(key.AsSpan())];
 
-            FEntries[FCount].Key = key;
-            FEntries[FCount].Value = value;
-            FEntries[FCount].Next = FBuckets[bucketIndex] - 1;
+            entry.Key = key;
+            entry.Value = value;
+            entry.Next = bucket - 1;
             
-            FBuckets[bucketIndex] = ++FCount; 
+            bucket = ++FCount; 
         }
 
         public bool TryGetValue(ReadOnlySpan<char> key, bool ignoreCase, out TValue value)
         {
             StringComparison comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 
-            for (int i = FBuckets[GetBucketIndex(key)] - 1; (uint) i < FEntries.Length; i = FEntries[i].Next)
+            Entry entry;
+            for (int i = FBuckets[GetBucketIndex(key)] - 1; (uint) i < FEntries.Length; i = entry.Next)
             {
-                if (key.Equals(FEntries[i].Key.AsSpan(), comparison))
+                entry = FEntries[i];
+                if (key.Equals(entry.Key.AsSpan(), comparison))
                 {
-                    value = FEntries[i].Value;
+                    value = entry.Value;
                     return true;
                 }
             }
