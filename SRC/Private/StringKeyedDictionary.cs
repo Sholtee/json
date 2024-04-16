@@ -14,7 +14,7 @@ namespace Solti.Utils.Json.Internals
     /// <summary>
     /// Simple dictionary that supports <see cref="ReadOnlySpan{char}"/> keys
     /// </summary>
-    /// <remarks>Logic of this class was mostly taken from <a href="https://github.com/dotnet/corefxlab/blob/archive/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs">here</a></remarks>
+    /// <remarks>The idea was taken from <a href="https://github.com/dotnet/corefxlab/blob/archive/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs">here</a></remarks>
     internal sealed class StringKeyedDictionary<TValue>
     {
         #region Private
