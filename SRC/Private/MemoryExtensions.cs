@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 using System.IO.Hashing;
 using System.Runtime.CompilerServices;
 
@@ -78,6 +79,34 @@ namespace Solti.Utils.Json.Internals
                 hash.Append(buffer.ToByteSpan(j));
 
             return (int) hash.GetCurrentHashAsUInt32();
+        }
+
+        /// <summary>
+        /// Access an element without boundary checks.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe T UnsafeAccessValue<T>(this ReadOnlySpan<T> span, int index) where T : unmanaged
+        {
+            Debug.Assert((uint) index < span.Length, "Invalid index provided");  // this won't run in production builds
+
+            fixed (T* ptr = span)
+            {
+                return ptr[index];
+            }
+        }
+
+        /// <summary>
+        /// Access an element without boundary checks.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe ref T UnsafeAccessValue<T>(this Span<T> span, int index) where T : unmanaged
+        {
+            Debug.Assert((uint) index < span.Length, "Invalid index provided");
+
+            fixed (T* ptr = span)
+            {
+                return ref ptr[index];
+            }
         }
     }
 }
