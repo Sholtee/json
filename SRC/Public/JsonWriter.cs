@@ -104,9 +104,7 @@ namespace Solti.Utils.Json
 
                 for (int i = 0; i < len; i++)
                 {
-                    char c = charsLeft.UnsafeAccessValue(i);
-
-                    switch (c)
+                    switch (charsLeft[i])
                     {
                         case '"':
                             session.Dest.Write(charsLeft, 0, i);
@@ -141,9 +139,9 @@ namespace Solti.Utils.Json
                         default:
                             byte escape;
 
-                            if (IsControl(c))
+                            if (IsControl(charsLeft[i]))
                                 escape = 1;
-                            else if (i < charsLeft.Length - 1 /*override "len"*/ && IsSurrogatePair(c, charsLeft.UnsafeAccessValue(i + 1)))
+                            else if (i < charsLeft.Length - 1 /*override "len"*/ && IsSurrogatePair(charsLeft[i], charsLeft[i + 1]))
                                 escape = 2;
                             else
                                 break;
@@ -153,7 +151,7 @@ namespace Solti.Utils.Json
 
                             for (byte j = 0; j < escape; j++, i++)
                             {
-                                int ord = charsLeft.UnsafeAccessValue(i);
+                                int ord = charsLeft[i];
                                 session.Dest.Write("\\u");
 #if NETSTANDARD2_1_OR_GREATER
                                 session.Dest.Write(ord.Format("X4", ordBuffer, CultureInfo.InvariantCulture));

@@ -120,12 +120,12 @@ namespace Solti.Utils.Json
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void SkipSpaces(ref Session session, int bufferSize = 32 /*for tests*/)
         {
-            for (ReadOnlySpan<char> read; (read = session.Content.PeekText(bufferSize)).Length > 0;)
+            for (Span<char> read; (read = session.Content.PeekText(bufferSize)).Length > 0;)
             {
                 int skip;
-                for (skip = 0; skip < read.Length && IsWhiteSpace(read.UnsafeAccessValue(skip)); skip++)
+                for (skip = 0; skip < read.Length && IsWhiteSpace(read[skip]); skip++)
                 {
-                    if (read.UnsafeAccessValue(skip) is '\n')
+                    if (read[skip] is '\n')
                     {
                         session.Row++;
                         session.Column = 0;
@@ -235,7 +235,7 @@ namespace Solti.Utils.Json
 
                 for (; parsed < buffer.Length; parsed++)
                 {
-                    char c = buffer.UnsafeAccessValue(parsed);
+                    char c = buffer[parsed];
 
                     if (c == quote)
                     {
@@ -282,22 +282,22 @@ namespace Solti.Utils.Json
                             bufferSize = buffer.Length;
                         }
 
-                        switch (c = buffer.UnsafeAccessValue(++parsed))
+                        switch (c = buffer[++parsed])
                         {
                             case '\\':
-                                buffer.UnsafeAccessValue(outputSize++) = '\\';
+                                buffer[outputSize++] = '\\';
                                 break;
                             case 'b':
-                                buffer.UnsafeAccessValue(outputSize++) = '\b';
+                                buffer[outputSize++] = '\b';
                                 break;
                             case 't':
-                                buffer.UnsafeAccessValue(outputSize++) = '\t';
+                                buffer[outputSize++] = '\t';
                                 break;
                             case 'r':
-                                buffer.UnsafeAccessValue(outputSize++) = '\r';
+                                buffer[outputSize++] = '\r';
                                 break;
                             case 'n':
-                                buffer.UnsafeAccessValue(outputSize++) = '\n';
+                                buffer[outputSize++] = '\n';
                                 break;
                             case 'u':
                                 const int HEX_LEN = 4;
@@ -354,11 +354,11 @@ namespace Solti.Utils.Json
                                 // Already unicode so no Encoding.GetChars() call required
                                 //
 
-                                buffer.UnsafeAccessValue(outputSize++) = (char) chr;
+                                buffer[outputSize++] = (char) chr;
                                 break;
                             default:
                                 if (c == quote)
-                                    buffer.UnsafeAccessValue(outputSize++) = c;
+                                    buffer[outputSize++] = c;
                                 else
                                 {
                                     //
@@ -372,7 +372,7 @@ namespace Solti.Utils.Json
                         }
                     }
                     else
-                        buffer.UnsafeAccessValue(outputSize++) = buffer.UnsafeAccessValue(parsed);
+                        buffer[outputSize++] = buffer[parsed];
                 }
             }
         }
@@ -392,7 +392,7 @@ namespace Solti.Utils.Json
         {
             const string NUMBER_ID = "number";
 
-            ReadOnlySpan<char> buffer;
+            Span<char> buffer;
             bool isFloating = false;
 
             //
@@ -406,7 +406,7 @@ namespace Solti.Utils.Json
 
                 for (; parsed < buffer.Length; parsed++)
                 {
-                    char chr = buffer.UnsafeAccessValue(parsed);
+                    char chr = buffer[parsed];
 
                     if (chr is '.' || ToLower(chr) is 'e')
                         isFloating = true;
@@ -554,7 +554,7 @@ namespace Solti.Utils.Json
         {
             Advance(ref session, 2);
 
-            ReadOnlySpan<char> buffer;
+            Span<char> buffer;
 
             int
                 lineEnd,
@@ -572,7 +572,7 @@ namespace Solti.Utils.Json
                 // Deal with the "fresh" characters only
                 // 
 
-                ReadOnlySpan<char> freshChars = buffer.Slice(parsed);
+                Span<char> freshChars = buffer.Slice(parsed);
                 if (freshChars.Length is 0)
                     break;
 
@@ -588,10 +588,10 @@ namespace Solti.Utils.Json
 
             lineEnd = parsed;
 
-            if (lineEnd > 0 && buffer.UnsafeAccessValue(lineEnd - 1) is '\n')
+            if (lineEnd > 0 && buffer[lineEnd - 1] is '\n')
                 lineEnd--;
 
-            if (lineEnd > 0 && buffer.UnsafeAccessValue(lineEnd - 1) is '\r')
+            if (lineEnd > 0 && buffer[lineEnd - 1] is '\r')
                 lineEnd--;
 
             Assert(parsed <= session.Content.CharsLeft, "Cannot advance more character than we have in the buffer");
