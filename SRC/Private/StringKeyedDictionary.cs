@@ -53,46 +53,38 @@ namespace Solti.Utils.Json.Internals
         }
 
         private static readonly GetHashCodeDelegate FGetHashCodeDelegate = GetGetHashCodeDelegate();
-        private static readonly Entry[] FInitialEntries = new Entry[1];
-        private static readonly int[] FInitialBuckets = new int[1];
+
+        private const int INITIAL_SIZE = 16;
 
         private int FCount;
-        private int[] FBuckets = FInitialBuckets;  // the first add will cause a resize so this assignment is safe
-        private Entry[] FEntries = FInitialEntries;  // as is this one
+        private int[] FBuckets = new int[INITIAL_SIZE];
+        private Entry[] FEntries = new Entry[INITIAL_SIZE];
 
         private struct Entry
         {
             public string Key;
             public TValue Value;
-
-            //
-            // 0-based index of next entry in chain: -1 means end of chain
-            // also encodes whether this entry _itself_ is part of the free list by changing sign and subtracting 3,
-            // so -2 means end of free list, -3 means index 0 but on free list, -4 means index 1 but on free list, etc.
-            //
-
             public int Next;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private int GetBucketIndex(ReadOnlySpan<char> key) => FGetHashCodeDelegate(key) & (FBuckets.Length - 1);
+        private ref int GetBucket(ReadOnlySpan<char> key) => ref FBuckets[FGetHashCodeDelegate(key) & (FBuckets.Length - 1)];
 
         private void Resize()
         {
-            Debug.Assert(FEntries.Length == FCount || FEntries.Length == 1);
-            int
-                count = FCount,
-                newSize = FEntries.Length * 2;
+            Debug.Assert(FEntries.Length == FCount);
+            int newSize = FEntries.Length * 2;
 
             Array.Resize(ref FEntries, newSize);
             FBuckets = new int[newSize];  // will contain 0s only
 
-            while (count-- > 0)
+            for(int i = FCount; i > 0; i--)
             {
-                ref int bucket = ref FBuckets[GetBucketIndex(FEntries[count].Key.AsSpan())];
+                ref Entry entry = ref FEntries[i - 1];
+                ref int bucket = ref GetBucket(entry.Key.AsSpan());
 
-                FEntries[count].Next = bucket - 1;
-                bucket = count + 1;
+                entry.Next = bucket - 1;
+                bucket = i;
             }
         }
         #endregion
@@ -103,7 +95,7 @@ namespace Solti.Utils.Json.Internals
                 Resize();
 
             ref Entry entry = ref FEntries[FCount];
-            ref int bucket = ref FBuckets[GetBucketIndex(key.AsSpan())];
+            ref int bucket = ref GetBucket(key.AsSpan());
 
             entry.Key = key;
             entry.Value = value;
@@ -116,15 +108,15 @@ namespace Solti.Utils.Json.Internals
         {
             StringComparison comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 
-            Entry entry;
-            for (int i = FBuckets[GetBucketIndex(key)] - 1; (uint) i < FEntries.Length; i = entry.Next)
+            for (int i = GetBucket(key) - 1; (uint) i < FEntries.Length;)
             {
-                entry = FEntries[i];
+                ref Entry entry = ref FEntries[i];
                 if (key.Equals(entry.Key.AsSpan(), comparison))
                 {
                     value = entry.Value;
                     return true;
                 }
+                i = entry.Next;
             }
 
             value = default!;
