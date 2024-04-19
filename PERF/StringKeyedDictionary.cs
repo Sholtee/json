@@ -14,6 +14,32 @@ namespace Solti.Utils.Json.Perf
     using Internals;
 
     [MemoryDiagnoser]
+    public class HashHelpersTests
+    {
+        public static string INPUT = "cica123456789";
+
+        [Benchmark(Baseline = true)]
+        public int GetHashCodeNative() => string.GetHashCode(INPUT.AsSpan(), StringComparison.OrdinalIgnoreCase);
+
+        [Benchmark]
+        public new int GetHashCode() => HashHelpers.GetHashCode(INPUT.AsSpan());
+    }
+
+    [MemoryDiagnoser]
+    public class StringComparisonTests
+    {
+        public static readonly string
+            STRING_1 = "cica123456789",
+            STRING_2 = new(STRING_1);
+
+        [Benchmark]
+        public bool CompareAsString() => STRING_1.Equals(STRING_2, StringComparison.OrdinalIgnoreCase);
+
+        [Benchmark]
+        public bool CompareAsSpan() => STRING_1.AsSpan().Equals(STRING_2.AsSpan(), StringComparison.OrdinalIgnoreCase);
+    }
+
+    [MemoryDiagnoser]
     public class StringKeyedDictionaryTests
     {
         [Params(1, 2, 3, 5, 10, 100, 1000)]
@@ -39,14 +65,14 @@ namespace Solti.Utils.Json.Perf
         }
 
         [Benchmark]
-        public void Get() => Dict.TryGetValue(Keys[Random.Next(EntryCount)].AsSpan(), false, out _);
+        public void Get() => Dict.TryGetValue(Keys[Random.Next(EntryCount)].AsSpan(), true, out _);
 
         private Dictionary<string, int> DictNative { get; set; } = null!;
 
         [GlobalSetup(Target = nameof(GetNative))]
         public void SetupGetNative()
         {
-            DictNative = new Dictionary<string, int>();
+            DictNative = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
             Keys = new string[EntryCount];
 

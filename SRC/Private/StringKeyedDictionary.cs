@@ -5,8 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json.Internals
@@ -18,42 +16,6 @@ namespace Solti.Utils.Json.Internals
     internal sealed class StringKeyedDictionary<TValue>
     {
         #region Private
-        private delegate int GetHashCodeDelegate(ReadOnlySpan<char> input);
-
-        private static GetHashCodeDelegate GetGetHashCodeDelegate()
-        {
-            //
-            // Modern systems must have this delegate built in
-            //
-
-            MethodInfo getHashCode = typeof(string).GetMethod
-            (
-                nameof(GetHashCode),
-                BindingFlags.Public | BindingFlags.Static,
-                null,
-                [typeof(ReadOnlySpan<char>),typeof(StringComparison)],
-                null
-            );
-
-            if (getHashCode is null)
-                return MemoryExtensions.GetXxHashCode;
-
-            ParameterExpression input = Expression.Parameter(typeof(ReadOnlySpan<char>), nameof(input));
-            return Expression.Lambda<GetHashCodeDelegate>
-            (
-                Expression.Call
-                (
-                    null,
-                    getHashCode,
-                    input,
-                    Expression.Constant(StringComparison.OrdinalIgnoreCase)
-                ),
-                input
-            ).Compile();
-        }
-
-        private static readonly GetHashCodeDelegate FGetHashCodeDelegate = GetGetHashCodeDelegate();
-
         private const int INITIAL_SIZE = 16;
 
         private int FCount;
@@ -68,7 +30,7 @@ namespace Solti.Utils.Json.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private ref int GetBucket(ReadOnlySpan<char> key) => ref FBuckets[FGetHashCodeDelegate(key) & (FBuckets.Length - 1)];
+        private ref int GetBucket(ReadOnlySpan<char> key) => ref FBuckets[HashHelpers.GetHashCode(key) & (FBuckets.Length - 1)];
 
         private void Resize()
         {
@@ -91,7 +53,7 @@ namespace Solti.Utils.Json.Internals
 
         public void Add(string key, TValue value)
         {
-            if (FCount == FEntries.Length || FEntries.Length == 1)
+            if (FCount == FEntries.Length)
                 Resize();
 
             ref Entry entry = ref FEntries[FCount];
