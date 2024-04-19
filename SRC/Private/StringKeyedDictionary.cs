@@ -66,6 +66,7 @@ namespace Solti.Utils.Json.Internals
             bucket = ++FCount; 
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetValue(ReadOnlySpan<char> key, bool ignoreCase, out TValue value)
         {
             StringComparison comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
