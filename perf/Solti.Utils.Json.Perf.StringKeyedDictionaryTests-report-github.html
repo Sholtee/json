@@ -38,17 +38,18 @@
             <article class="content wrap" id="_content" data-uid="">
 
 <pre><code>
-BenchmarkDotNet v0.13.12, Windows 10 (10.0.17763.5122/1809/October2018Update/Redstone5) (Hyper-V)
+BenchmarkDotNet v0.13.12, Windows 10 (10.0.17763.5576/1809/October2018Update/Redstone5) (Hyper-V)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK 8.0.100
-  [Host]     : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
+.NET SDK 8.0.202
+  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
 
 </code></pre><table>
 <thead>
 <tr>
 <th>Method</th>
 <th>EntryCount</th>
+<th>IgnoreCase</th>
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
@@ -62,26 +63,65 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Get</strong></td>
 <td><strong>1</strong></td>
-<td style="text-align:right"><strong>32.57 ns</strong></td>
-<td style="text-align:right"><strong>0.550 ns</strong></td>
-<td style="text-align:right"><strong>0.514 ns</strong></td>
-<td style="text-align:right"><strong>1.66</strong></td>
-<td style="text-align:right"><strong>0.03</strong></td>
+<td><strong>False</strong></td>
+<td style="text-align:right"><strong>24.93 ns</strong></td>
+<td style="text-align:right"><strong>0.497 ns</strong></td>
+<td style="text-align:right"><strong>0.573 ns</strong></td>
+<td style="text-align:right"><strong>1.28</strong></td>
+<td style="text-align:right"><strong>0.05</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>NA</strong></td>
 </tr>
 <tr>
 <td>GetNative</td>
 <td>1</td>
-<td style="text-align:right">19.60 ns</td>
-<td style="text-align:right">0.140 ns</td>
-<td style="text-align:right">0.131 ns</td>
+<td>False</td>
+<td style="text-align:right">19.41 ns</td>
+<td style="text-align:right">0.388 ns</td>
+<td style="text-align:right">0.690 ns</td>
 <td style="text-align:right">1.00</td>
 <td style="text-align:right">0.00</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">NA</td>
 </tr>
 <tr>
+<td></td>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>1</strong></td>
+<td><strong>True</strong></td>
+<td style="text-align:right"><strong>31.87 ns</strong></td>
+<td style="text-align:right"><strong>0.631 ns</strong></td>
+<td style="text-align:right"><strong>1.332 ns</strong></td>
+<td style="text-align:right"><strong>1.18</strong></td>
+<td style="text-align:right"><strong>0.05</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>1</td>
+<td>True</td>
+<td style="text-align:right">26.94 ns</td>
+<td style="text-align:right">0.519 ns</td>
+<td style="text-align:right">0.693 ns</td>
+<td style="text-align:right">1.00</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
 <td></td>
 <td></td>
 <td style="text-align:right"></td>
@@ -95,26 +135,65 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Get</strong></td>
 <td><strong>2</strong></td>
-<td style="text-align:right"><strong>41.65 ns</strong></td>
-<td style="text-align:right"><strong>0.832 ns</strong></td>
-<td style="text-align:right"><strong>0.779 ns</strong></td>
-<td style="text-align:right"><strong>1.50</strong></td>
-<td style="text-align:right"><strong>0.04</strong></td>
+<td><strong>False</strong></td>
+<td style="text-align:right"><strong>25.96 ns</strong></td>
+<td style="text-align:right"><strong>0.513 ns</strong></td>
+<td style="text-align:right"><strong>0.720 ns</strong></td>
+<td style="text-align:right"><strong>1.27</strong></td>
+<td style="text-align:right"><strong>0.08</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>NA</strong></td>
 </tr>
 <tr>
 <td>GetNative</td>
 <td>2</td>
-<td style="text-align:right">27.76 ns</td>
-<td style="text-align:right">0.502 ns</td>
-<td style="text-align:right">0.445 ns</td>
+<td>False</td>
+<td style="text-align:right">20.33 ns</td>
+<td style="text-align:right">0.402 ns</td>
+<td style="text-align:right">0.785 ns</td>
 <td style="text-align:right">1.00</td>
 <td style="text-align:right">0.00</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">NA</td>
 </tr>
 <tr>
+<td></td>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>2</strong></td>
+<td><strong>True</strong></td>
+<td style="text-align:right"><strong>31.15 ns</strong></td>
+<td style="text-align:right"><strong>0.603 ns</strong></td>
+<td style="text-align:right"><strong>0.671 ns</strong></td>
+<td style="text-align:right"><strong>1.24</strong></td>
+<td style="text-align:right"><strong>0.03</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>2</td>
+<td>True</td>
+<td style="text-align:right">25.20 ns</td>
+<td style="text-align:right">0.439 ns</td>
+<td style="text-align:right">0.389 ns</td>
+<td style="text-align:right">1.00</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
 <td></td>
 <td></td>
 <td style="text-align:right"></td>
@@ -128,26 +207,65 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Get</strong></td>
 <td><strong>3</strong></td>
-<td style="text-align:right"><strong>39.73 ns</strong></td>
-<td style="text-align:right"><strong>0.496 ns</strong></td>
-<td style="text-align:right"><strong>0.464 ns</strong></td>
-<td style="text-align:right"><strong>1.63</strong></td>
-<td style="text-align:right"><strong>0.02</strong></td>
+<td><strong>False</strong></td>
+<td style="text-align:right"><strong>25.39 ns</strong></td>
+<td style="text-align:right"><strong>0.501 ns</strong></td>
+<td style="text-align:right"><strong>0.916 ns</strong></td>
+<td style="text-align:right"><strong>1.20</strong></td>
+<td style="text-align:right"><strong>0.05</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>NA</strong></td>
 </tr>
 <tr>
 <td>GetNative</td>
 <td>3</td>
-<td style="text-align:right">24.38 ns</td>
-<td style="text-align:right">0.259 ns</td>
-<td style="text-align:right">0.202 ns</td>
+<td>False</td>
+<td style="text-align:right">20.84 ns</td>
+<td style="text-align:right">0.297 ns</td>
+<td style="text-align:right">0.263 ns</td>
 <td style="text-align:right">1.00</td>
 <td style="text-align:right">0.00</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">NA</td>
 </tr>
 <tr>
+<td></td>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>3</strong></td>
+<td><strong>True</strong></td>
+<td style="text-align:right"><strong>31.52 ns</strong></td>
+<td style="text-align:right"><strong>0.622 ns</strong></td>
+<td style="text-align:right"><strong>1.352 ns</strong></td>
+<td style="text-align:right"><strong>1.24</strong></td>
+<td style="text-align:right"><strong>0.03</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>3</td>
+<td>True</td>
+<td style="text-align:right">25.99 ns</td>
+<td style="text-align:right">0.329 ns</td>
+<td style="text-align:right">0.292 ns</td>
+<td style="text-align:right">1.00</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
 <td></td>
 <td></td>
 <td style="text-align:right"></td>
@@ -161,26 +279,65 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Get</strong></td>
 <td><strong>5</strong></td>
-<td style="text-align:right"><strong>33.87 ns</strong></td>
-<td style="text-align:right"><strong>0.718 ns</strong></td>
-<td style="text-align:right"><strong>0.768 ns</strong></td>
-<td style="text-align:right"><strong>1.05</strong></td>
-<td style="text-align:right"><strong>0.06</strong></td>
+<td><strong>False</strong></td>
+<td style="text-align:right"><strong>25.63 ns</strong></td>
+<td style="text-align:right"><strong>0.505 ns</strong></td>
+<td style="text-align:right"><strong>0.924 ns</strong></td>
+<td style="text-align:right"><strong>1.14</strong></td>
+<td style="text-align:right"><strong>0.04</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>NA</strong></td>
 </tr>
 <tr>
 <td>GetNative</td>
 <td>5</td>
-<td style="text-align:right">31.72 ns</td>
-<td style="text-align:right">0.670 ns</td>
-<td style="text-align:right">1.354 ns</td>
+<td>False</td>
+<td style="text-align:right">22.18 ns</td>
+<td style="text-align:right">0.416 ns</td>
+<td style="text-align:right">0.409 ns</td>
 <td style="text-align:right">1.00</td>
 <td style="text-align:right">0.00</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">NA</td>
 </tr>
 <tr>
+<td></td>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>5</strong></td>
+<td><strong>True</strong></td>
+<td style="text-align:right"><strong>32.86 ns</strong></td>
+<td style="text-align:right"><strong>0.647 ns</strong></td>
+<td style="text-align:right"><strong>0.969 ns</strong></td>
+<td style="text-align:right"><strong>1.26</strong></td>
+<td style="text-align:right"><strong>0.05</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>5</td>
+<td>True</td>
+<td style="text-align:right">25.95 ns</td>
+<td style="text-align:right">0.504 ns</td>
+<td style="text-align:right">0.706 ns</td>
+<td style="text-align:right">1.00</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
 <td></td>
 <td></td>
 <td style="text-align:right"></td>
@@ -194,26 +351,65 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Get</strong></td>
 <td><strong>10</strong></td>
-<td style="text-align:right"><strong>35.28 ns</strong></td>
-<td style="text-align:right"><strong>0.741 ns</strong></td>
-<td style="text-align:right"><strong>1.776 ns</strong></td>
-<td style="text-align:right"><strong>1.39</strong></td>
-<td style="text-align:right"><strong>0.03</strong></td>
+<td><strong>False</strong></td>
+<td style="text-align:right"><strong>26.29 ns</strong></td>
+<td style="text-align:right"><strong>0.225 ns</strong></td>
+<td style="text-align:right"><strong>0.188 ns</strong></td>
+<td style="text-align:right"><strong>1.26</strong></td>
+<td style="text-align:right"><strong>0.02</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>NA</strong></td>
 </tr>
 <tr>
 <td>GetNative</td>
 <td>10</td>
-<td style="text-align:right">23.83 ns</td>
-<td style="text-align:right">0.246 ns</td>
-<td style="text-align:right">0.231 ns</td>
+<td>False</td>
+<td style="text-align:right">20.90 ns</td>
+<td style="text-align:right">0.190 ns</td>
+<td style="text-align:right">0.158 ns</td>
 <td style="text-align:right">1.00</td>
 <td style="text-align:right">0.00</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">NA</td>
 </tr>
 <tr>
+<td></td>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>10</strong></td>
+<td><strong>True</strong></td>
+<td style="text-align:right"><strong>36.43 ns</strong></td>
+<td style="text-align:right"><strong>0.693 ns</strong></td>
+<td style="text-align:right"><strong>0.742 ns</strong></td>
+<td style="text-align:right"><strong>1.30</strong></td>
+<td style="text-align:right"><strong>0.04</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>10</td>
+<td>True</td>
+<td style="text-align:right">27.86 ns</td>
+<td style="text-align:right">0.545 ns</td>
+<td style="text-align:right">0.832 ns</td>
+<td style="text-align:right">1.00</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
 <td></td>
 <td></td>
 <td style="text-align:right"></td>
@@ -227,26 +423,65 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Get</strong></td>
 <td><strong>100</strong></td>
-<td style="text-align:right"><strong>44.30 ns</strong></td>
-<td style="text-align:right"><strong>0.323 ns</strong></td>
-<td style="text-align:right"><strong>0.303 ns</strong></td>
-<td style="text-align:right"><strong>1.77</strong></td>
-<td style="text-align:right"><strong>0.04</strong></td>
+<td><strong>False</strong></td>
+<td style="text-align:right"><strong>26.83 ns</strong></td>
+<td style="text-align:right"><strong>0.518 ns</strong></td>
+<td style="text-align:right"><strong>0.596 ns</strong></td>
+<td style="text-align:right"><strong>1.39</strong></td>
+<td style="text-align:right"><strong>0.03</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>NA</strong></td>
 </tr>
 <tr>
 <td>GetNative</td>
 <td>100</td>
-<td style="text-align:right">25.03 ns</td>
-<td style="text-align:right">0.471 ns</td>
-<td style="text-align:right">0.462 ns</td>
+<td>False</td>
+<td style="text-align:right">19.26 ns</td>
+<td style="text-align:right">0.232 ns</td>
+<td style="text-align:right">0.217 ns</td>
 <td style="text-align:right">1.00</td>
 <td style="text-align:right">0.00</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">NA</td>
 </tr>
 <tr>
+<td></td>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>100</strong></td>
+<td><strong>True</strong></td>
+<td style="text-align:right"><strong>34.81 ns</strong></td>
+<td style="text-align:right"><strong>0.468 ns</strong></td>
+<td style="text-align:right"><strong>0.415 ns</strong></td>
+<td style="text-align:right"><strong>1.34</strong></td>
+<td style="text-align:right"><strong>0.02</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>100</td>
+<td>True</td>
+<td style="text-align:right">25.97 ns</td>
+<td style="text-align:right">0.382 ns</td>
+<td style="text-align:right">0.339 ns</td>
+<td style="text-align:right">1.00</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
 <td></td>
 <td></td>
 <td style="text-align:right"></td>
@@ -260,10 +495,11 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Get</strong></td>
 <td><strong>1000</strong></td>
-<td style="text-align:right"><strong>52.58 ns</strong></td>
-<td style="text-align:right"><strong>1.095 ns</strong></td>
-<td style="text-align:right"><strong>1.384 ns</strong></td>
-<td style="text-align:right"><strong>1.94</strong></td>
+<td><strong>False</strong></td>
+<td style="text-align:right"><strong>29.40 ns</strong></td>
+<td style="text-align:right"><strong>0.588 ns</strong></td>
+<td style="text-align:right"><strong>1.201 ns</strong></td>
+<td style="text-align:right"><strong>1.38</strong></td>
 <td style="text-align:right"><strong>0.06</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>NA</strong></td>
@@ -271,9 +507,46 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td>GetNative</td>
 <td>1000</td>
-<td style="text-align:right">26.92 ns</td>
-<td style="text-align:right">0.571 ns</td>
-<td style="text-align:right">0.561 ns</td>
+<td>False</td>
+<td style="text-align:right">20.69 ns</td>
+<td style="text-align:right">0.413 ns</td>
+<td style="text-align:right">0.522 ns</td>
+<td style="text-align:right">1.00</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">NA</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td><strong>Get</strong></td>
+<td><strong>1000</strong></td>
+<td><strong>True</strong></td>
+<td style="text-align:right"><strong>36.45 ns</strong></td>
+<td style="text-align:right"><strong>0.719 ns</strong></td>
+<td style="text-align:right"><strong>1.436 ns</strong></td>
+<td style="text-align:right"><strong>1.29</strong></td>
+<td style="text-align:right"><strong>0.08</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>NA</strong></td>
+</tr>
+<tr>
+<td>GetNative</td>
+<td>1000</td>
+<td>True</td>
+<td style="text-align:right">28.23 ns</td>
+<td style="text-align:right">0.558 ns</td>
+<td style="text-align:right">1.126 ns</td>
 <td style="text-align:right">1.00</td>
 <td style="text-align:right">0.00</td>
 <td style="text-align:right">-</td>
