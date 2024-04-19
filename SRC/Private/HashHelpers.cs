@@ -4,8 +4,10 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.IO.Hashing;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json.Internals
 {
@@ -31,7 +33,7 @@ namespace Solti.Utils.Json.Internals
             );
 
             if (getHashCode is null)
-                return MemoryExtensions.GetXxHashCode;
+                return GetXxHashCode;
 
             ParameterExpression input = Expression.Parameter(typeof(ReadOnlySpan<char>), nameof(input));
             return Expression.Lambda<GetHashCodeDelegate>
@@ -45,6 +47,41 @@ namespace Solti.Utils.Json.Internals
                 ),
                 input
             ).Compile();
+        }
+
+        private static readonly int FSeed = new Random().Next();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int GetXxHashCode(ReadOnlySpan<char> self)
+        {
+            XxHash32 hash = new(FSeed);
+
+            //
+            // XxHash32 uses 16 bytes long stripes. Due to performance considerations we don't want the engine
+            // to slice the input so we use 8 chars (16 bytes) long chunks
+            //
+
+            Span<char> buffer = stackalloc char[8];
+
+            int j = 0;
+
+            for (int i = 0; i < self.Length; i++)
+            {
+                buffer[j] = char.ToUpper(self[i]);
+
+                if (j == buffer.Length - 1)
+                {
+                    hash.Append(buffer.ToByteSpan(buffer.Length));
+                    j = 0;
+                    continue;
+                }
+                j++;
+            }
+
+            if (j > 0)
+                hash.Append(buffer.ToByteSpan(j));
+
+            return (int) hash.GetCurrentHashAsUInt32();
         }
     }
 }

@@ -15,12 +15,23 @@ namespace Solti.Utils.Json.Internals.Tests
         [Test]
         public void AsString_ShouldStringify([Values("", "1", "1986", "cica", "😁")] string str) =>
             Assert.That(str.AsSpan().AsString(), Is.EqualTo(str));
+    }
 
+    [TestFixture]
+    public class HashHelpersTests
+    {
         [Test]
         public void GetXxHashCode_ShouldHash([Values("", "1", "1986", "cica", "😁", "loooooooooooooooooooooooooooooooooooooooooong")] string str)
         {
-            Assert.AreEqual(str.AsSpan().GetXxHashCode(), str.Substring(0).AsSpan().GetXxHashCode());
-            Assert.AreNotEqual(str.AsSpan().GetXxHashCode(), (str + "_").AsSpan().GetXxHashCode());
+            Assert.AreEqual(HashHelpers.GetXxHashCode(str.AsSpan()), HashHelpers.GetXxHashCode(str.Substring(0).AsSpan()));
+            Assert.AreNotEqual(HashHelpers.GetXxHashCode(str.AsSpan()), HashHelpers.GetXxHashCode((str + "_").AsSpan()));
+        }
+
+        [Test]
+        public void GetHashCode_ShouldHash([Values("", "1", "1986", "cica", "😁", "loooooooooooooooooooooooooooooooooooooooooong")] string str)
+        {
+            Assert.AreEqual(HashHelpers.GetHashCode(str.AsSpan()), HashHelpers.GetHashCode(str.Substring(0).AsSpan()));
+            Assert.AreNotEqual(HashHelpers.GetHashCode(str.AsSpan()), HashHelpers.GetHashCode((str + "_").AsSpan()));
         }
     }
 }

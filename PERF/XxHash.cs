@@ -21,6 +21,6 @@ namespace Solti.Utils.Json.Perf
         public int GetNativeHashCode() => string.GetHashCode(Input, StringComparison.OrdinalIgnoreCase);
 
         [Benchmark]
-        public int GetXxHashCode() => Input.AsSpan().GetXxHashCode();
+        public int GetXxHashCode() => HashHelpers.GetXxHashCode(Input.AsSpan());
     }
 }
