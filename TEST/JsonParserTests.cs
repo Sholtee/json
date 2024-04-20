@@ -472,6 +472,98 @@ namespace Solti.Utils.Json.Tests
         public void ParseComment_ShouldConsumeCommentsInMultipleIterations(string input, string expected, int charsLeft) =>
             ParseComment_ShouldConsumeComments(input, expected, charsLeft, 1);
 
+        public static IEnumerable<object[]> ParseMultilineComment_ShouldConsumeComments_Params
+        {
+            get
+            {
+                (string, int, int)[] inputs = [("", 0, 0), ("cica", 0, 4), ("cica*", 0, 5), ("cica\n*", 1, 1), ("cica\nmica", 1, 4), ("cica\nmica00", 1, 6), ("cica\r\nmica", 1, 4), ("cica\r\nmica\r\n", 2, 0)];
+
+                foreach ((string Str, int Row, int Column) input in inputs)
+                {
+                    yield return new object[] { $"/*{input.Str}*/", input.Str, 0, input.Row, input.Column + (input.Row > 0 ? 2 : 4) };
+                    yield return new object[] { $"/*{input.Str}*/\n", input.Str, 1, input.Row, input.Column + (input.Row > 0 ? 2 : 4) };
+                    yield return new object[] { $"/*{input.Str}*/cica", input.Str, 4, input.Row, input.Column + (input.Row > 0 ? 2 : 4) };
+                }
+            }
+        }
+
+        private static void ParseMultilineComment_ShouldConsumeComments(string input, string expected, int charsLeft, int rowCount, int columnCount, int bufferSize)
+        {
+            //
+            // We cannot mock methods having Span<T> parameter =(
+            //
+
+            string lastComment = null!;
+
+            DeserializationContext ctx = new()
+            {
+                SupportedTypes = JsonDataTypes.Unkown,
+                ParseComment = chars => lastComment = chars.AsString()
+            };
+
+            using TextReaderWrapper content = new StringReader(input);
+
+            Assert.DoesNotThrow(() =>
+            {
+                Session session = new(content);
+                ParseMultilineComment(ref session, ctx, bufferSize);
+                Assert.That(session.Row, Is.EqualTo(rowCount));
+                Assert.That(session.Column, Is.EqualTo(columnCount));
+            });
+            Assert.That(lastComment, Is.EqualTo(expected));
+            Assert.That(CharsLeft(content), Is.EqualTo(charsLeft));
+        }
+
+        [TestCaseSource(nameof(ParseMultilineComment_ShouldConsumeComments_Params))]
+        public void ParseMultilineComment_ShouldConsumeComments(string input, string expected, int charsLeft, int rowCount, int columnCount) =>
+            ParseMultilineComment_ShouldConsumeComments(input, expected, charsLeft, rowCount, columnCount, 32);
+
+        [TestCaseSource(nameof(ParseMultilineComment_ShouldConsumeComments_Params))]
+        public void ParseMultilineComment_ShouldConsumeCommentsInMultipleIterations(string input, string expected, int charsLeft, int rowCount, int columnCount) =>
+            ParseMultilineComment_ShouldConsumeComments(input, expected, charsLeft, rowCount, columnCount, 1);
+
+        public static IEnumerable<object[]> ParseMultilineComment_ShouldThrowOnInvalidComment_Params
+        {
+            get
+            {
+                yield return new object[] { "/*", 0, 2 };
+                yield return new object[] { "/*/", 0, 3 };
+                yield return new object[] { "/**", 0, 3 };
+                yield return new object[] { "/*\n", 1, 0 };
+                yield return new object[] { "/*\n/", 1, 1 };
+                yield return new object[] { "/*\n*", 1, 1 };
+                yield return new object[] { "/*cica\n", 1, 0 };
+                yield return new object[] { "/*cica\n/", 1, 1 };
+                yield return new object[] { "/*cica\n*", 1, 1 };
+                yield return new object[] { "/*\ncica", 1, 4 };
+                yield return new object[] { "/*\ncica/", 1, 5 };
+                yield return new object[] { "/*\ncica*", 1, 5 };
+            }
+        }
+
+        private void ParseMultilineComment_ShouldThrowOnInvalidComment(string input, int rowCount, int columnCount, int bufferSize)
+        {
+            using TextReaderWrapper content = new StringReader(input);
+
+            Assert.Throws<JsonParserException>(() =>
+            {
+                Session session = new(content);
+                ParseMultilineComment(ref session, DeserializationContext.Untyped, bufferSize);
+                Assert.That(session.Row, Is.EqualTo(rowCount));
+                Assert.That(session.Column, Is.EqualTo(columnCount));
+            });
+
+            Assert.That(CharsLeft(content), Is.EqualTo(0));
+        }
+
+        [TestCaseSource(nameof(ParseMultilineComment_ShouldThrowOnInvalidComment_Params))]
+        public void ParseMultilineComment_ShouldThrowOnInvalidComment(string input, int rowCount, int columnCount) =>
+            ParseMultilineComment_ShouldThrowOnInvalidComment(input, rowCount, columnCount, 32);
+
+        [TestCaseSource(nameof(ParseMultilineComment_ShouldThrowOnInvalidComment_Params))]
+        public void ParseMultilineComment_ShouldThrowOnInvalidCommentInMultipleIterations(string input, int rowCount, int columnCount) =>
+            ParseMultilineComment_ShouldThrowOnInvalidComment(input, rowCount, columnCount, 1);
+
         public static IEnumerable<object[]> ParseNumber_ShouldReturnTheAppropriateValue_Params
         {
             get

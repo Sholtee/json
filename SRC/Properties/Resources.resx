@@ -171,4 +171,7 @@
   <data name="UNKNOWN_CTRL" xml:space="preserve">
     <value>Unknwon control character</value>
   </data>
+  <data name="UNTERMINATED_COMMENT" xml:space="preserve">
+    <value>Unterminated comment</value>
+  </data>
 </root>

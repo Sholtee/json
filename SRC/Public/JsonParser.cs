@@ -147,10 +147,9 @@ namespace Solti.Utils.Json
         {
             SkipSpaces(ref session);
 
-            int chr = session.Content.PeekChar();
-
-            return chr is -1 ? JsonTokens.Eof : chr switch
+            return session.Content.PeekChar() switch
             {
+                -1 => JsonTokens.Eof,
                 '{' => JsonTokens.CurlyOpen,
                 '}' => JsonTokens.CurlyClose,
                 '[' => JsonTokens.SquaredOpen,
@@ -158,12 +157,19 @@ namespace Solti.Utils.Json
                 ',' => JsonTokens.Comma,
                 ':' => JsonTokens.Colon,
                 '"' => JsonTokens.DoubleQuote,
-                '\'' when flags.HasFlag(JsonParserFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
-                '/' when flags.HasFlag(JsonParserFlags.AllowComments) && IsLiteral(in session, DOUBLE_SLASH) => JsonTokens.DoubleSlash,
                 't' or 'T' when IsLiteral(in session, TRUE) => JsonTokens.True,
                 'f' or 'F' when IsLiteral(in session, FALSE) => JsonTokens.False,
                 'n' or 'N' when IsLiteral(in session, NULL) => JsonTokens.Null,
                 '-' or (>= '0' and <= '9') => JsonTokens.Number,
+
+                //
+                // NON standard tokens
+                //
+
+                '\'' when flags.HasFlag(JsonParserFlags.AllowSingleQuotedStrings) => JsonTokens.SingleQuote,
+                '/' when flags.HasFlag(JsonParserFlags.AllowComments) && IsLiteral(in session, DOUBLE_SLASH) => JsonTokens.DoubleSlash,
+                '/' when flags.HasFlag(JsonParserFlags.AllowComments) && IsLiteral(in session, SLASH_ASTERISK) => JsonTokens.SlashAsterisk,
+
                 _ => JsonTokens.Unknown
             };
         }
@@ -408,10 +414,10 @@ namespace Solti.Utils.Json
                 {
                     char chr = buffer[parsed];
 
-                    if (chr is '.' || ToLower(chr) is 'e')
+                    if (chr is '.' or 'e' or 'E')
                         isFloating = true;
 
-                    else if ((chr is < '0' or > '9') && chr is not '+' && chr is not '-')
+                    else if ((chr is < '0' or > '9') || !(chr is '+' or '-'))
                         goto parse;
                 }
 
@@ -545,6 +551,84 @@ namespace Solti.Utils.Json
             Advance(ref session, 1);
 
             return obj;
+        }
+
+        /// <summary>
+        /// Parses the multiline comment which the reader is positioned on. This method is also responsible for invoking the corresponding comment processor function.   
+        /// </summary>
+        internal static void ParseMultilineComment(ref Session session, in DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
+        {
+            const string COMMENT_ID = "comment";
+
+            Advance(ref session, 2);
+
+            for (int bufferSize = initialBufferSize, parsed = 0; ; bufferSize *= 2)
+            {
+                //
+                // Increase the buffer size
+                //
+
+                Span<char> buffer = session.Content.PeekText(bufferSize);
+                if (buffer.Length == parsed)
+                {
+                    session.Content.Advance(parsed);
+                    InvalidInput(in session, COMMENT_ID, UNTERMINATED_COMMENT);
+                }
+
+                //
+                // Deal with the "fresh" characters only
+                // 
+
+                nextChunk:
+                Span<char> freshChars = buffer.Slice(parsed);
+                int ending = freshChars.IndexOfAny('\n', '*');
+                if (ending >= 0)
+                {
+                    switch (freshChars[ending])
+                    {
+                        case '\n':
+                        {
+                            session.Row++;
+                            session.Column = 0;
+                            parsed += ending + 1;
+                            goto nextChunk;
+                        }
+                        case '*':
+                        {
+                            if (ending == freshChars.Length - 1)
+                            {
+                                //
+                                // We either ran out of the data or the buffer needs to be increased
+                                //
+
+                                parsed += ending + 1;
+                                continue;
+                            }
+
+                            if (freshChars[ending + 1] is not '/')
+                            {
+                                //
+                                // Skip the current "*" as it doesn't belong to the terminating "*/"
+                                //
+
+                                session.Column += ending + 1;
+                                parsed += ending + 1;
+                                goto nextChunk;
+                            }
+
+                            currentContext.ParseComment?.Invoke(buffer.Slice(0, parsed + ending));
+
+                            session.Column += ending + SLASH_ASTERISK.Length;
+                            session.Content.Advance(parsed + ending + SLASH_ASTERISK.Length);
+                            
+                            return;
+                        }
+                    }
+                }
+
+                session.Column += freshChars.Length;
+                parsed += freshChars.Length;
+            }       
         }
 
         /// <summary>

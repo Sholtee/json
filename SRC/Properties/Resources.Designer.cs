@@ -221,5 +221,14 @@ namespace Solti.Utils.Json.Properties {
                 return ResourceManager.GetString("UNKNOWN_CTRL", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unterminated comment.
+        /// </summary>
+        internal static string UNTERMINATED_COMMENT {
+            get {
+                return ResourceManager.GetString("UNTERMINATED_COMMENT", resourceCulture);
+            }
+        }
     }
 }

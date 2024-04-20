@@ -83,7 +83,7 @@ namespace Solti.Utils.Json
                     tryParse,
                     Expression.Invoke
                     (
-                        Expression.Constant((AsStringDelegate)Internals.MemoryExtensions.AsString),
+                        Expression.Constant((AsStringDelegate) MemoryExtensions.AsString),
                         input
                     ),
                     ignoreCase,

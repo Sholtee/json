@@ -11,19 +11,30 @@ namespace Solti.Utils.Json.Internals
     internal enum JsonTokens
     {
         Unknown = 0,
+        
+        //
+        // Standard tokens
+        //
+
         Eof = 1 << 0,
-        DoubleSlash = 1 << 1,
-        CurlyOpen = 1 << 2,
-        CurlyClose = 1 << 3,
-        SquaredOpen = 1 << 4,
-        SquaredClose = 1 << 5,
-        Colon = 1 << 6,
-        Comma = 1 << 7,
-        SingleQuote = 1 << 8,
-        DoubleQuote = 1 << 9,
-        Number = 1 << 10,
-        True = 1 << 11,
-        False = 1 << 12,
-        Null = 1 << 13
+        CurlyOpen = 1 << 1,
+        CurlyClose = 1 << 2,
+        SquaredOpen = 1 << 3,
+        SquaredClose = 1 << 4,
+        Colon = 1 << 5,
+        Comma = 1 << 6,     
+        DoubleQuote = 1 << 7,
+        Number = 1 << 8,
+        True = 1 << 9,
+        False = 1 << 10,
+        Null = 1 << 11,
+
+        //
+        // NON standard tokens
+        //
+
+        SingleQuote = 1 << 12,
+        DoubleSlash = 1 << 13,
+        SlashAsterisk = 1 << 14
     }
 }

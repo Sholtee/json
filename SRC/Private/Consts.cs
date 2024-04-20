@@ -12,6 +12,7 @@ namespace Solti.Utils.Json.Internals
             TRUE = "true",
             FALSE = "false",
             NULL = "null",
-            DOUBLE_SLASH = "//";
+            DOUBLE_SLASH = "//",
+            SLASH_ASTERISK = "/*";
     }
 }
