@@ -933,12 +933,12 @@ namespace Solti.Utils.Json.Tests
         [TestCase("/*comment*/1986  ", 1986, "comment")]
         [TestCase("  \"cica\"  /*comment*/", "cica", "comment")]
         [TestCase("  1986\r\n/*comment*/", 1986, "comment")]
-        [TestCase("  1986\r\n/*comment*/\r\n*  ", 1986, "comment")]
+        [TestCase("  1986\r\n/*comment*/\r\n  ", 1986, "comment")]
 
         [TestCase("/*comment\r\ncomment2*/1986  ", 1986, "comment\r\ncomment2")]
         [TestCase("  \"cica\"  /*comment\r\ncomment2*/", "cica", "comment\r\ncomment2")]
         [TestCase("  1986\r\n/*comment\r\ncomment2*/", 1986, "comment\r\ncomment2")]
-        [TestCase("  1986\r\n/*comment\r\ncomment2*/\r\n*  ", 1986, "comment\r\ncomment2")]
+        [TestCase("  1986\r\n/*comment\r\ncomment2*/\r\n  ", 1986, "comment\r\ncomment2")]
         public void Parse_ShouldParseValues(string input, object expected, string? comment)
         {
             string? got = null;
