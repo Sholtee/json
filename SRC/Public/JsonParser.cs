@@ -200,24 +200,23 @@ namespace Solti.Utils.Json
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal JsonTokens Consume(ref Session session, JsonTokens expected, in DeserializationContext currentContext)
         {
-            if (!flags.HasFlag(JsonParserFlags.AllowComments))
-                //
-                // MALFORMED_INPUT can be confusing if it says we expect a DoubleSlash as well while
-                // "flags" doesn't allow comments
-                //
+            if (flags.HasFlag(JsonParserFlags.AllowComments))
+                expected |= JsonTokens.DoubleSlash | JsonTokens.SlashAsterisk;
 
-                return Consume(ref session, expected);
+            again:
+            JsonTokens got = Consume(ref session, expected);
 
-            start:
-            JsonTokens got = Consume(ref session, expected | JsonTokens.DoubleSlash);
-
-            if (got is JsonTokens.DoubleSlash)
+            switch (got)
             {
-                ParseComment(ref session, in currentContext);
-                goto start;
+                case JsonTokens.DoubleSlash:
+                    ParseComment(ref session, in currentContext);
+                    goto again;
+                case JsonTokens.SlashAsterisk:
+                    ParseMultilineComment(ref session, in currentContext);
+                    goto again;
+                default:
+                    return got;
             }
-
-            return got;
         }
 
         /// <summary>
@@ -417,7 +416,7 @@ namespace Solti.Utils.Json
                     if (chr is '.' or 'e' or 'E')
                         isFloating = true;
 
-                    else if ((chr is < '0' or > '9') || !(chr is '+' or '-'))
+                    else if ((chr is < '0' or > '9') && !(chr is '+' or '-'))
                         goto parse;
                 }
 
@@ -562,14 +561,14 @@ namespace Solti.Utils.Json
 
             Advance(ref session, 2);
 
-            for (int bufferSize = initialBufferSize, parsed = 0; ; bufferSize *= 2)
+            for (int bufferSize = initialBufferSize, parsed = 0, previousSize = 0; ; bufferSize *= 2)
             {
                 //
                 // Increase the buffer size
                 //
 
                 Span<char> buffer = session.Content.PeekText(bufferSize);
-                if (buffer.Length == parsed)
+                if (buffer.Length == previousSize)
                 {
                     session.Content.Advance(parsed);
                     InvalidInput(in session, COMMENT_ID, UNTERMINATED_COMMENT);
@@ -581,45 +580,35 @@ namespace Solti.Utils.Json
 
                 nextChunk:
                 Span<char> freshChars = buffer.Slice(parsed);
-                int ending = freshChars.IndexOfAny('\n', '*');
-                if (ending >= 0)
+                int rowEnd = freshChars.IndexOfAny('\n', '/');
+                if (rowEnd >= 0)
                 {
-                    switch (freshChars[ending])
+                    switch (freshChars[rowEnd])
                     {
                         case '\n':
                         {
                             session.Row++;
                             session.Column = 0;
-                            parsed += ending + 1;
+                            parsed += rowEnd + 1;
                             goto nextChunk;
                         }
-                        case '*':
+                        case '/':
                         {
-                            if (ending == freshChars.Length - 1)
+                            int asterisk = parsed + rowEnd - 1;
+                            if (asterisk < 0)
+                                break;
+
+                            if (buffer[asterisk] is not '*')
                             {
-                                //
-                                // We either ran out of the data or the buffer needs to be increased
-                                //
-
-                                parsed += ending + 1;
-                                continue;
-                            }
-
-                            if (freshChars[ending + 1] is not '/')
-                            {
-                                //
-                                // Skip the current "*" as it doesn't belong to the terminating "*/"
-                                //
-
-                                session.Column += ending + 1;
-                                parsed += ending + 1;
+                                session.Column += rowEnd + 1;
+                                parsed += rowEnd + 1;
                                 goto nextChunk;
                             }
 
-                            currentContext.ParseComment?.Invoke(buffer.Slice(0, parsed + ending));
+                            currentContext.ParseComment?.Invoke(buffer.Slice(0, asterisk));
 
-                            session.Column += ending + SLASH_ASTERISK.Length;
-                            session.Content.Advance(parsed + ending + SLASH_ASTERISK.Length);
+                            session.Column += rowEnd + 1;
+                            session.Content.Advance(parsed + rowEnd + 1);
                             
                             return;
                         }
@@ -628,6 +617,7 @@ namespace Solti.Utils.Json
 
                 session.Column += freshChars.Length;
                 parsed += freshChars.Length;
+                previousSize = buffer.Length;
             }       
         }
 

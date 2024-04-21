@@ -476,7 +476,7 @@ namespace Solti.Utils.Json.Tests
         {
             get
             {
-                (string, int, int)[] inputs = [("", 0, 0), ("cica", 0, 4), ("cica*", 0, 5), ("cica\n*", 1, 1), ("cica\nmica", 1, 4), ("cica\nmica00", 1, 6), ("cica\r\nmica", 1, 4), ("cica\r\nmica\r\n", 2, 0)];
+                (string, int, int)[] inputs = [("", 0, 0), ("cica", 0, 4), ("cica*", 0, 5), ("cica\n*", 1, 1), ("cica/", 0, 5), ("cica\n/", 1, 1), ("cica\nmica", 1, 4), ("cica\nmica00", 1, 6), ("cica\r\nmica", 1, 4), ("cica\r\nmica\r\n", 2, 0)];
 
                 foreach ((string Str, int Row, int Column) input in inputs)
                 {
@@ -682,13 +682,17 @@ namespace Solti.Utils.Json.Tests
                 yield return new object[] { "[1]", new List<object?> { 1 }, JsonParserFlags.None };
                 yield return new object[] { "[\"1\"]", new List<object?> { "1" }, JsonParserFlags.None };
                 yield return new object[] { "[1,]", new List<object?> { 1 }, JsonParserFlags.AllowTrailingComma };
-                yield return new object[] { "[\"1\",]", new List<object?> { "1" }, JsonParserFlags.AllowTrailingComma };
-                yield return new object[] { "[\"1\",//comment\r\n]", new List<object?> { "1" }, JsonParserFlags.AllowTrailingComma | JsonParserFlags.AllowComments };
+                yield return new object[] { "[\"1\",]", new List<object?> { "1" }, JsonParserFlags.AllowTrailingComma }; 
                 yield return new object[] { "[\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonParserFlags.None };
-                yield return new object[] { "[\r\n//comment\r\n\"1\"\r\n]", new List<object?> { "1" }, JsonParserFlags.AllowComments };
-                yield return new object[] { "[\r\n\"1\"\r\n//comment\r\n]", new List<object?> { "1" }, JsonParserFlags.AllowComments };
                 yield return new object[] { "[null, true, false, 1, \"1\"]", new List<object?> { null, true, false, 1, "1" }, JsonParserFlags.None };
                 yield return new object[] { "[[]]", new List<object?> { new List<object?> { } }, JsonParserFlags.None };
+
+                foreach (string comment in new string[] { "//comment\r\n", "/*comment*/" })
+                {
+                    yield return new object[] { $"[\"1\",{comment}]", new List<object?> { "1" }, JsonParserFlags.AllowTrailingComma | JsonParserFlags.AllowComments };
+                    yield return new object[] { $"[\r\n{comment}\"1\"\r\n]", new List<object?> { "1" }, JsonParserFlags.AllowComments };
+                    yield return new object[] { $"[\r\n\"1\"\r\n{comment}]", new List<object?> { "1" }, JsonParserFlags.AllowComments };
+                }
             }
         }
 
@@ -807,10 +811,14 @@ namespace Solti.Utils.Json.Tests
                 yield return new object[] { "{\"cica\": 1,}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowTrailingComma };
                 yield return new object[] { "{\"cica\": \"1\",}", new Dictionary<string, object?> { { "cica", "1" } }, JsonParserFlags.AllowTrailingComma };
                 yield return new object[] { "{\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.None };
-                yield return new object[] { "{\r\n  //comment\r\n  \"cica\": 1\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowComments };
-                yield return new object[] { "{\r\n  \"cica\": 1 //comment\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowComments };
-                yield return new object[] { "{\r\n  \"cica\": 1, //comment\r\n}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowComments | JsonParserFlags.AllowTrailingComma };
                 yield return new object[] { "{\"nested\": {}}", new Dictionary<string, object?> { { "nested", new Dictionary<string, object?> { } } }, JsonParserFlags.None };
+
+                foreach (string comment in new string[] { "//comment\r\n", "/*comment*/" })
+                {
+                    yield return new object[] { $"{{\r\n  {comment}  \"cica\": 1\r\n}}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowComments };
+                    yield return new object[] { $"{{\r\n  \"cica\": 1 {comment}}}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowComments };
+                    yield return new object[] { $"{{\r\n  \"cica\": 1, {comment}}}", new Dictionary<string, object?> { { "cica", 1 } }, JsonParserFlags.AllowComments | JsonParserFlags.AllowTrailingComma };
+                }
             }
         }
 
@@ -916,10 +924,21 @@ namespace Solti.Utils.Json.Tests
         [TestCase("  1986", 1986, null)]
         [TestCase("  \"cica\"  ", "cica", null)]
         [TestCase("  1986  ", 1986, null)]
+
         [TestCase("//comment\n1986  ", 1986, "comment")]
         [TestCase("  \"cica\"  //comment", "cica", "comment")]
         [TestCase("  1986\r\n//comment", 1986, "comment")]
         [TestCase("  1986\r\n//comment\r\n  ", 1986, "comment")]
+
+        [TestCase("/*comment*/1986  ", 1986, "comment")]
+        [TestCase("  \"cica\"  /*comment*/", "cica", "comment")]
+        [TestCase("  1986\r\n/*comment*/", 1986, "comment")]
+        [TestCase("  1986\r\n/*comment*/\r\n*  ", 1986, "comment")]
+
+        [TestCase("/*comment\r\ncomment2*/1986  ", 1986, "comment\r\ncomment2")]
+        [TestCase("  \"cica\"  /*comment\r\ncomment2*/", "cica", "comment\r\ncomment2")]
+        [TestCase("  1986\r\n/*comment\r\ncomment2*/", 1986, "comment\r\ncomment2")]
+        [TestCase("  1986\r\n/*comment\r\ncomment2*/\r\n*  ", 1986, "comment\r\ncomment2")]
         public void Parse_ShouldParseValues(string input, object expected, string? comment)
         {
             string? got = null;
