@@ -43,6 +43,73 @@ references:
   commentId: Overload:Solti.Utils.Json.Attributes.AliasAttribute.Name
   fullName: Solti.Utils.Json.Attributes.AliasAttribute.Name
   nameWithType: AliasAttribute.Name
+- uid: Solti.Utils.Json.Attributes.ContextAttribute
+  name: ContextAttribute
+  href: Solti.Utils.Json.Attributes.ContextAttribute.html
+  commentId: T:Solti.Utils.Json.Attributes.ContextAttribute
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute
+  nameWithType: ContextAttribute
+- uid: Solti.Utils.Json.Attributes.ContextAttribute.#ctor(System.Type)
+  name: ContextAttribute(Type)
+  href: Solti.Utils.Json.Attributes.ContextAttribute.html#Solti_Utils_Json_Attributes_ContextAttribute__ctor_System_Type_
+  commentId: M:Solti.Utils.Json.Attributes.ContextAttribute.#ctor(System.Type)
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute.ContextAttribute(System.Type)
+  nameWithType: ContextAttribute.ContextAttribute(Type)
+- uid: Solti.Utils.Json.Attributes.ContextAttribute.#ctor*
+  name: ContextAttribute
+  href: Solti.Utils.Json.Attributes.ContextAttribute.html#Solti_Utils_Json_Attributes_ContextAttribute__ctor_
+  commentId: Overload:Solti.Utils.Json.Attributes.ContextAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute.ContextAttribute
+  nameWithType: ContextAttribute.ContextAttribute
+- uid: Solti.Utils.Json.Attributes.ContextAttribute.Config
+  name: Config
+  href: Solti.Utils.Json.Attributes.ContextAttribute.html#Solti_Utils_Json_Attributes_ContextAttribute_Config
+  commentId: P:Solti.Utils.Json.Attributes.ContextAttribute.Config
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute.Config
+  nameWithType: ContextAttribute.Config
+- uid: Solti.Utils.Json.Attributes.ContextAttribute.Config*
+  name: Config
+  href: Solti.Utils.Json.Attributes.ContextAttribute.html#Solti_Utils_Json_Attributes_ContextAttribute_Config_
+  commentId: Overload:Solti.Utils.Json.Attributes.ContextAttribute.Config
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute.Config
+  nameWithType: ContextAttribute.Config
+- uid: Solti.Utils.Json.Attributes.ContextAttribute.ContextFactory
+  name: ContextFactory
+  href: Solti.Utils.Json.Attributes.ContextAttribute.html#Solti_Utils_Json_Attributes_ContextAttribute_ContextFactory
+  commentId: P:Solti.Utils.Json.Attributes.ContextAttribute.ContextFactory
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute.ContextFactory
+  nameWithType: ContextAttribute.ContextFactory
+- uid: Solti.Utils.Json.Attributes.ContextAttribute.ContextFactory*
+  name: ContextFactory
+  href: Solti.Utils.Json.Attributes.ContextAttribute.html#Solti_Utils_Json_Attributes_ContextAttribute_ContextFactory_
+  commentId: Overload:Solti.Utils.Json.Attributes.ContextAttribute.ContextFactory
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute.ContextFactory
+  nameWithType: ContextAttribute.ContextFactory
+- uid: Solti.Utils.Json.Attributes.ContextAttribute`1
+  name: ContextAttribute<TContextFactory>
+  href: Solti.Utils.Json.Attributes.ContextAttribute-1.html
+  commentId: T:Solti.Utils.Json.Attributes.ContextAttribute`1
+  name.vb: ContextAttribute(Of TContextFactory)
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute<TContextFactory>
+  fullName.vb: Solti.Utils.Json.Attributes.ContextAttribute(Of TContextFactory)
+  nameWithType: ContextAttribute<TContextFactory>
+  nameWithType.vb: ContextAttribute(Of TContextFactory)
+- uid: Solti.Utils.Json.Attributes.ContextAttribute`1.#ctor
+  name: ContextAttribute()
+  href: Solti.Utils.Json.Attributes.ContextAttribute-1.html#Solti_Utils_Json_Attributes_ContextAttribute_1__ctor
+  commentId: M:Solti.Utils.Json.Attributes.ContextAttribute`1.#ctor
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute<TContextFactory>.ContextAttribute()
+  fullName.vb: Solti.Utils.Json.Attributes.ContextAttribute(Of TContextFactory).ContextAttribute()
+  nameWithType: ContextAttribute<TContextFactory>.ContextAttribute()
+  nameWithType.vb: ContextAttribute(Of TContextFactory).ContextAttribute()
+- uid: Solti.Utils.Json.Attributes.ContextAttribute`1.#ctor*
+  name: ContextAttribute
+  href: Solti.Utils.Json.Attributes.ContextAttribute-1.html#Solti_Utils_Json_Attributes_ContextAttribute_1__ctor_
+  commentId: Overload:Solti.Utils.Json.Attributes.ContextAttribute`1.#ctor
+  fullName: Solti.Utils.Json.Attributes.ContextAttribute<TContextFactory>.ContextAttribute
+  fullName.vb: Solti.Utils.Json.Attributes.ContextAttribute(Of TContextFactory).ContextAttribute
+  nameWithType: ContextAttribute<TContextFactory>.ContextAttribute
+  nameWithType.vb: ContextAttribute(Of TContextFactory).ContextAttribute
 - uid: Solti.Utils.Json.Attributes.IgnoreAttribute
   name: IgnoreAttribute
   href: Solti.Utils.Json.Attributes.IgnoreAttribute.html
@@ -61,73 +128,6 @@ references:
   commentId: Overload:Solti.Utils.Json.Attributes.IgnoreAttribute.#ctor
   fullName: Solti.Utils.Json.Attributes.IgnoreAttribute.IgnoreAttribute
   nameWithType: IgnoreAttribute.IgnoreAttribute
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute
-  name: SerializationContextAttribute
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html
-  commentId: T:Solti.Utils.Json.Attributes.SerializationContextAttribute
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute
-  nameWithType: SerializationContextAttribute
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.#ctor(System.Type)
-  name: SerializationContextAttribute(Type)
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute__ctor_System_Type_
-  commentId: M:Solti.Utils.Json.Attributes.SerializationContextAttribute.#ctor(System.Type)
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.SerializationContextAttribute(System.Type)
-  nameWithType: SerializationContextAttribute.SerializationContextAttribute(Type)
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.#ctor*
-  name: SerializationContextAttribute
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute__ctor_
-  commentId: Overload:Solti.Utils.Json.Attributes.SerializationContextAttribute.#ctor
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.SerializationContextAttribute
-  nameWithType: SerializationContextAttribute.SerializationContextAttribute
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
-  name: Config
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_Config
-  commentId: P:Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
-  nameWithType: SerializationContextAttribute.Config
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.Config*
-  name: Config
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_Config_
-  commentId: Overload:Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.Config
-  nameWithType: SerializationContextAttribute.Config
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
-  name: ContextFactory
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_ContextFactory
-  commentId: P:Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
-  nameWithType: SerializationContextAttribute.ContextFactory
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory*
-  name: ContextFactory
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_ContextFactory_
-  commentId: Overload:Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute.ContextFactory
-  nameWithType: SerializationContextAttribute.ContextFactory
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute`1
-  name: SerializationContextAttribute<TContextFactory>
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute-1.html
-  commentId: T:Solti.Utils.Json.Attributes.SerializationContextAttribute`1
-  name.vb: SerializationContextAttribute(Of TContextFactory)
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute<TContextFactory>
-  fullName.vb: Solti.Utils.Json.Attributes.SerializationContextAttribute(Of TContextFactory)
-  nameWithType: SerializationContextAttribute<TContextFactory>
-  nameWithType.vb: SerializationContextAttribute(Of TContextFactory)
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute`1.#ctor
-  name: SerializationContextAttribute()
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute-1.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_1__ctor
-  commentId: M:Solti.Utils.Json.Attributes.SerializationContextAttribute`1.#ctor
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute<TContextFactory>.SerializationContextAttribute()
-  fullName.vb: Solti.Utils.Json.Attributes.SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute()
-  nameWithType: SerializationContextAttribute<TContextFactory>.SerializationContextAttribute()
-  nameWithType.vb: SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute()
-- uid: Solti.Utils.Json.Attributes.SerializationContextAttribute`1.#ctor*
-  name: SerializationContextAttribute
-  href: Solti.Utils.Json.Attributes.SerializationContextAttribute-1.html#Solti_Utils_Json_Attributes_SerializationContextAttribute_1__ctor_
-  commentId: Overload:Solti.Utils.Json.Attributes.SerializationContextAttribute`1.#ctor
-  fullName: Solti.Utils.Json.Attributes.SerializationContextAttribute<TContextFactory>.SerializationContextAttribute
-  fullName.vb: Solti.Utils.Json.Attributes.SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute
-  nameWithType: SerializationContextAttribute<TContextFactory>.SerializationContextAttribute
-  nameWithType.vb: SerializationContextAttribute(Of TContextFactory).SerializationContextAttribute
 - uid: Solti.Utils.Json.Attributes.ValidatorAttribute
   name: ValidatorAttribute
   href: Solti.Utils.Json.Attributes.ValidatorAttribute.html
@@ -161,90 +161,276 @@ references:
   commentId: Overload:Solti.Utils.Json.Attributes.ValidatorAttribute.Validate
   fullName: Solti.Utils.Json.Attributes.ValidatorAttribute.Validate
   nameWithType: ValidatorAttribute.Validate
-- uid: Solti.Utils.Json.BooleanDeserializationContextFactory
-  name: BooleanDeserializationContextFactory
-  href: Solti.Utils.Json.BooleanDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.BooleanDeserializationContextFactory
-  fullName: Solti.Utils.Json.BooleanDeserializationContextFactory
-  nameWithType: BooleanDeserializationContextFactory
-- uid: Solti.Utils.Json.BooleanDeserializationContextFactory.#ctor
-  name: BooleanDeserializationContextFactory()
-  href: Solti.Utils.Json.BooleanDeserializationContextFactory.html#Solti_Utils_Json_BooleanDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.BooleanDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.BooleanDeserializationContextFactory.BooleanDeserializationContextFactory()
-  nameWithType: BooleanDeserializationContextFactory.BooleanDeserializationContextFactory()
-- uid: Solti.Utils.Json.BooleanDeserializationContextFactory.#ctor*
-  name: BooleanDeserializationContextFactory
-  href: Solti.Utils.Json.BooleanDeserializationContextFactory.html#Solti_Utils_Json_BooleanDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.BooleanDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.BooleanDeserializationContextFactory.BooleanDeserializationContextFactory
-  nameWithType: BooleanDeserializationContextFactory.BooleanDeserializationContextFactory
-- uid: Solti.Utils.Json.BooleanDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.BooleanDeserializationContextFactory.html#Solti_Utils_Json_BooleanDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.BooleanDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.BooleanDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: BooleanDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.BooleanDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.BooleanDeserializationContextFactory.html#Solti_Utils_Json_BooleanDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.BooleanDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.BooleanDeserializationContextFactory.CreateContextCore
-  nameWithType: BooleanDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.BooleanDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.BooleanDeserializationContextFactory.html#Solti_Utils_Json_BooleanDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.BooleanDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.BooleanDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: BooleanDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.BooleanDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.BooleanDeserializationContextFactory.html#Solti_Utils_Json_BooleanDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.BooleanDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.BooleanDeserializationContextFactory.IsSupported
-  nameWithType: BooleanDeserializationContextFactory.IsSupported
-- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory
-  name: DateTimeDeserializationContextFactory
-  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.DateTimeDeserializationContextFactory
-  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory
-  nameWithType: DateTimeDeserializationContextFactory
-- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.#ctor
-  name: DateTimeDeserializationContextFactory()
-  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.DateTimeDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.DateTimeDeserializationContextFactory()
-  nameWithType: DateTimeDeserializationContextFactory.DateTimeDeserializationContextFactory()
-- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.#ctor*
-  name: DateTimeDeserializationContextFactory
-  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.DateTimeDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.DateTimeDeserializationContextFactory
-  nameWithType: DateTimeDeserializationContextFactory.DateTimeDeserializationContextFactory
-- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: DateTimeDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.CreateContextCore
-  nameWithType: DateTimeDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: DateTimeDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.DateTimeDeserializationContextFactory.html#Solti_Utils_Json_DateTimeDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.DateTimeDeserializationContextFactory.IsSupported
-  nameWithType: DateTimeDeserializationContextFactory.IsSupported
+- uid: Solti.Utils.Json.BooleanContextFactory
+  name: BooleanContextFactory
+  href: Solti.Utils.Json.BooleanContextFactory.html
+  commentId: T:Solti.Utils.Json.BooleanContextFactory
+  fullName: Solti.Utils.Json.BooleanContextFactory
+  nameWithType: BooleanContextFactory
+- uid: Solti.Utils.Json.BooleanContextFactory.#ctor
+  name: BooleanContextFactory()
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory__ctor
+  commentId: M:Solti.Utils.Json.BooleanContextFactory.#ctor
+  fullName: Solti.Utils.Json.BooleanContextFactory.BooleanContextFactory()
+  nameWithType: BooleanContextFactory.BooleanContextFactory()
+- uid: Solti.Utils.Json.BooleanContextFactory.#ctor*
+  name: BooleanContextFactory
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.BooleanContextFactory.#ctor
+  fullName: Solti.Utils.Json.BooleanContextFactory.BooleanContextFactory
+  nameWithType: BooleanContextFactory.BooleanContextFactory
+- uid: Solti.Utils.Json.BooleanContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.BooleanContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.BooleanContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: BooleanContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.BooleanContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.BooleanContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.BooleanContextFactory.CreateDeserializationContextCore
+  nameWithType: BooleanContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.BooleanContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.BooleanContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.BooleanContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: BooleanContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.BooleanContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.BooleanContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.BooleanContextFactory.CreateSerializationContextCore
+  nameWithType: BooleanContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.BooleanContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.BooleanContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.BooleanContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: BooleanContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.BooleanContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.BooleanContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.BooleanContextFactory.IsDeserializationSupported
+  nameWithType: BooleanContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.BooleanContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.BooleanContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.BooleanContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: BooleanContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.BooleanContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.BooleanContextFactory.html#Solti_Utils_Json_BooleanContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.BooleanContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.BooleanContextFactory.IsSerializationSupported
+  nameWithType: BooleanContextFactory.IsSerializationSupported
+- uid: Solti.Utils.Json.ContextFactory
+  name: ContextFactory
+  href: Solti.Utils.Json.ContextFactory.html
+  commentId: T:Solti.Utils.Json.ContextFactory
+  fullName: Solti.Utils.Json.ContextFactory
+  nameWithType: ContextFactory
+- uid: Solti.Utils.Json.ContextFactory.#ctor
+  name: ContextFactory()
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory__ctor
+  commentId: M:Solti.Utils.Json.ContextFactory.#ctor
+  fullName: Solti.Utils.Json.ContextFactory.ContextFactory()
+  nameWithType: ContextFactory.ContextFactory()
+- uid: Solti.Utils.Json.ContextFactory.#ctor*
+  name: ContextFactory
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.#ctor
+  fullName: Solti.Utils.Json.ContextFactory.ContextFactory
+  nameWithType: ContextFactory.ContextFactory
+- uid: Solti.Utils.Json.ContextFactory.CreateDeserializationContext(System.Type,System.Object)
+  name: CreateDeserializationContext(Type, Object)
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateDeserializationContext_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ContextFactory.CreateDeserializationContext(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ContextFactory.CreateDeserializationContext(System.Type, System.Object)
+  nameWithType: ContextFactory.CreateDeserializationContext(Type, Object)
+- uid: Solti.Utils.Json.ContextFactory.CreateDeserializationContext*
+  name: CreateDeserializationContext
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateDeserializationContext_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.CreateDeserializationContext
+  fullName: Solti.Utils.Json.ContextFactory.CreateDeserializationContext
+  nameWithType: ContextFactory.CreateDeserializationContext
+- uid: Solti.Utils.Json.ContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: ContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.ContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.ContextFactory.CreateDeserializationContextCore
+  nameWithType: ContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.ContextFactory.CreateDeserializationContextFor(System.Type,System.Object)
+  name: CreateDeserializationContextFor(Type, Object)
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateDeserializationContextFor_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ContextFactory.CreateDeserializationContextFor(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ContextFactory.CreateDeserializationContextFor(System.Type, System.Object)
+  nameWithType: ContextFactory.CreateDeserializationContextFor(Type, Object)
+- uid: Solti.Utils.Json.ContextFactory.CreateDeserializationContextFor*
+  name: CreateDeserializationContextFor
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateDeserializationContextFor_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.CreateDeserializationContextFor
+  fullName: Solti.Utils.Json.ContextFactory.CreateDeserializationContextFor
+  nameWithType: ContextFactory.CreateDeserializationContextFor
+- uid: Solti.Utils.Json.ContextFactory.CreateSerializationContext(System.Type,System.Object)
+  name: CreateSerializationContext(Type, Object)
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateSerializationContext_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ContextFactory.CreateSerializationContext(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ContextFactory.CreateSerializationContext(System.Type, System.Object)
+  nameWithType: ContextFactory.CreateSerializationContext(Type, Object)
+- uid: Solti.Utils.Json.ContextFactory.CreateSerializationContext*
+  name: CreateSerializationContext
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateSerializationContext_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.CreateSerializationContext
+  fullName: Solti.Utils.Json.ContextFactory.CreateSerializationContext
+  nameWithType: ContextFactory.CreateSerializationContext
+- uid: Solti.Utils.Json.ContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: ContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.ContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.ContextFactory.CreateSerializationContextCore
+  nameWithType: ContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.ContextFactory.CreateSerializationContextFor(System.Type,System.Object)
+  name: CreateSerializationContextFor(Type, Object)
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateSerializationContextFor_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ContextFactory.CreateSerializationContextFor(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ContextFactory.CreateSerializationContextFor(System.Type, System.Object)
+  nameWithType: ContextFactory.CreateSerializationContextFor(Type, Object)
+- uid: Solti.Utils.Json.ContextFactory.CreateSerializationContextFor*
+  name: CreateSerializationContextFor
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_CreateSerializationContextFor_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.CreateSerializationContextFor
+  fullName: Solti.Utils.Json.ContextFactory.CreateSerializationContextFor
+  nameWithType: ContextFactory.CreateSerializationContextFor
+- uid: Solti.Utils.Json.ContextFactory.Globals
+  name: Globals
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_Globals
+  commentId: P:Solti.Utils.Json.ContextFactory.Globals
+  fullName: Solti.Utils.Json.ContextFactory.Globals
+  nameWithType: ContextFactory.Globals
+- uid: Solti.Utils.Json.ContextFactory.Globals*
+  name: Globals
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_Globals_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.Globals
+  fullName: Solti.Utils.Json.ContextFactory.Globals
+  nameWithType: ContextFactory.Globals
+- uid: Solti.Utils.Json.ContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.ContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.ContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: ContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.ContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.ContextFactory.IsDeserializationSupported
+  nameWithType: ContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.ContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.ContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.ContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: ContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.ContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.ContextFactory.html#Solti_Utils_Json_ContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.ContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.ContextFactory.IsSerializationSupported
+  nameWithType: ContextFactory.IsSerializationSupported
+- uid: Solti.Utils.Json.DateTimeContextFactory
+  name: DateTimeContextFactory
+  href: Solti.Utils.Json.DateTimeContextFactory.html
+  commentId: T:Solti.Utils.Json.DateTimeContextFactory
+  fullName: Solti.Utils.Json.DateTimeContextFactory
+  nameWithType: DateTimeContextFactory
+- uid: Solti.Utils.Json.DateTimeContextFactory.#ctor
+  name: DateTimeContextFactory()
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory__ctor
+  commentId: M:Solti.Utils.Json.DateTimeContextFactory.#ctor
+  fullName: Solti.Utils.Json.DateTimeContextFactory.DateTimeContextFactory()
+  nameWithType: DateTimeContextFactory.DateTimeContextFactory()
+- uid: Solti.Utils.Json.DateTimeContextFactory.#ctor*
+  name: DateTimeContextFactory
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.DateTimeContextFactory.#ctor
+  fullName: Solti.Utils.Json.DateTimeContextFactory.DateTimeContextFactory
+  nameWithType: DateTimeContextFactory.DateTimeContextFactory
+- uid: Solti.Utils.Json.DateTimeContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.DateTimeContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.DateTimeContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: DateTimeContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.DateTimeContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.DateTimeContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.DateTimeContextFactory.CreateDeserializationContextCore
+  nameWithType: DateTimeContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.DateTimeContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.DateTimeContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.DateTimeContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: DateTimeContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.DateTimeContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.DateTimeContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.DateTimeContextFactory.CreateSerializationContextCore
+  nameWithType: DateTimeContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
+  name: DefaultConfig
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_DefaultConfig
+  commentId: P:Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
+  fullName: Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
+  nameWithType: DateTimeContextFactory.DefaultConfig
+- uid: Solti.Utils.Json.DateTimeContextFactory.DefaultConfig*
+  name: DefaultConfig
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_DefaultConfig_
+  commentId: Overload:Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
+  fullName: Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
+  nameWithType: DateTimeContextFactory.DefaultConfig
+- uid: Solti.Utils.Json.DateTimeContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.DateTimeContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.DateTimeContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: DateTimeContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.DateTimeContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.DateTimeContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.DateTimeContextFactory.IsDeserializationSupported
+  nameWithType: DateTimeContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.DateTimeContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.DateTimeContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.DateTimeContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: DateTimeContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.DateTimeContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.DateTimeContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.DateTimeContextFactory.IsSerializationSupported
+  nameWithType: DateTimeContextFactory.IsSerializationSupported
 - uid: Solti.Utils.Json.DeserializationContext
   name: DeserializationContext
   href: Solti.Utils.Json.DeserializationContext.html
@@ -431,6 +617,18 @@ references:
   commentId: F:Solti.Utils.Json.DeserializationContext.Default
   fullName: Solti.Utils.Json.DeserializationContext.Default
   nameWithType: DeserializationContext.Default
+- uid: Solti.Utils.Json.DeserializationContext.For(System.Type,System.Object)
+  name: For(Type, Object)
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_For_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.DeserializationContext.For(System.Type,System.Object)
+  fullName: Solti.Utils.Json.DeserializationContext.For(System.Type, System.Object)
+  nameWithType: DeserializationContext.For(Type, Object)
+- uid: Solti.Utils.Json.DeserializationContext.For*
+  name: For
+  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_For_
+  commentId: Overload:Solti.Utils.Json.DeserializationContext.For
+  fullName: Solti.Utils.Json.DeserializationContext.For
+  nameWithType: DeserializationContext.For
 - uid: Solti.Utils.Json.DeserializationContext.GetListItemContext
   name: GetListItemContext
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_GetListItemContext
@@ -860,12 +1058,6 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.SupportedTypes
   fullName: Solti.Utils.Json.DeserializationContext.SupportedTypes
   nameWithType: DeserializationContext.SupportedTypes
-- uid: Solti.Utils.Json.DeserializationContext.Untyped
-  name: Untyped
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Untyped
-  commentId: F:Solti.Utils.Json.DeserializationContext.Untyped
-  fullName: Solti.Utils.Json.DeserializationContext.Untyped
-  nameWithType: DeserializationContext.Untyped
 - uid: Solti.Utils.Json.DeserializationContext.Verify
   name: Verify
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Verify
@@ -941,210 +1133,216 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke
   fullName: Solti.Utils.Json.DeserializationContext.VerifyDelegate.Invoke
   nameWithType: DeserializationContext.VerifyDelegate.Invoke
-- uid: Solti.Utils.Json.DeserializationContextFactory
-  name: DeserializationContextFactory
-  href: Solti.Utils.Json.DeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.DeserializationContextFactory
-  fullName: Solti.Utils.Json.DeserializationContextFactory
-  nameWithType: DeserializationContextFactory
-- uid: Solti.Utils.Json.DeserializationContextFactory.#ctor
-  name: DeserializationContextFactory()
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.DeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.DeserializationContextFactory.DeserializationContextFactory()
-  nameWithType: DeserializationContextFactory.DeserializationContextFactory()
-- uid: Solti.Utils.Json.DeserializationContextFactory.#ctor*
-  name: DeserializationContextFactory
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.DeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.DeserializationContextFactory.DeserializationContextFactory
-  nameWithType: DeserializationContextFactory.DeserializationContextFactory
-- uid: Solti.Utils.Json.DeserializationContextFactory.CreateContext(System.Type,System.Object)
-  name: CreateContext(Type, Object)
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateContext_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.DeserializationContextFactory.CreateContext(System.Type,System.Object)
-  fullName: Solti.Utils.Json.DeserializationContextFactory.CreateContext(System.Type, System.Object)
-  nameWithType: DeserializationContextFactory.CreateContext(Type, Object)
-- uid: Solti.Utils.Json.DeserializationContextFactory.CreateContext*
-  name: CreateContext
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateContext_
-  commentId: Overload:Solti.Utils.Json.DeserializationContextFactory.CreateContext
-  fullName: Solti.Utils.Json.DeserializationContextFactory.CreateContext
-  nameWithType: DeserializationContextFactory.CreateContext
-- uid: Solti.Utils.Json.DeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.DeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.DeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: DeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.DeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.DeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.DeserializationContextFactory.CreateContextCore
-  nameWithType: DeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.DeserializationContextFactory.CreateFor(System.Type)
-  name: CreateFor(Type)
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateFor_System_Type_
-  commentId: M:Solti.Utils.Json.DeserializationContextFactory.CreateFor(System.Type)
-  fullName: Solti.Utils.Json.DeserializationContextFactory.CreateFor(System.Type)
-  nameWithType: DeserializationContextFactory.CreateFor(Type)
-- uid: Solti.Utils.Json.DeserializationContextFactory.CreateFor*
-  name: CreateFor
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_CreateFor_
-  commentId: Overload:Solti.Utils.Json.DeserializationContextFactory.CreateFor
-  fullName: Solti.Utils.Json.DeserializationContextFactory.CreateFor
-  nameWithType: DeserializationContextFactory.CreateFor
-- uid: Solti.Utils.Json.DeserializationContextFactory.Globals
-  name: Globals
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_Globals
-  commentId: P:Solti.Utils.Json.DeserializationContextFactory.Globals
-  fullName: Solti.Utils.Json.DeserializationContextFactory.Globals
-  nameWithType: DeserializationContextFactory.Globals
-- uid: Solti.Utils.Json.DeserializationContextFactory.Globals*
-  name: Globals
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_Globals_
-  commentId: Overload:Solti.Utils.Json.DeserializationContextFactory.Globals
-  fullName: Solti.Utils.Json.DeserializationContextFactory.Globals
-  nameWithType: DeserializationContextFactory.Globals
-- uid: Solti.Utils.Json.DeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.DeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.DeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: DeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.DeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.DeserializationContextFactory.html#Solti_Utils_Json_DeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.DeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.DeserializationContextFactory.IsSupported
-  nameWithType: DeserializationContextFactory.IsSupported
-- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory
-  name: DictionaryDeserializationContextFactory
-  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.DictionaryDeserializationContextFactory
-  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory
-  nameWithType: DictionaryDeserializationContextFactory
-- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.#ctor
-  name: DictionaryDeserializationContextFactory()
-  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.DictionaryDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.DictionaryDeserializationContextFactory()
-  nameWithType: DictionaryDeserializationContextFactory.DictionaryDeserializationContextFactory()
-- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.#ctor*
-  name: DictionaryDeserializationContextFactory
-  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.DictionaryDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.DictionaryDeserializationContextFactory
-  nameWithType: DictionaryDeserializationContextFactory.DictionaryDeserializationContextFactory
-- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: DictionaryDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.CreateContextCore
-  nameWithType: DictionaryDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: DictionaryDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.DictionaryDeserializationContextFactory.html#Solti_Utils_Json_DictionaryDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.DictionaryDeserializationContextFactory.IsSupported
-  nameWithType: DictionaryDeserializationContextFactory.IsSupported
-- uid: Solti.Utils.Json.EnumDeserializationContextFactory
-  name: EnumDeserializationContextFactory
-  href: Solti.Utils.Json.EnumDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.EnumDeserializationContextFactory
-  fullName: Solti.Utils.Json.EnumDeserializationContextFactory
-  nameWithType: EnumDeserializationContextFactory
-- uid: Solti.Utils.Json.EnumDeserializationContextFactory.#ctor
-  name: EnumDeserializationContextFactory()
-  href: Solti.Utils.Json.EnumDeserializationContextFactory.html#Solti_Utils_Json_EnumDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.EnumDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.EnumDeserializationContextFactory.EnumDeserializationContextFactory()
-  nameWithType: EnumDeserializationContextFactory.EnumDeserializationContextFactory()
-- uid: Solti.Utils.Json.EnumDeserializationContextFactory.#ctor*
-  name: EnumDeserializationContextFactory
-  href: Solti.Utils.Json.EnumDeserializationContextFactory.html#Solti_Utils_Json_EnumDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.EnumDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.EnumDeserializationContextFactory.EnumDeserializationContextFactory
-  nameWithType: EnumDeserializationContextFactory.EnumDeserializationContextFactory
-- uid: Solti.Utils.Json.EnumDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.EnumDeserializationContextFactory.html#Solti_Utils_Json_EnumDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.EnumDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.EnumDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: EnumDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.EnumDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.EnumDeserializationContextFactory.html#Solti_Utils_Json_EnumDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.EnumDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.EnumDeserializationContextFactory.CreateContextCore
-  nameWithType: EnumDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.EnumDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.EnumDeserializationContextFactory.html#Solti_Utils_Json_EnumDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.EnumDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.EnumDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: EnumDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.EnumDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.EnumDeserializationContextFactory.html#Solti_Utils_Json_EnumDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.EnumDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.EnumDeserializationContextFactory.IsSupported
-  nameWithType: EnumDeserializationContextFactory.IsSupported
-- uid: Solti.Utils.Json.GuidDeserializationContextFactory
-  name: GuidDeserializationContextFactory
-  href: Solti.Utils.Json.GuidDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.GuidDeserializationContextFactory
-  fullName: Solti.Utils.Json.GuidDeserializationContextFactory
-  nameWithType: GuidDeserializationContextFactory
-- uid: Solti.Utils.Json.GuidDeserializationContextFactory.#ctor
-  name: GuidDeserializationContextFactory()
-  href: Solti.Utils.Json.GuidDeserializationContextFactory.html#Solti_Utils_Json_GuidDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.GuidDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.GuidDeserializationContextFactory.GuidDeserializationContextFactory()
-  nameWithType: GuidDeserializationContextFactory.GuidDeserializationContextFactory()
-- uid: Solti.Utils.Json.GuidDeserializationContextFactory.#ctor*
-  name: GuidDeserializationContextFactory
-  href: Solti.Utils.Json.GuidDeserializationContextFactory.html#Solti_Utils_Json_GuidDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.GuidDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.GuidDeserializationContextFactory.GuidDeserializationContextFactory
-  nameWithType: GuidDeserializationContextFactory.GuidDeserializationContextFactory
-- uid: Solti.Utils.Json.GuidDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.GuidDeserializationContextFactory.html#Solti_Utils_Json_GuidDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.GuidDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.GuidDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: GuidDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.GuidDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.GuidDeserializationContextFactory.html#Solti_Utils_Json_GuidDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.GuidDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.GuidDeserializationContextFactory.CreateContextCore
-  nameWithType: GuidDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.GuidDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.GuidDeserializationContextFactory.html#Solti_Utils_Json_GuidDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.GuidDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.GuidDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: GuidDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.GuidDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.GuidDeserializationContextFactory.html#Solti_Utils_Json_GuidDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.GuidDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.GuidDeserializationContextFactory.IsSupported
-  nameWithType: GuidDeserializationContextFactory.IsSupported
+- uid: Solti.Utils.Json.DictionaryContextFactory
+  name: DictionaryContextFactory
+  href: Solti.Utils.Json.DictionaryContextFactory.html
+  commentId: T:Solti.Utils.Json.DictionaryContextFactory
+  fullName: Solti.Utils.Json.DictionaryContextFactory
+  nameWithType: DictionaryContextFactory
+- uid: Solti.Utils.Json.DictionaryContextFactory.#ctor
+  name: DictionaryContextFactory()
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory__ctor
+  commentId: M:Solti.Utils.Json.DictionaryContextFactory.#ctor
+  fullName: Solti.Utils.Json.DictionaryContextFactory.DictionaryContextFactory()
+  nameWithType: DictionaryContextFactory.DictionaryContextFactory()
+- uid: Solti.Utils.Json.DictionaryContextFactory.#ctor*
+  name: DictionaryContextFactory
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.DictionaryContextFactory.#ctor
+  fullName: Solti.Utils.Json.DictionaryContextFactory.DictionaryContextFactory
+  nameWithType: DictionaryContextFactory.DictionaryContextFactory
+- uid: Solti.Utils.Json.DictionaryContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.DictionaryContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.DictionaryContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: DictionaryContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.DictionaryContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.DictionaryContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.DictionaryContextFactory.CreateDeserializationContextCore
+  nameWithType: DictionaryContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.DictionaryContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.DictionaryContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.DictionaryContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: DictionaryContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.DictionaryContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.DictionaryContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.DictionaryContextFactory.CreateSerializationContextCore
+  nameWithType: DictionaryContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.DictionaryContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.DictionaryContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.DictionaryContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: DictionaryContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.DictionaryContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.DictionaryContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.DictionaryContextFactory.IsDeserializationSupported
+  nameWithType: DictionaryContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.DictionaryContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.DictionaryContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.DictionaryContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: DictionaryContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.DictionaryContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.DictionaryContextFactory.html#Solti_Utils_Json_DictionaryContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.DictionaryContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.DictionaryContextFactory.IsSerializationSupported
+  nameWithType: DictionaryContextFactory.IsSerializationSupported
+- uid: Solti.Utils.Json.EnumContextFactory
+  name: EnumContextFactory
+  href: Solti.Utils.Json.EnumContextFactory.html
+  commentId: T:Solti.Utils.Json.EnumContextFactory
+  fullName: Solti.Utils.Json.EnumContextFactory
+  nameWithType: EnumContextFactory
+- uid: Solti.Utils.Json.EnumContextFactory.#ctor
+  name: EnumContextFactory()
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory__ctor
+  commentId: M:Solti.Utils.Json.EnumContextFactory.#ctor
+  fullName: Solti.Utils.Json.EnumContextFactory.EnumContextFactory()
+  nameWithType: EnumContextFactory.EnumContextFactory()
+- uid: Solti.Utils.Json.EnumContextFactory.#ctor*
+  name: EnumContextFactory
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.EnumContextFactory.#ctor
+  fullName: Solti.Utils.Json.EnumContextFactory.EnumContextFactory
+  nameWithType: EnumContextFactory.EnumContextFactory
+- uid: Solti.Utils.Json.EnumContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.EnumContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.EnumContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: EnumContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.EnumContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.EnumContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.EnumContextFactory.CreateDeserializationContextCore
+  nameWithType: EnumContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.EnumContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.EnumContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.EnumContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: EnumContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.EnumContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.EnumContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.EnumContextFactory.CreateSerializationContextCore
+  nameWithType: EnumContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.EnumContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.EnumContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.EnumContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: EnumContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.EnumContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.EnumContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.EnumContextFactory.IsDeserializationSupported
+  nameWithType: EnumContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.EnumContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.EnumContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.EnumContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: EnumContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.EnumContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.EnumContextFactory.html#Solti_Utils_Json_EnumContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.EnumContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.EnumContextFactory.IsSerializationSupported
+  nameWithType: EnumContextFactory.IsSerializationSupported
+- uid: Solti.Utils.Json.GuidContextFactory
+  name: GuidContextFactory
+  href: Solti.Utils.Json.GuidContextFactory.html
+  commentId: T:Solti.Utils.Json.GuidContextFactory
+  fullName: Solti.Utils.Json.GuidContextFactory
+  nameWithType: GuidContextFactory
+- uid: Solti.Utils.Json.GuidContextFactory.#ctor
+  name: GuidContextFactory()
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory__ctor
+  commentId: M:Solti.Utils.Json.GuidContextFactory.#ctor
+  fullName: Solti.Utils.Json.GuidContextFactory.GuidContextFactory()
+  nameWithType: GuidContextFactory.GuidContextFactory()
+- uid: Solti.Utils.Json.GuidContextFactory.#ctor*
+  name: GuidContextFactory
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.GuidContextFactory.#ctor
+  fullName: Solti.Utils.Json.GuidContextFactory.GuidContextFactory
+  nameWithType: GuidContextFactory.GuidContextFactory
+- uid: Solti.Utils.Json.GuidContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.GuidContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.GuidContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: GuidContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.GuidContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.GuidContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.GuidContextFactory.CreateDeserializationContextCore
+  nameWithType: GuidContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.GuidContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.GuidContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.GuidContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: GuidContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.GuidContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.GuidContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.GuidContextFactory.CreateSerializationContextCore
+  nameWithType: GuidContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.GuidContextFactory.DefaultConfig
+  name: DefaultConfig
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_DefaultConfig
+  commentId: P:Solti.Utils.Json.GuidContextFactory.DefaultConfig
+  fullName: Solti.Utils.Json.GuidContextFactory.DefaultConfig
+  nameWithType: GuidContextFactory.DefaultConfig
+- uid: Solti.Utils.Json.GuidContextFactory.DefaultConfig*
+  name: DefaultConfig
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_DefaultConfig_
+  commentId: Overload:Solti.Utils.Json.GuidContextFactory.DefaultConfig
+  fullName: Solti.Utils.Json.GuidContextFactory.DefaultConfig
+  nameWithType: GuidContextFactory.DefaultConfig
+- uid: Solti.Utils.Json.GuidContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.GuidContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.GuidContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: GuidContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.GuidContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.GuidContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.GuidContextFactory.IsDeserializationSupported
+  nameWithType: GuidContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.GuidContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.GuidContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.GuidContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: GuidContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.GuidContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.GuidContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.GuidContextFactory.IsSerializationSupported
+  nameWithType: GuidContextFactory.IsSerializationSupported
 - uid: Solti.Utils.Json.JsonDataTypes
   name: JsonDataTypes
   href: Solti.Utils.Json.JsonDataTypes.html
@@ -1403,132 +1601,210 @@ references:
   commentId: Overload:Solti.Utils.Json.JsonWriterException.#ctor
   fullName: Solti.Utils.Json.JsonWriterException.JsonWriterException
   nameWithType: JsonWriterException.JsonWriterException
-- uid: Solti.Utils.Json.ListDeserializationContextFactory
-  name: ListDeserializationContextFactory
-  href: Solti.Utils.Json.ListDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.ListDeserializationContextFactory
-  fullName: Solti.Utils.Json.ListDeserializationContextFactory
-  nameWithType: ListDeserializationContextFactory
-- uid: Solti.Utils.Json.ListDeserializationContextFactory.#ctor
-  name: ListDeserializationContextFactory()
-  href: Solti.Utils.Json.ListDeserializationContextFactory.html#Solti_Utils_Json_ListDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.ListDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.ListDeserializationContextFactory.ListDeserializationContextFactory()
-  nameWithType: ListDeserializationContextFactory.ListDeserializationContextFactory()
-- uid: Solti.Utils.Json.ListDeserializationContextFactory.#ctor*
-  name: ListDeserializationContextFactory
-  href: Solti.Utils.Json.ListDeserializationContextFactory.html#Solti_Utils_Json_ListDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.ListDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.ListDeserializationContextFactory.ListDeserializationContextFactory
-  nameWithType: ListDeserializationContextFactory.ListDeserializationContextFactory
-- uid: Solti.Utils.Json.ListDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.ListDeserializationContextFactory.html#Solti_Utils_Json_ListDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.ListDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.ListDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: ListDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.ListDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.ListDeserializationContextFactory.html#Solti_Utils_Json_ListDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.ListDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.ListDeserializationContextFactory.CreateContextCore
-  nameWithType: ListDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.ListDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.ListDeserializationContextFactory.html#Solti_Utils_Json_ListDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.ListDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.ListDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: ListDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.ListDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.ListDeserializationContextFactory.html#Solti_Utils_Json_ListDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.ListDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.ListDeserializationContextFactory.IsSupported
-  nameWithType: ListDeserializationContextFactory.IsSupported
-- uid: Solti.Utils.Json.NumberDeserializationContextFactory
-  name: NumberDeserializationContextFactory
-  href: Solti.Utils.Json.NumberDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.NumberDeserializationContextFactory
-  fullName: Solti.Utils.Json.NumberDeserializationContextFactory
-  nameWithType: NumberDeserializationContextFactory
-- uid: Solti.Utils.Json.NumberDeserializationContextFactory.#ctor
-  name: NumberDeserializationContextFactory()
-  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.NumberDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.NumberDeserializationContextFactory()
-  nameWithType: NumberDeserializationContextFactory.NumberDeserializationContextFactory()
-- uid: Solti.Utils.Json.NumberDeserializationContextFactory.#ctor*
-  name: NumberDeserializationContextFactory
-  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.NumberDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.NumberDeserializationContextFactory
-  nameWithType: NumberDeserializationContextFactory.NumberDeserializationContextFactory
-- uid: Solti.Utils.Json.NumberDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.NumberDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: NumberDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.NumberDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.NumberDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.CreateContextCore
-  nameWithType: NumberDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: NumberDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.NumberDeserializationContextFactory.html#Solti_Utils_Json_NumberDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.NumberDeserializationContextFactory.IsSupported
-  nameWithType: NumberDeserializationContextFactory.IsSupported
-- uid: Solti.Utils.Json.ObjectDeserializationContextFactory
-  name: ObjectDeserializationContextFactory
-  href: Solti.Utils.Json.ObjectDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.ObjectDeserializationContextFactory
-  fullName: Solti.Utils.Json.ObjectDeserializationContextFactory
-  nameWithType: ObjectDeserializationContextFactory
-- uid: Solti.Utils.Json.ObjectDeserializationContextFactory.#ctor
-  name: ObjectDeserializationContextFactory()
-  href: Solti.Utils.Json.ObjectDeserializationContextFactory.html#Solti_Utils_Json_ObjectDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.ObjectDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.ObjectDeserializationContextFactory.ObjectDeserializationContextFactory()
-  nameWithType: ObjectDeserializationContextFactory.ObjectDeserializationContextFactory()
-- uid: Solti.Utils.Json.ObjectDeserializationContextFactory.#ctor*
-  name: ObjectDeserializationContextFactory
-  href: Solti.Utils.Json.ObjectDeserializationContextFactory.html#Solti_Utils_Json_ObjectDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.ObjectDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.ObjectDeserializationContextFactory.ObjectDeserializationContextFactory
-  nameWithType: ObjectDeserializationContextFactory.ObjectDeserializationContextFactory
-- uid: Solti.Utils.Json.ObjectDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.ObjectDeserializationContextFactory.html#Solti_Utils_Json_ObjectDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.ObjectDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.ObjectDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: ObjectDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.ObjectDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.ObjectDeserializationContextFactory.html#Solti_Utils_Json_ObjectDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.ObjectDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.ObjectDeserializationContextFactory.CreateContextCore
-  nameWithType: ObjectDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.ObjectDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.ObjectDeserializationContextFactory.html#Solti_Utils_Json_ObjectDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.ObjectDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.ObjectDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: ObjectDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.ObjectDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.ObjectDeserializationContextFactory.html#Solti_Utils_Json_ObjectDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.ObjectDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.ObjectDeserializationContextFactory.IsSupported
-  nameWithType: ObjectDeserializationContextFactory.IsSupported
+- uid: Solti.Utils.Json.ListContextFactory
+  name: ListContextFactory
+  href: Solti.Utils.Json.ListContextFactory.html
+  commentId: T:Solti.Utils.Json.ListContextFactory
+  fullName: Solti.Utils.Json.ListContextFactory
+  nameWithType: ListContextFactory
+- uid: Solti.Utils.Json.ListContextFactory.#ctor
+  name: ListContextFactory()
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory__ctor
+  commentId: M:Solti.Utils.Json.ListContextFactory.#ctor
+  fullName: Solti.Utils.Json.ListContextFactory.ListContextFactory()
+  nameWithType: ListContextFactory.ListContextFactory()
+- uid: Solti.Utils.Json.ListContextFactory.#ctor*
+  name: ListContextFactory
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.ListContextFactory.#ctor
+  fullName: Solti.Utils.Json.ListContextFactory.ListContextFactory
+  nameWithType: ListContextFactory.ListContextFactory
+- uid: Solti.Utils.Json.ListContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ListContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ListContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: ListContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.ListContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.ListContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.ListContextFactory.CreateDeserializationContextCore
+  nameWithType: ListContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.ListContextFactory.CreateSerializationContextCore(System.Type)
+  name: CreateSerializationContextCore(Type)
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory_CreateSerializationContextCore_System_Type_
+  commentId: M:Solti.Utils.Json.ListContextFactory.CreateSerializationContextCore(System.Type)
+  fullName: Solti.Utils.Json.ListContextFactory.CreateSerializationContextCore(System.Type)
+  nameWithType: ListContextFactory.CreateSerializationContextCore(Type)
+- uid: Solti.Utils.Json.ListContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ListContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ListContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: ListContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.ListContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.ListContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.ListContextFactory.CreateSerializationContextCore
+  nameWithType: ListContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.ListContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.ListContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.ListContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: ListContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.ListContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.ListContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.ListContextFactory.IsDeserializationSupported
+  nameWithType: ListContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.ListContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.ListContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.ListContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: ListContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.ListContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.ListContextFactory.html#Solti_Utils_Json_ListContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.ListContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.ListContextFactory.IsSerializationSupported
+  nameWithType: ListContextFactory.IsSerializationSupported
+- uid: Solti.Utils.Json.NumberContextFactory
+  name: NumberContextFactory
+  href: Solti.Utils.Json.NumberContextFactory.html
+  commentId: T:Solti.Utils.Json.NumberContextFactory
+  fullName: Solti.Utils.Json.NumberContextFactory
+  nameWithType: NumberContextFactory
+- uid: Solti.Utils.Json.NumberContextFactory.#ctor
+  name: NumberContextFactory()
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory__ctor
+  commentId: M:Solti.Utils.Json.NumberContextFactory.#ctor
+  fullName: Solti.Utils.Json.NumberContextFactory.NumberContextFactory()
+  nameWithType: NumberContextFactory.NumberContextFactory()
+- uid: Solti.Utils.Json.NumberContextFactory.#ctor*
+  name: NumberContextFactory
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.NumberContextFactory.#ctor
+  fullName: Solti.Utils.Json.NumberContextFactory.NumberContextFactory
+  nameWithType: NumberContextFactory.NumberContextFactory
+- uid: Solti.Utils.Json.NumberContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.NumberContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.NumberContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: NumberContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.NumberContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.NumberContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.NumberContextFactory.CreateDeserializationContextCore
+  nameWithType: NumberContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.NumberContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.NumberContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.NumberContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: NumberContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.NumberContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.NumberContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.NumberContextFactory.CreateSerializationContextCore
+  nameWithType: NumberContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.NumberContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.NumberContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.NumberContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: NumberContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.NumberContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.NumberContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.NumberContextFactory.IsDeserializationSupported
+  nameWithType: NumberContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.NumberContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.NumberContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.NumberContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: NumberContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.NumberContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.NumberContextFactory.html#Solti_Utils_Json_NumberContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.NumberContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.NumberContextFactory.IsSerializationSupported
+  nameWithType: NumberContextFactory.IsSerializationSupported
+- uid: Solti.Utils.Json.ObjectContextFactory
+  name: ObjectContextFactory
+  href: Solti.Utils.Json.ObjectContextFactory.html
+  commentId: T:Solti.Utils.Json.ObjectContextFactory
+  fullName: Solti.Utils.Json.ObjectContextFactory
+  nameWithType: ObjectContextFactory
+- uid: Solti.Utils.Json.ObjectContextFactory.#ctor
+  name: ObjectContextFactory()
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory__ctor
+  commentId: M:Solti.Utils.Json.ObjectContextFactory.#ctor
+  fullName: Solti.Utils.Json.ObjectContextFactory.ObjectContextFactory()
+  nameWithType: ObjectContextFactory.ObjectContextFactory()
+- uid: Solti.Utils.Json.ObjectContextFactory.#ctor*
+  name: ObjectContextFactory
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.ObjectContextFactory.#ctor
+  fullName: Solti.Utils.Json.ObjectContextFactory.ObjectContextFactory
+  nameWithType: ObjectContextFactory.ObjectContextFactory
+- uid: Solti.Utils.Json.ObjectContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ObjectContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ObjectContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: ObjectContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.ObjectContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.ObjectContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.ObjectContextFactory.CreateDeserializationContextCore
+  nameWithType: ObjectContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.ObjectContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.ObjectContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.ObjectContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: ObjectContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.ObjectContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.ObjectContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.ObjectContextFactory.CreateSerializationContextCore
+  nameWithType: ObjectContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.ObjectContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.ObjectContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.ObjectContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: ObjectContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.ObjectContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.ObjectContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.ObjectContextFactory.IsDeserializationSupported
+  nameWithType: ObjectContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.ObjectContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.ObjectContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.ObjectContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: ObjectContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.ObjectContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.ObjectContextFactory.html#Solti_Utils_Json_ObjectContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.ObjectContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.ObjectContextFactory.IsSerializationSupported
+  nameWithType: ObjectContextFactory.IsSerializationSupported
 - uid: Solti.Utils.Json.SerializationContext
   name: SerializationContext
   href: Solti.Utils.Json.SerializationContext.html
@@ -1658,6 +1934,18 @@ references:
   commentId: Overload:Solti.Utils.Json.SerializationContext.EnumEntriesDelegate.Invoke
   fullName: Solti.Utils.Json.SerializationContext.EnumEntriesDelegate.Invoke
   nameWithType: SerializationContext.EnumEntriesDelegate.Invoke
+- uid: Solti.Utils.Json.SerializationContext.For(System.Type,System.Object)
+  name: For(Type, Object)
+  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_For_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.SerializationContext.For(System.Type,System.Object)
+  fullName: Solti.Utils.Json.SerializationContext.For(System.Type, System.Object)
+  nameWithType: SerializationContext.For(Type, Object)
+- uid: Solti.Utils.Json.SerializationContext.For*
+  name: For
+  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_For_
+  commentId: Overload:Solti.Utils.Json.SerializationContext.For
+  fullName: Solti.Utils.Json.SerializationContext.For
+  nameWithType: SerializationContext.For
 - uid: Solti.Utils.Json.SerializationContext.GetTypeDelegate
   name: SerializationContext.GetTypeDelegate
   href: Solti.Utils.Json.SerializationContext.GetTypeDelegate.html
@@ -1787,93 +2075,201 @@ references:
   commentId: Overload:Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke
   fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke
   nameWithType: SerializationContext.ToStringDelegate.Invoke
-- uid: Solti.Utils.Json.SerializationContext.Untyped
-  name: Untyped
-  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Untyped
-  commentId: F:Solti.Utils.Json.SerializationContext.Untyped
-  fullName: Solti.Utils.Json.SerializationContext.Untyped
-  nameWithType: SerializationContext.Untyped
-- uid: Solti.Utils.Json.StreamDeserializationContextFactory
-  name: StreamDeserializationContextFactory
-  href: Solti.Utils.Json.StreamDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.StreamDeserializationContextFactory
-  fullName: Solti.Utils.Json.StreamDeserializationContextFactory
-  nameWithType: StreamDeserializationContextFactory
-- uid: Solti.Utils.Json.StreamDeserializationContextFactory.#ctor
-  name: StreamDeserializationContextFactory()
-  href: Solti.Utils.Json.StreamDeserializationContextFactory.html#Solti_Utils_Json_StreamDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.StreamDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.StreamDeserializationContextFactory.StreamDeserializationContextFactory()
-  nameWithType: StreamDeserializationContextFactory.StreamDeserializationContextFactory()
-- uid: Solti.Utils.Json.StreamDeserializationContextFactory.#ctor*
-  name: StreamDeserializationContextFactory
-  href: Solti.Utils.Json.StreamDeserializationContextFactory.html#Solti_Utils_Json_StreamDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.StreamDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.StreamDeserializationContextFactory.StreamDeserializationContextFactory
-  nameWithType: StreamDeserializationContextFactory.StreamDeserializationContextFactory
-- uid: Solti.Utils.Json.StreamDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.StreamDeserializationContextFactory.html#Solti_Utils_Json_StreamDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.StreamDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.StreamDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: StreamDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.StreamDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.StreamDeserializationContextFactory.html#Solti_Utils_Json_StreamDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.StreamDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.StreamDeserializationContextFactory.CreateContextCore
-  nameWithType: StreamDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.StreamDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.StreamDeserializationContextFactory.html#Solti_Utils_Json_StreamDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.StreamDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.StreamDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: StreamDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.StreamDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.StreamDeserializationContextFactory.html#Solti_Utils_Json_StreamDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.StreamDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.StreamDeserializationContextFactory.IsSupported
-  nameWithType: StreamDeserializationContextFactory.IsSupported
-- uid: Solti.Utils.Json.StringDeserializationContextFactory
-  name: StringDeserializationContextFactory
-  href: Solti.Utils.Json.StringDeserializationContextFactory.html
-  commentId: T:Solti.Utils.Json.StringDeserializationContextFactory
-  fullName: Solti.Utils.Json.StringDeserializationContextFactory
-  nameWithType: StringDeserializationContextFactory
-- uid: Solti.Utils.Json.StringDeserializationContextFactory.#ctor
-  name: StringDeserializationContextFactory()
-  href: Solti.Utils.Json.StringDeserializationContextFactory.html#Solti_Utils_Json_StringDeserializationContextFactory__ctor
-  commentId: M:Solti.Utils.Json.StringDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.StringDeserializationContextFactory.StringDeserializationContextFactory()
-  nameWithType: StringDeserializationContextFactory.StringDeserializationContextFactory()
-- uid: Solti.Utils.Json.StringDeserializationContextFactory.#ctor*
-  name: StringDeserializationContextFactory
-  href: Solti.Utils.Json.StringDeserializationContextFactory.html#Solti_Utils_Json_StringDeserializationContextFactory__ctor_
-  commentId: Overload:Solti.Utils.Json.StringDeserializationContextFactory.#ctor
-  fullName: Solti.Utils.Json.StringDeserializationContextFactory.StringDeserializationContextFactory
-  nameWithType: StringDeserializationContextFactory.StringDeserializationContextFactory
-- uid: Solti.Utils.Json.StringDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  name: CreateContextCore(Type, Object)
-  href: Solti.Utils.Json.StringDeserializationContextFactory.html#Solti_Utils_Json_StringDeserializationContextFactory_CreateContextCore_System_Type_System_Object_
-  commentId: M:Solti.Utils.Json.StringDeserializationContextFactory.CreateContextCore(System.Type,System.Object)
-  fullName: Solti.Utils.Json.StringDeserializationContextFactory.CreateContextCore(System.Type, System.Object)
-  nameWithType: StringDeserializationContextFactory.CreateContextCore(Type, Object)
-- uid: Solti.Utils.Json.StringDeserializationContextFactory.CreateContextCore*
-  name: CreateContextCore
-  href: Solti.Utils.Json.StringDeserializationContextFactory.html#Solti_Utils_Json_StringDeserializationContextFactory_CreateContextCore_
-  commentId: Overload:Solti.Utils.Json.StringDeserializationContextFactory.CreateContextCore
-  fullName: Solti.Utils.Json.StringDeserializationContextFactory.CreateContextCore
-  nameWithType: StringDeserializationContextFactory.CreateContextCore
-- uid: Solti.Utils.Json.StringDeserializationContextFactory.IsSupported(System.Type)
-  name: IsSupported(Type)
-  href: Solti.Utils.Json.StringDeserializationContextFactory.html#Solti_Utils_Json_StringDeserializationContextFactory_IsSupported_System_Type_
-  commentId: M:Solti.Utils.Json.StringDeserializationContextFactory.IsSupported(System.Type)
-  fullName: Solti.Utils.Json.StringDeserializationContextFactory.IsSupported(System.Type)
-  nameWithType: StringDeserializationContextFactory.IsSupported(Type)
-- uid: Solti.Utils.Json.StringDeserializationContextFactory.IsSupported*
-  name: IsSupported
-  href: Solti.Utils.Json.StringDeserializationContextFactory.html#Solti_Utils_Json_StringDeserializationContextFactory_IsSupported_
-  commentId: Overload:Solti.Utils.Json.StringDeserializationContextFactory.IsSupported
-  fullName: Solti.Utils.Json.StringDeserializationContextFactory.IsSupported
-  nameWithType: StringDeserializationContextFactory.IsSupported
+- uid: Solti.Utils.Json.StreamContextFactory
+  name: StreamContextFactory
+  href: Solti.Utils.Json.StreamContextFactory.html
+  commentId: T:Solti.Utils.Json.StreamContextFactory
+  fullName: Solti.Utils.Json.StreamContextFactory
+  nameWithType: StreamContextFactory
+- uid: Solti.Utils.Json.StreamContextFactory.#ctor
+  name: StreamContextFactory()
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory__ctor
+  commentId: M:Solti.Utils.Json.StreamContextFactory.#ctor
+  fullName: Solti.Utils.Json.StreamContextFactory.StreamContextFactory()
+  nameWithType: StreamContextFactory.StreamContextFactory()
+- uid: Solti.Utils.Json.StreamContextFactory.#ctor*
+  name: StreamContextFactory
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.StreamContextFactory.#ctor
+  fullName: Solti.Utils.Json.StreamContextFactory.StreamContextFactory
+  nameWithType: StreamContextFactory.StreamContextFactory
+- uid: Solti.Utils.Json.StreamContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.StreamContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.StreamContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: StreamContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.StreamContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.StreamContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.StreamContextFactory.CreateDeserializationContextCore
+  nameWithType: StreamContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.StreamContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.StreamContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.StreamContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: StreamContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.StreamContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.StreamContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.StreamContextFactory.CreateSerializationContextCore
+  nameWithType: StreamContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.StreamContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.StreamContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.StreamContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: StreamContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.StreamContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.StreamContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.StreamContextFactory.IsDeserializationSupported
+  nameWithType: StreamContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.StreamContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.StreamContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.StreamContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: StreamContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.StreamContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.StreamContextFactory.html#Solti_Utils_Json_StreamContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.StreamContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.StreamContextFactory.IsSerializationSupported
+  nameWithType: StreamContextFactory.IsSerializationSupported
+- uid: Solti.Utils.Json.StringContextFactory
+  name: StringContextFactory
+  href: Solti.Utils.Json.StringContextFactory.html
+  commentId: T:Solti.Utils.Json.StringContextFactory
+  fullName: Solti.Utils.Json.StringContextFactory
+  nameWithType: StringContextFactory
+- uid: Solti.Utils.Json.StringContextFactory.#ctor
+  name: StringContextFactory()
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory__ctor
+  commentId: M:Solti.Utils.Json.StringContextFactory.#ctor
+  fullName: Solti.Utils.Json.StringContextFactory.StringContextFactory()
+  nameWithType: StringContextFactory.StringContextFactory()
+- uid: Solti.Utils.Json.StringContextFactory.#ctor*
+  name: StringContextFactory
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.StringContextFactory.#ctor
+  fullName: Solti.Utils.Json.StringContextFactory.StringContextFactory
+  nameWithType: StringContextFactory.StringContextFactory
+- uid: Solti.Utils.Json.StringContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.StringContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.StringContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: StringContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.StringContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.StringContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.StringContextFactory.CreateDeserializationContextCore
+  nameWithType: StringContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.StringContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.StringContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.StringContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: StringContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.StringContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.StringContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.StringContextFactory.CreateSerializationContextCore
+  nameWithType: StringContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.StringContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.StringContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.StringContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: StringContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.StringContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.StringContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.StringContextFactory.IsDeserializationSupported
+  nameWithType: StringContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.StringContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.StringContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.StringContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: StringContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.StringContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.StringContextFactory.html#Solti_Utils_Json_StringContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.StringContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.StringContextFactory.IsSerializationSupported
+  nameWithType: StringContextFactory.IsSerializationSupported
+- uid: Solti.Utils.Json.UntypedContextFactory
+  name: UntypedContextFactory
+  href: Solti.Utils.Json.UntypedContextFactory.html
+  commentId: T:Solti.Utils.Json.UntypedContextFactory
+  fullName: Solti.Utils.Json.UntypedContextFactory
+  nameWithType: UntypedContextFactory
+- uid: Solti.Utils.Json.UntypedContextFactory.#ctor
+  name: UntypedContextFactory()
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory__ctor
+  commentId: M:Solti.Utils.Json.UntypedContextFactory.#ctor
+  fullName: Solti.Utils.Json.UntypedContextFactory.UntypedContextFactory()
+  nameWithType: UntypedContextFactory.UntypedContextFactory()
+- uid: Solti.Utils.Json.UntypedContextFactory.#ctor*
+  name: UntypedContextFactory
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory__ctor_
+  commentId: Overload:Solti.Utils.Json.UntypedContextFactory.#ctor
+  fullName: Solti.Utils.Json.UntypedContextFactory.UntypedContextFactory
+  nameWithType: UntypedContextFactory.UntypedContextFactory
+- uid: Solti.Utils.Json.UntypedContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  name: CreateDeserializationContextCore(Type, Object)
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory_CreateDeserializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.UntypedContextFactory.CreateDeserializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.UntypedContextFactory.CreateDeserializationContextCore(System.Type, System.Object)
+  nameWithType: UntypedContextFactory.CreateDeserializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.UntypedContextFactory.CreateDeserializationContextCore*
+  name: CreateDeserializationContextCore
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory_CreateDeserializationContextCore_
+  commentId: Overload:Solti.Utils.Json.UntypedContextFactory.CreateDeserializationContextCore
+  fullName: Solti.Utils.Json.UntypedContextFactory.CreateDeserializationContextCore
+  nameWithType: UntypedContextFactory.CreateDeserializationContextCore
+- uid: Solti.Utils.Json.UntypedContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  name: CreateSerializationContextCore(Type, Object)
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory_CreateSerializationContextCore_System_Type_System_Object_
+  commentId: M:Solti.Utils.Json.UntypedContextFactory.CreateSerializationContextCore(System.Type,System.Object)
+  fullName: Solti.Utils.Json.UntypedContextFactory.CreateSerializationContextCore(System.Type, System.Object)
+  nameWithType: UntypedContextFactory.CreateSerializationContextCore(Type, Object)
+- uid: Solti.Utils.Json.UntypedContextFactory.CreateSerializationContextCore*
+  name: CreateSerializationContextCore
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory_CreateSerializationContextCore_
+  commentId: Overload:Solti.Utils.Json.UntypedContextFactory.CreateSerializationContextCore
+  fullName: Solti.Utils.Json.UntypedContextFactory.CreateSerializationContextCore
+  nameWithType: UntypedContextFactory.CreateSerializationContextCore
+- uid: Solti.Utils.Json.UntypedContextFactory.IsDeserializationSupported(System.Type)
+  name: IsDeserializationSupported(Type)
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory_IsDeserializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.UntypedContextFactory.IsDeserializationSupported(System.Type)
+  fullName: Solti.Utils.Json.UntypedContextFactory.IsDeserializationSupported(System.Type)
+  nameWithType: UntypedContextFactory.IsDeserializationSupported(Type)
+- uid: Solti.Utils.Json.UntypedContextFactory.IsDeserializationSupported*
+  name: IsDeserializationSupported
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory_IsDeserializationSupported_
+  commentId: Overload:Solti.Utils.Json.UntypedContextFactory.IsDeserializationSupported
+  fullName: Solti.Utils.Json.UntypedContextFactory.IsDeserializationSupported
+  nameWithType: UntypedContextFactory.IsDeserializationSupported
+- uid: Solti.Utils.Json.UntypedContextFactory.IsSerializationSupported(System.Type)
+  name: IsSerializationSupported(Type)
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory_IsSerializationSupported_System_Type_
+  commentId: M:Solti.Utils.Json.UntypedContextFactory.IsSerializationSupported(System.Type)
+  fullName: Solti.Utils.Json.UntypedContextFactory.IsSerializationSupported(System.Type)
+  nameWithType: UntypedContextFactory.IsSerializationSupported(Type)
+- uid: Solti.Utils.Json.UntypedContextFactory.IsSerializationSupported*
+  name: IsSerializationSupported
+  href: Solti.Utils.Json.UntypedContextFactory.html#Solti_Utils_Json_UntypedContextFactory_IsSerializationSupported_
+  commentId: Overload:Solti.Utils.Json.UntypedContextFactory.IsSerializationSupported
+  fullName: Solti.Utils.Json.UntypedContextFactory.IsSerializationSupported
+  nameWithType: UntypedContextFactory.IsSerializationSupported
