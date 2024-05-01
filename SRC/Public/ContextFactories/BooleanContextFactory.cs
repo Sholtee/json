@@ -12,7 +12,7 @@ namespace Solti.Utils.Json
     using static Properties.Resources;
 
     /// <summary>
-    /// Creates context for <see cref="bool"/> deserialization.
+    /// Creates context for <see cref="bool"/> [de]serialization.
     /// </summary>
     public class BooleanContextFactory : ContextFactory
     {

@@ -13,7 +13,7 @@ namespace Solti.Utils.Json
     using static Properties.Resources;
 
     /// <summary>
-    /// Creates context for <see cref="Stream"/> or <see cref="MemoryStream"/> deserialization.
+    /// Creates context for <see cref="Stream"/> and <see cref="MemoryStream"/> [de]serialization.
     /// </summary>
     /// <remarks>Input data should be Base64 encoded string</remarks>
     public class StreamContextFactory : ContextFactory

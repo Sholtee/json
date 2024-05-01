@@ -15,7 +15,7 @@ namespace Solti.Utils.Json
     using static Properties.Resources;
 
     /// <summary>
-    /// Creates context for <see cref="Guid"/> deserialization.
+    /// Creates context for <see cref="Guid"/> [de]serialization.
     /// </summary>
     public class GuidContextFactory : ContextFactory
     {

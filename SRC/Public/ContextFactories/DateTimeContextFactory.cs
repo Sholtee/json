@@ -15,7 +15,7 @@ namespace Solti.Utils.Json
     using static Properties.Resources;
 
     /// <summary>
-    /// Creates context for <see cref="DateTime"/> deserialization.
+    /// Creates context for <see cref="DateTime"/> [de]serialization.
     /// </summary>
     public class DateTimeContextFactory : ContextFactory
     {

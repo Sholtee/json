@@ -22,7 +22,7 @@ namespace Solti.Utils.Json
     using static SerializationContext;
 
     /// <summary>
-    /// Creates context for <see cref="Enum"/> deserialization.
+    /// Creates context for <see cref="Enum"/> [de]serialization.
     /// </summary>
     public class EnumContextFactory: ContextFactory
     {

@@ -19,7 +19,7 @@ namespace Solti.Utils.Json
     using static SerializationContext;
 
     /// <summary>
-    /// Creates context for object deserialization.
+    /// Creates context for object [de]serialization.
     /// </summary>
     public class ObjectContextFactory : ContextFactory
     {

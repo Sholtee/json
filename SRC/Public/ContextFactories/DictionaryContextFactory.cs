@@ -19,7 +19,7 @@ namespace Solti.Utils.Json
     using static Properties.Resources;
 
     /// <summary>
-    /// Creates context for <see cref="Dictionary{TKey, TValue}"/> deserialization.
+    /// Creates context for <see cref="Dictionary{TKey, TValue}"/> [de]serialization.
     /// </summary>
     public class DictionaryContextFactory : ContextFactory
     {

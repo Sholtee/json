@@ -21,7 +21,7 @@ namespace Solti.Utils.Json
     using static SerializationContext;
 
     /// <summary>
-    /// Creates context for number (<see cref="byte"/>, <see cref="int"/>, <see cref="float"/>, etc) deserialization.
+    /// Creates context for number (<see cref="byte"/>, <see cref="int"/>, <see cref="float"/>, etc) [de]serialization.
     /// </summary>
     public class NumberContextFactory : ContextFactory
     {

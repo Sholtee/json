@@ -16,13 +16,13 @@ namespace Solti.Utils.Json
     using static Properties.Resources;
     using static SerializationContext;
 
+    /// <summary>
+    /// Creates context for untyped result
+    /// </summary>
+    /// <remarks>In untyped objects are returned as <see cref="IDictionary"/> while lists as <see cref="IList"/>.</remarks>
     public class UntypedContextFactory : ContextFactory
     {
         #region Private
-        /// <summary>
-        /// Context used to create untyped result.
-        /// </summary>
-        /// <remarks>In untyped result objects are returned as <see cref="IDictionary"/> while lists as <see cref="IList"/>.</remarks>
         private static readonly DeserializationContext FUntypedDeserialization = new()
         {
             SupportedTypes = JsonDataTypes.Any,

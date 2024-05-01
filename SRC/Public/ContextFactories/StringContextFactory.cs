@@ -13,7 +13,7 @@ namespace Solti.Utils.Json
     using static Properties.Resources;
 
     /// <summary>
-    /// Creates context for <see cref="string"/> deserialization.
+    /// Creates context for <see cref="string"/> [de]serialization.
     /// </summary>
     public class StringContextFactory : ContextFactory
     {
