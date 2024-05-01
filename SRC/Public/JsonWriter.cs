@@ -85,7 +85,7 @@ namespace Solti.Utils.Json
         {
             ReadOnlySpan<char> s = str is string @string
                 ? @string.AsSpan()
-                : currentContext.ConvertToString(str, ref session.Buffer);
+                : VerifyDelegate(currentContext.ConvertToString)(str, ref session.Buffer);
 #if NETSTANDARD2_1_OR_GREATER
             //
             // "session.Buffer" might be already in use so we need a separate buffer
@@ -182,7 +182,7 @@ namespace Solti.Utils.Json
             session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             session.Dest.Write
             (
-                currentContext.ConvertToString(val, ref session.Buffer)
+                VerifyDelegate(currentContext.ConvertToString)(val, ref session.Buffer)
             );
         }
 

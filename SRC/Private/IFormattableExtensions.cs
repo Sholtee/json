@@ -10,12 +10,11 @@ using System.Reflection;
 
 namespace Solti.Utils.Json.Internals
 {
-#if NETSTANDARD2_1_OR_GREATER
     using Primitives;
 
     internal static class IFormattableExtensions
     {
-        private static class TryFromat<T> where T : struct, IFormattable
+        private static class TryFromat<T> where T : IFormattable
         {
             public delegate bool TryFormatDelegate(T target, Span<char> dst, out int bytesWritten, ReadOnlySpan<char> format, IFormatProvider? formatProvider);
 
@@ -66,14 +65,9 @@ namespace Solti.Utils.Json.Internals
             }
         }
 
-        public static ReadOnlySpan<char> Format<T>(this T self, string format, Span<char> buffer, IFormatProvider formatProvider) where T : struct, IFormattable
-        {
-            if (TryFromat<T>.Delegate?.Invoke(self, buffer, out int charsWritten, format.AsSpan(), formatProvider) is true)
-                return buffer.Slice(0, charsWritten);
-
-            Debug.WriteLine("Cannot format the input. Using the legacy ToString() implementation");
-            return self.ToString(format, formatProvider).AsSpan();
-        }
+        public static ReadOnlySpan<char> Format<T>(this T self, string format, Span<char> buffer, IFormatProvider formatProvider) where T : IFormattable =>
+            TryFromat<T>.Delegate?.Invoke(self, buffer, out int charsWritten, format.AsSpan(), formatProvider) is true
+                ? buffer.Slice(0, charsWritten)
+                : self.ToString(format, formatProvider).AsSpan();
     }
-#endif
 }

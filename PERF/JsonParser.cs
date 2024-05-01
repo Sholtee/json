@@ -99,7 +99,7 @@ namespace Solti.Utils.Json.Perf
         {
             using TextReader content = Input.CreateReader();
 
-            _ = Parser.Parse(content, DeserializationContext.Untyped, CancellationToken.None);
+            _ = Parser.Parse(content, DeserializationContext.For(typeof(object)), CancellationToken.None);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* DeserializationContextFactoryTests.cs                                         *
+* ContextFactoryTests.cs                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -16,9 +16,8 @@ using NUnit.Framework;
 namespace Solti.Utils.Json.DeserializationContexts.Tests
 {
     using Attributes;
-    using Properties;
 
-    public abstract class DeserializationContextFactoryTestsBase<TDescendant> where TDescendant : DeserializationContextFactoryTestsBase<TDescendant>, new()
+    public abstract class ContextFactoryTestsBase<TDescendant> where TDescendant : ContextFactoryTestsBase<TDescendant>, new()
     {
         public abstract IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases { get; }
 
@@ -28,11 +27,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
         public abstract IEnumerable<Type> InvalidTypes { get; }
 
-        public abstract DeserializationContextFactory Factory { get; }
+        public abstract ContextFactory Factory { get; }
 
         protected virtual bool Compare(object a, object b) => EqualityComparer<object>.Default.Equals(a, b);
 
-        public static DeserializationContextFactoryTestsBase<TDescendant> Instance { get; } = new TDescendant();
+        public static ContextFactoryTestsBase<TDescendant> Instance { get; } = new TDescendant();
 
         // TestCaseSource requires static property
         public static IEnumerable<(Type TargetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> GetValidCases => Instance.ValidCases;
@@ -50,9 +49,9 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
             StringReader content = new(testCase.Input);
 
-            Assert.That(Factory.IsSupported(testCase.TargetType));
+            Assert.That(Factory.IsDeserializationSupported(testCase.TargetType));
 
-            object? ret = parser.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default);
+            object? ret = parser.Parse(content, Factory.CreateDeserializationContext(testCase.TargetType, testCase.Config), default);
 
             Assert.That(ret, Is.EqualTo(testCase.Expected).Using<object>(Compare));
         }
@@ -64,32 +63,30 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
             StringReader content = new(testCase.Input);
 
-            Assert.Throws<JsonParserException>(() => parser.Parse(content, Factory.CreateContext(testCase.TargetType, testCase.Config), default));
+            Assert.Throws<JsonParserException>(() => parser.Parse(content, Factory.CreateDeserializationContext(testCase.TargetType, testCase.Config), default));
         }
 
         [TestCaseSource(nameof(GetInvalidTypes))]
         public void CreateContext_ShouldThrowOnInvalidType(Type type) =>
-            Assert.Throws<ArgumentException>(() => Factory.CreateContext(type, null));
+            Assert.Throws<ArgumentException>(() => Factory.CreateDeserializationContext(type, null));
 
         [TestCaseSource(nameof(GetInvalidConfigs))]
         public void CreateContext_ShouldThrowOnInvalidConfig((Type Type, object? Config) testCase) =>
-            Assert.Throws<ArgumentException>(() => Factory.CreateContext(testCase.Type, testCase.Config));
+            Assert.Throws<ArgumentException>(() => Factory.CreateDeserializationContext(testCase.Type, testCase.Config));
     }
 
     [TestFixture]
-    public class EnumDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<EnumDeserializationContextFactoryTests>
+    public class EnumContextFactoryTests : ContextFactoryTestsBase<EnumContextFactoryTests>
     {
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
             get
             {
-                yield return (typeof(MethodImplOptions), null, "256", MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
-                yield return (typeof(MethodImplOptions), null, "4352", MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, JsonParserFlags.None);
                 yield return (typeof(MethodImplOptions), null, "\"AggressiveInlining\"", MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
+                yield return (typeof(MethodImplOptions), null, "\"AggressiveInlining,InternalCall\"", MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, JsonParserFlags.None);
 
-                yield return (typeof(MethodImplOptions?), null, "256", (MethodImplOptions?) MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
-                yield return (typeof(MethodImplOptions?), null, "4352", MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, JsonParserFlags.None);
                 yield return (typeof(MethodImplOptions?), null, "\"AggressiveInlining\"", (MethodImplOptions?) MethodImplOptions.AggressiveInlining, JsonParserFlags.None);
+                yield return (typeof(MethodImplOptions?), null, "\"AggressiveInlining,InternalCall\"", (MethodImplOptions?) MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, JsonParserFlags.None);
 
                 yield return (typeof(MethodImplOptions?), null, "null", null!, JsonParserFlags.None);
             }
@@ -99,8 +96,6 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         {
             get
             {
-                yield return (typeof(MethodImplOptions), null, "255");
-                yield return (typeof(MethodImplOptions), null, "256.1");
                 yield return (typeof(MethodImplOptions), null, "\"AggressiveInlining_wrong\"");
             }
         }
@@ -123,11 +118,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new EnumDeserializationContextFactory();
+        public override ContextFactory Factory => new EnumContextFactory();
     }
 
     [TestFixture]
-    public class GuidDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<GuidDeserializationContextFactoryTests>
+    public class GuidContextFactoryTests : ContextFactoryTestsBase<GuidContextFactoryTests>
     {
         private static readonly Guid TestGuid = Guid.Parse("D6B6D5B5-826E-4362-A19A-219997E6D693");
 
@@ -177,11 +172,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new GuidDeserializationContextFactory();
+        public override ContextFactory Factory => new GuidContextFactory();
     }
 
     [TestFixture]
-    public class DateTimeDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<DateTimeDeserializationContextFactoryTests>
+    public class DateTimeContextFactoryTests : ContextFactoryTestsBase<DateTimeContextFactoryTests>
     {
         private static readonly DateTime TestDate = DateTime.ParseExact("2009-06-15T13:45:30", "s", null);
 
@@ -226,11 +221,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new DateTimeDeserializationContextFactory();
+        public override ContextFactory Factory => new DateTimeContextFactory();
     }
 
     [TestFixture]
-    public class StreamDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<StreamDeserializationContextFactoryTests>
+    public class StreamContextFactoryTests : ContextFactoryTestsBase<StreamContextFactoryTests>
     {
         private static readonly Stream TestStream = new MemoryStream(Encoding.UTF8.GetBytes("cica"));
 
@@ -283,11 +278,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new StreamDeserializationContextFactory();
+        public override ContextFactory Factory => new StreamContextFactory();
     }
 
     [TestFixture]
-    public class NumberDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<NumberDeserializationContextFactoryTests>
+    public class NumberContextFactoryTests : ContextFactoryTestsBase<NumberContextFactoryTests>
     {
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
@@ -340,11 +335,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new NumberDeserializationContextFactory();
+        public override ContextFactory Factory => new NumberContextFactory();
     }
 
     [TestFixture]
-    public class StringDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<StringDeserializationContextFactoryTests>
+    public class StringContextFactoryTests : ContextFactoryTestsBase<StringContextFactoryTests>
     {
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
@@ -380,11 +375,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new StringDeserializationContextFactory();
+        public override ContextFactory Factory => new StringContextFactory();
     }
 
     [TestFixture]
-    public class BooleanDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<BooleanDeserializationContextFactoryTests>
+    public class BooleanContextFactoryTests : ContextFactoryTestsBase<BooleanContextFactoryTests>
     {
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
@@ -423,11 +418,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new BooleanDeserializationContextFactory();
+        public override ContextFactory Factory => new BooleanContextFactory();
     }
 
     [TestFixture]
-    public class ObjectDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<ObjectDeserializationContextFactoryTests>
+    public class ObjectContextFactoryTests : ContextFactoryTestsBase<ObjectContextFactoryTests>
     {
         private record Nested
         {
@@ -449,9 +444,9 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             [Alias(Name = "Alias")]
             public string? Prop3 { get; set; }
 #if !NETFRAMEWORK
-            [SerializationContext<AnyObjectDeserializationContextFactory>(Config = typeof(MyEnum))]
+            [Context<AnyObjectDeserializationContextFactory>(Config = typeof(MyEnum))]
 #else
-            [SerializationContext(typeof(AnyObjectDeserializationContextFactory), Config = typeof(MyEnum))]
+            [Context(typeof(AnyObjectDeserializationContextFactory), Config = typeof(MyEnum))]
 #endif
             public object? Prop4 { get; set; }
 
@@ -474,18 +469,18 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        private sealed class AnyObjectDeserializationContextFactory : DeserializationContextFactory
+        private sealed class AnyObjectDeserializationContextFactory : ContextFactory
         {
-            public override bool IsSupported(Type type) => true;
+            public override bool IsDeserializationSupported(Type type) => true;
 
-            protected override DeserializationContext CreateContextCore(Type type, object? config) => CreateFor((Type) config!);
+            protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config) => CreateDeserializationContextFor((Type) config!);
         }
 
-        private sealed class WrappedObjectDeserializationContextFactory : DeserializationContextFactory
+        private sealed class WrappedObjectDeserializationContextFactory : ContextFactory
         {
-            public override bool IsSupported(Type type) => type == typeof(Wrapped);
+            public override bool IsDeserializationSupported(Type type) => type == typeof(Wrapped);
 
-            protected override DeserializationContext CreateContextCore(Type type, object? config) => CreateFor(typeof(string)) with
+            protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config) => CreateDeserializationContextFor(typeof(string)) with
             {
                 Convert = (object? value, out object? converted) =>
                 {
@@ -502,9 +497,9 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
         }
 
 #if !NETFRAMEWORK
-        [SerializationContext<WrappedObjectDeserializationContextFactory>()]
+        [Context<WrappedObjectDeserializationContextFactory>()]
 #else
-        [SerializationContext(typeof(WrappedObjectDeserializationContextFactory))]
+        [Context(typeof(WrappedObjectDeserializationContextFactory))]
 #endif
         private record Wrapped(string Value)
         {
@@ -518,8 +513,8 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             {
                 yield return (typeof(Parent), null, "{\"ToBeIgnored\": 0, \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.None);
                 yield return (typeof(Parent), null, "{\"tobeignored\": 0, \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"} }", new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, JsonParserFlags.CaseInsensitive);
-                yield return (typeof(CustomizedParent), null, "{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"}, \"Prop4\": 1, \"Prop5\": \"desznaj\" }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya", Prop4 = MyEnum.Value1, Prop5 = new Wrapped("desznaj") }, JsonParserFlags.None);
-                yield return (typeof(CustomizedParent), null, "{\"tobeignored\": 0, \"alias\": \"kutya\", \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"}, \"prop4\": 1, \"prop5\": \"desznaj\" }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya", Prop4 = MyEnum.Value1, Prop5 = new Wrapped("desznaj") }, JsonParserFlags.CaseInsensitive);
+                yield return (typeof(CustomizedParent), null, "{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"}, \"Prop4\": \"Value1\", \"Prop5\": \"desznaj\" }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya", Prop4 = MyEnum.Value1, Prop5 = new Wrapped("desznaj") }, JsonParserFlags.None);
+                yield return (typeof(CustomizedParent), null, "{\"tobeignored\": 0, \"alias\": \"kutya\", \"prop1\": 1986, \"prop2\": {\"prop3\": \"cica\"}, \"prop4\": \"Value1\", \"prop5\": \"desznaj\" }", new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya", Prop4 = MyEnum.Value1, Prop5 = new Wrapped("desznaj") }, JsonParserFlags.CaseInsensitive);
                 yield return (typeof(Parent), null, "null", null!, JsonParserFlags.None);
                 yield return (typeof(Empty), null, "{}", new Empty(), JsonParserFlags.None);
             }
@@ -550,22 +545,22 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new ObjectDeserializationContextFactory();
+        public override ContextFactory Factory => new ObjectContextFactory();
 
         [Test]
         public void Context_ShouldInstructTheParserToRunTheValidators()
         {
             JsonParser parser = new();
 
-            StringReader content = new("{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"}, \"Prop4\": 1, \"Prop5\": null }");
+            StringReader content = new("{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"}, \"Prop4\": \"Value1\", \"Prop5\": null }");
 
-            JsonParserException ex = Assert.Throws<JsonParserException>(() => parser.Parse(content, Factory.CreateContext(typeof(CustomizedParent), null), default))!;
+            JsonParserException ex = Assert.Throws<JsonParserException>(() => parser.Parse(content, Factory.CreateDeserializationContext(typeof(CustomizedParent), null), default))!;
             Assert.That(ex.Message, Does.Contain("value of \"Prop5\" cannot be null"));
         }
     }
 
     [TestFixture]
-    public class DictionaryDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<DictionaryDeserializationContextFactoryTests>
+    public class DictionaryContextFactoryTests : ContextFactoryTestsBase<DictionaryContextFactoryTests>
     {
         private record Value
         {
@@ -642,11 +637,11 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new DictionaryDeserializationContextFactory();
+        public override ContextFactory Factory => new DictionaryContextFactory();
     }
 
     [TestFixture]
-    public class ListDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<ListDeserializationContextFactoryTests>
+    public class ListContextFactoryTests : ContextFactoryTestsBase<ListContextFactoryTests>
     {
         private record Value
         {
@@ -655,9 +650,9 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
         private class ValueHavingListProp
         {
-            public IList<int>? Prop { get; set; }
+            public IList<int> Prop { get; set; } = null!;
 
-            public override bool Equals(object obj) => obj is ValueHavingListProp other && other.Prop.SequenceEqual(Prop);
+            public override bool Equals(object? obj) => obj is ValueHavingListProp other && other.Prop.SequenceEqual(Prop);
 
             public override int GetHashCode() => base.GetHashCode();
         }
@@ -675,7 +670,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
             for (int i = 0; i < lstA.Count; i++)
             {
-                if (!lstA[i].Equals(lstB[i]))
+                if (!lstA[i]!.Equals(lstB[i]))
                     return false;
             }
 
@@ -731,7 +726,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
             }
         }
 
-        public override DeserializationContextFactory Factory => new ListDeserializationContextFactory();
+        public override ContextFactory Factory => new ListContextFactory();
     }
 
 }

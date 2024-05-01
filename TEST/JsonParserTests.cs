@@ -548,7 +548,7 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                ParseMultilineComment(ref session, DeserializationContext.Untyped, bufferSize);
+                ParseMultilineComment(ref session, DeserializationContext.For(typeof(object)), bufferSize);
                 Assert.That(session.Row, Is.EqualTo(rowCount));
                 Assert.That(session.Column, Is.EqualTo(columnCount));
             });
@@ -610,7 +610,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            object result = ParseNumber(ref session, DeserializationContext.Untyped, bufferSize);
+            object result = ParseNumber(ref session, DeserializationContext.For(typeof(object)), bufferSize);
 
             Assert.That(result.GetType(), Is.EqualTo(expected.GetType()));
             Assert.That(result, Is.EqualTo(expected).Within(expected is double ? 0.1 : 0).Percent);
@@ -633,7 +633,7 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                ParseNumber(ref session, DeserializationContext.Untyped, bufferSize);
+                ParseNumber(ref session, DeserializationContext.For(typeof(object)), bufferSize);
             });
         }
 
@@ -655,7 +655,7 @@ namespace Solti.Utils.Json.Tests
             JsonParserException ex = Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                parser.ParseList(ref session, 0, DeserializationContext.Untyped);
+                parser.ParseList(ref session, 0, DeserializationContext.For(typeof(object)));
             })!;
             Assert.That(ex.Column, Is.EqualTo(errorPos));
         }
@@ -670,7 +670,7 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<InvalidOperationException>(() =>
             {
                 Session session = new(content);
-                parser.ParseList(ref session, 0, DeserializationContext.Untyped with { GetListItemContext = null });
+                parser.ParseList(ref session, 0, DeserializationContext.For(typeof(object)) with { GetListItemContext = null });
             });
         }
 
@@ -705,7 +705,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(parser.ParseList(ref session, 0, DeserializationContext.Untyped), Is.EquivalentTo(expected));
+            Assert.That(parser.ParseList(ref session, 0, DeserializationContext.For(typeof(object))), Is.EquivalentTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -718,17 +718,19 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
+            DeserializationContext untypedCtx = DeserializationContext.For(typeof(object));
+
             Assert.That
             (
                 parser.ParseList
                 (
                     ref session,
                     0,
-                    DeserializationContext.Untyped with
+                    untypedCtx with
                     {
                         GetListItemContext = (int i, out DeserializationContext ctx) =>
                         {
-                            DeserializationContext.Untyped.GetListItemContext!(i, out ctx);
+                            untypedCtx.GetListItemContext!(i, out ctx);
                             return i != 1;
                         }
                     }
@@ -744,6 +746,8 @@ namespace Solti.Utils.Json.Tests
 
             using TextReaderWrapper content = new StringReader(input);
 
+            DeserializationContext untypedCtx = DeserializationContext.For(typeof(object));
+
             JsonParserException ex = Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
@@ -751,11 +755,11 @@ namespace Solti.Utils.Json.Tests
                 (
                     ref session,
                     0,
-                    DeserializationContext.Untyped with
+                    untypedCtx with
                     {
                         GetListItemContext = (int i, out DeserializationContext ctx) =>
                         {
-                            DeserializationContext.Untyped.GetListItemContext!(i, out ctx);
+                            untypedCtx.GetListItemContext!(i, out ctx);
                             return i != 1;
                         }
                     }
@@ -781,7 +785,7 @@ namespace Solti.Utils.Json.Tests
             JsonParserException ex = Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                parser.ParseObject(ref session, 0, DeserializationContext.Untyped);
+                parser.ParseObject(ref session, 0, DeserializationContext.For(typeof(object)));
             })!;
             Assert.That(ex.Column, Is.EqualTo(errorPos));
         }
@@ -796,7 +800,7 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<InvalidOperationException>(() =>
             {
                 Session session = new(content);
-                parser.ParseObject(ref session, 0, DeserializationContext.Untyped with { GetPropertyContext = null });
+                parser.ParseObject(ref session, 0, DeserializationContext.For(typeof(object)) with { GetPropertyContext = null });
             });
         }
 
@@ -831,7 +835,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(parser.ParseObject(ref session, 0, DeserializationContext.Untyped), Is.EquivalentTo(expected));
+            Assert.That(parser.ParseObject(ref session, 0, DeserializationContext.For(typeof(object))), Is.EquivalentTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -844,17 +848,19 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
+            DeserializationContext untypedCtx = DeserializationContext.For(typeof(object));
+
             Assert.That
             (
                 parser.ParseObject
                 (
                     ref session,
                     0,
-                    DeserializationContext.Untyped with
+                    untypedCtx with
                     {
                         GetPropertyContext = (ReadOnlySpan<char> name, bool ignoreCase, out DeserializationContext ctx) =>
                         {
-                            DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase, out ctx);
+                            untypedCtx.GetPropertyContext!(name, ignoreCase, out ctx);
                             return !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
                         }
                     }
@@ -871,6 +877,8 @@ namespace Solti.Utils.Json.Tests
 
             using TextReaderWrapper content = new StringReader(input);
 
+            DeserializationContext untypedCtx = DeserializationContext.For(typeof(object));
+
             JsonParserException ex = Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
@@ -878,11 +886,11 @@ namespace Solti.Utils.Json.Tests
                 (
                     ref session,
                     0,
-                    DeserializationContext.Untyped with
+                    untypedCtx with
                     {
                         GetPropertyContext = (ReadOnlySpan<char> name, bool ignoreCase, out DeserializationContext ctx) =>
                         {
-                            DeserializationContext.Untyped.GetPropertyContext!(name, ignoreCase, out ctx);
+                            untypedCtx.GetPropertyContext!(name, ignoreCase, out ctx);
                             return !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
                         }
                     }
@@ -903,7 +911,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new(input);
 
-            Assert.That(parser.Parse(content, DeserializationContext.Untyped with { SupportedTypes = supportedTypes }, default), Is.EqualTo(expected));
+            Assert.That(parser.Parse(content, DeserializationContext.For(typeof(object)) with { SupportedTypes = supportedTypes }, default), Is.EqualTo(expected));
             Assert.That(content.Peek(), Is.EqualTo(-1));
         }
 
@@ -914,7 +922,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new("Null");
 
-            JsonParserException ex = Assert.Throws<JsonParserException>(() => parser.Parse(content, DeserializationContext.Untyped, default))!;
+            JsonParserException ex = Assert.Throws<JsonParserException>(() => parser.Parse(content, DeserializationContext.For(typeof(object)), default))!;
             Assert.That(ex.Column, Is.EqualTo(0));
         }
 
@@ -947,7 +955,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new(input);
 
-            Assert.That(parser.Parse(content, DeserializationContext.Untyped with { ParseComment = chars => got = chars.AsString() }, default), Is.EqualTo(expected));
+            Assert.That(parser.Parse(content, DeserializationContext.For(typeof(object)) with { ParseComment = chars => got = chars.AsString() }, default), Is.EqualTo(expected));
             Assert.That(got, Is.EqualTo(comment));
             Assert.That(content.Peek(), Is.EqualTo(-1));
         }
@@ -969,9 +977,9 @@ namespace Solti.Utils.Json.Tests
             StringReader content = new(input);
 
             if (shouldThrow)
-                Assert.Throws<JsonParserException>(() => parser.Parse(content, DeserializationContext.Untyped, default));
+                Assert.Throws<JsonParserException>(() => parser.Parse(content, DeserializationContext.For(typeof(object)), default));
             else
-                Assert.DoesNotThrow(() => parser.Parse(content, DeserializationContext.Untyped, default));
+                Assert.DoesNotThrow(() => parser.Parse(content, DeserializationContext.For(typeof(object)), default));
         }
 
         [Test]
@@ -984,7 +992,7 @@ namespace Solti.Utils.Json.Tests
             CancellationTokenSource cancellationTokenSource = new();
             cancellationTokenSource.Cancel();
 
-            Assert.Throws<OperationCanceledException>(() => parser.Parse(content, DeserializationContext.Untyped, cancellationTokenSource.Token));
+            Assert.Throws<OperationCanceledException>(() => parser.Parse(content, DeserializationContext.For(typeof(object)), cancellationTokenSource.Token));
         }
 
         [Test]
@@ -1001,7 +1009,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new("1986");
 
-            parser.Parse(content, DeserializationContext.Untyped with { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default);
+            parser.Parse(content, DeserializationContext.For(typeof(object)) with { SupportedTypes = JsonDataTypes.Number, Verify = mockValidator.Object }, default);
 
             mockValidator.Verify(v => v.Invoke((long) 1986, out errors), Times.Once);
         }
@@ -1020,7 +1028,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new("1986");
 
-            ret = parser.Parse(content, DeserializationContext.Untyped with { Convert = mockConverter.Object }, default);
+            ret = parser.Parse(content, DeserializationContext.For(typeof(object)) with { Convert = mockConverter.Object }, default);
 
             Assert.That(ret, Is.EqualTo(1991));
             mockConverter.Verify(c => c.Invoke((long) 1986, out ret), Times.Once);
@@ -1033,7 +1041,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new("1986");
 
-            Assert.Throws<JsonParserException>(() => parser.Parse(content, DeserializationContext.Untyped with { Convert = (object? _, out object? ret) => { ret = null; return false; } }, default));
+            Assert.Throws<JsonParserException>(() => parser.Parse(content, DeserializationContext.For(typeof(object)) with { Convert = (object? _, out object? ret) => { ret = null; return false; } }, default));
         }
 
         [Test]
@@ -1043,13 +1051,13 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new("\"1986\"");
 
-            Assert.Throws<JsonParserException>(() => parser.Parse(content, DeserializationContext.Untyped with { ConvertString = (ReadOnlySpan<char> _, bool _, out object? ret) => { ret = null; return false; } }, default));
+            Assert.Throws<JsonParserException>(() => parser.Parse(content, DeserializationContext.For(typeof(object)) with { ConvertString = (ReadOnlySpan<char> _, bool _, out object? ret) => { ret = null; return false; } }, default));
         }
 
         [Test]
         public void Parse_ShouldThrowIfVerificationFailed()
         {
-            DeserializationContext ctx = DeserializationContext.Untyped with
+            DeserializationContext ctx = DeserializationContext.For(typeof(object)) with
             {
                 SupportedTypes = JsonDataTypes.Number,
                 Verify = (object? val, out ICollection<string> errors) =>
@@ -1082,13 +1090,13 @@ namespace Solti.Utils.Json.Tests
                 )
             );
 
-            IList? result = parser.Parse(content, DeserializationContext.Untyped, default) as IList;
+            IList? result = parser.Parse(content, DeserializationContext.For(typeof(object)), default) as IList;
             Assert.That(result, Is.Not.Null);
             Assert.That(result!.Count, Is.EqualTo(expectedLength));
         }
 
         [Test]
         public void Parse_ShouldBeNullChecked() =>
-            Assert.Throws<ArgumentNullException>(() => new JsonParser().Parse(null!, DeserializationContext.Default, default));
+            Assert.Throws<ArgumentNullException>(() => new JsonParser().Parse(null!, DeserializationContext.For(typeof(object)), default));
     }
 }

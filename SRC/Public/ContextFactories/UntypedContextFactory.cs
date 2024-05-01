@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* DeserializationContext.Untyped.cs                                             *
+* UntypedContextFactory.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -12,15 +12,18 @@ namespace Solti.Utils.Json
 {
     using Internals;
 
+    using static Internals.Consts;
     using static Properties.Resources;
+    using static SerializationContext;
 
-    public readonly partial struct DeserializationContext
+    public class UntypedContextFactory : ContextFactory
     {
+        #region Private
         /// <summary>
         /// Context used to create untyped result.
         /// </summary>
         /// <remarks>In untyped result objects are returned as <see cref="IDictionary"/> while lists as <see cref="IList"/>.</remarks>
-        public static readonly DeserializationContext Untyped = new()
+        private static readonly DeserializationContext FUntypedDeserialization = new()
         {
             SupportedTypes = JsonDataTypes.Any,
 
@@ -78,7 +81,7 @@ namespace Solti.Utils.Json
 
             GetListItemContext = static (int _, out DeserializationContext context) =>
             {
-                context = Untyped with
+                context = FUntypedDeserialization with
                 {
                     Push = static (object instance, object? val) =>
                     {
@@ -94,7 +97,7 @@ namespace Solti.Utils.Json
             {
                 string propStr = prop.AsString();
 
-                context = Untyped with
+                context = FUntypedDeserialization with
                 {
                     Push = (object instance, object? val) =>
                     {
@@ -106,5 +109,78 @@ namespace Solti.Utils.Json
                 return true;
             }
         };
+
+        private static readonly SerializationContext FUntypedSerialization = new()
+        {
+            ConvertToString = static (object? val, ref char[] _) =>
+            (
+                val switch
+                {
+                    bool b => b ? TRUE : FALSE,  // b.ToString() should be lowercased
+                    null => NULL,
+                    _ => Convert.ToString(val, CultureInfo.InvariantCulture)
+                }
+            ).AsSpan(),
+
+            GetTypeOf = static (object? val) => Convert.GetTypeCode(val) switch
+            {
+                TypeCode.Empty => JsonDataTypes.Null,
+                TypeCode.Boolean => JsonDataTypes.Boolean,
+                TypeCode.String => JsonDataTypes.String,
+                >= TypeCode.SByte and <= TypeCode.Double => JsonDataTypes.Number,
+                TypeCode.Object when val is IDictionary<string, object?> => JsonDataTypes.Object,
+                TypeCode.Object when val is IList<object?> => JsonDataTypes.List,
+                _ => JsonDataTypes.Unkown
+            },
+
+            EnumEntries = EnumEntriesImpl
+        };
+
+        private static IEnumerable<Entry> EnumEntriesImpl(object val)  // "yield" cannot be in lambda function =(
+        {
+            switch (val)
+            {
+                case IList<object?> lst:
+                    foreach (object? item in lst)
+                    {
+                        yield return new Entry(in FUntypedSerialization, item);
+                    }
+                    break;
+                case IDictionary<string, object?> dict:
+                    foreach (KeyValuePair<string, object?> entry in dict)
+                    {
+                        yield return new Entry(in FUntypedSerialization, entry.Value, entry.Key);
+                    }
+                    break;
+                default: throw new ArgumentException(INVALID_VALUE, nameof(val));
+            }
+        }
+        #endregion
+
+        /// <inheritdoc/>
+        protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config)
+        {
+            if (config is not null)
+                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+
+            return FUntypedDeserialization;
+        }
+
+        /// <inheritdoc/>
+        protected override SerializationContext CreateSerializationContextCore(Type type, object? config)
+        {
+            if (config is not null)
+                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+
+            return FUntypedSerialization;
+        }
+
+        private static bool IsSupported(Type type) => type == typeof(object);
+
+        /// <inheritdoc/>
+        public override bool IsSerializationSupported(Type type) => IsSupported(type);
+
+        /// <inheritdoc/>
+        public override bool IsDeserializationSupported(Type type) => IsSupported(type);
     }
 }

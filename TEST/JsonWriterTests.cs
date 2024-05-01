@@ -52,7 +52,7 @@ namespace Solti.Utils.Json.Tests
         {
             Session session = new(new StringWriter(), []);
 
-            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(ref session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(ref session, input, SerializationContext.For(typeof(object)), 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo($"\"{expected}\""));
         }
@@ -62,7 +62,7 @@ namespace Solti.Utils.Json.Tests
         {
             Session session = new(new StringWriter(), []);
 
-            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(ref session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(maxChunkSize: maxChunkSize).WriteString(ref session, input, SerializationContext.For(typeof(object)), 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo($"\"{input}\""));
         }
@@ -72,7 +72,7 @@ namespace Solti.Utils.Json.Tests
         {
             Session session = new(new StringWriter(), []);
 
-            new JsonWriter().WriteString(ref session, 1986, SerializationContext.Untyped with { GetTypeOf = _ => JsonDataTypes.String }, 0, default);
+            new JsonWriter().WriteString(ref session, 1986, SerializationContext.For(typeof(object)) with { GetTypeOf = _ => JsonDataTypes.String }, 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo($"\"1986\""));
         }
@@ -86,7 +86,7 @@ namespace Solti.Utils.Json.Tests
         {
             Session session = new(new StringWriter(), []);
 
-            new JsonWriter().WriteValue(ref session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter().WriteValue(ref session, input, SerializationContext.For(typeof(object)), 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo(expected));
         }
@@ -111,7 +111,7 @@ namespace Solti.Utils.Json.Tests
         {
             Session session = new(new StringWriter(), []);
 
-            new JsonWriter(indent: spaces).WriteList(ref session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(indent: spaces).WriteList(ref session, input, SerializationContext.For(typeof(object)), 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo(expected));
         }
@@ -127,7 +127,7 @@ namespace Solti.Utils.Json.Tests
             void WriteList(IList<object> lst)
             {
                 Session session = new(new StringWriter(), []);
-                writer.WriteList(ref session, lst, SerializationContext.Untyped, 0, default);
+                writer.WriteList(ref session, lst, SerializationContext.For(typeof(object)), 0, default);
             }
         }
 
@@ -151,7 +151,7 @@ namespace Solti.Utils.Json.Tests
         {
             Session session = new(new StringWriter(), []);
 
-            new JsonWriter(indent: spaces).WriteObject(ref session, input, SerializationContext.Untyped, 0, default);
+            new JsonWriter(indent: spaces).WriteObject(ref session, input, SerializationContext.For(typeof(object)), 0, default);
 
             Assert.That(session.Dest.ToString(), Is.EqualTo(expected));
         }
@@ -159,7 +159,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void Write_ShouldThrowIfTheInputIsNotSerializable()
         {
-            Assert.Throws<JsonWriterException>(() => new JsonWriter().Write(new StringWriter(), true, new { }, SerializationContext.Untyped, default));
+            Assert.Throws<JsonWriterException>(() => new JsonWriter().Write(new StringWriter(), true, new { }, SerializationContext.For(typeof(object)), default));
         }
 
         public static IEnumerable<object[]> Write_ShouldStringify_Params
@@ -179,7 +179,7 @@ namespace Solti.Utils.Json.Tests
         {
             StringWriter store = new();
 
-            new JsonWriter().Write(store, true, input, SerializationContext.Untyped, default);
+            new JsonWriter().Write(store, true, input, SerializationContext.For(typeof(object)), default);
 
             Assert.That(store.ToString(), Is.EqualTo(expected));
         }
@@ -199,13 +199,13 @@ namespace Solti.Utils.Json.Tests
                 )
             );
 
-            IList? input = parser.Parse(content, DeserializationContext.Untyped, default) as IList;
+            IList? input = parser.Parse(content, DeserializationContext.For(typeof(object)), default) as IList;
 
             content.BaseStream.Position = 0;
 
             StringWriter store = new();
 
-            new JsonWriter(indent: indent).Write(store, true, input, SerializationContext.Untyped, default);
+            new JsonWriter(indent: indent).Write(store, true, input, SerializationContext.For(typeof(object)), default);
 
             //
             // Skip BOM
@@ -225,6 +225,6 @@ namespace Solti.Utils.Json.Tests
 
         [Test]
         public void Write_ShouldBeNullChecked() =>
-            Assert.Throws<ArgumentNullException>(() => new JsonWriter().Write(null!, true, new object(), SerializationContext.Untyped, default));
+            Assert.Throws<ArgumentNullException>(() => new JsonWriter().Write(null!, true, new object(), SerializationContext.For(typeof(object)), default));
     }
 }

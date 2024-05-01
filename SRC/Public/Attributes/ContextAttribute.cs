@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* SerializationContextAttribute.cs                                              *
+* ContextAttribute.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,22 +13,22 @@ namespace Solti.Utils.Json.Attributes
     /// Specifies the serialization context to be used.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Enum | AttributeTargets.Property, AllowMultiple = false)]
-    public class SerializationContextAttribute: Attribute
+    public class ContextAttribute: Attribute
     {
-        public SerializationContextAttribute(Type contextFactory)
+        public ContextAttribute(Type contextFactory)
         {
-            if (contextFactory is null || contextFactory.IsAbstract || !typeof(DeserializationContextFactory).IsAssignableFrom(contextFactory))
+            if (contextFactory is null || contextFactory.IsAbstract || !typeof(ContextFactory).IsAssignableFrom(contextFactory))
                 throw new ArgumentException(string.Format(Culture, INVALID_CONTEXT, nameof(contextFactory)), nameof(contextFactory));
-            ContextFactory = (DeserializationContextFactory) Activator.CreateInstance(contextFactory);
+            ContextFactory = (ContextFactory) Activator.CreateInstance(contextFactory);
         }
 
         /// <summary>
-        /// The <see cref="DeserializationContextFactory"/> used to create the actual context.
+        /// The <see cref="Json.ContextFactory"/> used to create the actual context.
         /// </summary>
-        public DeserializationContextFactory ContextFactory { get; }
+        public ContextFactory ContextFactory { get; }
 
         /// <summary>
-        /// Config to be passed to the <see cref="DeserializationContextFactory.CreateContext(Type, object?)"/> method.
+        /// Config to be passed to the <see cref="ContextFactory.CreateDeserializationContext(Type, object?)"/> method.
         /// </summary>
         public object? Config { get; init; }
     }
@@ -37,9 +37,9 @@ namespace Solti.Utils.Json.Attributes
     /// Specifies the serialization context to be used.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Enum | AttributeTargets.Property, AllowMultiple = false)]
-    public sealed class SerializationContextAttribute<TContextFactory> : SerializationContextAttribute where TContextFactory : DeserializationContextFactory, new()
+    public sealed class ContextAttribute<TContextFactory> : ContextAttribute where TContextFactory : ContextFactory, new()
     {
-        public SerializationContextAttribute(): base(typeof(TContextFactory))
+        public ContextAttribute(): base(typeof(TContextFactory))
         {
         }
     }

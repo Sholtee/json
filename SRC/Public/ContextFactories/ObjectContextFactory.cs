@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ObjectDeserializationContextFactory.cs                                        *
+* ObjectContextFactory.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,29 +13,30 @@ namespace Solti.Utils.Json
     using Attributes;
     using Internals;
     using Primitives;
-    using Properties;
 
+    using static Properties.Resources;
     using static DeserializationContext;
+    using static SerializationContext;
 
     /// <summary>
     /// Creates context for object deserialization.
     /// </summary>
-    public class ObjectDeserializationContextFactory : DeserializationContextFactory
+    public class ObjectContextFactory : ContextFactory
     {
         #region Private
-        private static readonly MethodInfo 
+        private static readonly MethodInfo
             FValidate = MethodInfoExtractor.Extract<ValidatorAttribute, ICollection<string>>(static (va, errs) => va.Validate(null, null, out errs)),
             FAddRange = MethodInfoExtractor.Extract<List<string>>(static lst => lst.AddRange(default));
 
-        private static void ProcessProperties(Type type, DelegateCompiler compiler, out StringKeyedDictionary<DeserializationContext> props, out FutureDelegate<VerifyDelegate>? verifyDelegate)
+        private static void ProcessPropertiesForDeserialization(Type type, DelegateCompiler compiler, out StringKeyedDictionary<DeserializationContext> props, out FutureDelegate<VerifyDelegate>? verifyDelegate)
         {
             props = new();
-            
+
             ParameterExpression
                 instanceParam = Expression.Parameter(typeof(object), nameof(instanceParam)),
-                errorsParam   = Expression.Parameter(typeof(ICollection<string>).MakeByRefType(), nameof(errorsParam)),
-                instance      = Expression.Variable(type, nameof(instance)),
-                errors        = Expression.Variable(typeof(List<string>), nameof(errors)),
+                errorsParam = Expression.Parameter(typeof(ICollection<string>).MakeByRefType(), nameof(errorsParam)),
+                instance = Expression.Variable(type, nameof(instance)),
+                errors = Expression.Variable(typeof(List<string>), nameof(errors)),
                 errorsSection = Expression.Variable(typeof(ICollection<string>), nameof(errorsSection));
 
             List<Expression> validatorBlock = [];
@@ -67,11 +68,11 @@ namespace Solti.Utils.Json
                     )
                 );
 
-                SerializationContextAttribute? fact = prop.GetCustomAttribute<SerializationContextAttribute>(inherit: true);
+                ContextAttribute? contextAttr = prop.GetCustomAttribute<ContextAttribute>(inherit: true);
 
-                DeserializationContext deserializationContext = fact is not null
-                    ? fact.ContextFactory.CreateContext(prop.PropertyType, fact.Config)
-                    : CreateFor(prop.PropertyType);
+                DeserializationContext deserializationContext = contextAttr is not null
+                    ? contextAttr.ContextFactory.CreateDeserializationContext(prop.PropertyType, contextAttr.Config)
+                    : CreateDeserializationContextFor(prop.PropertyType);
 
                 props.Add
                 (
@@ -150,7 +151,49 @@ namespace Solti.Utils.Json
             }
         }
 
-        private static DeserializationContext? CreateContextCore(Type type) => Cache.GetOrAdd(type, static type =>
+        private static IReadOnlyList<Func<object, Entry>> ProcessPropertiesForSerialization(Type type, DelegateCompiler compiler)
+        {
+            List<Func<object, Entry>> result = [];
+            foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy))
+            {
+                if (!prop.CanRead || prop.GetCustomAttribute<IgnoreAttribute>() is not null)
+                    continue;
+
+                ContextAttribute? contextAttr = prop.GetCustomAttribute<ContextAttribute>(inherit: true);
+                SerializationContext serializationContext = contextAttr is not null
+                    ? contextAttr.ContextFactory.CreateSerializationContext(prop.PropertyType, contextAttr.Config)
+                    : CreateSerializationContextFor(prop.PropertyType);
+
+                string name = prop.GetCustomAttribute<AliasAttribute>()?.Name ?? prop.Name;
+
+                ParameterExpression obj = Expression.Parameter(typeof(object), nameof(obj));
+                FutureDelegate<Func<object, object?>> getProp = compiler.Register
+                (
+                    Expression.Lambda<Func<object, object?>>
+                    (
+                        Expression.Property
+                        (
+                            Expression.Convert(obj, type),
+                            prop
+                        ),
+                        obj
+                    )
+                );
+
+                result.Add
+                (
+                    obj => new Entry
+                    (   
+                        serializationContext,
+                        getProp.Value(obj),
+                        name
+                    )
+                );
+            }
+            return result;
+        }
+
+        private static DeserializationContext CreateDeserializationContextCore(Type type) => (DeserializationContext) Cache.GetOrAdd(type, static type =>
         {
             DelegateCompiler compiler = new();
 
@@ -162,11 +205,11 @@ namespace Solti.Utils.Json
                 )
             );
 
-            ProcessProperties(type, compiler, out StringKeyedDictionary<DeserializationContext> props, out FutureDelegate<VerifyDelegate>? verify);
+            ProcessPropertiesForDeserialization(type, compiler, out StringKeyedDictionary<DeserializationContext> props, out FutureDelegate<VerifyDelegate>? verify);
 
             compiler.Compile();
 
-            return (DeserializationContext?) new DeserializationContext
+            return (object) new DeserializationContext
             {
                 SupportedTypes = JsonDataTypes.Object | JsonDataTypes.Null,
                 CreateRawObject = createRaw.Value,
@@ -174,19 +217,68 @@ namespace Solti.Utils.Json
                 Verify = verify?.Value
             };
         });
+
+        private static SerializationContext CreateSerializationContextCore(Type type) => (SerializationContext) Cache.GetOrAdd(type, static type =>
+        {
+            DelegateCompiler compiler = new();
+            IReadOnlyList<Func<object, Entry>> props = ProcessPropertiesForSerialization(type, compiler);
+            FutureDelegate<GetTypeDelegate> getTypeOf = DelegateHelpers.ChangeType<GetTypeDelegate>(GetTypeOf<object>, type, compiler);
+            FutureDelegate<EnumEntriesDelegate> enumEntries = DelegateHelpers.ChangeType<EnumEntriesDelegate>(EnumEntries<object>, type, compiler);
+            compiler.Compile();
+
+            return (object) new SerializationContext
+            {
+                GetTypeOf = getTypeOf.Value,
+                EnumEntries = enumEntries.Value,
+                ConvertToString = (object? val, ref char[] _) => val is null
+                    ? Consts.NULL.AsSpan()
+                    : throw new ArgumentException(INVALID_INSTANCE, nameof(val))
+            };
+
+            static JsonDataTypes GetTypeOf<T>(object? val) => val switch
+            {
+                T => JsonDataTypes.Object,
+                null => JsonDataTypes.Null,
+                _ => JsonDataTypes.Unkown
+            };
+
+            IEnumerable<Entry> EnumEntries<T>(object val)
+            {
+                if (val is not T)
+                    throw new ArgumentException(INVALID_INSTANCE, nameof(val));
+
+                foreach (Func<object, Entry> fact in props)
+                {
+                    yield return fact(val);
+                }
+            }
+        });
         #endregion
 
         /// <inheritdoc/>
-        protected override DeserializationContext CreateContextCore(Type type, object? config)
+        protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config)
         {
             if (config is not null)
-                throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
+                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
 
-            return CreateContextCore(type)!.Value;
+            return CreateDeserializationContextCore(type);
+        }
+
+        protected override SerializationContext CreateSerializationContextCore(Type type, object? config)
+        {
+            if (config is not null)
+                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+
+            return CreateSerializationContextCore(type);
         }
 
         /// <inheritdoc/>
-        public override bool IsSupported(Type type) =>
-            type?.IsClass is true && type.GetConstructor(Type.EmptyTypes) is not null;
+        public override bool IsSerializationSupported(Type type) => type != typeof(object);
+
+        /// <inheritdoc/>
+        public override bool IsDeserializationSupported(Type type) =>
+            type?.IsAbstract is false &&
+            type.GetConstructor(Type.EmptyTypes) is not null &&
+            type != typeof(object);
     }
 }

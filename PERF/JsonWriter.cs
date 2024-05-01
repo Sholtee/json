@@ -68,7 +68,7 @@ namespace Solti.Utils.Json.Perf
                                 file
                             )
                         ),
-                        DeserializationContext.Untyped,
+                        DeserializationContext.For(typeof(object)),
                         default
                     )!;
                 }
@@ -89,7 +89,7 @@ namespace Solti.Utils.Json.Perf
             new StringWriter(),
             closeDest: true,
             Param,
-            SerializationContext.Untyped,
+            SerializationContext.For(typeof(object)),
             CancellationToken.None
         );
     }

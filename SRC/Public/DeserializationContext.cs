@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.Json
 {
-    public readonly partial struct DeserializationContext
+    public readonly partial struct DeserializationContext // TODO: convert record type
     {
         #region Delegates
         /// <summary>
@@ -94,5 +94,10 @@ namespace Solti.Utils.Json
         /// Converts the given value to a user specified type. For instance you can implement <see cref="int"/> to <see cref="DateTime"/> conversation here.
         /// </summary>
         public ConvertDelegate? Convert { get; init; }
+
+        /// <summary>
+        /// Shortcut for <see cref="ContextFactory.CreateDeserializationContext(Type, object?)"/>
+        /// </summary>
+        public static DeserializationContext For(Type type, object? config = null) => ContextFactory.CreateDeserializationContextFor(type, config);
     }
 }
