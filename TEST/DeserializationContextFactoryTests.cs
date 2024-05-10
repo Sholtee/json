@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* ContextFactoryTests.cs                                                        *
+* DeserializationContextFactoryTests.cs                                         *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -13,11 +13,11 @@ using System.Text;
 
 using NUnit.Framework;
 
-namespace Solti.Utils.Json.DeserializationContexts.Tests
+namespace Solti.Utils.Json.Contexts.Tests
 {
     using Attributes;
 
-    public abstract class ContextFactoryTestsBase<TDescendant> where TDescendant : ContextFactoryTestsBase<TDescendant>, new()
+    public abstract class DeserializationContextFactoryTestsBase<TDescendant> where TDescendant : DeserializationContextFactoryTestsBase<TDescendant>, new()
     {
         public abstract IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases { get; }
 
@@ -31,7 +31,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
 
         protected virtual bool Compare(object a, object b) => EqualityComparer<object>.Default.Equals(a, b);
 
-        public static ContextFactoryTestsBase<TDescendant> Instance { get; } = new TDescendant();
+        public static DeserializationContextFactoryTestsBase<TDescendant> Instance { get; } = new TDescendant();
 
         // TestCaseSource requires static property
         public static IEnumerable<(Type TargetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> GetValidCases => Instance.ValidCases;
@@ -76,7 +76,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class EnumContextFactoryTests : ContextFactoryTestsBase<EnumContextFactoryTests>
+    public class EnumDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<EnumDeserializationContextFactoryTests>
     {
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
@@ -122,7 +122,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class GuidContextFactoryTests : ContextFactoryTestsBase<GuidContextFactoryTests>
+    public class GuidDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<GuidDeserializationContextFactoryTests>
     {
         private static readonly Guid TestGuid = Guid.Parse("D6B6D5B5-826E-4362-A19A-219997E6D693");
 
@@ -176,7 +176,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class DateTimeContextFactoryTests : ContextFactoryTestsBase<DateTimeContextFactoryTests>
+    public class DateTimeDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<DateTimeDeserializationContextFactoryTests>
     {
         private static readonly DateTime TestDate = DateTime.ParseExact("2009-06-15T13:45:30", "s", null);
 
@@ -225,7 +225,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class StreamContextFactoryTests : ContextFactoryTestsBase<StreamContextFactoryTests>
+    public class StreamDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<StreamDeserializationContextFactoryTests>
     {
         private static readonly Stream TestStream = new MemoryStream(Encoding.UTF8.GetBytes("cica"));
 
@@ -282,7 +282,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class NumberContextFactoryTests : ContextFactoryTestsBase<NumberContextFactoryTests>
+    public class NumberDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<NumberDeserializationContextFactoryTests>
     {
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
@@ -339,7 +339,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class StringContextFactoryTests : ContextFactoryTestsBase<StringContextFactoryTests>
+    public class StringDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<StringDeserializationContextFactoryTests>
     {
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
@@ -379,7 +379,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class BooleanContextFactoryTests : ContextFactoryTestsBase<BooleanContextFactoryTests>
+    public class BooleanDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<BooleanDeserializationContextFactoryTests>
     {
         public override IEnumerable<(Type targetType, object? Config, string Input, object Expected, JsonParserFlags Flags)> ValidCases
         {
@@ -422,7 +422,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class ObjectContextFactoryTests : ContextFactoryTestsBase<ObjectContextFactoryTests>
+    public class ObjectDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<ObjectDeserializationContextFactoryTests>
     {
         private record Nested
         {
@@ -560,7 +560,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class DictionaryContextFactoryTests : ContextFactoryTestsBase<DictionaryContextFactoryTests>
+    public class DictionaryDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<DictionaryDeserializationContextFactoryTests>
     {
         private record Value
         {
@@ -641,7 +641,7 @@ namespace Solti.Utils.Json.DeserializationContexts.Tests
     }
 
     [TestFixture]
-    public class ListContextFactoryTests : ContextFactoryTestsBase<ListContextFactoryTests>
+    public class ListDeserializationContextFactoryTests : DeserializationContextFactoryTestsBase<ListDeserializationContextFactoryTests>
     {
         private record Value
         {
