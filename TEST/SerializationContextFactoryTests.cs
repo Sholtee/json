@@ -112,6 +112,9 @@ namespace Solti.Utils.Json.Contexts.Tests
             {
                 yield return (typeof(MethodImplOptions), "invalid");
                 yield return (typeof(MethodImplOptions), 1);
+
+                yield return (typeof(MethodImplOptions?), "invalid");
+                yield return (typeof(MethodImplOptions?), 1);
             }
         }
 
@@ -125,5 +128,112 @@ namespace Solti.Utils.Json.Contexts.Tests
         }
 
         public override ContextFactory Factory => new EnumContextFactory();
+    }
+
+    [TestFixture]
+    public class GuidSerializationContextFactoryTests : SerializationContextFactoryTestsBase<GuidSerializationContextFactoryTests>
+    {
+        private static readonly Guid TestGuid = Guid.Parse("D6B6D5B5-826E-4362-A19A-219997E6D693");
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(Guid), "D", TestGuid, "\"d6b6d5b5-826e-4362-a19a-219997e6d693\"");
+                yield return (typeof(Guid), "N", TestGuid, "\"d6b6d5b5826e4362a19a219997e6d693\"");
+                yield return (typeof(Guid), null, TestGuid, "\"d6b6d5b5826e4362a19a219997e6d693\"");
+                yield return (typeof(Guid?), "D", (Guid?) TestGuid, "\"d6b6d5b5-826e-4362-a19a-219997e6d693\"");
+                yield return (typeof(Guid?), "N", (Guid?) TestGuid, "\"d6b6d5b5826e4362a19a219997e6d693\"");
+                yield return (typeof(Guid?), null, (Guid?) TestGuid, "\"d6b6d5b5826e4362a19a219997e6d693\"");
+                yield return (typeof(Guid?), null, null, "null");
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(Guid), "D", "invalid");
+                yield return (typeof(Guid), "N", "invalid");
+                yield return (typeof(Guid), "D", 1);
+                yield return (typeof(Guid), "N", 1);
+                yield return (typeof(Guid), null, null);
+                yield return (typeof(Guid?), "D", "invalid");
+                yield return (typeof(Guid?), "N", "invalid");
+                yield return (typeof(Guid?), "D", 1);
+                yield return (typeof(Guid?), "N", 1);
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(Guid), "invalid");
+                yield return (typeof(Guid), 1);
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+                yield return typeof(string);
+            }
+        }
+
+        public override ContextFactory Factory => new GuidContextFactory();
+    }
+
+    [TestFixture]
+    public class DateTimeSerializationContextFactoryTests : SerializationContextFactoryTestsBase<DateTimeSerializationContextFactoryTests>
+    {
+        private static readonly DateTime TestDate = DateTime.ParseExact("2009-06-15T13:45:30", "s", null);
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(DateTime), "s", TestDate, "\"2009-06-15T13:45:30\"");
+                yield return (typeof(DateTime), "u", TestDate, "\"2009-06-15 13:45:30Z\"");
+                yield return (typeof(DateTime), null, TestDate, "\"2009-06-15T13:45:30\"");
+                yield return (typeof(DateTime?), "s", (DateTime?) TestDate, "\"2009-06-15T13:45:30\"");
+                yield return (typeof(DateTime?), "u", (DateTime?) TestDate, "\"2009-06-15 13:45:30Z\"");
+                yield return (typeof(DateTime?), null, (DateTime?) TestDate, "\"2009-06-15T13:45:30\"");
+                yield return (typeof(DateTime?), null, null, "null");
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(DateTime), "s", 1);
+                yield return (typeof(DateTime), "u", 1);
+                yield return (typeof(DateTime), null, null);
+                yield return (typeof(DateTime?), "s", 1);
+                yield return (typeof(DateTime?), "u", 1);
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(DateTime), 1);
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+                yield return typeof(string);
+            }
+        }
+
+        public override ContextFactory Factory => new DateTimeContextFactory();
     }
 }
