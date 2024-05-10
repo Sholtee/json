@@ -138,8 +138,8 @@ namespace Solti.Utils.Json
         private static DeserializationContext CreateDeserializationContextCore(Type type) => (DeserializationContext) Cache.GetOrAdd(type, static type => (object) new DeserializationContext
         {
             SupportedTypes = type.IsConstructedGenericType
-                    ? JsonDataTypes.Number | JsonDataTypes.Null
-                    : JsonDataTypes.Number,
+                ? JsonDataTypes.Number | JsonDataTypes.Null
+                : JsonDataTypes.Number,
             ParseNumber = CreateParseNumberDelegate(type)
         });
 
@@ -201,7 +201,7 @@ namespace Solti.Utils.Json
             if (config is not null)
                 throw new ArgumentException(Resources.INVALID_FORMAT_SPECIFIER, nameof(config));
 
-            return base.CreateSerializationContextCore(type, config);
+            return CreateSerializationContextCore(type);
         }
 
         /// <inheritdoc/>

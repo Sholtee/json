@@ -5,8 +5,11 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using NUnit.Framework;
 
 namespace Solti.Utils.Json.Contexts.Tests
@@ -236,4 +239,107 @@ namespace Solti.Utils.Json.Contexts.Tests
 
         public override ContextFactory Factory => new DateTimeContextFactory();
     }
+
+    [TestFixture]
+    public class StreamSerializationContextFactoryTests : SerializationContextFactoryTestsBase<StreamSerializationContextFactoryTests>
+    {
+        public override IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases
+        {
+            get
+            {
+                byte[] content = Encoding.UTF8.GetBytes("cica");
+
+                yield return (typeof(Stream), null, new MemoryStream(content), "\"Y2ljYQ==\"");
+                yield return (typeof(MemoryStream), null, new MemoryStream(content), "\"Y2ljYQ==\"");
+                yield return (typeof(MemoryStream), null, null, "null");
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(Stream), null, new object());
+                yield return (typeof(MemoryStream), null, "invalid");
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(Stream), 1);
+                yield return (typeof(MemoryStream), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+                yield return typeof(string);
+            }
+        }
+
+        public override ContextFactory Factory => new StreamContextFactory();
+    }
+
+    [TestFixture]
+    public class NumberSerializationContextFactoryTests : SerializationContextFactoryTestsBase<NumberSerializationContextFactoryTests>
+    {
+        public override IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(byte), null, (byte) 86, "86");
+                yield return (typeof(int), null, (int) 1986, "1986");
+                yield return (typeof(short), null, (short) 1986, "1986");
+                yield return (typeof(long), null, (long) 1986, "1986");
+
+                yield return (typeof(float), null, (float) 1986.1026, ((float) 1986.1026).ToString(CultureInfo.InvariantCulture));
+                yield return (typeof(double), null, (double) 1986.1026, "1986.1026");
+                yield return (typeof(double), null, (double) 1986, "1986");
+
+                yield return (typeof(byte?), null, (byte?) 86, "86");
+                yield return (typeof(int?), null, (int?) 1986, "1986");
+                yield return (typeof(short?), null, (short?) 1986, "1986");
+                yield return (typeof(long?), null, (long?) 1986, "1986");
+
+                yield return (typeof(float?), null, (float?) 1986.1026, ((float) 1986.1026).ToString(CultureInfo.InvariantCulture));
+                yield return (typeof(double?), null, (double?) 1986.1026, "1986.1026");
+                yield return (typeof(double?), null, (double?) 1986, "1986");
+
+                yield return (typeof(int?), null, null!, "null");
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(byte), null, "1986");
+                yield return (typeof(int), null, "1986.1026");
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(int), 1);
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(string);
+            }
+        }
+
+        public override ContextFactory Factory => new NumberContextFactory();
+    }
+
 }

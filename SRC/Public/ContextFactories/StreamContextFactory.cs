@@ -90,10 +90,11 @@ namespace Solti.Utils.Json
                 // Only MemoryStream has the GetBuffer() method
                 //
 
-                if (stm is not MemoryStream memStm)
+                if (stm is not MemoryStream memStm || !memStm.TryGetBuffer(out ArraySegment<byte> content))
                 {
                     memStm = new MemoryStream();
                     stm.CopyTo(memStm);
+                    memStm.TryGetBuffer(out content);
                 }
 
                 //
@@ -108,7 +109,7 @@ namespace Solti.Utils.Json
                 // GetBuffer() does not copy the underlying data
                 //
 
-                int charsWritten = Convert.ToBase64CharArray(memStm.GetBuffer(), 0, (int) memStm.Length, buffer, 0);
+                int charsWritten = Convert.ToBase64CharArray(content.Array, 0, (int) memStm.Length, buffer, 0);
                 return buffer.AsSpan(0, charsWritten);
             }
         }
