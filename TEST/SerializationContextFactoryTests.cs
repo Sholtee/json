@@ -98,6 +98,11 @@ namespace Solti.Utils.Json.Contexts.Tests
                 yield return (typeof(MethodImplOptions), null, "AggressiveInlining");
                 yield return (typeof(MethodImplOptions), null, 256);
                 yield return (typeof(MethodImplOptions), null, AttributeTargets.Parameter);
+                yield return (typeof(MethodImplOptions), null, null);
+
+                yield return (typeof(MethodImplOptions?), null, "AggressiveInlining");
+                yield return (typeof(MethodImplOptions?), null, 256);
+                yield return (typeof(MethodImplOptions?), null, AttributeTargets.Parameter);
             }
         }
 
