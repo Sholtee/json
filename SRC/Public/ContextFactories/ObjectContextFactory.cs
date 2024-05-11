@@ -171,10 +171,14 @@ namespace Solti.Utils.Json
                 (
                     Expression.Lambda<Func<object, object?>>
                     (
-                        Expression.Property
+                        Expression.Convert
                         (
-                            Expression.Convert(obj, type),
-                            prop
+                            Expression.Property
+                            (
+                                Expression.Convert(obj, type),
+                                prop
+                            ),
+                            typeof(object)
                         ),
                         obj
                     )

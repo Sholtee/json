@@ -728,5 +728,4 @@ namespace Solti.Utils.Json.Contexts.Tests
 
         public override ContextFactory Factory => new ListContextFactory();
     }
-
 }

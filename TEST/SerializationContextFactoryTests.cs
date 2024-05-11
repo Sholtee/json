@@ -310,7 +310,12 @@ namespace Solti.Utils.Json.Contexts.Tests
                 yield return (typeof(double?), null, (double?) 1986.1026, "1986.1026");
                 yield return (typeof(double?), null, (double?) 1986, "1986");
 
+                yield return (typeof(byte?), null, null!, "null");
                 yield return (typeof(int?), null, null!, "null");
+                yield return (typeof(short?), null, null!, "null");
+                yield return (typeof(long?), null, null!, "null");
+                yield return (typeof(float?), null, null!, "null");
+                yield return (typeof(double?), null, null!, "null");
             }
         }
 
@@ -342,4 +347,213 @@ namespace Solti.Utils.Json.Contexts.Tests
         public override ContextFactory Factory => new NumberContextFactory();
     }
 
+    [TestFixture]
+    public class StringSerializationContextFactoryTests : SerializationContextFactoryTestsBase<StringSerializationContextFactoryTests>
+    {
+        public override IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(string), null, "cica", "\"cica\"");
+                yield return (typeof(string), null, null, "null");
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(string), null, 1986);
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(string), 1);
+                yield return (typeof(string), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+            }
+        }
+
+        public override ContextFactory Factory => new StringContextFactory();
+    }
+
+    [TestFixture]
+    public class BooleanSerializationContextFactoryTests : SerializationContextFactoryTestsBase<BooleanSerializationContextFactoryTests>
+    {
+        public override IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(bool), null, true, "true");
+                yield return (typeof(bool), null, false, "false");
+                yield return (typeof(bool?), null, (bool?) true, "true");
+                yield return (typeof(bool?), null, (bool?) false, "false");
+                yield return (typeof(bool?), null, null, "null");
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(bool), null, 1986);
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(bool), 1);
+                yield return (typeof(bool), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+            }
+        }
+
+        public override ContextFactory Factory => new BooleanContextFactory();
+    }
+
+    [TestFixture]
+    public class DictionarySerializationContextFactoryTests : SerializationContextFactoryTestsBase<DictionarySerializationContextFactoryTests>
+    {
+        private record Value
+        {
+            public int Prop { get; set; }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(Dictionary<string, Value>), null, new Dictionary<string, Value> { { "1", new Value { Prop = 1 } }, { "2", new Value { Prop = 2 } } }, $"{{{Environment.NewLine}  \"1\": {{{Environment.NewLine}    \"Prop\": 1{Environment.NewLine}  }},{Environment.NewLine}  \"2\": {{{Environment.NewLine}    \"Prop\": 2{Environment.NewLine}  }}{Environment.NewLine}}}");
+                yield return (typeof(Dictionary<string, int>), null, new Dictionary<string, int> { { "1", 1 }, { "2", 2 } }, $"{{{Environment.NewLine}  \"1\": 1,{Environment.NewLine}  \"2\": 2{Environment.NewLine}}}");
+                yield return (typeof(Dictionary<string, string>), null, new Dictionary<string, string> { { "1", "1" }, { "2", "2" } }, $"{{{Environment.NewLine}  \"1\": \"1\",{Environment.NewLine}  \"2\": \"2\"{Environment.NewLine}}}");
+                yield return (typeof(Dictionary<string, string>), null, null, "null");
+
+                yield return (typeof(IDictionary<string, Value>), null, new Dictionary<string, Value> { { "1", new Value { Prop = 1 } }, { "2", new Value { Prop = 2 } } }, $"{{{Environment.NewLine}  \"1\": {{{Environment.NewLine}    \"Prop\": 1{Environment.NewLine}  }},{Environment.NewLine}  \"2\": {{{Environment.NewLine}    \"Prop\": 2{Environment.NewLine}  }}{Environment.NewLine}}}");
+                yield return (typeof(IDictionary<string, int>), null, new Dictionary<string, int> { { "1", 1 }, { "2", 2 } }, $"{{{Environment.NewLine}  \"1\": 1,{Environment.NewLine}  \"2\": 2{Environment.NewLine}}}");
+                yield return (typeof(IDictionary<string, string>), null, new Dictionary<string, string> { { "1", "1" }, { "2", "2" } }, $"{{{Environment.NewLine}  \"1\": \"1\",{Environment.NewLine}  \"2\": \"2\"{Environment.NewLine}}}");
+                yield return (typeof(IDictionary<string, string>), null, null, "null");
+
+                yield return (typeof(IReadOnlyDictionary<string, Value>), null, new Dictionary<string, Value> { { "1", new Value { Prop = 1 } }, { "2", new Value { Prop = 2 } } }, $"{{{Environment.NewLine}  \"1\": {{{Environment.NewLine}    \"Prop\": 1{Environment.NewLine}  }},{Environment.NewLine}  \"2\": {{{Environment.NewLine}    \"Prop\": 2{Environment.NewLine}  }}{Environment.NewLine}}}");
+                yield return (typeof(IReadOnlyDictionary<string, int>), null, new Dictionary<string, int> { { "1", 1 }, { "2", 2 } }, $"{{{Environment.NewLine}  \"1\": 1,{Environment.NewLine}  \"2\": 2{Environment.NewLine}}}");
+                yield return (typeof(IReadOnlyDictionary<string, string>), null, new Dictionary<string, string> { { "1", "1" }, { "2", "2" } }, $"{{{Environment.NewLine}  \"1\": \"1\",{Environment.NewLine}  \"2\": \"2\"{Environment.NewLine}}}");
+                yield return (typeof(IReadOnlyDictionary<string, string>), null, null, "null");
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(IDictionary<string, string>), null, 1986);
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(Dictionary<string, int>), 1);
+                yield return (typeof(Dictionary<string, int>), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+                yield return typeof(Dictionary<int, int>);
+            }
+        }
+
+        public override ContextFactory Factory => new DictionaryContextFactory();
+    }
+
+    [TestFixture]
+    public class ListSerializationContextFactoryTests : SerializationContextFactoryTestsBase<ListSerializationContextFactoryTests>
+    {
+        private record Value
+        {
+            public int Prop { get; set; }
+        }
+
+        private class ValueHavingListProp
+        {
+            public IList<int> Prop { get; set; } = null!;
+
+            public override bool Equals(object? obj) => obj is ValueHavingListProp other && other.Prop.SequenceEqual(Prop);
+
+            public override int GetHashCode() => base.GetHashCode();
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(List<ValueHavingListProp>), null, new List<ValueHavingListProp> { new ValueHavingListProp { Prop = [1] }, new ValueHavingListProp { Prop = [2] } }, $"[{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": [{Environment.NewLine}      1{Environment.NewLine}    ]{Environment.NewLine}  }},{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": [{Environment.NewLine}      2{Environment.NewLine}    ]{Environment.NewLine}  }}{Environment.NewLine}]");
+                yield return (typeof(List<Value>), null, new List<Value> { new Value { Prop = 1 }, new Value { Prop = 2 } }, $"[{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": 1{Environment.NewLine}  }},{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": 2{Environment.NewLine}  }}{Environment.NewLine}]");
+                yield return (typeof(List<int>), null, new List<int> { 1, 2 }, $"[{Environment.NewLine}  1,{Environment.NewLine}  2{Environment.NewLine}]");
+                yield return (typeof(List<string>), null, new List<string> { "1", "2" }, $"[{Environment.NewLine}  \"1\",{Environment.NewLine}  \"2\"{Environment.NewLine}]");
+                yield return (typeof(List<string>), null, null, "null");
+
+                yield return (typeof(IList<ValueHavingListProp>), null, new List<ValueHavingListProp> { new ValueHavingListProp { Prop = [1] }, new ValueHavingListProp { Prop = [2] } }, $"[{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": [{Environment.NewLine}      1{Environment.NewLine}    ]{Environment.NewLine}  }},{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": [{Environment.NewLine}      2{Environment.NewLine}    ]{Environment.NewLine}  }}{Environment.NewLine}]");
+                yield return (typeof(IList<Value>), null, new List<Value> { new Value { Prop = 1 }, new Value { Prop = 2 } }, $"[{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": 1{Environment.NewLine}  }},{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": 2{Environment.NewLine}  }}{Environment.NewLine}]");
+                yield return (typeof(IList<int>), null, new List<int> { 1, 2 }, $"[{Environment.NewLine}  1,{Environment.NewLine}  2{Environment.NewLine}]");
+                yield return (typeof(IList<string>), null, new List<string> { "1", "2" }, $"[{Environment.NewLine}  \"1\",{Environment.NewLine}  \"2\"{Environment.NewLine}]");
+                yield return (typeof(IList<string>), null, null, "null");
+
+                yield return (typeof(ICollection<ValueHavingListProp>), null, new List<ValueHavingListProp> { new ValueHavingListProp { Prop = [1] }, new ValueHavingListProp { Prop = [2] } }, $"[{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": [{Environment.NewLine}      1{Environment.NewLine}    ]{Environment.NewLine}  }},{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": [{Environment.NewLine}      2{Environment.NewLine}    ]{Environment.NewLine}  }}{Environment.NewLine}]");
+                yield return (typeof(ICollection<Value>), null, new List<Value> { new Value { Prop = 1 }, new Value { Prop = 2 } }, $"[{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": 1{Environment.NewLine}  }},{Environment.NewLine}  {{{Environment.NewLine}    \"Prop\": 2{Environment.NewLine}  }}{Environment.NewLine}]");
+                yield return (typeof(ICollection<int>), null, new List<int> { 1, 2 }, $"[{Environment.NewLine}  1,{Environment.NewLine}  2{Environment.NewLine}]");
+                yield return (typeof(ICollection<string>), null, new List<string> { "1", "2" }, $"[{Environment.NewLine}  \"1\",{Environment.NewLine}  \"2\"{Environment.NewLine}]");
+                yield return (typeof(ICollection<string>), null, null, "null");
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(ICollection<string>), null, 1986);
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(List<int>), 1);
+                yield return (typeof(IList<int>), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(int);
+            }
+        }
+
+        public override ContextFactory Factory => new ListContextFactory();
+    }
 }
