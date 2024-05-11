@@ -197,7 +197,7 @@ namespace Solti.Utils.Json
             return result;
         }
 
-        private static DeserializationContext CreateDeserializationContextCore(Type type) => (DeserializationContext) Cache.GetOrAdd(type, static type =>
+        private static DeserializationContext CreateDeserializationContextCore(Type type) => Cache.GetOrAdd(type, static type =>
         {
             DelegateCompiler compiler = new();
 
@@ -213,7 +213,7 @@ namespace Solti.Utils.Json
 
             compiler.Compile();
 
-            return (object) new DeserializationContext
+            return new DeserializationContext
             {
                 SupportedTypes = JsonDataTypes.Object | JsonDataTypes.Null,
                 CreateRawObject = createRaw.Value,
@@ -222,7 +222,7 @@ namespace Solti.Utils.Json
             };
         });
 
-        private static SerializationContext CreateSerializationContextCore(Type type) => (SerializationContext) Cache.GetOrAdd(type, static type =>
+        private static SerializationContext CreateSerializationContextCore(Type type) => Cache.GetOrAdd(type, static type =>
         {
             DelegateCompiler compiler = new();
             IReadOnlyList<Func<object, Entry>> props = ProcessPropertiesForSerialization(type, compiler);
@@ -230,7 +230,7 @@ namespace Solti.Utils.Json
             FutureDelegate<EnumEntriesDelegate> enumEntries = DelegateHelpers.ChangeType<EnumEntriesDelegate>(EnumEntries<object>, type, compiler);
             compiler.Compile();
 
-            return (object) new SerializationContext
+            return new SerializationContext
             {
                 GetTypeOf = getTypeOf.Value,
                 EnumEntries = enumEntries.Value,

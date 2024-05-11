@@ -24,11 +24,11 @@ namespace Solti.Utils.Json
     public class ListContextFactory : ContextFactory
     {
         #region Private
-        private static DeserializationContext CreateDeserializationContextCore(Type type) => (DeserializationContext) Cache.GetOrAdd(type, static type =>
+        private static DeserializationContext CreateDeserializationContextCore(Type type) => Cache.GetOrAdd(type, static type =>
         {
             DeserializationContext itemContext = CreateDeserializationContextFor(type.GetGenericArguments()[0]);
 
-            return (object) new DeserializationContext
+            return new DeserializationContext
             {
                 SupportedTypes = JsonDataTypes.List | JsonDataTypes.Null,
 
@@ -52,7 +52,7 @@ namespace Solti.Utils.Json
             };
         });
 
-        protected static SerializationContext CreateSerializationContextCore(Type type) => (SerializationContext) Cache.GetOrAdd(type, static type =>
+        protected static SerializationContext CreateSerializationContextCore(Type type) => Cache.GetOrAdd(type, static type =>
         {
             Type itemType = type.GetGenericArguments()[0];
             SerializationContext itemContext = CreateSerializationContextFor(itemType);
@@ -62,7 +62,7 @@ namespace Solti.Utils.Json
             FutureDelegate<EnumEntriesDelegate> enumEntries = DelegateHelpers.ChangeType<EnumEntriesDelegate>(EnumEntries<object>, itemType, compiler);
             compiler.Compile();
 
-            return (object) new SerializationContext
+            return new SerializationContext
             {
                 GetTypeOf = getTypeOf.Value,
                 EnumEntries = enumEntries.Value,

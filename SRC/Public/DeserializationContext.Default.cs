@@ -7,7 +7,7 @@ using System;
 
 namespace Solti.Utils.Json
 {
-    public readonly partial struct DeserializationContext
+    public partial record DeserializationContext
     {
         /// <summary>
         /// Default deserialization context. It doesn't produce any valid output.
@@ -29,12 +29,12 @@ namespace Solti.Utils.Json
             CreateRawList = static () => null!,
             GetListItemContext = static (int _, out DeserializationContext context) =>
             {
-                context = Default;
+                context = Default!;
                 return false;
             },
             GetPropertyContext = static (ReadOnlySpan<char> prop, bool ignoreCase, out DeserializationContext context) =>
             {
-                context = Default;
+                context = Default!;
                 return false;
             },
             Push = static (object instance, object? value) => {}

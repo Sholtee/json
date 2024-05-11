@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.Json
 {
-    public readonly partial struct SerializationContext  // TODO: convert record type
+    public sealed partial record SerializationContext
     {
         public readonly struct Entry(in SerializationContext context, object? value, string? name = null)
         {

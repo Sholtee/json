@@ -135,7 +135,7 @@ namespace Solti.Utils.Json
             return expr.Compile();
         }
 
-        private static DeserializationContext CreateDeserializationContextCore(Type type) => (DeserializationContext) Cache.GetOrAdd(type, static type => (object) new DeserializationContext
+        private static DeserializationContext CreateDeserializationContextCore(Type type) => Cache.GetOrAdd(type, static type => new DeserializationContext
         {
             SupportedTypes = type.IsConstructedGenericType
                 ? JsonDataTypes.Number | JsonDataTypes.Null
@@ -143,7 +143,7 @@ namespace Solti.Utils.Json
             ParseNumber = CreateParseNumberDelegate(type)
         });
 
-        private static SerializationContext CreateSerializationContextCore(Type type)
+        private static SerializationContext CreateSerializationContextCore(Type type) => Cache.GetOrAdd(type, static type =>
         {
             bool nullable = false;
             if (type.IsConstructedGenericType)
@@ -170,7 +170,7 @@ namespace Solti.Utils.Json
                 _ => JsonDataTypes.Unkown
             };
 
-            ReadOnlySpan<char> ToString<T>(object? val, ref char[] buffer) where T: IFormattable
+            ReadOnlySpan<char> ToString<T>(object? val, ref char[] buffer) where T : IFormattable
             {
                 if (val is null && nullable)
                     return Consts.NULL.AsSpan();
@@ -183,7 +183,7 @@ namespace Solti.Utils.Json
 
                 return target.Format("G", buffer, CultureInfo.InvariantCulture);
             }
-        }
+        });
         #endregion
 
         /// <inheritdoc/>

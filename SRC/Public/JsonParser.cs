@@ -198,7 +198,7 @@ namespace Solti.Utils.Json
         /// Consumes the current token which the reader is positioned on. Throws a <see cref="FormatException"/> if the token is not in the given range.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal JsonTokens Consume(ref Session session, JsonTokens expected, in DeserializationContext currentContext)
+        internal JsonTokens Consume(ref Session session, JsonTokens expected, DeserializationContext currentContext)
         {
             if (flags.HasFlag(JsonParserFlags.AllowComments))
                 expected |= JsonTokens.DoubleSlash | JsonTokens.SlashAsterisk;
@@ -209,10 +209,10 @@ namespace Solti.Utils.Json
             switch (got)
             {
                 case JsonTokens.DoubleSlash:
-                    ParseComment(ref session, in currentContext);
+                    ParseComment(ref session, currentContext);
                     goto again;
                 case JsonTokens.SlashAsterisk:
-                    ParseMultilineComment(ref session, in currentContext);
+                    ParseMultilineComment(ref session, currentContext);
                     goto again;
                 default:
                     return got;
@@ -222,7 +222,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the string which the reader is positioned on. The returned <see cref="ReadOnlySpan{char}"/> is valid until the next <see cref="Consume(ref Session)"/> call. 
         /// </summary>
-        internal static ReadOnlySpan<char> ParseString(ref Session session, in DeserializationContext currentContext, int initialBufferSize = 128 /*for debug*/)
+        internal static ReadOnlySpan<char> ParseString(ref Session session, DeserializationContext currentContext, int initialBufferSize = 128 /*for debug*/)
         {
             const string STRING_ID = "string";
 
@@ -393,7 +393,7 @@ namespace Solti.Utils.Json
         /// <item>1E+2</item>
         /// </list>
         /// </summary>
-        internal static object ParseNumber(ref Session session, in DeserializationContext currentContext, int initialBufferSize = 16 /*for debug*/)
+        internal static object ParseNumber(ref Session session, DeserializationContext currentContext, int initialBufferSize = 16 /*for debug*/)
         {
             const string NUMBER_ID = "number";
 
@@ -443,7 +443,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the list which the reader is positioned on. Returns null if the whole list had to be ingored.
         /// </summary>
-        internal object? ParseList(ref Session session, int currentDepth, in DeserializationContext currentContext)
+        internal object? ParseList(ref Session session, int currentDepth, DeserializationContext currentContext)
         {
             const string LIST_ID = "list";
 
@@ -469,14 +469,14 @@ namespace Solti.Utils.Json
                     childContext = DeserializationContext.Default;
                 }
 
-                object? val = Parse(ref session, currentDepth, in childContext);
+                object? val = Parse(ref session, currentDepth, childContext);
                 VerifyDelegate(childContext.Push, nameof(childContext.Push))(list, val);
 
                 //
                 // Check if we reached the end of the list or we have a next element.
                 //
 
-                token = Consume(ref session, JsonTokens.SquaredClose | JsonTokens.Comma, in currentContext);
+                token = Consume(ref session, JsonTokens.SquaredClose | JsonTokens.Comma, currentContext);
                 if (token is JsonTokens.Comma)
                 {
                     //
@@ -484,7 +484,7 @@ namespace Solti.Utils.Json
                     //
 
                     Advance(ref session, 1);
-                    token = Consume(ref session, (JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, in currentContext);
+                    token = Consume(ref session, (JsonTokens) JsonDataTypes.Any | JsonTokens.SquaredClose, currentContext);
 
                     if (token is JsonTokens.SquaredClose && !flags.HasFlag(JsonParserFlags.AllowTrailingComma))
                         InvalidInput(in session, LIST_ID, MISSING_ITEM);
@@ -499,7 +499,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the object which the reader is positioned on. Returns null if the whole object had to be ingored.
         /// </summary>
-        internal object? ParseObject(ref Session session, int currentDepth, in DeserializationContext currentContext)
+        internal object? ParseObject(ref Session session, int currentDepth, DeserializationContext currentContext)
         {
             const string OBJECT_ID = "object";
 
@@ -511,8 +511,8 @@ namespace Solti.Utils.Json
         
             for (JsonTokens token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, currentContext); token is not JsonTokens.CurlyClose;)
             {
-                Consume(ref session, (JsonTokens) JsonDataTypes.String, in currentContext);  // ensure we have a string
-                ReadOnlySpan<char> propertyName = ParseString(ref session, in currentContext);
+                Consume(ref session, (JsonTokens) JsonDataTypes.String, currentContext);  // ensure we have a string
+                ReadOnlySpan<char> propertyName = ParseString(ref session, currentContext);
 
                 if (!getPropertyContext(propertyName, flags.HasFlag(JsonParserFlags.CaseInsensitive), out DeserializationContext childContext))
                 {
@@ -522,17 +522,17 @@ namespace Solti.Utils.Json
                     childContext = DeserializationContext.Default;
                 }
 
-                Consume(ref session, JsonTokens.Colon, in currentContext);
+                Consume(ref session, JsonTokens.Colon, currentContext);
                 Advance(ref session, 1);
 
-                object? val = Parse(ref session, currentDepth, in childContext);
+                object? val = Parse(ref session, currentDepth, childContext);
                 VerifyDelegate(childContext.Push, nameof(currentContext.Push))(obj, val);
 
                 //
                 // Check if we reached the end of the object or we have a next element.
                 //
 
-                token = Consume(ref session, JsonTokens.CurlyClose | JsonTokens.Comma, in currentContext);
+                token = Consume(ref session, JsonTokens.CurlyClose | JsonTokens.Comma, currentContext);
                 if (token is JsonTokens.Comma)
                 {
                     //
@@ -540,7 +540,7 @@ namespace Solti.Utils.Json
                     //
 
                     Advance(ref session, 1);
-                    token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, in currentContext);
+                    token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, currentContext);
 
                     if (token is JsonTokens.CurlyClose && !flags.HasFlag(JsonParserFlags.AllowTrailingComma))
                         InvalidInput(in session, OBJECT_ID, MISSING_PROP);
@@ -555,7 +555,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the multiline comment which the reader is positioned on. This method is also responsible for invoking the corresponding comment processor function.   
         /// </summary>
-        internal static void ParseMultilineComment(ref Session session, in DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
+        internal static void ParseMultilineComment(ref Session session, DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
             const string COMMENT_ID = "comment";
 
@@ -624,7 +624,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the comment which the reader is positioned on. This method is also responsible for invoking the corresponding comment processor function.   
         /// </summary>
-        internal static void ParseComment(ref Session session, in DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
+        internal static void ParseComment(ref Session session, DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
             Advance(ref session, 2);
 
@@ -677,26 +677,26 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the input then validates the result.
         /// </summary>
-        internal object? Parse(ref Session session, int currentDepth, in DeserializationContext currentContext)
+        internal object? Parse(ref Session session, int currentDepth, DeserializationContext currentContext)
         {
             session.Cancellation.ThrowIfCancellationRequested();
 
             object? result;
 
-            switch (Consume(ref session, (JsonTokens) currentContext.SupportedTypes | JsonTokens.DoubleSlash, in currentContext)) 
+            switch (Consume(ref session, (JsonTokens) currentContext.SupportedTypes | JsonTokens.DoubleSlash, currentContext)) 
             {
                 case JsonTokens.CurlyOpen:
-                    result = ParseObject(ref session, Deeper(in session, currentDepth), in currentContext);
+                    result = ParseObject(ref session, Deeper(in session, currentDepth), currentContext);
                     break;
                 case JsonTokens.SquaredOpen:
-                    result = ParseList(ref session, Deeper(in session, currentDepth), in currentContext);
+                    result = ParseList(ref session, Deeper(in session, currentDepth), currentContext);
                     break;
                 case JsonTokens.SingleQuote: case JsonTokens.DoubleQuote:
                     if 
                     (
                         !VerifyDelegate(currentContext.ConvertString, nameof(currentContext.ConvertString))
                         (
-                            ParseString(ref session, in currentContext),
+                            ParseString(ref session, currentContext),
                             flags.HasFlag(JsonParserFlags.CaseInsensitive),
                             out result
                         )
@@ -704,7 +704,7 @@ namespace Solti.Utils.Json
                         InvalidValue(in session, NOT_CONVERTIBLE);
                     break;
                 case JsonTokens.Number:
-                    result = ParseNumber(ref session, in currentContext);
+                    result = ParseNumber(ref session, currentContext);
                     break;
                 case JsonTokens.True:
                     Advance(ref session, TRUE.Length);
@@ -736,19 +736,19 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the input
         /// </summary>
-        public object? Parse(TextReader content, in DeserializationContext context, in CancellationToken cancellation)
+        public object? Parse(TextReader content, DeserializationContext context, in CancellationToken cancellation)
         {
             using TextReaderWrapper contentWrapper = content ?? throw new ArgumentNullException(nameof(content));
 
             Session session = new(contentWrapper, in cancellation);
 
-            object? result = Parse(ref session, 0, in context);
+            object? result = Parse(ref session, 0, context);
 
             //
             // Parse trailing comments properly.
             //
 
-            Consume(ref session, JsonTokens.Eof, in context);
+            Consume(ref session, JsonTokens.Eof, context);
 
             return result;
         }

@@ -127,20 +127,20 @@ namespace Solti.Utils.Json
             return convertStringExpr.Compile();
         }
 
-        private static DeserializationContext CreateDeserializationContextCore(Type type) => (DeserializationContext) Cache.GetOrAdd(type, static type =>
+        private static DeserializationContext CreateDeserializationContextCore(Type type) => Cache.GetOrAdd(type, static type =>
         {
             JsonDataTypes supportedType = JsonDataTypes.String;
             if (type.IsConstructedGenericType)
                 supportedType |= JsonDataTypes.Null;
 
-            return (object) new DeserializationContext
+            return new DeserializationContext
             {
                 SupportedTypes = supportedType,
                 ConvertString = CreateConvertStringDelegate(type)
             };
         });
 
-        private static SerializationContext CreateSerializationContextCore(Type type) => (SerializationContext) Cache.GetOrAdd(type, static type =>
+        private static SerializationContext CreateSerializationContextCore(Type type) => Cache.GetOrAdd(type, static type =>
         {
             bool nullable = false;
             if (type.IsConstructedGenericType)
@@ -155,7 +155,7 @@ namespace Solti.Utils.Json
             compiler.Compile();
 
 
-            return (object) new SerializationContext
+            return new SerializationContext
             {
                 ConvertToString = toString.Value,
                 GetTypeOf = getTypeOf.Value

@@ -81,7 +81,7 @@ namespace Solti.Utils.Json
 
             GetListItemContext = static (int _, out DeserializationContext context) =>
             {
-                context = FUntypedDeserialization with
+                context = FUntypedDeserialization! with
                 {
                     Push = static (object instance, object? val) =>
                     {
@@ -97,7 +97,7 @@ namespace Solti.Utils.Json
             {
                 string propStr = prop.AsString();
 
-                context = FUntypedDeserialization with
+                context = FUntypedDeserialization! with
                 {
                     Push = (object instance, object? val) =>
                     {
