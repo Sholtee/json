@@ -444,9 +444,9 @@ namespace Solti.Utils.Json.Contexts.Tests
             [Alias(Name = "Alias")]
             public string? Prop3 { get; set; }
 #if !NETFRAMEWORK
-            [Context<AnyObjectDeserializationContextFactory>(Config = typeof(MyEnum))]
+            [Context<AnyObjectContextFactory>(Config = typeof(MyEnum))]
 #else
-            [Context(typeof(AnyObjectDeserializationContextFactory), Config = typeof(MyEnum))]
+            [Context(typeof(AnyObjectContextFactory), Config = typeof(MyEnum))]
 #endif
             public object? Prop4 { get; set; }
 
@@ -469,14 +469,14 @@ namespace Solti.Utils.Json.Contexts.Tests
             }
         }
 
-        private sealed class AnyObjectDeserializationContextFactory : ContextFactory
+        private sealed class AnyObjectContextFactory : ContextFactory
         {
             public override bool IsDeserializationSupported(Type type) => true;
 
             protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config) => CreateDeserializationContextFor((Type) config!);
         }
 
-        private sealed class WrappedObjectDeserializationContextFactory : ContextFactory
+        private sealed class WrappedObjectContextFactory : ContextFactory
         {
             public override bool IsDeserializationSupported(Type type) => type == typeof(Wrapped);
 
@@ -497,9 +497,9 @@ namespace Solti.Utils.Json.Contexts.Tests
         }
 
 #if !NETFRAMEWORK
-        [Context<WrappedObjectDeserializationContextFactory>()]
+        [Context<WrappedObjectContextFactory>()]
 #else
-        [Context(typeof(WrappedObjectDeserializationContextFactory))]
+        [Context(typeof(WrappedObjectContextFactory))]
 #endif
         private record Wrapped(string Value)
         {

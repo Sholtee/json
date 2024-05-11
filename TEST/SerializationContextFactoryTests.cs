@@ -10,10 +10,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.Json.Contexts.Tests
 {
+    using Attributes;
+
     public abstract class SerializationContextFactoryTestsBase<TDescendant> where TDescendant : SerializationContextFactoryTestsBase<TDescendant>, new()
     {
         public abstract IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases { get; }
@@ -85,11 +88,11 @@ namespace Solti.Utils.Json.Contexts.Tests
         {
             get
             {
-                yield return (typeof(MethodImplOptions), null, MethodImplOptions.AggressiveInlining, "AggressiveInlining");
-                yield return (typeof(MethodImplOptions), null, MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, "AggressiveInlining, InternalCall");
+                yield return (typeof(MethodImplOptions), null, MethodImplOptions.AggressiveInlining, "\"AggressiveInlining\"");
+                yield return (typeof(MethodImplOptions), null, MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, "\"AggressiveInlining, InternalCall\"");
 
-                yield return (typeof(MethodImplOptions?), null, MethodImplOptions.AggressiveInlining, "AggressiveInlining");
-                yield return (typeof(MethodImplOptions?), null, MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, "AggressiveInlining, InternalCall");
+                yield return (typeof(MethodImplOptions?), null, MethodImplOptions.AggressiveInlining, "\"AggressiveInlining\"");
+                yield return (typeof(MethodImplOptions?), null, MethodImplOptions.AggressiveInlining | MethodImplOptions.InternalCall, "\"AggressiveInlining, InternalCall\"");
                 yield return (typeof(MethodImplOptions?), null, null, "null");
             }
         }
@@ -555,5 +558,114 @@ namespace Solti.Utils.Json.Contexts.Tests
         }
 
         public override ContextFactory Factory => new ListContextFactory();
+    }
+
+    [TestFixture]
+    public class ObjectSerializationContextFactoryTests : SerializationContextFactoryTestsBase<ObjectSerializationContextFactoryTests>
+    {
+        private record Nested
+        {
+            public string? Prop3 { get; set; }
+        }
+
+        private record Parent
+        {
+            public int Prop1 { get; set; }
+
+            public Nested? Prop2 { get; set; }
+        }
+
+        private record CustomizedParent : Parent
+        {
+            [Ignore]
+            public int ToBeIgnored { get; set; }
+
+            [Alias(Name = "Alias")]
+            public string? Prop3 { get; set; }
+#if !NETFRAMEWORK
+            [Context<AnyObjectContextFactory>(Config = typeof(MyEnum))]
+#else
+            [Context(typeof(AnyObjectContextFactory), Config = typeof(MyEnum))]
+#endif
+            public object? Prop4 { get; set; }
+
+            public Wrapped? Prop5 { get; set; }
+        }
+
+        private sealed class AnyObjectContextFactory : ContextFactory
+        {
+            public override bool IsSerializationSupported(Type type) => true;
+
+            protected override SerializationContext CreateSerializationContextCore(Type type, object? config) => CreateSerializationContextFor((Type) config!);
+        }
+
+        private sealed class WrappedObjectContextFactory : ContextFactory
+        {
+            public override bool IsSerializationSupported(Type type) => type == typeof(Wrapped);
+
+            protected override SerializationContext CreateSerializationContextCore(Type type, object? config) => CreateSerializationContextFor(typeof(string)) with
+            {
+                ConvertToString = (object? value, ref char[] buffer) => value is Wrapped wrapped
+                    ? wrapped.Value.AsSpan()
+                    : throw new NotSupportedException(),
+                GetTypeOf = val =>
+                    val is Wrapped ? JsonDataTypes.String : JsonDataTypes.Unkown
+            };
+        }
+
+        private enum MyEnum
+        {
+            Default = 0,
+            Value1 = 1
+        }
+
+#if !NETFRAMEWORK
+        [Context<WrappedObjectContextFactory>()]
+#else
+        [Context(typeof(WrappedObjectContextFactory))]
+#endif
+        private record Wrapped(string Value)
+        {
+        }
+
+        private record Empty { }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input, string Expected)> ValidCases
+        {
+            get
+            {
+                yield return (typeof(Parent), null, new Parent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" } }, $"{{{Environment.NewLine}  \"Prop1\": 1986,{Environment.NewLine}  \"Prop2\": {{{Environment.NewLine}    \"Prop3\": \"cica\"{Environment.NewLine}  }}{Environment.NewLine}}}");
+                yield return (typeof(CustomizedParent), null, new CustomizedParent { Prop1 = 1986, Prop2 = new Nested { Prop3 = "cica" }, Prop3 = "kutya", Prop4 = MyEnum.Value1, Prop5 = new Wrapped("desznaj") }, $"{{{Environment.NewLine}  \"Alias\": \"kutya\",{Environment.NewLine}  \"Prop4\": \"Value1\",{Environment.NewLine}  \"Prop5\": \"desznaj\",{Environment.NewLine}  \"Prop1\": 1986,{Environment.NewLine}  \"Prop2\": {{{Environment.NewLine}    \"Prop3\": \"cica\"{Environment.NewLine}  }}{Environment.NewLine}}}");
+                yield return (typeof(Parent), null, null, "null");
+                yield return (typeof(Empty), null, new Empty(), $"{{{Environment.NewLine}}}");
+            }
+        }
+
+        public override IEnumerable<(Type targetType, object? Config, object? Input)> InvalidCases
+        {
+            get
+            {
+                yield return (typeof(Parent), null, 1986);
+            }
+        }
+
+        public override IEnumerable<(Type Type, object? Config)> InvalidConfigs
+        {
+            get
+            {
+                yield return (typeof(Parent), 1);
+                yield return (typeof(Parent), "invalid");
+            }
+        }
+
+        public override IEnumerable<Type> InvalidTypes
+        {
+            get
+            {
+                yield return typeof(object);
+            }
+        }
+
+        public override ContextFactory Factory => new ObjectContextFactory();
     }
 }

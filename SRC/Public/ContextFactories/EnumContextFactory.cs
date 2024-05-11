@@ -163,7 +163,7 @@ namespace Solti.Utils.Json
 
             JsonDataTypes GetTypeOf<T>(object? val) where T: Enum => val switch
             {
-                T => JsonDataTypes.Number,
+                T => JsonDataTypes.String,
                 null when nullable => JsonDataTypes.Null,
                 _ => JsonDataTypes.Unkown
             };
