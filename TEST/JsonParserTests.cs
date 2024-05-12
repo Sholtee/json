@@ -362,11 +362,13 @@ namespace Solti.Utils.Json.Tests
         {
             get
             {
-                yield return new object[] { "\"\\u00E1\"", "á" };
-                yield return new object[] { "\"\\u00E1bc\"", "ábc" };
-                yield return new object[] { "\"cb\\u00E1\"", "cbá" };
-                yield return new object[] { "\"123\\u00E1bc\"", "123ábc" };
-                yield return new object[] { "\"\\uD83D\\uDE01\"", "😁" };
+                foreach ((string Input, string Expected) @case in new (string, string)[] { ("\\u00E1", "á"), ("\\u00E1\\u00E1", "áá"), ("\\u00E1middle\\u00E1", "ámiddleá"), ("\\uD83D\\uDE01", "😁") })
+                {
+                    yield return new object[] { $"\"{@case.Input}\"", @case.Expected };
+                    yield return new object[] { $"\"prefix{@case.Input}\"", $"prefix{@case.Expected}" };
+                    yield return new object[] { $"\"{@case.Input}suffix\"", $"{@case.Expected}suffix" };
+                    yield return new object[] { $"\"prefix{@case.Input}suffix\"", $"prefix{@case.Expected}suffix" };
+                }
             }
         }
 
