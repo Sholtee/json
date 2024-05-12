@@ -635,12 +635,6 @@ references:
   commentId: Overload:Solti.Utils.Json.DeserializationContext.CreateRawObject
   fullName: Solti.Utils.Json.DeserializationContext.CreateRawObject
   nameWithType: DeserializationContext.CreateRawObject
-- uid: Solti.Utils.Json.DeserializationContext.Default
-  name: Default
-  href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Default
-  commentId: F:Solti.Utils.Json.DeserializationContext.Default
-  fullName: Solti.Utils.Json.DeserializationContext.Default
-  nameWithType: DeserializationContext.Default
 - uid: Solti.Utils.Json.DeserializationContext.Equals(Solti.Utils.Json.DeserializationContext)
   name: Equals(DeserializationContext)
   href: Solti.Utils.Json.DeserializationContext.html#Solti_Utils_Json_DeserializationContext_Equals_Solti_Utils_Json_DeserializationContext_
@@ -1937,27 +1931,18 @@ references:
   commentId: Overload:Solti.Utils.Json.SerializationContext.ConvertToString
   fullName: Solti.Utils.Json.SerializationContext.ConvertToString
   nameWithType: SerializationContext.ConvertToString
-- uid: Solti.Utils.Json.SerializationContext.Default
-  name: Default
-  href: Solti.Utils.Json.SerializationContext.html#Solti_Utils_Json_SerializationContext_Default
-  commentId: F:Solti.Utils.Json.SerializationContext.Default
-  fullName: Solti.Utils.Json.SerializationContext.Default
-  nameWithType: SerializationContext.Default
 - uid: Solti.Utils.Json.SerializationContext.Entry
   name: SerializationContext.Entry
   href: Solti.Utils.Json.SerializationContext.Entry.html
   commentId: T:Solti.Utils.Json.SerializationContext.Entry
   fullName: Solti.Utils.Json.SerializationContext.Entry
   nameWithType: SerializationContext.Entry
-- uid: Solti.Utils.Json.SerializationContext.Entry.#ctor(Solti.Utils.Json.SerializationContext@,System.Object,System.String)
-  name: Entry(in SerializationContext, Object, String)
-  href: Solti.Utils.Json.SerializationContext.Entry.html#Solti_Utils_Json_SerializationContext_Entry__ctor_Solti_Utils_Json_SerializationContext__System_Object_System_String_
-  commentId: M:Solti.Utils.Json.SerializationContext.Entry.#ctor(Solti.Utils.Json.SerializationContext@,System.Object,System.String)
-  name.vb: Entry(ByRef SerializationContext, Object, String)
-  fullName: Solti.Utils.Json.SerializationContext.Entry.Entry(in Solti.Utils.Json.SerializationContext, System.Object, System.String)
-  fullName.vb: Solti.Utils.Json.SerializationContext.Entry.Entry(ByRef Solti.Utils.Json.SerializationContext, System.Object, System.String)
-  nameWithType: SerializationContext.Entry.Entry(in SerializationContext, Object, String)
-  nameWithType.vb: SerializationContext.Entry.Entry(ByRef SerializationContext, Object, String)
+- uid: Solti.Utils.Json.SerializationContext.Entry.#ctor(Solti.Utils.Json.SerializationContext,System.Object,System.String)
+  name: Entry(SerializationContext, Object, String)
+  href: Solti.Utils.Json.SerializationContext.Entry.html#Solti_Utils_Json_SerializationContext_Entry__ctor_Solti_Utils_Json_SerializationContext_System_Object_System_String_
+  commentId: M:Solti.Utils.Json.SerializationContext.Entry.#ctor(Solti.Utils.Json.SerializationContext,System.Object,System.String)
+  fullName: Solti.Utils.Json.SerializationContext.Entry.Entry(Solti.Utils.Json.SerializationContext, System.Object, System.String)
+  nameWithType: SerializationContext.Entry.Entry(SerializationContext, Object, String)
 - uid: Solti.Utils.Json.SerializationContext.Entry.#ctor*
   name: Entry
   href: Solti.Utils.Json.SerializationContext.Entry.html#Solti_Utils_Json_SerializationContext_Entry__ctor_
