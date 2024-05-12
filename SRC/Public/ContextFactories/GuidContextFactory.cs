@@ -67,7 +67,7 @@ namespace Solti.Utils.Json
 #if NETSTANDARD2_1_OR_GREATER
                 input,
 #else
-                input.AsString(),
+                input.ToString(),
 #endif
                 format,
                 out parsed

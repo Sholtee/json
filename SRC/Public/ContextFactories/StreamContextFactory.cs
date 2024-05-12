@@ -41,7 +41,7 @@ namespace Solti.Utils.Json
 #else
                 try
                 {
-                    content = Convert.FromBase64String(input.AsString());
+                    content = Convert.FromBase64String(input.ToString());
                     length = content.Length;
                 }
                 catch (FormatException)

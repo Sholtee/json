@@ -221,7 +221,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).ToString(), Is.EqualTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -266,7 +266,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).ToString(), Is.EqualTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -378,7 +378,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).AsString(), Is.EqualTo(expected));
+            Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).ToString(), Is.EqualTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -458,7 +458,7 @@ namespace Solti.Utils.Json.Tests
             DeserializationContext ctx = new()
             {
                 SupportedTypes = JsonDataTypes.Unkown,
-                ParseComment = chars => lastComment = chars.AsString()
+                ParseComment = chars => lastComment = chars.ToString()
             };
 
             using TextReaderWrapper content = new StringReader(input);
@@ -506,7 +506,7 @@ namespace Solti.Utils.Json.Tests
             DeserializationContext ctx = new()
             {
                 SupportedTypes = JsonDataTypes.Unkown,
-                ParseComment = chars => lastComment = chars.AsString()
+                ParseComment = chars => lastComment = chars.ToString()
             };
 
             using TextReaderWrapper content = new StringReader(input);
@@ -869,7 +869,7 @@ namespace Solti.Utils.Json.Tests
                         GetPropertyContext = (ReadOnlySpan<char> name, bool ignoreCase, out DeserializationContext ctx) =>
                         {
                             untypedCtx.GetPropertyContext!(name, ignoreCase, out ctx);
-                            return !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+                            return !name.ToString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
                         }
                     }
                 ),
@@ -899,7 +899,7 @@ namespace Solti.Utils.Json.Tests
                         GetPropertyContext = (ReadOnlySpan<char> name, bool ignoreCase, out DeserializationContext ctx) =>
                         {
                             untypedCtx.GetPropertyContext!(name, ignoreCase, out ctx);
-                            return !name.AsString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+                            return !name.ToString().Equals("2", ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
                         }
                     }
                 );
@@ -963,7 +963,7 @@ namespace Solti.Utils.Json.Tests
 
             StringReader content = new(input);
 
-            Assert.That(parser.Parse(content, DeserializationContext.For(typeof(object)) with { ParseComment = chars => got = chars.AsString() }, default), Is.EqualTo(expected));
+            Assert.That(parser.Parse(content, DeserializationContext.For(typeof(object)) with { ParseComment = chars => got = chars.ToString() }, default), Is.EqualTo(expected));
             Assert.That(got, Is.EqualTo(comment));
             Assert.That(content.Peek(), Is.EqualTo(-1));
         }

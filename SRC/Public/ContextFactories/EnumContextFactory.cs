@@ -27,7 +27,7 @@ namespace Solti.Utils.Json
     public class EnumContextFactory: ContextFactory
     {
         #region Private
-        private delegate string AsStringDelegate(ReadOnlySpan<char> input);
+        private static readonly MethodInfo FToString = typeof(ReadOnlySpan<char>).GetMethod(nameof(ToString));
 
         private static ConvertStringDelegate CreateConvertStringDelegate(Type type)
         {
@@ -82,11 +82,7 @@ namespace Solti.Utils.Json
                 tryParseExpr = Expression.Call
                 (
                     tryParse,
-                    Expression.Invoke
-                    (
-                        Expression.Constant((AsStringDelegate) MemoryExtensions.AsString),
-                        input
-                    ),
+                    Expression.Call(input, FToString),
                     ignoreCase,
                     ret
                 );

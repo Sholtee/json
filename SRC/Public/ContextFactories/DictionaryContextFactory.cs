@@ -34,7 +34,7 @@ namespace Solti.Utils.Json
 
                 ConvertString = static (ReadOnlySpan<char> input, bool _, out object? value) =>
                 {
-                    value = input.AsString();
+                    value = input.ToString();
                     return true;
                 },
 
@@ -45,7 +45,7 @@ namespace Solti.Utils.Json
 
                 GetPropertyContext = (ReadOnlySpan<char> prop, bool _, out DeserializationContext context) =>
                 {
-                    string propStr = prop.AsString();
+                    string propStr = prop.ToString();
 
                     context = itemContext with
                     {

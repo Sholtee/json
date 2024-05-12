@@ -28,7 +28,7 @@ namespace Solti.Utils.Json
                 SupportedTypes = JsonDataTypes.String | JsonDataTypes.Null,
                 ConvertString = static (ReadOnlySpan<char> input, bool _, out object? value) =>
                 {
-                    value = input.AsString();
+                    value = input.ToString();
                     return true;
                 }
             };

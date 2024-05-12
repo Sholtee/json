@@ -26,7 +26,7 @@ namespace Solti.Utils.Json
     public class NumberContextFactory : ContextFactory
     {
         #region Private
-        private delegate string AsStringDelegate(ReadOnlySpan<char> input);
+        private static readonly MethodInfo FToString = typeof(ReadOnlySpan<char>).GetMethod(nameof(ToString));
 
         private static readonly HashSet<Type> FSupportedTypes =
         [
@@ -94,13 +94,7 @@ namespace Solti.Utils.Json
                             Expression.Call
                             (
                                 tryParse,
-                                legacy
-                                    ? Expression.Invoke
-                                    (
-                                        Expression.Constant((AsStringDelegate) Internals.MemoryExtensions.AsString),
-                                        value
-                                    )
-                                    : value,
+                                legacy ? Expression.Call(value, FToString) : value,
                                 Expression.Constant
                                 (
                                     valueType == typeof(float) || valueType == typeof(double) 

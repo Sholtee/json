@@ -339,7 +339,7 @@ namespace Solti.Utils.Json
                                     (
                                         buffer.Slice(parsed + 1, HEX_LEN)
 #if !NETSTANDARD2_1_OR_GREATER
-                                            .AsString()
+                                            .ToString()
 #endif
                                         ,
                                         NumberStyles.HexNumber,

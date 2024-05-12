@@ -29,7 +29,7 @@ namespace Solti.Utils.Json
 
             ConvertString = static (ReadOnlySpan<char> chars, bool ignoreCase, out object? val) =>
             {
-                val = chars.AsString();
+                val = chars.ToString();
                 return true;
             },
 
@@ -45,7 +45,7 @@ namespace Solti.Utils.Json
 #if NETSTANDARD2_1_OR_GREATER
                             value,
 #else
-                            value.AsString(),
+                            value.ToString(),
 #endif
                             NumberStyles.Number,
                             CultureInfo.InvariantCulture,
@@ -63,7 +63,7 @@ namespace Solti.Utils.Json
 #if NETSTANDARD2_1_OR_GREATER
                             value,
 #else
-                            value.AsString(),
+                            value.ToString(),
 #endif
                             NumberStyles.Float,
                             CultureInfo.InvariantCulture,
@@ -95,7 +95,7 @@ namespace Solti.Utils.Json
 
             GetPropertyContext = static (ReadOnlySpan<char> prop, bool _, out DeserializationContext context) =>
             {
-                string propStr = prop.AsString();
+                string propStr = prop.ToString();
 
                 context = FUntypedDeserialization! with
                 {

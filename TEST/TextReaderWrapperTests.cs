@@ -33,7 +33,7 @@ namespace Solti.Utils.Json.Internals.Tests
 
             using TextReaderWrapper textReader = new(mockRdr.Object);
 
-            string ret = textReader.PeekText(charsToRead).AsString();
+            string ret = textReader.PeekText(charsToRead).ToString();
 
             Assert.That(ret, Is.EqualTo(str.Substring(0, charsToRead)));
             mockRdr.Verify(r => r.Read(It.IsAny<char[]>(), 0, charsToRead), Times.Once);
@@ -41,7 +41,7 @@ namespace Solti.Utils.Json.Internals.Tests
 
             mockRdr.Reset();
 
-            ret = textReader.PeekText(charsToRead).AsString();
+            ret = textReader.PeekText(charsToRead).ToString();
             Assert.That(ret, Is.EqualTo(str.Substring(0, charsToRead)));
 
             mockRdr.Verify(r => r.Read(It.IsAny<char[]>(), 0, charsToRead), Times.Never);
@@ -55,7 +55,7 @@ namespace Solti.Utils.Json.Internals.Tests
 
             textReader.PeekText(1)[0] = 'm';
 
-            Assert.That(textReader.PeekText(4).AsString(), Is.EqualTo("mica"));
+            Assert.That(textReader.PeekText(4).ToString(), Is.EqualTo("mica"));
         }
 
         [Test]
@@ -67,13 +67,13 @@ namespace Solti.Utils.Json.Internals.Tests
             Assert.That(textReader.FreeSpace, Is.EqualTo(2));
             Assert.That(textReader.CharsLeft, Is.EqualTo(0));
 
-            Assert.That(textReader.PeekText(1).AsString(), Is.EqualTo("c"));
+            Assert.That(textReader.PeekText(1).ToString(), Is.EqualTo("c"));
 
             Assert.That(textReader.BufferSize, Is.EqualTo(2));
             Assert.That(textReader.FreeSpace, Is.EqualTo(1));
             Assert.That(textReader.CharsLeft, Is.EqualTo(1));
 
-            Assert.That(textReader.PeekText(3).AsString(), Is.EqualTo("cic"));
+            Assert.That(textReader.PeekText(3).ToString(), Is.EqualTo("cic"));
 
             Assert.That(textReader.BufferSize, Is.EqualTo(3));
             Assert.That(textReader.FreeSpace, Is.EqualTo(0));
@@ -89,14 +89,14 @@ namespace Solti.Utils.Json.Internals.Tests
             Assert.That(textReader.FreeSpace, Is.EqualTo(4));
             Assert.That(textReader.CharsLeft, Is.EqualTo(0));
 
-            Assert.That(textReader.PeekText(4).AsString(), Is.EqualTo("cica"));
+            Assert.That(textReader.PeekText(4).ToString(), Is.EqualTo("cica"));
             textReader.Advance(2);
 
             Assert.That(textReader.BufferSize, Is.EqualTo(4));
             Assert.That(textReader.FreeSpace, Is.EqualTo(0));
             Assert.That(textReader.CharsLeft, Is.EqualTo(2));
 
-            Assert.That(textReader.PeekText(4).AsString(), Is.EqualTo("cami"));
+            Assert.That(textReader.PeekText(4).ToString(), Is.EqualTo("cami"));
 
             Assert.That(textReader.BufferSize, Is.EqualTo(4));
             Assert.That(textReader.FreeSpace, Is.EqualTo(0));
