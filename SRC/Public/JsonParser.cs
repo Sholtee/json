@@ -435,46 +435,53 @@ namespace Solti.Utils.Json
         {
             const string NUMBER_ID = "number";
 
-            Span<char> buffer;
+            ReadOnlySpan<char> buffer = default;
             bool isFloating = false;
 
             //
             // Take all the promising chars
             //
 
-            int parsed = 0;
-            for (int bufferSize = initialBufferSize; ; bufferSize *= 2)
+            int firstNonNumeric = -1;
+            for (int bufferSize = initialBufferSize; firstNonNumeric < 0; bufferSize *= 2)
             {
                 buffer = session.Content.PeekText(bufferSize);
 
-                for (; parsed < buffer.Length; parsed++)
+                firstNonNumeric = buffer.IndexOfAnyExcept("0123456789+-".AsSpan());
+
+                if (firstNonNumeric >= 0)
                 {
-                    char chr = buffer[parsed];
-
-                    if (chr is '.' or 'e' or 'E')
+                    if (buffer[firstNonNumeric] is '.' or 'e' or 'E')
+                    {
                         isFloating = true;
-
-                    else if ((chr is < '0' or > '9') && !(chr is '+' or '-'))
-                        goto parse;
+                        firstNonNumeric = buffer.IndexOfAnyExcept("0123456789+-.eE".AsSpan());
+                    }
                 }
 
-                if (buffer.Length < bufferSize)
-                    goto parse;  // We reached the end of the stream
+                if (firstNonNumeric == -1)
+                {
+                    if (buffer.Length >= bufferSize)
+                        //
+                        // We might just have ran out of the characters
+                        //
+
+                        continue;
+                    firstNonNumeric = buffer.Length;
+                }
             }
 
             //
             // Do the actual parse
             //
 
-            parse:
-            if (!VerifyDelegate(currentContext.ParseNumber, nameof(currentContext.ParseNumber))(buffer.Slice(0, parsed), !isFloating, out object result))
+            if (!VerifyDelegate(currentContext.ParseNumber, nameof(currentContext.ParseNumber))(buffer.Slice(0, firstNonNumeric), !isFloating, out object result))
                 InvalidInput(in session, NUMBER_ID, CANNOT_PARSE);
 
             //
             // Advance the reader if everything was all right
             //
 
-            Advance(ref session, parsed);
+            Advance(ref session, firstNonNumeric);
             return result!;
         }
 
