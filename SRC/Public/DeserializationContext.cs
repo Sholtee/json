@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.Json
 {
-    public sealed partial record DeserializationContext
+    public sealed record DeserializationContext
     {
         #region Delegates
         /// <summary>

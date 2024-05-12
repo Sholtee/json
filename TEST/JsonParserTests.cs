@@ -192,13 +192,13 @@ namespace Solti.Utils.Json.Tests
             Assert.DoesNotThrow(() =>
             {
                 Session session = new(content);
-                Assert.That(parser.Consume(ref session, JsonTokens.Eof | JsonTokens.CurlyOpen, DeserializationContext.Default), Is.EqualTo(JsonTokens.CurlyOpen));
+                Assert.That(parser.Consume(ref session, JsonTokens.Eof | JsonTokens.CurlyOpen), Is.EqualTo(JsonTokens.CurlyOpen));
             });
 
             Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                parser.Consume(ref session, JsonTokens.Eof, DeserializationContext.Default);
+                parser.Consume(ref session, JsonTokens.Eof);
             });
         }
 
@@ -221,7 +221,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).ToString(), Is.EqualTo(expected));
+            Assert.That(ParseString(ref session, bufferSize).ToString(), Is.EqualTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -266,7 +266,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).ToString(), Is.EqualTo(expected));
+            Assert.That(ParseString(ref session, bufferSize).ToString(), Is.EqualTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -286,7 +286,7 @@ namespace Solti.Utils.Json.Tests
             Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                ParseString(ref session, DeserializationContext.Default);
+                ParseString(ref session);
             });
         }
 
@@ -311,7 +311,7 @@ namespace Solti.Utils.Json.Tests
             JsonParserException ex = Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                ParseString(ref session, DeserializationContext.Default, bufferSize);
+                ParseString(ref session, bufferSize);
             })!;
             Assert.That(ex.Row, Is.EqualTo(0));
             Assert.That(ex.Column, Is.EqualTo(position));
@@ -344,7 +344,7 @@ namespace Solti.Utils.Json.Tests
             JsonParserException ex = Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                ParseString(ref session, DeserializationContext.Default, bufferSize);
+                ParseString(ref session, bufferSize);
             })!;
             Assert.That(ex.Row, Is.EqualTo(0));
             Assert.That(ex.Column, Is.EqualTo(col));
@@ -378,7 +378,7 @@ namespace Solti.Utils.Json.Tests
 
             Session session = new(content);
 
-            Assert.That(ParseString(ref session, DeserializationContext.Default, bufferSize).ToString(), Is.EqualTo(expected));
+            Assert.That(ParseString(ref session, bufferSize).ToString(), Is.EqualTo(expected));
             Assert.That(content.PeekChar(), Is.EqualTo(-1));
         }
 
@@ -416,7 +416,7 @@ namespace Solti.Utils.Json.Tests
             JsonParserException ex = Assert.Throws<JsonParserException>(() =>
             {
                 Session session = new(content);
-                ParseString(ref session, DeserializationContext.Default, bufferSize);
+                ParseString(ref session, bufferSize);
             })!;
             Assert.That(ex.Row, Is.EqualTo(0));
             Assert.That(ex.Column, Is.EqualTo(col));

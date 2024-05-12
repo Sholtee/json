@@ -29,6 +29,21 @@ namespace Solti.Utils.Json
     {
         #region Private
         /// <summary>
+        /// Context used to skip unknown values
+        /// </summary>
+        private static readonly DeserializationContext FVoidDeserializationContext = new()
+        {
+            SupportedTypes = JsonDataTypes.Any,
+            ConvertString = static (ReadOnlySpan<char> chars, bool ignoreCase, out object? val) => { val = null!; return true; },
+            ParseNumber = static (ReadOnlySpan<char> value, bool integral, out object parsed) => { parsed = null!; return true; },
+            CreateRawObject = static () => null!,
+            CreateRawList = static () => null!,
+            GetListItemContext = static (int _, out DeserializationContext context) => { context = null!; return false; },
+            GetPropertyContext = static (ReadOnlySpan<char> prop, bool ignoreCase, out DeserializationContext context) => { context = null!; return false; },
+            Push = static (object instance, object? value) => { }
+        };
+
+        /// <summary>
         /// Validates then increases the <paramref name="currentDepth"/>. Throws an <see cref="InvalidOperationException"/> if the current depth reached the <see cref="maxDepth"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -222,7 +237,7 @@ namespace Solti.Utils.Json
         /// <summary>
         /// Parses the string which the reader is positioned on. The returned <see cref="ReadOnlySpan{char}"/> is valid until the next <see cref="Consume(ref Session)"/> call. 
         /// </summary>
-        internal static ReadOnlySpan<char> ParseString(ref Session session, DeserializationContext currentContext, int initialBufferSize = 128 /*for debug*/)
+        internal static ReadOnlySpan<char> ParseString(ref Session session, int initialBufferSize = 128 /*for debug*/)
         {
             const string STRING_ID = "string";
 
@@ -489,7 +504,7 @@ namespace Solti.Utils.Json
                     if (flags.HasFlag(JsonParserFlags.ThrowOnUnknownListItem))
                         InvalidInput(in session, LIST_ID, UNEXPECTED_LIST_ITEM);
 
-                    childContext = DeserializationContext.Default;
+                    childContext = FVoidDeserializationContext;
                 }
 
                 object? val = Parse(ref session, currentDepth, childContext);
@@ -535,14 +550,14 @@ namespace Solti.Utils.Json
             for (JsonTokens token = Consume(ref session, JsonTokens.CurlyClose | (JsonTokens) JsonDataTypes.String, currentContext); token is not JsonTokens.CurlyClose;)
             {
                 Consume(ref session, (JsonTokens) JsonDataTypes.String, currentContext);  // ensure we have a string
-                ReadOnlySpan<char> propertyName = ParseString(ref session, currentContext);
+                ReadOnlySpan<char> propertyName = ParseString(ref session);
 
                 if (!getPropertyContext(propertyName, flags.HasFlag(JsonParserFlags.CaseInsensitive), out DeserializationContext childContext))
                 {
                     if (flags.HasFlag(JsonParserFlags.ThrowOnUnknownProperty))
                         InvalidInput(in session, OBJECT_ID, UNEXPECTED_PROPERTY);
 
-                    childContext = DeserializationContext.Default;
+                    childContext = FVoidDeserializationContext;
                 }
 
                 Consume(ref session, JsonTokens.Colon, currentContext);
@@ -719,7 +734,7 @@ namespace Solti.Utils.Json
                     (
                         !VerifyDelegate(currentContext.ConvertString, nameof(currentContext.ConvertString))
                         (
-                            ParseString(ref session, currentContext),
+                            ParseString(ref session),
                             flags.HasFlag(JsonParserFlags.CaseInsensitive),
                             out result
                         )

@@ -8,9 +8,9 @@ using System.Collections.Generic;
 
 namespace Solti.Utils.Json
 {
-    public sealed partial record SerializationContext
+    public sealed record SerializationContext
     {
-        public readonly struct Entry(in SerializationContext context, object? value, string? name = null)
+        public readonly struct Entry(SerializationContext context, object? value, string? name = null)
         {
             public readonly SerializationContext Context = context;
             public readonly string? Name = name;

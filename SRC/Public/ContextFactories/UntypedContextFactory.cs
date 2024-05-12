@@ -143,13 +143,13 @@ namespace Solti.Utils.Json
                 case IList<object?> lst:
                     foreach (object? item in lst)
                     {
-                        yield return new Entry(in FUntypedSerialization, item);
+                        yield return new Entry(FUntypedSerialization, item);
                     }
                     break;
                 case IDictionary<string, object?> dict:
                     foreach (KeyValuePair<string, object?> entry in dict)
                     {
-                        yield return new Entry(in FUntypedSerialization, entry.Value, entry.Key);
+                        yield return new Entry(FUntypedSerialization, entry.Value, entry.Key);
                     }
                     break;
                 default: throw new ArgumentException(INVALID_VALUE, nameof(val));
