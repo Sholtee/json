@@ -250,6 +250,12 @@ namespace Solti.Utils.Json.Tests
                     yield return new object[] { $"\"prefix\\{Escape}\\{Escape}\"", $"prefix{Value}{Value}" };
                     yield return new object[] { $"\"prefix\\{Escape}\\{Escape}suffix\"", $"prefix{Value}{Value}suffix" };
                     yield return new object[] { $"\"has \\{Escape}\\{Escape} space\"", $"has {Value}{Value} space" };
+
+                    yield return new object[] { $"\"\\{Escape}middle\\{Escape}\"", $"{Value}middle{Value}" };
+                    yield return new object[] { $"\"\\{Escape}middle\\{Escape}suffix\"", $"{Value}middle{Value}suffix" };
+                    yield return new object[] { $"\"prefix\\{Escape}middle\\{Escape}\"", $"prefix{Value}middle{Value}" };
+                    yield return new object[] { $"\"prefix\\{Escape}middle\\{Escape}suffix\"", $"prefix{Value}middle{Value}suffix" };
+                    yield return new object[] { $"\"has \\{Escape}middle\\{Escape} space\"", $"has {Value}middle{Value} space" };
                 }
             }
         }

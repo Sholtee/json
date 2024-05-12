@@ -229,7 +229,7 @@ namespace Solti.Utils.Json
             int quote = session.Content.PeekChar();
             Advance(ref session, 1);
 
-            for (int bufferSize = initialBufferSize, parsed = 0, outputSize = 0; ; bufferSize *= 2)
+            for (int bufferSize = initialBufferSize, parsed = 0, outputSize = 0, from = 0, charsToCopy = 0; ; bufferSize *= 2)
             {
                 Span<char> buffer = session.Content.PeekText(bufferSize);
                 if (parsed == buffer.Length)
@@ -251,6 +251,7 @@ namespace Solti.Utils.Json
                         Assert(parsed < session.Content.CharsLeft, "Miscalculated 'parsed' value");
                         Advance(ref session, parsed + 1);
 
+                        BlockCopy(buffer, from, ref outputSize, ref charsToCopy);
                         return buffer.Slice(0, outputSize);
                     }
 
@@ -286,6 +287,12 @@ namespace Solti.Utils.Json
                             }
                             bufferSize = buffer.Length;
                         }
+
+                        //
+                        // Shift left the recently processed content
+                        //
+
+                        BlockCopy(buffer, from, ref outputSize, ref charsToCopy);
 
                         switch (c = buffer[++parsed])
                         {
@@ -330,11 +337,11 @@ namespace Solti.Utils.Json
                                 (
                                     !ushort.TryParse
                                     (
-#if NETSTANDARD2_1_OR_GREATER
-                                        buffer.Slice(parsed + 1, HEX_LEN),
-#else
-                                        buffer.Slice(parsed + 1, HEX_LEN).AsString(),
+                                        buffer.Slice(parsed + 1, HEX_LEN)
+#if !NETSTANDARD2_1_OR_GREATER
+                                            .AsString()
 #endif
+                                        ,
                                         NumberStyles.HexNumber,
                                         CultureInfo.InvariantCulture,
                                         out ushort chr
@@ -375,10 +382,26 @@ namespace Solti.Utils.Json
                                 }
                                 break;
                         }
+
+                        //
+                        // Mark the beginning of the next chunk
+                        //
+
+                        from = parsed + 1;
                     }
                     else
-                        buffer[outputSize++] = buffer[parsed];
+                        charsToCopy++;
                 }
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static void BlockCopy(Span<char> buffer, int from, ref int to, ref int chars)
+            {
+                if (chars > 0 && to > 0)
+                    buffer.Slice(from, chars).CopyTo(buffer.Slice(to));             
+
+                to += chars;
+                chars = 0;
             }
         }
 
