@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json
 {
@@ -26,7 +27,10 @@ namespace Solti.Utils.Json
     public class NumberContextFactory : ContextFactory
     {
         #region Private
-        private static readonly MethodInfo FToString = typeof(ReadOnlySpan<char>).GetMethod(nameof(ToString));
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static string SpanToString(ReadOnlySpan<char> span) => span.ToString();
+
+        private delegate string SpanToStringDelegate(ReadOnlySpan<char> span);
 
         private static readonly HashSet<Type> FSupportedTypes =
         [
@@ -94,7 +98,13 @@ namespace Solti.Utils.Json
                             Expression.Call
                             (
                                 tryParse,
-                                legacy ? Expression.Call(value, FToString) : value,
+                                legacy
+                                    ? Expression.Invoke
+                                    (
+                                        Expression.Constant((SpanToStringDelegate) SpanToString),
+                                        value
+                                    )
+                                    : value,
                                 Expression.Constant
                                 (
                                     valueType == typeof(float) || valueType == typeof(double) 

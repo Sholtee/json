@@ -27,7 +27,10 @@ namespace Solti.Utils.Json
     public class EnumContextFactory: ContextFactory
     {
         #region Private
-        private static readonly MethodInfo FToString = typeof(ReadOnlySpan<char>).GetMethod(nameof(ToString));
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static string SpanToString(ReadOnlySpan<char> span) => span.ToString();
+
+        private delegate string SpanToStringDelegate(ReadOnlySpan<char> span);
 
         private static ConvertStringDelegate CreateConvertStringDelegate(Type type)
         {
@@ -82,7 +85,11 @@ namespace Solti.Utils.Json
                 tryParseExpr = Expression.Call
                 (
                     tryParse,
-                    Expression.Call(input, FToString),
+                    Expression.Invoke
+                    (
+                        Expression.Constant((SpanToStringDelegate) SpanToString),
+                        input
+                    ),
                     ignoreCase,
                     ret
                 );
@@ -149,7 +156,6 @@ namespace Solti.Utils.Json
             FutureDelegate<GetTypeDelegate> getTypeOf = DelegateHelpers.ChangeType<GetTypeDelegate>(GetTypeOf<Enum>, type, compiler);
             FutureDelegate<ToStringDelegate> toString = DelegateHelpers.ChangeType<ToStringDelegate>(ToString<Enum>, type, compiler);
             compiler.Compile();
-
 
             return new SerializationContext
             {
