@@ -26,24 +26,14 @@ namespace Solti.Utils.Json.Internals
             }
         }
 
-        private static readonly IndexOfAnyExceptDelegate? FIndexOfAnyExcept = GetOfAnyExceptDelegateNative();
-
-        private delegate int IndexOfAnyExceptDelegate(ReadOnlySpan<char> span, ReadOnlySpan<char> values);
-
-        private static IndexOfAnyExceptDelegate? GetOfAnyExceptDelegateNative()
+        private static TDelegate? GetNativeDelegate<TDelegate>(string name, params Type[] paramTypes) where TDelegate: Delegate
         {
-            MethodInfo? m = typeof(System.MemoryExtensions).GetMethods().FirstOrDefault
+            MethodInfo? m = typeof(System.MemoryExtensions).GetMethods().SingleOrDefault
             (
-                static m => m.Name == nameof(IndexOfAnyExcept) && m
+                m => m.Name == name && m
                     .GetParameters()
                     .Select(static p => p.ParameterType.IsGenericType ? p.ParameterType.GetGenericTypeDefinition() : p.ParameterType)
-                    .SequenceEqual
-                    (
-                        [
-                            typeof(ReadOnlySpan<char>).GetGenericTypeDefinition(),
-                            typeof(ReadOnlySpan<char>).GetGenericTypeDefinition()
-                        ]
-                    )
+                    .SequenceEqual(paramTypes)
             )?.MakeGenericMethod(typeof(char));
             if (m is null)
                 return null;
@@ -53,12 +43,21 @@ namespace Solti.Utils.Json.Internals
                 .Select(static p => Expression.Parameter(p.ParameterType, p.Name))
                 .ToArray();
 
-            return Expression.Lambda<IndexOfAnyExceptDelegate>
+            return Expression.Lambda<TDelegate>
             (
                 Expression.Call(null, m, paramz),
                 paramz
             ).Compile();
         }
+
+        private delegate int IndexOfAnyExceptDelegate(ReadOnlySpan<char> span, ReadOnlySpan<char> values);
+
+        private static readonly IndexOfAnyExceptDelegate? FIndexOfAnyExcept = GetNativeDelegate<IndexOfAnyExceptDelegate>
+        (
+            nameof(IndexOfAnyExcept),
+            typeof(ReadOnlySpan<>),
+            typeof(ReadOnlySpan<>)
+        );
 
         public static int IndexOfAnyExcept(this ReadOnlySpan<char> span, ReadOnlySpan<char> values)
         {

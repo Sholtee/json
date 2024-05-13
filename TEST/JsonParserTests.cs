@@ -43,6 +43,8 @@ namespace Solti.Utils.Json.Tests
                 yield return new object[] { "cica", 0 };
                 yield return new object[] { " cica", 1 };
                 yield return new object[] { "  cica", 2 };
+                yield return new object[] { "\n", 1 };
+                yield return new object[] { "\r\n", 2 };
                 yield return new object[] { "\ncica", 1 };
                 yield return new object[] { "\r\ncica", 2 };
                 yield return new object[] { " \ncica", 2 };

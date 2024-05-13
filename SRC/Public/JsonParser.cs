@@ -135,21 +135,33 @@ namespace Solti.Utils.Json
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void SkipSpaces(ref Session session, int bufferSize = 32 /*for tests*/)
         {
-            for (Span<char> read; (read = session.Content.PeekText(bufferSize)).Length > 0;)
+            for (ReadOnlySpan<char> read; (read = session.Content.PeekText(bufferSize)).Length > 0;)
             {
-                int skip;
-                for (skip = 0; skip < read.Length && IsWhiteSpace(read[skip]); skip++)
+                //
+                // According to https://www.json.org/json-en.html we do not need other spaces to check 
+                //
+
+                int firstNonWhiteSpaceOrNewLine = read.IndexOfAnyExcept(" \t\r".AsSpan());
+                if (firstNonWhiteSpaceOrNewLine >= 0 && read[firstNonWhiteSpaceOrNewLine] is '\n')
                 {
-                    if (read[skip] is '\n')
-                    {
-                        session.Row++;
-                        session.Column = 0;
-                    }
-                    else session.Column++;
+                    //
+                    // We have a new row
+                    //
+
+                    session.Row++;
+                    session.Column = 0;
+
+                    session.Content.Advance(firstNonWhiteSpaceOrNewLine + 1);
+                    continue;
                 }
 
-                session.Content.Advance(skip);
-                if (skip < read.Length)
+                if (firstNonWhiteSpaceOrNewLine == -1)
+                    firstNonWhiteSpaceOrNewLine = read.Length;
+
+                session.Column += firstNonWhiteSpaceOrNewLine;
+
+                session.Content.Advance(firstNonWhiteSpaceOrNewLine);
+                if (firstNonWhiteSpaceOrNewLine < read.Length)
                     break;
             }
         }
