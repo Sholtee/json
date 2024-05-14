@@ -212,6 +212,8 @@ namespace Solti.Utils.Json.Tests
                 yield return new object[] { "''", "" };
                 yield return new object[] { "\"cica\"", "cica" };
                 yield return new object[] { "'cica'", "cica" };
+                yield return new object[] { "\"'cica'\"", "'cica'" };
+                yield return new object[] { "'\"cica\"'", "\"cica\"" };
                 yield return new object[] { "\"cica mica\"", "cica mica" };
                 yield return new object[] { "'cica mica'", "cica mica" };
             }

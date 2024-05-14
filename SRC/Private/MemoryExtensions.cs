@@ -61,6 +61,11 @@ namespace Solti.Utils.Json.Internals
 
         public static int IndexOfAnyExcept(this ReadOnlySpan<char> span, ReadOnlySpan<char> values)
         {
+            //
+            // Since this will be available on .NET8+ systems only we should borrow the actual code from here:
+            // https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/MemoryExtensions.cs#L1024
+            //
+
             if (FIndexOfAnyExcept is not null)
                 return FIndexOfAnyExcept(span, values);
 

@@ -133,8 +133,10 @@ namespace Solti.Utils.Json
         /// Trims all the leading whitespaces maintaining the row and column count.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void SkipSpaces(ref Session session, int bufferSize = 32 /*for tests*/)
+        internal static void SkipSpaces(ref Session session, int bufferSize = 32 /*for debug*/)
         {
+            Assert(bufferSize > 0, "Buffer size must be greater than 0");
+
             for (ReadOnlySpan<char> read; (read = session.Content.PeekText(bufferSize)).Length > 0;)
             {
                 //
@@ -251,12 +253,14 @@ namespace Solti.Utils.Json
         /// </summary>
         internal static ReadOnlySpan<char> ParseString(ref Session session, int initialBufferSize = 128 /*for debug*/)
         {
+            Assert(initialBufferSize > 0, "Buffer size must be greater than 0");
+
             const string STRING_ID = "string";
 
             int quote = session.Content.PeekChar();
             Advance(ref session, 1);
 
-            for (int bufferSize = initialBufferSize, parsed = 0, outputSize = 0, from = 0, charsToCopy = 0; ; bufferSize *= 2)
+            for (int bufferSize = initialBufferSize, parsed = 0, outputSize = 0; ; bufferSize *= 2)
             {
                 Span<char> buffer = session.Content.PeekText(bufferSize);
                 if (parsed == buffer.Length)
@@ -265,170 +269,177 @@ namespace Solti.Utils.Json
                     InvalidInput(in session, STRING_ID, INCOMPLETE_STR);
                 }
 
-                for (; parsed < buffer.Length; parsed++)
+                //
+                // Create the new chunk in which we will search
+                //
+
+                nextChunk:
+                ReadOnlySpan<char> chunk = buffer.Slice(parsed);
+
+                int chrIndex = chunk.IndexOfAny(BACKSLASH_QUOTES_CONTROLS.AsSpan());
+                if (chrIndex == -1)
+                    //
+                    // We might have ran out of the characters
+                    //
+
+                    continue;
+
+                //
+                // Shift the newly read characters
+                //
+
+                if (outputSize < parsed)
+                    chunk.Slice(0, chrIndex + 1).CopyTo(buffer.Slice(outputSize));
+
+                outputSize += chrIndex;
+                parsed += chrIndex;
+
+                char c = buffer[parsed];
+
+                if (c == quote)
                 {
-                    char c = buffer[parsed];
+                    //
+                    // We reached the end of the string
+                    //
 
-                    if (c == quote)
+                    Assert(parsed < session.Content.CharsLeft, "Miscalculated 'parsed' value");
+                    Advance(ref session, parsed + 1);
+
+                    return buffer.Slice(0, outputSize);
+                }
+
+                if (IsControl(c))
+                {
+                    //
+                    // Unexpected control character
+                    //
+
+                    Assert(parsed < session.Content.CharsLeft, "Miscalculated 'parsed' value");
+                    Advance(ref session, parsed + 1);
+
+                    InvalidInput(in session, STRING_ID, UNEXPECTED_CONTROL);
+                }
+
+                if (c == '\\')
+                {
+                    if (parsed == buffer.Length - 1)
                     {
                         //
-                        // We reached the end of the string
+                        // We ran out of the characters.
                         //
 
-                        Assert(parsed < session.Content.CharsLeft, "Miscalculated 'parsed' value");
-                        Advance(ref session, parsed + 1);
-
-                        BlockCopy(buffer, from, ref outputSize, ref charsToCopy);
-                        return buffer.Slice(0, outputSize);
-                    }
-
-                    if (IsControl(c))
-                    {
-                        //
-                        // Unexpected white space
-                        //
-
-                        Assert(parsed < session.Content.CharsLeft, "Miscalculated 'parsed' value");
-                        Advance(ref session, parsed + 1);
-
-                        InvalidInput(in session, STRING_ID, UNEXPECTED_CONTROL);
-                    }
-
-                    if (c == '\\')
-                    {
+                        buffer = session.Content.PeekText(buffer.Length + 1);
                         if (parsed == buffer.Length - 1)
                         {
                             //
-                            // We ran out of the characters.
+                            // Enexpected end of string
                             //
 
-                            buffer = session.Content.PeekText(buffer.Length + 1);
-                            if (parsed == buffer.Length - 1)
+                            Advance(ref session, parsed);
+                            InvalidInput(in session, STRING_ID, INCOMPLETE_STR);
+                        }
+                        bufferSize = buffer.Length;
+                    }
+
+                    switch (c = buffer[++parsed])
+                    {
+                        case '\\':
+                            buffer[outputSize++] = '\\';
+                            break;
+                        case 'b':
+                            buffer[outputSize++] = '\b';
+                            break;
+                        case 't':
+                            buffer[outputSize++] = '\t';
+                            break;
+                        case 'r':
+                            buffer[outputSize++] = '\r';
+                            break;
+                        case 'n':
+                            buffer[outputSize++] = '\n';
+                            break;
+                        case 'u':
+                            const int HEX_LEN = 4;
+
+                            if (buffer.Length - parsed <= HEX_LEN)
                             {
                                 //
-                                // Enexpected end of string
+                                // We need 4 hex digits, try to enlarge the buffer
                                 //
 
-                                Advance(ref session, parsed);
-                                InvalidInput(in session, STRING_ID, INCOMPLETE_STR);
-                            }
-                            bufferSize = buffer.Length;
-                        }
-
-                        //
-                        // Shift left the recently processed content
-                        //
-
-                        BlockCopy(buffer, from, ref outputSize, ref charsToCopy);
-
-                        switch (c = buffer[++parsed])
-                        {
-                            case '\\':
-                                buffer[outputSize++] = '\\';
-                                break;
-                            case 'b':
-                                buffer[outputSize++] = '\b';
-                                break;
-                            case 't':
-                                buffer[outputSize++] = '\t';
-                                break;
-                            case 'r':
-                                buffer[outputSize++] = '\r';
-                                break;
-                            case 'n':
-                                buffer[outputSize++] = '\n';
-                                break;
-                            case 'u':
-                                const int HEX_LEN = 4;
-
+                                buffer = session.Content.PeekText(buffer.Length + HEX_LEN);
                                 if (buffer.Length - parsed <= HEX_LEN)
                                 {
                                     //
-                                    // We need 4 hex digits, try to enlarge the buffer
+                                    // Unterminated HEX digits
                                     //
 
-                                    buffer = session.Content.PeekText(buffer.Length + HEX_LEN);
-                                    if (buffer.Length - parsed <= HEX_LEN)
-                                    {
-                                        //
-                                        // Unterminated HEX digits
-                                        //
-
-                                        Advance(ref session, parsed);
-                                        InvalidInput(in session, STRING_ID, INCOMPLETE_STR);
-                                    }
-                                    bufferSize = buffer.Length;
+                                    Advance(ref session, parsed);
+                                    InvalidInput(in session, STRING_ID, INCOMPLETE_STR);
                                 }
+                                bufferSize = buffer.Length;
+                            }
 
-                                if 
+                            if 
+                            (
+                                !ushort.TryParse
                                 (
-                                    !ushort.TryParse
-                                    (
-                                        buffer.Slice(parsed + 1, HEX_LEN)
+                                    buffer.Slice(parsed + 1, HEX_LEN)
 #if !NETSTANDARD2_1_OR_GREATER
-                                            .ToString()
+                                        .ToString()
 #endif
-                                        ,
-                                        NumberStyles.HexNumber,
-                                        CultureInfo.InvariantCulture,
-                                        out ushort chr
-                                    )
+                                    ,
+                                    NumberStyles.HexNumber,
+                                    CultureInfo.InvariantCulture,
+                                    out ushort chr
                                 )
-                                {
-                                    //
-                                    // Malformed HEX digits
-                                    //
-
-                                    Advance(ref session, parsed);
-                                    InvalidInput(in session, STRING_ID, CANNOT_PARSE);
-                                }
-
+                            )
+                            {
                                 //
-                                // Jump to the last HEX digit
+                                // Malformed HEX digits
                                 //
 
-                                parsed += HEX_LEN;
+                                Advance(ref session, parsed);
+                                InvalidInput(in session, STRING_ID, CANNOT_PARSE);
+                            }
 
+                            //
+                            // Already unicode so no Encoding.GetChars() call required
+                            //
+
+                            buffer[outputSize++] = (char) chr;
+
+                            //
+                            // Jump to the last HEX digit
+                            //
+
+                            parsed += HEX_LEN;
+                            break;
+                        default:
+                            if (c == quote)
+                                buffer[outputSize++] = c;
+                            else
+                            {
                                 //
-                                // Already unicode so no Encoding.GetChars() call required
+                                // Unknown control character -> Error
                                 //
 
-                                buffer[outputSize++] = (char) chr;
-                                break;
-                            default:
-                                if (c == quote)
-                                    buffer[outputSize++] = c;
-                                else
-                                {
-                                    //
-                                    // Unknown control character -> Error
-                                    //
-
-                                    Advance(ref session, parsed);
-                                    InvalidInput(in session, STRING_ID, UNKNOWN_CTRL);
-                                }
-                                break;
-                        }
-
-                        //
-                        // Mark the beginning of the next chunk
-                        //
-
-                        from = parsed + 1;
+                                Advance(ref session, parsed);
+                                InvalidInput(in session, STRING_ID, UNKNOWN_CTRL);
+                            }
+                            break;
                     }
-                    else
-                        charsToCopy++;
+
+                    parsed++;
+                    goto nextChunk;
                 }
-            }
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static void BlockCopy(Span<char> buffer, int from, ref int to, ref int chars)
-            {
-                if (chars > 0 && to > 0)
-                    buffer.Slice(from, chars).CopyTo(buffer.Slice(to));             
+                Assert(c is '\'' or '"' && c != quote, "Non-terminating quote expected");
 
-                to += chars;
-                chars = 0;
+                parsed++;
+                outputSize++;
+
+                goto nextChunk;
             }
         }
 
@@ -445,6 +456,8 @@ namespace Solti.Utils.Json
         /// </summary>
         internal static object ParseNumber(ref Session session, DeserializationContext currentContext, int initialBufferSize = 16 /*for debug*/)
         {
+            Assert(initialBufferSize > 0, "Buffer size must be greater than 0");
+
             const string NUMBER_ID = "number";
 
             ReadOnlySpan<char> buffer = default;
@@ -459,20 +472,20 @@ namespace Solti.Utils.Json
             {
                 buffer = session.Content.PeekText(bufferSize);
 
-                firstNonNumeric = buffer.IndexOfAnyExcept("0123456789+-".AsSpan());
+                firstNonNumeric = buffer.IndexOfAnyExcept(INTEGRAL.AsSpan());
 
                 if (firstNonNumeric >= 0)
                 {
                     if (buffer[firstNonNumeric] is '.' or 'e' or 'E')
                     {
                         isFloating = true;
-                        firstNonNumeric = buffer.IndexOfAnyExcept("0123456789+-.eE".AsSpan());
+                        firstNonNumeric = buffer.IndexOfAnyExcept(FLOATING.AsSpan());
                     }
                 }
 
                 if (firstNonNumeric == -1)
                 {
-                    if (buffer.Length >= bufferSize)
+                    if (buffer.Length == bufferSize)
                         //
                         // We might just have ran out of the characters
                         //
@@ -614,6 +627,8 @@ namespace Solti.Utils.Json
         /// </summary>
         internal static void ParseMultilineComment(ref Session session, DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
+            Assert(initialBufferSize > 0, "Buffer size must be greater than 0");
+
             const string COMMENT_ID = "comment";
 
             Advance(ref session, 2);
@@ -683,6 +698,8 @@ namespace Solti.Utils.Json
         /// </summary>
         internal static void ParseComment(ref Session session, DeserializationContext currentContext, int initialBufferSize = 32 /*for debug*/)
         {
+            Assert(initialBufferSize > 0, "Buffer size must be greater than 0");
+
             Advance(ref session, 2);
 
             Span<char> buffer;
