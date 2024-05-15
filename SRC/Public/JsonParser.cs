@@ -278,11 +278,18 @@ namespace Solti.Utils.Json
 
                 int chrIndex = chunk.IndexOfAny(BACKSLASH_QUOTES_CONTROLS.AsSpan());
                 if (chrIndex == -1)
+                {
                     //
                     // We might have ran out of the characters
                     //
 
+                    chunk.CopyTo(buffer.Slice(outputSize));
+
+                    parsed += chunk.Length;
+                    outputSize += chunk.Length;
+
                     continue;
+                }
 
                 //
                 // Shift the newly read characters
