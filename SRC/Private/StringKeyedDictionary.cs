@@ -30,7 +30,7 @@ namespace Solti.Utils.Json.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private ref int GetBucket(ReadOnlySpan<char> key) => ref FBuckets[HashHelpers.GetHashCode(key) & (FBuckets.Length - 1)];
+        private ref int GetBucket(ReadOnlySpan<char> key) => ref FBuckets[key.GetHashCode(ignoreCase: true) & (FBuckets.Length - 1)];
 
         private void Resize()
         {

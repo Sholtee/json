@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* XxHash.cs                                                                     *
+* Hash.cs                                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -12,15 +12,18 @@ namespace Solti.Utils.Json.Perf
     using Internals;
 
     [MemoryDiagnoser]
-    public class XxHashTests
+    public class HashTests
     {
         [Params("", "a", "ab", "abcd", "abcdefgh", "abcdefghijklmnopqrstuvwz")]
         public string Input { get; set; } = null!;
 
+        [Params(true, false)]
+        public bool IgnoreCase { get; set; }
+
         [Benchmark(Baseline = true)]
-        public int GetNativeHashCode() => string.GetHashCode(Input, StringComparison.OrdinalIgnoreCase);
+        public int GetNativeHashCode() => string.GetHashCode(Input, IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
 
         [Benchmark]
-        public int GetXxHashCode() => HashHelpers.GetXxHashCode(Input.AsSpan());
+        public int GetMurmurHash3() => Input.AsSpan().GetHashCode(IgnoreCase);
     }
 }
