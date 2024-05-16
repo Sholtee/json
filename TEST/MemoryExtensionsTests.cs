@@ -13,6 +13,7 @@ namespace Solti.Utils.Json.Internals.Tests
     public class MemoryExtensionsTests
     {
         [TestCase("a")]
+        [TestCase("1a")]
         [TestCase("abcd")]
         [TestCase("aábcdeé")]
         [TestCase("12345abcd")]
@@ -24,6 +25,7 @@ namespace Solti.Utils.Json.Internals.Tests
         }
 
         [TestCase("a")]
+        [TestCase("1a")]
         [TestCase("abcd")]
         [TestCase("ABCD")]
         [TestCase("aábcdeé")]

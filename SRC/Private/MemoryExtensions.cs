@@ -44,13 +44,13 @@ namespace Solti.Utils.Json.Internals
                     switch (m)
                     {
                         case 3:
-                            k ^= (uint) (ignoreCase ? ToUpper(self[i + 2]) : self[i + 2]) << 16;
+                            k ^= (uint) (ignoreCase ? CharToUpper(self[i + 2]) : self[i + 2]) << 16;
                             goto case 2;
                         case 2:
-                            k ^= (uint) (ignoreCase ? ToUpper(self[i + 1]) : self[i + 1]) << 8;
+                            k ^= (uint) (ignoreCase ? CharToUpper(self[i + 1]) : self[i + 1]) << 8;
                             goto case 1;
                         case 1:
-                            k ^= ignoreCase ? ToUpper(self[i]) : self[i];
+                            k ^= ignoreCase ? CharToUpper(self[i]) : self[i];
                             k *= 3432918353; k = k << 15 | k >>> 17;
                             h ^= k * 461845907;
                             break;
@@ -104,9 +104,25 @@ namespace Solti.Utils.Json.Internals
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static char ToUpper(char chr) => ((uint) (chr - 'a') <= (uint) ('z' - 'a'))
-                ? (char) (chr - 0x20)
-                : char.ToUpperInvariant(chr);
+            static char CharToUpper(char chr)
+            {
+                if ((chr & ~0x007F) == 0)
+                {
+                    int
+                        lowerIndicator = chr + 0x0080 - 0x0061,
+                        upperIndicator = chr + 0x0080 - 0x007B,
+                        combinedIndicator = lowerIndicator ^ upperIndicator,
+                        mask = (combinedIndicator & 0x0080) >> 2;
+
+                    return (char) (chr ^ mask);
+                }
+
+                //
+                // Slow...
+                //
+
+                return char.ToUpperInvariant(chr);
+            }
         }
 
         private static TDelegate? GetNativeDelegate<TDelegate>(string name, params Type[] paramTypes) where TDelegate: Delegate
