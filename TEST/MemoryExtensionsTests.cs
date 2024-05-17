@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 
 using NUnit.Framework;
 
@@ -35,6 +36,22 @@ namespace Solti.Utils.Json.Internals.Tests
             Assert.DoesNotThrow(() => val.AsSpan().GetHashCode(true));
             Assert.AreEqual(val.AsSpan().GetHashCode(true), val.AsSpan().GetHashCode(true));
             Assert.AreEqual(val.ToLower().AsSpan().GetHashCode(true), val.ToUpper().AsSpan().GetHashCode(true));
+        }
+
+        [Test]
+        public void GetHashCode_ShouldNotCollide()
+        {
+            const int iterations = short.MaxValue * 100;
+
+            HashSet<int> hashes = [];
+
+            for (int i = 0; i < iterations; i++)
+            {
+                hashes.Add(i.ToString().AsSpan().GetHashCode(false));
+            }
+
+            long collissions = iterations - hashes.Count;
+            Assert.That(collissions / (double) iterations, Is.LessThanOrEqualTo(0.0004));
         }
     }
 }
