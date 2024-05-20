@@ -14,9 +14,9 @@ namespace Solti.Utils.Json.Internals
 {
     internal static class MemoryExtensions
     {
-        public static int GetHashCode(this ReadOnlySpan<char> self, bool ignoreCase)
+        public static int GetHashCode(this ReadOnlySpan<char> self, bool ignoreCase, int seed = 1986)
         {
-            Span<char> buffer = ignoreCase ? stackalloc char[4] : default;
+            Span<char> buffer = ignoreCase && self.Length >= 4 ? stackalloc char[4] : default;
 
             //
             // https://github.com/bryc/code/blob/master/jshash/hashes/murmurhash3.js
@@ -24,7 +24,7 @@ namespace Solti.Utils.Json.Internals
 
             unchecked
             {
-                uint h = 1986 /*seed*/, k; 
+                uint h = (uint) seed, k; 
 
                 int i = 0;
                 for (int b = self.Length & -4; i < b; i += 4)
