@@ -51,7 +51,15 @@ namespace Solti.Utils.Json.Internals.Tests
             }
 
             long collissions = iterations - hashes.Count;
-            Assert.That(collissions / (double) iterations, Is.LessThanOrEqualTo(0.0004));
+            Assert.That(collissions / (double) iterations, Is.LessThan(0.0004));
         }
+
+        [Test]
+        public void IndexOfAnyExcept_ShouldReturnMinusOneIfThereIsNoMatch() =>
+            Assert.That(Consts.FLOATING.AsSpan().IndexOfAnyExcept(Consts.FLOATING.AsSpan()), Is.EqualTo(-1));
+
+        [Test]
+        public void IndexOfAnyExcept_ShouldReturnTheAppropriateIndex([Values("1\t", "\t", "1a", "a", "1á", "á")] string input) =>
+            Assert.That(input.AsSpan().IndexOfAnyExcept(searchValues: Consts.FLOATING.AsSpan()), Is.EqualTo(input.Length - 1));
     }
 }

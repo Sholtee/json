@@ -4,16 +4,47 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
+
+using static System.Diagnostics.Debug;
+using static System.Runtime.CompilerServices.Unsafe;
+using static System.Runtime.InteropServices.MemoryMarshal;
 
 namespace Solti.Utils.Json.Internals
 {
     internal static class MemoryExtensions
     {
+        public static int IndexOfAnyExcept(this ReadOnlySpan<char> span, ReadOnlySpan<char> searchValues)
+        {
+            /*
+            for (int i = 0; i < span.Length; i++)
+            {
+                if (searchValues.IndexOf(span[i]) < 0)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+            */
+
+            ref char searchValuesRef = ref GetReference(searchValues);  // to avoid boundary checks
+            ulong mask = 0;
+            for (int i = 0, len = searchValues.Length; i < len; i++)
+            {
+                mask |= 1ul << (Add(ref searchValuesRef, i) % 64);
+            }
+            mask = ~mask;
+
+            ref char spanRef = ref GetReference(span);
+            for (int i = 0, len = span.Length; i < len; i++)
+            {
+                if ((mask & (1ul << (Add(ref spanRef, i) % 64))) is not 0)
+                    return i;
+            }
+            return -1;
+        }
+
         public static int GetHashCode(this ReadOnlySpan<char> self, bool ignoreCase, int seed = 1986)
         {
             Span<char> buffer = ignoreCase && self.Length >= 4 ? stackalloc char[4] : default;
@@ -29,29 +60,30 @@ namespace Solti.Utils.Json.Internals
                 int i = 0;
                 for (int b = self.Length & -4; i < b; i += 4)
                 {
-                    ReadOnlySpan<char> span = ignoreCase ? BlockToUpper(self.Slice(i, 4), buffer) : self.Slice(i, 4);
-  
-                    k = (uint) (span[3] << 24 | span[2] << 16 | span[1] << 8 | span[0]);
-                    k *= 3432918353; k = k << 15 | k >>> 17;
-                    h ^= k * 461845907; h = h << 13 | h >>> 19;
-                    h *= 5 + 3864292196;
+                    ref char spanRef = ref GetReference(ignoreCase ? BlockToUpper(self.Slice(i, 4), buffer) : self.Slice(i, 4));  // to avoid boundary checks
+
+                    k = (uint) (Add(ref spanRef, 3) << 24 | Add(ref spanRef, 2) << 16 | Add(ref spanRef, 1) << 8 | Add(ref spanRef, 0));
+                    k *= 3432918353; k = k << 15 | k >> 17;
+                    h ^= k * 461845907; h = h << 13 | h >> 19;
+                    h = h * 5 + 3864292196;
                 }
 
                 int m = self.Length & 3;
                 if (m > 0)
                 {
+                    ref char spanRef = ref GetReference(self);
                     k = 0;
                     switch (m)
                     {
                         case 3:
-                            k ^= (uint) (ignoreCase ? CharToUpper(self[i + 2]) : self[i + 2]) << 16;
+                            k ^= (uint) (ignoreCase ? CharToUpper(Add(ref spanRef, i + 2)) : Add(ref spanRef, i + 2)) << 16;
                             goto case 2;
                         case 2:
-                            k ^= (uint) (ignoreCase ? CharToUpper(self[i + 1]) : self[i + 1]) << 8;
+                            k ^= (uint) (ignoreCase ? CharToUpper(Add(ref spanRef, i + 1)) : Add(ref spanRef, i + 1)) << 8;
                             goto case 1;
                         case 1:
-                            k ^= ignoreCase ? CharToUpper(self[i]) : self[i];
-                            k *= 3432918353; k = k << 15 | k >>> 17;
+                            k ^= (uint) (ignoreCase ? CharToUpper(Add(ref spanRef, i)) : Add(ref spanRef, i));
+                            k *= 3432918353; k = k << 15 | k >> 17;
                             h ^= k * 461845907;
                             break;
                     }
@@ -59,11 +91,11 @@ namespace Solti.Utils.Json.Internals
 
                 h ^= (uint) self.Length;
 
-                h ^= h >>> 16; h *= 2246822507;
-                h ^= h >>> 13; h *= 3266489909;
-                h ^= h >>> 16;
+                h ^= h >> 16; h *= 2246822507;
+                h ^= h >> 13; h *= 3266489909;
+                h ^= h >> 16;
 
-                return (int) h >>> 0;
+                return (int) h;
             }
 
             //
@@ -73,12 +105,12 @@ namespace Solti.Utils.Json.Internals
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             static ReadOnlySpan<char> BlockToUpper(ReadOnlySpan<char> chars, Span<char> buffer)
             {
-                Debug.Assert(chars.Length == 4);
-                Debug.Assert(buffer.Length == 4);
+                Assert(chars.Length is 4, "Invald block size");
+                Assert(buffer.Length is 4, "Invalid buffer size");
 
-                ulong l = Unsafe.As<char, ulong>(ref Unsafe.AsRef(in chars[0]));
+                ulong l = As<char, ulong>(ref GetReference(chars));
 
-                if ((l & ~0x007F_007F_007F_007Ful) == 0)
+                if ((l & ~0x007F_007F_007F_007Ful) is 0)
                 {
                     //
                     // All the 4 chars are ASCII
@@ -90,7 +122,7 @@ namespace Solti.Utils.Json.Internals
                         combinedIndicator = lowerIndicator ^ upperIndicator,
                         mask = (combinedIndicator & 0x0080_0080_0080_0080ul) >> 2;
 
-                    Unsafe.As<char, ulong>(ref buffer[0]) = l ^ mask;
+                    As<char, ulong>(ref GetReference(buffer)) = l ^ mask;
                 }
                 else
                 {
@@ -106,13 +138,13 @@ namespace Solti.Utils.Json.Internals
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             static char CharToUpper(char chr)
             {
-                if ((chr & ~0x007F) == 0)
+                if ((chr & ~0x007Fu) is 0)
                 {
-                    int
-                        lowerIndicator = chr + 0x0080 - 0x0061,
-                        upperIndicator = chr + 0x0080 - 0x007B,
+                    uint
+                        lowerIndicator = chr + 0x0080u - 0x0061u,
+                        upperIndicator = chr + 0x0080u - 0x007Bu,
                         combinedIndicator = lowerIndicator ^ upperIndicator,
-                        mask = (combinedIndicator & 0x0080) >> 2;
+                        mask = (combinedIndicator & 0x0080u) >> 2;
 
                     return (char) (chr ^ mask);
                 }
@@ -123,60 +155,6 @@ namespace Solti.Utils.Json.Internals
 
                 return char.ToUpperInvariant(chr);
             }
-        }
-
-        private static TDelegate? GetNativeDelegate<TDelegate>(string name, params Type[] paramTypes) where TDelegate: Delegate
-        {
-            MethodInfo? m = typeof(System.MemoryExtensions).GetMethods().SingleOrDefault
-            (
-                m => m.Name == name && m
-                    .GetParameters()
-                    .Select(static p => p.ParameterType.IsGenericType ? p.ParameterType.GetGenericTypeDefinition() : p.ParameterType)
-                    .SequenceEqual(paramTypes)
-            )?.MakeGenericMethod(typeof(char));
-            if (m is null)
-                return null;
-
-            ParameterExpression[] paramz = m
-                .GetParameters()
-                .Select(static p => Expression.Parameter(p.ParameterType, p.Name))
-                .ToArray();
-
-            return Expression.Lambda<TDelegate>
-            (
-                Expression.Call(null, m, paramz),
-                paramz
-            ).Compile();
-        }
-
-        private delegate int IndexOfAnyExceptDelegate(ReadOnlySpan<char> span, ReadOnlySpan<char> values);
-
-        private static readonly IndexOfAnyExceptDelegate? FIndexOfAnyExcept = GetNativeDelegate<IndexOfAnyExceptDelegate>
-        (
-            nameof(IndexOfAnyExcept),
-            typeof(ReadOnlySpan<>),
-            typeof(ReadOnlySpan<>)
-        );
-
-        public static int IndexOfAnyExcept(this ReadOnlySpan<char> span, ReadOnlySpan<char> values)
-        {
-            //
-            // Since this will be available on .NET8+ systems only we should borrow the actual code from here:
-            // https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/MemoryExtensions.cs#L1024
-            //
-
-            if (FIndexOfAnyExcept is not null)
-                return FIndexOfAnyExcept(span, values);
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                if (values.IndexOf(span[i]) < 0)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
         }
     }
 }
