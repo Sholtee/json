@@ -11,8 +11,10 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.Json.Perf
 {
+    using Internals;
+
     [MemoryDiagnoser]
-    public class MemoryTests
+    public class BuiltInsTests
     {
         private static readonly char[]
             Input = Enumerable.Repeat(' ', 1024 * 5).ToArray(),
@@ -94,5 +96,46 @@ namespace Solti.Utils.Json.Perf
                 _ = char.IsControl(src[i]);
             }
         }
+    }
+
+    [MemoryDiagnoser]
+    public class HashTests
+    {
+        [Params("", "a", "ab", "abcd", "abcdefgh", "abcdefghijklmnopqrstuvwz")]
+        public string Input { get; set; } = null!;
+
+        [Params(true, false)]
+        public bool IgnoreCase { get; set; }
+
+        [Benchmark(Baseline = true)]
+        public int GetNativeHashCode() => string.GetHashCode(Input, IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+
+        [Benchmark]
+        public int GetMurmurHashCode() => Input.AsSpan().GetHashCode(IgnoreCase);
+    }
+
+    [MemoryDiagnoser]
+    public class IndexOfAnyExceptTests
+    {
+        public static IEnumerable<string> Inputs
+        {
+            get
+            {
+                yield return "";
+                yield return new string(Consts.FLOATING.Substring(0, 1));
+                yield return new string(Consts.FLOATING.Substring(0, 2));
+                yield return new string(Consts.FLOATING.Substring(0, 5));
+                yield return Consts.FLOATING + Consts.FLOATING + Consts.FLOATING;
+            }
+        }
+
+        [ParamsSource(nameof(Inputs))]
+        public string Input { get; set; } = null!;
+
+        [Benchmark(Baseline = true)]
+        public int NativeIndexOfAnyExcept() => System.MemoryExtensions.IndexOfAnyExcept(Input.AsSpan(), Consts.FLOATING.AsSpan());
+
+        [Benchmark]
+        public int IndexOfAnyExcept() => Internals.MemoryExtensions.IndexOfAnyExcept(Input.AsSpan(), Consts.FLOATING.AsSpan());
     }
 }

@@ -56,7 +56,7 @@ namespace Solti.Utils.Json.Internals.Tests
 
         [Test]
         public void IndexOfAnyExcept_ShouldReturnMinusOneIfThereIsNoMatch() =>
-            Assert.That(Consts.FLOATING.AsSpan().IndexOfAnyExcept(Consts.FLOATING.AsSpan()), Is.EqualTo(-1));
+            Assert.That(Consts.FLOATING.AsSpan().IndexOfAnyExcept(searchValues: Consts.FLOATING.AsSpan()), Is.EqualTo(-1));
 
         [Test]
         public void IndexOfAnyExcept_ShouldReturnTheAppropriateIndex([Values("1\t", "\t", "1a", "a", "1á", "á")] string input) =>
