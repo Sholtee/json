@@ -14,6 +14,12 @@ namespace Solti.Utils.Json.Internals
 {
     internal static class MemoryExtensions
     {
+        private struct CharEntry
+        {
+            public char Char;
+            public int Next;
+        }
+
         public static int IndexOfAnyExcept(this ReadOnlySpan<char> span, ReadOnlySpan<char> searchValues)
         {
             /*
@@ -28,20 +34,49 @@ namespace Solti.Utils.Json.Internals
             return -1;
             */
 
+            int
+                searchValuesLen = searchValues.Length,
+                spanLength = span.Length,
+
+                //
+                // Round searchValuesLen up to next power of 2
+                //
+
+                bucketsLength = (int) Math.Pow(2, Math.Floor(Math.Log(searchValuesLen, 2)) + 1);
+
             ref char searchValuesRef = ref GetReference(searchValues);  // to avoid boundary checks
-            ulong mask = 0;
-            for (int i = 0, len = searchValues.Length; i < len; i++)
+            ref CharEntry entriesRef = ref GetReference(stackalloc CharEntry[bucketsLength]);
+            ref int bucketsRef = ref GetReference(stackalloc int[bucketsLength]);
+
+            for (int i = 0; i < searchValuesLen; i++)
             {
-                mask |= 1ul << (Add(ref searchValuesRef, i) % 64);
+                char actual = Add(ref searchValuesRef, i);
+                ref int bucket = ref Add(ref bucketsRef, (actual | (actual << 16)) & (bucketsLength - 1));
+
+                ref CharEntry entry = ref Add(ref entriesRef, i);
+                entry.Char = actual;
+                entry.Next = bucket - 1;
+
+                bucket = i + 1;
             }
-            mask = ~mask;
 
             ref char spanRef = ref GetReference(span);
-            for (int i = 0, len = span.Length; i < len; i++)
+            for (int i = 0; i < spanLength; i++)
             {
-                if ((mask & (1ul << (Add(ref spanRef, i) % 64))) is not 0)
-                    return i;
+                char actual = Add(ref spanRef, i);
+                for (int j = Add(ref bucketsRef, (actual | (actual << 16)) & (bucketsLength - 1)) - 1; (uint) j < bucketsLength;)
+                {
+                    CharEntry entry = Add(ref entriesRef, j);
+
+                    if (entry.Char == actual)
+                        goto nextChar; 
+
+                    j = entry.Next;
+                }
+                return i;
+                nextChar:;
             }
+
             return -1;
         }
 
