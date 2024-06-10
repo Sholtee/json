@@ -268,6 +268,7 @@ namespace Solti.Utils.Json
             return CreateDeserializationContextCore(type);
         }
 
+        /// <inheritdoc/>
         protected override SerializationContext CreateSerializationContextCore(Type type, object? config)
         {
             if (config is not null)
@@ -277,7 +278,7 @@ namespace Solti.Utils.Json
         }
 
         /// <inheritdoc/>
-        public override bool IsSerializationSupported(Type type) => type != typeof(object);
+        public override bool IsSerializationSupported(Type type) => (type ?? throw new ArgumentNullException(nameof(type))) != typeof(object);
 
         /// <inheritdoc/>
         public override bool IsDeserializationSupported(Type type) =>
