@@ -42,7 +42,7 @@ namespace Solti.Utils.Json.Internals
                 // Round searchValuesLen up to next power of 2
                 //
 
-                bucketsLength = (int) Math.Pow(2, Math.Floor(Math.Log(searchValuesLen, 2)) + 1);
+                bucketsLength = RoundUpToNextPowerOfTwo(searchValuesLen);
 
             ref char searchValuesRef = ref GetReference(searchValues);  // to avoid boundary checks
             ref CharEntry entriesRef = ref GetReference(stackalloc CharEntry[bucketsLength]);
@@ -78,6 +78,18 @@ namespace Solti.Utils.Json.Internals
             }
 
             return -1;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static int RoundUpToNextPowerOfTwo(int val)
+            {
+                val--;
+                val |= val >> 1;
+                val |= val >> 2;
+                val |= val >> 4;
+                val |= val >> 8;
+                val |= val >> 16;
+                return val + 1;
+            }
         }
 
         public static int GetHashCode(this ReadOnlySpan<char> self, bool ignoreCase, int seed = 1986)
