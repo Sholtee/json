@@ -5,10 +5,8 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json
@@ -44,56 +42,20 @@ namespace Solti.Utils.Json
                 result     = Expression.Parameter(typeof(object).MakeByRefType(), nameof(result)),
                 ret        = Expression.Parameter(valueType, nameof(ret));
 
-            MethodCallExpression tryParseExpr;
-
-            MethodInfo? tryParse = typeof(Enum)
-                .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .SingleOrDefault
-                (
-                    static m =>
-                    {
-                        if (m.Name != nameof(Enum.TryParse) || !m.ContainsGenericParameters)
-                            return false;
-
-                        ParameterInfo[] paramz = m.GetParameters();
-                        if (paramz.Length != 3)
-                            return false;
-
-                        return
-                            paramz[0].ParameterType == typeof(ReadOnlySpan<char>) &&
-                            paramz[1].ParameterType == typeof(bool) &&
-                            paramz[2].ParameterType == m.GetGenericArguments()[0].MakeByRefType();
-                    }
-                );
-            if (tryParse is not null)
-            {
-                tryParseExpr = Expression.Call
-                (
-                    tryParse.MakeGenericMethod(valueType),
-                    input,
-                    ignoreCase,
-                    ret
-                );
-            }
-            else
-            {
-                tryParse = MethodInfoExtractor
+            MethodCallExpression tryParseExpr = Expression.Call
+            (
+                MethodInfoExtractor
                     .Extract<int>(static val => Enum.TryParse(default, false, out val))
                     .GetGenericMethodDefinition()
-                    .MakeGenericMethod(valueType);
-
-                tryParseExpr = Expression.Call
+                    .MakeGenericMethod(valueType),
+                Expression.Invoke
                 (
-                    tryParse,
-                    Expression.Invoke
-                    (
-                        Expression.Constant((SpanToStringDelegate) SpanToString),
-                        input
-                    ),
-                    ignoreCase,
-                    ret
-                );
-            }
+                    Expression.Constant((SpanToStringDelegate) SpanToString),
+                    input
+                ),
+                ignoreCase,
+                ret
+            );
 
             Expression<ConvertStringDelegate> convertStringExpr = Expression.Lambda<ConvertStringDelegate>
             (
@@ -178,25 +140,21 @@ namespace Solti.Utils.Json
                 if (val is not T target)
                     throw new ArgumentException(INVALID_VALUE, nameof(val));
 
-                if (buffer.Length < 64)
-                    buffer = new char[64];
-
                 //
                 // Works for [Flags] as well
                 //
 
-                return target.Format("G", buffer.AsSpan(), CultureInfo.InvariantCulture);  
+                return target.ToString("G").AsSpan();  
             }
         });
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool IsSupported(Type type) =>
-            type?.IsEnum is true ||
-            (
-                type?.IsConstructedGenericType is true &&
-                type.GetGenericTypeDefinition() == typeof(Nullable<>) &&
-                type.GetGenericArguments().Single().IsEnum
-            );
+        private static bool IsSupported(Type type) => type?.IsEnum is true ||
+        (
+            type?.IsConstructedGenericType is true &&
+            type.GetGenericTypeDefinition() == typeof(Nullable<>) &&
+            type.GetGenericArguments().Single().IsEnum
+        );
         #endregion
 
         /// <inheritdoc/>

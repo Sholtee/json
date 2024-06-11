@@ -83,21 +83,11 @@ namespace Solti.Utils.Json
                 },
                 ConvertToString = (object? val, ref char[] buffer) => val switch
                 {
-                    DateTime dt => ToString(in dt, ref buffer),
+                    DateTime dt => dt.ToString(format, CultureInfo.InvariantCulture).AsSpan(),
                     null when type == typeof(DateTime?) => NULL.AsSpan(),
                     _ => throw new ArgumentNullException(nameof(val), INVALID_INSTANCE)
                 }
             };
-
-            ReadOnlySpan<char> ToString(scoped in DateTime dt, ref char[] buffer)
-            {
-                const int MIN_BUFFER_SIZE = 128;
-
-                if (buffer.Length < MIN_BUFFER_SIZE)
-                    buffer = new char[MIN_BUFFER_SIZE];
-
-                return dt.Format(format, buffer, CultureInfo.InvariantCulture);
-            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -9,8 +9,6 @@ using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json
 {
-    using Internals;
-
     using static Internals.Consts;
     using static Properties.Resources;
 
@@ -91,25 +89,11 @@ namespace Solti.Utils.Json
                 },
                 ConvertToString = (object? val, ref char[] buffer) => val switch
                 {
-                    Guid guid => ToString(in guid, ref buffer),
+                    Guid guid => guid.ToString(format, CultureInfo.InvariantCulture).AsSpan(),
                     null when type == typeof(Guid?) => NULL.AsSpan(),
                     _ => throw new ArgumentNullException(nameof(val), INVALID_INSTANCE)
                 }
             };
-
-            ReadOnlySpan<char> ToString(scoped in Guid guid, ref char[] buffer)
-            {
-                //
-                // https://learn.microsoft.com/en-us/dotnet/api/system.guid.tostring?view=net-8.0#system-guid-tostring(system-string-system-iformatprovider)
-                //
-
-                const int MIN_BUFFER_SIZE = 68;
-
-                if (buffer.Length < MIN_BUFFER_SIZE)
-                    buffer = new char[MIN_BUFFER_SIZE];
-
-                return guid.Format(format!, buffer, CultureInfo.InvariantCulture);
-            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

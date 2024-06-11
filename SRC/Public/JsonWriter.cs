@@ -86,13 +86,7 @@ namespace Solti.Utils.Json
             ReadOnlySpan<char> s = str is string @string
                 ? @string.AsSpan()
                 : VerifyDelegate(currentContext.ConvertToString)(str, ref session.Buffer);
-#if NETSTANDARD2_1_OR_GREATER
-            //
-            // "session.Buffer" might be already in use so we need a separate buffer
-            //
 
-            Span<char> ordBuffer = stackalloc char[4];
-#endif
             session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             session.Dest.Write('"');
     
@@ -153,11 +147,7 @@ namespace Solti.Utils.Json
                             {
                                 int ord = charsLeft[i];
                                 session.Dest.Write("\\u");
-#if NETSTANDARD2_1_OR_GREATER
-                                session.Dest.Write(ord.Format("X4", ordBuffer, CultureInfo.InvariantCulture));
-#else
                                 session.Dest.Write(ord.ToString("X4", CultureInfo.InvariantCulture));
-#endif
                             }
 
                             goto nextChunk;

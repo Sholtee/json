@@ -27,9 +27,10 @@ namespace Solti.Utils.Json
     public class NumberContextFactory : ContextFactory
     {
         #region Private
+#if !NETSTANDARD2_1_OR_GREATER
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static string SpanToString(ReadOnlySpan<char> span) => span.ToString();
-
+#endif
         private delegate string SpanToStringDelegate(ReadOnlySpan<char> span);
 
         private static readonly HashSet<Type> FSupportedTypes =
@@ -55,27 +56,23 @@ namespace Solti.Utils.Json
                 ? type.GetGenericArguments().Single()
                 : type;
 
-            bool legacy = false;
-            MethodInfo? tryParse = valueType.GetMethod
+            MethodInfo tryParse = valueType.GetMethod
             (
                 nameof(int.TryParse),
                 BindingFlags.Public | BindingFlags.Static,
                 null,
-                [typeof(ReadOnlySpan<char>), typeof(NumberStyles), typeof(IFormatProvider), valueType.MakeByRefType()],
+                [
+#if NETSTANDARD2_1_OR_GREATER
+                    typeof(ReadOnlySpan<char>),
+#else
+                    typeof(string),
+#endif
+                    typeof(NumberStyles),
+                    typeof(IFormatProvider),
+                    valueType.MakeByRefType()
+                ],
                 null
             );
-            if (tryParse is null)
-            {
-                tryParse = valueType.GetMethod
-                (
-                    nameof(int.TryParse),
-                    BindingFlags.Public | BindingFlags.Static,
-                    null,
-                    [typeof(string), typeof(NumberStyles), typeof(IFormatProvider), valueType.MakeByRefType()],
-                    null
-                );
-                legacy = true;
-            }
             Debug.Assert(tryParse is not null, "Cannot grab the actual parser");
 
             ParameterExpression
@@ -98,13 +95,15 @@ namespace Solti.Utils.Json
                             Expression.Call
                             (
                                 tryParse,
-                                legacy
-                                    ? Expression.Invoke
-                                    (
-                                        Expression.Constant((SpanToStringDelegate) SpanToString),
-                                        value
-                                    )
-                                    : value,
+#if NETSTANDARD2_1_OR_GREATER
+                                value,
+#else
+                                Expression.Invoke
+                                (
+                                    Expression.Constant((SpanToStringDelegate) SpanToString),
+                                    value
+                                ),
+#endif
                                 Expression.Constant
                                 (
                                     valueType == typeof(float) || valueType == typeof(double) 
@@ -182,13 +181,10 @@ namespace Solti.Utils.Json
                 if (val is not T target)
                     throw new ArgumentException(Resources.INVALID_VALUE, nameof(val));
 
-                if (buffer.Length < 64)
-                    buffer = new char[64];
-
-                return target.Format("G", buffer, CultureInfo.InvariantCulture);
+                return target.ToString("G", CultureInfo.InvariantCulture).AsSpan();
             }
         });
-        #endregion
+#endregion
 
         /// <inheritdoc/>
         protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config)
