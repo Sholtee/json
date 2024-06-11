@@ -133,9 +133,22 @@ namespace Solti.Utils.Json.Perf
         public string Input { get; set; } = null!;
 
         [Benchmark(Baseline = true)]
-        public int NativeIndexOfAnyExcept() => System.MemoryExtensions.IndexOfAnyExcept(Input.AsSpan(), Consts.FLOATING.AsSpan());
+        public int IndexOfAnyExceptNative() => System.MemoryExtensions.IndexOfAnyExcept(Input.AsSpan(), Consts.FLOATING.AsSpan());
 
         [Benchmark]
         public int IndexOfAnyExcept() => Internals.MemoryExtensions.IndexOfAnyExcept(Input.AsSpan(), Consts.FLOATING.AsSpan());
+
+        [Benchmark]
+        public int IndexOfAnyExceptNotOptimized()
+        {
+            for (int i = 0; i < Input.Length; i++)
+            {
+                if (Consts.FLOATING.IndexOf(Input[i]) < 0)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 }
