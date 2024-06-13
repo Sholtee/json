@@ -395,18 +395,6 @@ references:
   commentId: Overload:Solti.Utils.Json.DateTimeContextFactory.CreateSerializationContextCore
   fullName: Solti.Utils.Json.DateTimeContextFactory.CreateSerializationContextCore
   nameWithType: DateTimeContextFactory.CreateSerializationContextCore
-- uid: Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
-  name: DefaultConfig
-  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_DefaultConfig
-  commentId: P:Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
-  fullName: Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
-  nameWithType: DateTimeContextFactory.DefaultConfig
-- uid: Solti.Utils.Json.DateTimeContextFactory.DefaultConfig*
-  name: DefaultConfig
-  href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_DefaultConfig_
-  commentId: Overload:Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
-  fullName: Solti.Utils.Json.DateTimeContextFactory.DefaultConfig
-  nameWithType: DateTimeContextFactory.DefaultConfig
 - uid: Solti.Utils.Json.DateTimeContextFactory.IsDeserializationSupported(System.Type)
   name: IsDeserializationSupported(Type)
   href: Solti.Utils.Json.DateTimeContextFactory.html#Solti_Utils_Json_DateTimeContextFactory_IsDeserializationSupported_System_Type_
@@ -1391,18 +1379,6 @@ references:
   commentId: Overload:Solti.Utils.Json.GuidContextFactory.CreateSerializationContextCore
   fullName: Solti.Utils.Json.GuidContextFactory.CreateSerializationContextCore
   nameWithType: GuidContextFactory.CreateSerializationContextCore
-- uid: Solti.Utils.Json.GuidContextFactory.DefaultConfig
-  name: DefaultConfig
-  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_DefaultConfig
-  commentId: P:Solti.Utils.Json.GuidContextFactory.DefaultConfig
-  fullName: Solti.Utils.Json.GuidContextFactory.DefaultConfig
-  nameWithType: GuidContextFactory.DefaultConfig
-- uid: Solti.Utils.Json.GuidContextFactory.DefaultConfig*
-  name: DefaultConfig
-  href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_DefaultConfig_
-  commentId: Overload:Solti.Utils.Json.GuidContextFactory.DefaultConfig
-  fullName: Solti.Utils.Json.GuidContextFactory.DefaultConfig
-  nameWithType: GuidContextFactory.DefaultConfig
 - uid: Solti.Utils.Json.GuidContextFactory.IsDeserializationSupported(System.Type)
   name: IsDeserializationSupported(Type)
   href: Solti.Utils.Json.GuidContextFactory.html#Solti_Utils_Json_GuidContextFactory_IsDeserializationSupported_System_Type_
