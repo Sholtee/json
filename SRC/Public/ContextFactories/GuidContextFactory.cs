@@ -17,16 +17,22 @@ namespace Solti.Utils.Json
     /// </summary>
     public class GuidContextFactory : ContextFactory
     {
-        private static string FDefaultConfig = "N";
+        private delegate bool TryParseDelegate(ReadOnlySpan<char> input, out Guid parsed);
 
         private static readonly string[] FValidStyles = ["N", "D", "B", "P", "X"];
 
         /// <inheritdoc/>
         protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config)
         {
-            string? format = (config ?? DefaultConfig) as string;
-            if (Array.IndexOf(FValidStyles, format) is -1)
-                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+            string? format = null;
+            if (config is not null)
+            {
+                format = config as string;
+                if (format is null || Array.IndexOf(FValidStyles, format) is -1)
+                    throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+            }
+
+            TryParseDelegate parser = format is not null ? TryParseExact : TryParse;
 
             return type == typeof(Guid?)
                 ? new DeserializationContext
@@ -34,7 +40,7 @@ namespace Solti.Utils.Json
                     SupportedTypes = JsonDataTypes.String | JsonDataTypes.Null,
                     ConvertString = (ReadOnlySpan<char> input, bool _, out object? value) =>
                     {
-                        if (TryParse(input, out Guid parsed))
+                        if (parser(input, out Guid parsed))
                         {
                             value = (Guid?) parsed;
                             return true;
@@ -49,7 +55,7 @@ namespace Solti.Utils.Json
                     SupportedTypes = JsonDataTypes.String,
                     ConvertString = (ReadOnlySpan<char> input, bool _, out object? value) =>
                     {
-                        if (TryParse(input, out Guid parsed))
+                        if (parser(input, out Guid parsed))
                         {
                             value = parsed;
                             return true;
@@ -60,7 +66,7 @@ namespace Solti.Utils.Json
                     }
                 };
 
-            bool TryParse(ReadOnlySpan<char> input, out Guid parsed) => Guid.TryParseExact
+            bool TryParseExact(ReadOnlySpan<char> input, out Guid parsed) => Guid.TryParseExact
             (
 #if NETSTANDARD2_1_OR_GREATER
                 input,
@@ -68,6 +74,16 @@ namespace Solti.Utils.Json
                 input.ToString(),
 #endif
                 format,
+                out parsed
+            );
+
+            static bool TryParse(ReadOnlySpan<char> input, out Guid parsed) => Guid.TryParse
+            (
+#if NETSTANDARD2_1_OR_GREATER
+                input,
+#else
+                input.ToString(),
+#endif
                 out parsed
             );
         }
@@ -98,17 +114,6 @@ namespace Solti.Utils.Json
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsSupported(Type type) => type == typeof(Guid) || type == typeof(Guid?);
-
-        public static string DefaultConfig
-        {
-            get => FDefaultConfig;
-            set
-            {
-                if (Array.IndexOf(FValidStyles, value) is -1)
-                    throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(value));
-                FDefaultConfig = value;
-            }
-        }
 
         /// <inheritdoc/>
         public override bool IsDeserializationSupported(Type type) => IsSupported(type);

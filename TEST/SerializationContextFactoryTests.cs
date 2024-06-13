@@ -203,10 +203,10 @@ namespace Solti.Utils.Json.Contexts.Tests
             {
                 yield return (typeof(DateTime), "s", TestDate, "\"2009-06-15T13:45:30\"");
                 yield return (typeof(DateTime), "u", TestDate, "\"2009-06-15 13:45:30Z\"");
-                yield return (typeof(DateTime), null, TestDate, "\"2009-06-15T13:45:30\"");
+                yield return (typeof(DateTime), null, TestDate, "\"06/15/2009 13:45:30\"");
                 yield return (typeof(DateTime?), "s", (DateTime?) TestDate, "\"2009-06-15T13:45:30\"");
                 yield return (typeof(DateTime?), "u", (DateTime?) TestDate, "\"2009-06-15 13:45:30Z\"");
-                yield return (typeof(DateTime?), null, (DateTime?) TestDate, "\"2009-06-15T13:45:30\"");
+                yield return (typeof(DateTime?), null, (DateTime?) TestDate, "\"06/15/2009 13:45:30\"");
                 yield return (typeof(DateTime?), null, null, "null");
             }
         }

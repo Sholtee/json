@@ -9,8 +9,6 @@ using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json
 {
-    using Internals;
-
     using static Internals.Consts;
     using static Properties.Resources;
 
@@ -19,18 +17,24 @@ namespace Solti.Utils.Json
     /// </summary>
     public class DateTimeContextFactory : ContextFactory
     {
+        private delegate bool TryParseDelegate(ReadOnlySpan<char> input, out DateTime parsed);
+
         /// <inheritdoc/>
         protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config)
         {
-            string format = (config ?? DefaultConfig) as string ?? throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
-  
+            string? format = config is null
+                ? null 
+                : config as string ?? throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+
+            TryParseDelegate parser = format is not null ? TryParseExact : TryParse;
+
             return type == typeof(DateTime?)
                 ? new DeserializationContext
                 {
                     SupportedTypes = JsonDataTypes.String | JsonDataTypes.Null,
                     ConvertString = (ReadOnlySpan<char> input, bool _, out object? value) =>
                     {
-                        if (TryParse(input, out DateTime parsed))
+                        if (parser(input, out DateTime parsed))
                         {
                             value = (DateTime?) parsed;
                             return true;
@@ -44,7 +48,7 @@ namespace Solti.Utils.Json
                     SupportedTypes = JsonDataTypes.String,
                     ConvertString = (ReadOnlySpan<char> input, bool _, out object? value) =>
                     {
-                        if (TryParse(input, out DateTime parsed))
+                        if (parser(input, out DateTime parsed))
                         {
                             value = parsed;
                             return true;
@@ -54,7 +58,7 @@ namespace Solti.Utils.Json
                     }
                 };
     
-            bool TryParse(ReadOnlySpan<char> input, out DateTime parsed) => DateTime.TryParseExact
+            bool TryParseExact(ReadOnlySpan<char> input, out DateTime parsed) => DateTime.TryParseExact
             (
 #if NETSTANDARD2_1_OR_GREATER
                 input,
@@ -66,12 +70,26 @@ namespace Solti.Utils.Json
                 DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal,
                 out parsed
             );
+
+            static bool TryParse(ReadOnlySpan<char> input, out DateTime parsed) => DateTime.TryParse
+            (
+#if NETSTANDARD2_1_OR_GREATER
+                input,
+#else
+                input.ToString(),
+#endif
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal,
+                out parsed
+            );
         }
 
         /// <inheritdoc/>
         protected override SerializationContext CreateSerializationContextCore(Type type, object? config)
         {
-            string format = (config ?? "s") as string ?? throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+            string? format = config is null
+                ? null
+                : config as string ?? throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
 
             return new SerializationContext
             {
@@ -92,8 +110,6 @@ namespace Solti.Utils.Json
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsSupported(Type type) => type == typeof(DateTime) || type == typeof(DateTime?);
-
-        public static string DefaultConfig { get; set; } = "s";
 
         /// <inheritdoc/>
         public override bool IsDeserializationSupported(Type type) => IsSupported(type);
