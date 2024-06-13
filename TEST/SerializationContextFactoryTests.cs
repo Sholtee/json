@@ -147,10 +147,10 @@ namespace Solti.Utils.Json.Contexts.Tests
             {
                 yield return (typeof(Guid), "D", TestGuid, "\"d6b6d5b5-826e-4362-a19a-219997e6d693\"");
                 yield return (typeof(Guid), "N", TestGuid, "\"d6b6d5b5826e4362a19a219997e6d693\"");
-                yield return (typeof(Guid), null, TestGuid, "\"d6b6d5b5826e4362a19a219997e6d693\"");
+                yield return (typeof(Guid), null, TestGuid, "\"d6b6d5b5-826e-4362-a19a-219997e6d693\"");
                 yield return (typeof(Guid?), "D", (Guid?) TestGuid, "\"d6b6d5b5-826e-4362-a19a-219997e6d693\"");
                 yield return (typeof(Guid?), "N", (Guid?) TestGuid, "\"d6b6d5b5826e4362a19a219997e6d693\"");
-                yield return (typeof(Guid?), null, (Guid?) TestGuid, "\"d6b6d5b5826e4362a19a219997e6d693\"");
+                yield return (typeof(Guid?), null, (Guid?) TestGuid, "\"d6b6d5b5-826e-4362-a19a-219997e6d693\"");
                 yield return (typeof(Guid?), null, null, "null");
             }
         }

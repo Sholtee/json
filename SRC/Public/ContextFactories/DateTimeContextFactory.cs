@@ -19,12 +19,26 @@ namespace Solti.Utils.Json
     {
         private delegate bool TryParseDelegate(ReadOnlySpan<char> input, out DateTime parsed);
 
+        private static string ValidateConfig(object config)
+        {
+            try
+            {
+                string format = (string) config;
+                DateTime.UtcNow.ToString(format);
+                return format;
+            }
+            catch
+            {
+                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+            }
+        }
+
         /// <inheritdoc/>
         protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config)
         {
-            string? format = config is null
-                ? null 
-                : config as string ?? throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+            string? format = config is not null
+                ? ValidateConfig(config)
+                : null;
 
             TryParseDelegate parser = format is not null ? TryParseExact : TryParse;
 
@@ -87,9 +101,9 @@ namespace Solti.Utils.Json
         /// <inheritdoc/>
         protected override SerializationContext CreateSerializationContextCore(Type type, object? config)
         {
-            string? format = config is null
-                ? null
-                : config as string ?? throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+            string? format = config is not null
+                ? ValidateConfig(config)
+                : null;
 
             return new SerializationContext
             {

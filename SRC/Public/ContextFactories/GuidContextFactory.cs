@@ -19,18 +19,26 @@ namespace Solti.Utils.Json
     {
         private delegate bool TryParseDelegate(ReadOnlySpan<char> input, out Guid parsed);
 
-        private static readonly string[] FValidStyles = ["N", "D", "B", "P", "X"];
+        private static string ValidateConfig(object config)
+        {
+            try
+            {
+                string format = (string) config;
+                Guid.Empty.ToString(format);
+                return format;
+            }
+            catch
+            {
+                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+            }
+        }
 
         /// <inheritdoc/>
         protected override DeserializationContext CreateDeserializationContextCore(Type type, object? config)
         {
-            string? format = null;
-            if (config is not null)
-            {
-                format = config as string;
-                if (format is null || Array.IndexOf(FValidStyles, format) is -1)
-                    throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
-            }
+            string? format = config is not null
+                ? ValidateConfig(config)
+                : null;
 
             TryParseDelegate parser = format is not null ? TryParseExact : TryParse;
 
@@ -91,9 +99,9 @@ namespace Solti.Utils.Json
         /// <inheritdoc/>
         protected override SerializationContext CreateSerializationContextCore(Type type, object? config)
         {
-            string? format = (config ?? "N") as string;
-            if (Array.IndexOf(FValidStyles, format) is -1)
-                throw new ArgumentException(INVALID_FORMAT_SPECIFIER, nameof(config));
+            string? format = config is not null
+                ? ValidateConfig(config)
+                : null;
 
             return new SerializationContext
             {
