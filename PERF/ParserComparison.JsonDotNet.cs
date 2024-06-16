@@ -17,12 +17,7 @@ namespace Solti.Utils.Json.Perf
 
             public void Init() => FSerializer = new JsonSerializer();
 
-            public T Parse(string json)
-            {
-                using StringReader content = new(json);
-
-                return (T) FSerializer.Deserialize(content, typeof(T))!;
-            }
+            public T Parse(TextReader json) => (T) FSerializer.Deserialize(json, typeof(T))!;
 
             public override string ToString() => typeof(JsonSerializer).Namespace!;
         }

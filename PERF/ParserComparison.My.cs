@@ -21,12 +21,7 @@ namespace Solti.Utils.Json.Perf
                 FContext = DeserializationContext.For(typeof(T));
             }
 
-            public T Parse(string json)
-            {
-                using StringReader content = new(json);
-
-                return (T) FParser.Parse(content, FContext, CancellationToken.None)!;
-            }
+            public T Parse(TextReader json) => (T) FParser.Parse(json, FContext, CancellationToken.None)!;
 
             public override string ToString() => typeof(JsonParser).Namespace!;
         }

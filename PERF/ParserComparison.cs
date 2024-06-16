@@ -19,7 +19,7 @@ namespace Solti.Utils.Json.Perf
         {
             void Init();
 
-            T Parse(string json);
+            T Parse(TextReader json);
 
             string ToString();
         }
@@ -62,11 +62,7 @@ namespace Solti.Utils.Json.Perf
             }
         }
 
-        //
-        // Read data directly from the memory
-        //
-
-        private static string JSON { get; } = File.ReadAllText("large1.json");
+        private static string Json { get; } = File.ReadAllText("large1.json");
 
         public static IEnumerable<IParser<List<Entity>>> Parsers
         {
@@ -81,9 +77,13 @@ namespace Solti.Utils.Json.Perf
         public IParser<List<Entity>> Parser { get; set; } = null!;
 
         [GlobalSetup(Target = nameof(Parse))]
-        public void SetupParse() => Parser.Init();
+        public void Setup() => Parser.Init();
 
         [Benchmark]
-        public List<Entity> Parse() => Parser.Parse(JSON);
+        public List<Entity> Parse()
+        {
+            using StringReader json = new(Json);
+            return Parser.Parse(json);
+        }
     }
 }
