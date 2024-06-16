@@ -128,6 +128,39 @@ references:
   commentId: Overload:Solti.Utils.Json.Attributes.IgnoreAttribute.#ctor
   fullName: Solti.Utils.Json.Attributes.IgnoreAttribute.IgnoreAttribute
   nameWithType: IgnoreAttribute.IgnoreAttribute
+- uid: Solti.Utils.Json.Attributes.RequiredAttribute
+  name: RequiredAttribute
+  href: Solti.Utils.Json.Attributes.RequiredAttribute.html
+  commentId: T:Solti.Utils.Json.Attributes.RequiredAttribute
+  fullName: Solti.Utils.Json.Attributes.RequiredAttribute
+  nameWithType: RequiredAttribute
+- uid: Solti.Utils.Json.Attributes.RequiredAttribute.#ctor
+  name: RequiredAttribute()
+  href: Solti.Utils.Json.Attributes.RequiredAttribute.html#Solti_Utils_Json_Attributes_RequiredAttribute__ctor
+  commentId: M:Solti.Utils.Json.Attributes.RequiredAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.RequiredAttribute.RequiredAttribute()
+  nameWithType: RequiredAttribute.RequiredAttribute()
+- uid: Solti.Utils.Json.Attributes.RequiredAttribute.#ctor*
+  name: RequiredAttribute
+  href: Solti.Utils.Json.Attributes.RequiredAttribute.html#Solti_Utils_Json_Attributes_RequiredAttribute__ctor_
+  commentId: Overload:Solti.Utils.Json.Attributes.RequiredAttribute.#ctor
+  fullName: Solti.Utils.Json.Attributes.RequiredAttribute.RequiredAttribute
+  nameWithType: RequiredAttribute.RequiredAttribute
+- uid: Solti.Utils.Json.Attributes.RequiredAttribute.Validate(System.Object,System.String,System.Collections.Generic.ICollection{System.String}@)
+  name: Validate(Object, String, out ICollection<String>)
+  href: Solti.Utils.Json.Attributes.RequiredAttribute.html#Solti_Utils_Json_Attributes_RequiredAttribute_Validate_System_Object_System_String_System_Collections_Generic_ICollection_System_String___
+  commentId: M:Solti.Utils.Json.Attributes.RequiredAttribute.Validate(System.Object,System.String,System.Collections.Generic.ICollection{System.String}@)
+  name.vb: Validate(Object, String, ByRef ICollection(Of String))
+  fullName: Solti.Utils.Json.Attributes.RequiredAttribute.Validate(System.Object, System.String, out System.Collections.Generic.ICollection<System.String>)
+  fullName.vb: Solti.Utils.Json.Attributes.RequiredAttribute.Validate(System.Object, System.String, ByRef System.Collections.Generic.ICollection(Of System.String))
+  nameWithType: RequiredAttribute.Validate(Object, String, out ICollection<String>)
+  nameWithType.vb: RequiredAttribute.Validate(Object, String, ByRef ICollection(Of String))
+- uid: Solti.Utils.Json.Attributes.RequiredAttribute.Validate*
+  name: Validate
+  href: Solti.Utils.Json.Attributes.RequiredAttribute.html#Solti_Utils_Json_Attributes_RequiredAttribute_Validate_
+  commentId: Overload:Solti.Utils.Json.Attributes.RequiredAttribute.Validate
+  fullName: Solti.Utils.Json.Attributes.RequiredAttribute.Validate
+  nameWithType: RequiredAttribute.Validate
 - uid: Solti.Utils.Json.Attributes.ValidatorAttribute
   name: ValidatorAttribute
   href: Solti.Utils.Json.Attributes.ValidatorAttribute.html
