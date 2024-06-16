@@ -40,9 +40,9 @@
 <pre><code>
 BenchmarkDotNet v0.13.12, Windows 10 (10.0.17763.5576/1809/October2018Update/Redstone5) (Hyper-V)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK 8.0.202
-  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
+.NET SDK 8.0.300
+  [Host]     : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
 
 </code></pre><table>
 <thead>
@@ -62,167 +62,167 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>-100</strong></td>
-<td style="text-align:right"><strong>102.31 ns</strong></td>
-<td style="text-align:right"><strong>1.427 ns</strong></td>
-<td style="text-align:right"><strong>1.335 ns</strong></td>
-<td style="text-align:right"><strong>0.0122</strong></td>
+<td style="text-align:right"><strong>377.2 ns</strong></td>
+<td style="text-align:right"><strong>7.46 ns</strong></td>
+<td style="text-align:right"><strong>10.22 ns</strong></td>
+<td style="text-align:right"><strong>0.0196</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>224 B</strong></td>
+<td style="text-align:right"><strong>360 B</strong></td>
 </tr>
 <tr>
 <td>Write</td>
 <td>-100</td>
-<td style="text-align:right">199.34 ns</td>
-<td style="text-align:right">2.262 ns</td>
-<td style="text-align:right">2.116 ns</td>
-<td style="text-align:right">0.0122</td>
+<td style="text-align:right">507.3 ns</td>
+<td style="text-align:right">9.86 ns</td>
+<td style="text-align:right">12.82 ns</td>
+<td style="text-align:right">0.0191</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">224 B</td>
+<td style="text-align:right">360 B</td>
 </tr>
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>100</strong></td>
-<td style="text-align:right"><strong>84.12 ns</strong></td>
-<td style="text-align:right"><strong>1.716 ns</strong></td>
-<td style="text-align:right"><strong>3.619 ns</strong></td>
-<td style="text-align:right"><strong>0.0105</strong></td>
+<td style="text-align:right"><strong>357.9 ns</strong></td>
+<td style="text-align:right"><strong>5.44 ns</strong></td>
+<td style="text-align:right"><strong>5.08 ns</strong></td>
+<td style="text-align:right"><strong>0.0176</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>192 B</strong></td>
+<td style="text-align:right"><strong>328 B</strong></td>
 </tr>
 <tr>
 <td>Write</td>
 <td>100</td>
-<td style="text-align:right">199.97 ns</td>
-<td style="text-align:right">4.007 ns</td>
-<td style="text-align:right">8.275 ns</td>
-<td style="text-align:right">0.0122</td>
+<td style="text-align:right">484.7 ns</td>
+<td style="text-align:right">6.13 ns</td>
+<td style="text-align:right">5.73 ns</td>
+<td style="text-align:right">0.0191</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">224 B</td>
+<td style="text-align:right">360 B</td>
 </tr>
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>Syste(...)ject] [68]</strong></td>
-<td style="text-align:right"><strong>120.82 ns</strong></td>
-<td style="text-align:right"><strong>2.475 ns</strong></td>
-<td style="text-align:right"><strong>3.997 ns</strong></td>
-<td style="text-align:right"><strong>0.0157</strong></td>
+<td style="text-align:right"><strong>393.7 ns</strong></td>
+<td style="text-align:right"><strong>4.65 ns</strong></td>
+<td style="text-align:right"><strong>4.12 ns</strong></td>
+<td style="text-align:right"><strong>0.0219</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>288 B</strong></td>
+<td style="text-align:right"><strong>408 B</strong></td>
 </tr>
 <tr>
 <td>Write</td>
 <td>Syste(...)ject] [68]</td>
-<td style="text-align:right">349.34 ns</td>
-<td style="text-align:right">6.796 ns</td>
-<td style="text-align:right">6.979 ns</td>
-<td style="text-align:right">0.0262</td>
+<td style="text-align:right">593.8 ns</td>
+<td style="text-align:right">8.72 ns</td>
+<td style="text-align:right">7.73 ns</td>
+<td style="text-align:right">0.0324</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">480 B</td>
+<td style="text-align:right">600 B</td>
 </tr>
 <tr>
 <td>Write</td>
 <td>Syste(...)ject] [68]</td>
-<td style="text-align:right">756.03 ns</td>
-<td style="text-align:right">15.069 ns</td>
-<td style="text-align:right">13.358 ns</td>
-<td style="text-align:right">0.0420</td>
+<td style="text-align:right">936.8 ns</td>
+<td style="text-align:right">15.30 ns</td>
+<td style="text-align:right">14.32 ns</td>
+<td style="text-align:right">0.0486</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
-<td style="text-align:right">784 B</td>
+<td style="text-align:right">904 B</td>
 </tr>
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>Syste(...)ject] [48]</strong></td>
-<td style="text-align:right"><strong>38,451,200.48 ns</strong></td>
-<td style="text-align:right"><strong>760,143.712 ns</strong></td>
-<td style="text-align:right"><strong>1,137,747.317 ns</strong></td>
+<td style="text-align:right"><strong>31,730,149.7 ns</strong></td>
+<td style="text-align:right"><strong>616,160.23 ns</strong></td>
+<td style="text-align:right"><strong>733,494.93 ns</strong></td>
 <td style="text-align:right"><strong>1000.0000</strong></td>
-<td style="text-align:right"><strong>928.5714</strong></td>
+<td style="text-align:right"><strong>937.5000</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>19313029 B</strong></td>
+<td style="text-align:right"><strong>18833329 B</strong></td>
 </tr>
 <tr>
 <td>Write</td>
 <td>Syste(...)ject] [48]</td>
-<td style="text-align:right">179,417,884.47 ns</td>
-<td style="text-align:right">3,571,885.295 ns</td>
-<td style="text-align:right">9,838,009.440 ns</td>
-<td style="text-align:right">4666.6667</td>
-<td style="text-align:right">4333.3333</td>
-<td style="text-align:right">333.3333</td>
-<td style="text-align:right">84643221 B</td>
+<td style="text-align:right">171,674,403.1 ns</td>
+<td style="text-align:right">3,336,110.90 ns</td>
+<td style="text-align:right">3,276,506.98 ns</td>
+<td style="text-align:right">5000.0000</td>
+<td style="text-align:right">4750.0000</td>
+<td style="text-align:right">500.0000</td>
+<td style="text-align:right">83112732 B</td>
 </tr>
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>Object[0]</strong></td>
-<td style="text-align:right"><strong>155.74 ns</strong></td>
-<td style="text-align:right"><strong>3.151 ns</strong></td>
-<td style="text-align:right"><strong>5.918 ns</strong></td>
-<td style="text-align:right"><strong>0.0157</strong></td>
+<td style="text-align:right"><strong>470.2 ns</strong></td>
+<td style="text-align:right"><strong>7.15 ns</strong></td>
+<td style="text-align:right"><strong>6.69 ns</strong></td>
+<td style="text-align:right"><strong>0.0219</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>288 B</strong></td>
+<td style="text-align:right"><strong>408 B</strong></td>
 </tr>
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>Object[1]</strong></td>
-<td style="text-align:right"><strong>213.19 ns</strong></td>
-<td style="text-align:right"><strong>4.301 ns</strong></td>
-<td style="text-align:right"><strong>9.530 ns</strong></td>
-<td style="text-align:right"><strong>0.0174</strong></td>
+<td style="text-align:right"><strong>488.7 ns</strong></td>
+<td style="text-align:right"><strong>5.15 ns</strong></td>
+<td style="text-align:right"><strong>4.82 ns</strong></td>
+<td style="text-align:right"><strong>0.0238</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>320 B</strong></td>
+<td style="text-align:right"><strong>440 B</strong></td>
 </tr>
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>Object[5]</strong></td>
-<td style="text-align:right"><strong>498.62 ns</strong></td>
-<td style="text-align:right"><strong>7.996 ns</strong></td>
-<td style="text-align:right"><strong>8.211 ns</strong></td>
-<td style="text-align:right"><strong>0.0305</strong></td>
+<td style="text-align:right"><strong>770.2 ns</strong></td>
+<td style="text-align:right"><strong>10.43 ns</strong></td>
+<td style="text-align:right"><strong>9.75 ns</strong></td>
+<td style="text-align:right"><strong>0.0362</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>560 B</strong></td>
+<td style="text-align:right"><strong>680 B</strong></td>
 </tr>
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>cica</strong></td>
-<td style="text-align:right"><strong>107.61 ns</strong></td>
-<td style="text-align:right"><strong>2.197 ns</strong></td>
-<td style="text-align:right"><strong>2.615 ns</strong></td>
-<td style="text-align:right"><strong>0.0105</strong></td>
+<td style="text-align:right"><strong>381.7 ns</strong></td>
+<td style="text-align:right"><strong>3.68 ns</strong></td>
+<td style="text-align:right"><strong>3.44 ns</strong></td>
+<td style="text-align:right"><strong>0.0176</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>192 B</strong></td>
+<td style="text-align:right"><strong>328 B</strong></td>
 </tr>
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>cica\r\n</strong></td>
-<td style="text-align:right"><strong>124.55 ns</strong></td>
-<td style="text-align:right"><strong>2.538 ns</strong></td>
-<td style="text-align:right"><strong>6.641 ns</strong></td>
-<td style="text-align:right"><strong>0.0105</strong></td>
+<td style="text-align:right"><strong>419.9 ns</strong></td>
+<td style="text-align:right"><strong>5.01 ns</strong></td>
+<td style="text-align:right"><strong>4.69 ns</strong></td>
+<td style="text-align:right"><strong>0.0176</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>192 B</strong></td>
+<td style="text-align:right"><strong>328 B</strong></td>
 </tr>
 <tr>
 <td><strong>Write</strong></td>
 <td><strong>cica😁</strong></td>
-<td style="text-align:right"><strong>253.80 ns</strong></td>
-<td style="text-align:right"><strong>5.132 ns</strong></td>
-<td style="text-align:right"><strong>11.996 ns</strong></td>
-<td style="text-align:right"><strong>0.0157</strong></td>
+<td style="text-align:right"><strong>510.0 ns</strong></td>
+<td style="text-align:right"><strong>9.76 ns</strong></td>
+<td style="text-align:right"><strong>10.02 ns</strong></td>
+<td style="text-align:right"><strong>0.0267</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>296 B</strong></td>
+<td style="text-align:right"><strong>496 B</strong></td>
 </tr>
 </tbody>
 </table>

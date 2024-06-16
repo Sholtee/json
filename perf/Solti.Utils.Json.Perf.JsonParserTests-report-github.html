@@ -40,9 +40,9 @@
 <pre><code>
 BenchmarkDotNet v0.13.12, Windows 10 (10.0.17763.5576/1809/October2018Update/Redstone5) (Hyper-V)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK 8.0.202
-  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
+.NET SDK 8.0.300
+  [Host]     : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
 
 </code></pre><table>
 <thead>
@@ -52,7 +52,6 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
-<th style="text-align:right">Median</th>
 <th style="text-align:right">Gen0</th>
 <th style="text-align:right">Gen1</th>
 <th style="text-align:right">Gen2</th>
@@ -63,10 +62,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>&quot;Let&#39;(...)DE01&quot; [26]</strong></td>
-<td style="text-align:right"><strong>220.0 ns</strong></td>
-<td style="text-align:right"><strong>3.95 ns</strong></td>
-<td style="text-align:right"><strong>3.50 ns</strong></td>
-<td style="text-align:right"><strong>220.8 ns</strong></td>
+<td style="text-align:right"><strong>437.9 ns</strong></td>
+<td style="text-align:right"><strong>3.18 ns</strong></td>
+<td style="text-align:right"><strong>2.82 ns</strong></td>
 <td style="text-align:right"><strong>0.0086</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -75,10 +73,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>&quot;cica&quot;</strong></td>
-<td style="text-align:right"><strong>173.6 ns</strong></td>
-<td style="text-align:right"><strong>3.47 ns</strong></td>
-<td style="text-align:right"><strong>5.81 ns</strong></td>
-<td style="text-align:right"><strong>174.2 ns</strong></td>
+<td style="text-align:right"><strong>211.5 ns</strong></td>
+<td style="text-align:right"><strong>1.44 ns</strong></td>
+<td style="text-align:right"><strong>1.20 ns</strong></td>
 <td style="text-align:right"><strong>0.0074</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -87,10 +84,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>&quot;cica\r\n&quot;</strong></td>
-<td style="text-align:right"><strong>185.1 ns</strong></td>
-<td style="text-align:right"><strong>3.67 ns</strong></td>
-<td style="text-align:right"><strong>5.60 ns</strong></td>
-<td style="text-align:right"><strong>184.4 ns</strong></td>
+<td style="text-align:right"><strong>230.0 ns</strong></td>
+<td style="text-align:right"><strong>3.09 ns</strong></td>
+<td style="text-align:right"><strong>2.73 ns</strong></td>
 <td style="text-align:right"><strong>0.0079</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -99,11 +95,10 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>-100</strong></td>
-<td style="text-align:right"><strong>239.8 ns</strong></td>
-<td style="text-align:right"><strong>3.10 ns</strong></td>
-<td style="text-align:right"><strong>2.90 ns</strong></td>
-<td style="text-align:right"><strong>238.8 ns</strong></td>
-<td style="text-align:right"><strong>0.0069</strong></td>
+<td style="text-align:right"><strong>262.4 ns</strong></td>
+<td style="text-align:right"><strong>0.98 ns</strong></td>
+<td style="text-align:right"><strong>0.82 ns</strong></td>
+<td style="text-align:right"><strong>0.0067</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -111,10 +106,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>-100.0</strong></td>
-<td style="text-align:right"><strong>253.0 ns</strong></td>
-<td style="text-align:right"><strong>4.68 ns</strong></td>
-<td style="text-align:right"><strong>8.78 ns</strong></td>
-<td style="text-align:right"><strong>253.1 ns</strong></td>
+<td style="text-align:right"><strong>336.3 ns</strong></td>
+<td style="text-align:right"><strong>5.89 ns</strong></td>
+<td style="text-align:right"><strong>5.51 ns</strong></td>
 <td style="text-align:right"><strong>0.0067</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -123,10 +117,9 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>100</strong></td>
-<td style="text-align:right"><strong>255.3 ns</strong></td>
-<td style="text-align:right"><strong>5.08 ns</strong></td>
-<td style="text-align:right"><strong>7.44 ns</strong></td>
-<td style="text-align:right"><strong>256.1 ns</strong></td>
+<td style="text-align:right"><strong>272.2 ns</strong></td>
+<td style="text-align:right"><strong>5.46 ns</strong></td>
+<td style="text-align:right"><strong>11.52 ns</strong></td>
 <td style="text-align:right"><strong>0.0067</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -135,11 +128,10 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>100.0</strong></td>
-<td style="text-align:right"><strong>252.9 ns</strong></td>
-<td style="text-align:right"><strong>4.35 ns</strong></td>
-<td style="text-align:right"><strong>5.35 ns</strong></td>
-<td style="text-align:right"><strong>252.2 ns</strong></td>
-<td style="text-align:right"><strong>0.0069</strong></td>
+<td style="text-align:right"><strong>310.6 ns</strong></td>
+<td style="text-align:right"><strong>6.12 ns</strong></td>
+<td style="text-align:right"><strong>11.49 ns</strong></td>
+<td style="text-align:right"><strong>0.0067</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -147,22 +139,20 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>[0, t(...)ica&quot;] [30]</strong></td>
-<td style="text-align:right"><strong>1,206.3 ns</strong></td>
-<td style="text-align:right"><strong>11.31 ns</strong></td>
-<td style="text-align:right"><strong>10.03 ns</strong></td>
-<td style="text-align:right"><strong>1,206.5 ns</strong></td>
-<td style="text-align:right"><strong>0.0210</strong></td>
+<td style="text-align:right"><strong>1,516.1 ns</strong></td>
+<td style="text-align:right"><strong>24.46 ns</strong></td>
+<td style="text-align:right"><strong>25.12 ns</strong></td>
+<td style="text-align:right"><strong>0.0477</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>384 B</strong></td>
+<td style="text-align:right"><strong>904 B</strong></td>
 </tr>
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>[]</strong></td>
-<td style="text-align:right"><strong>178.1 ns</strong></td>
-<td style="text-align:right"><strong>2.74 ns</strong></td>
-<td style="text-align:right"><strong>2.43 ns</strong></td>
-<td style="text-align:right"><strong>177.7 ns</strong></td>
+<td style="text-align:right"><strong>181.3 ns</strong></td>
+<td style="text-align:right"><strong>3.58 ns</strong></td>
+<td style="text-align:right"><strong>4.53 ns</strong></td>
 <td style="text-align:right"><strong>0.0074</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
@@ -171,70 +161,64 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>[true]</strong></td>
-<td style="text-align:right"><strong>335.1 ns</strong></td>
-<td style="text-align:right"><strong>6.71 ns</strong></td>
-<td style="text-align:right"><strong>7.18 ns</strong></td>
-<td style="text-align:right"><strong>334.7 ns</strong></td>
-<td style="text-align:right"><strong>0.0114</strong></td>
+<td style="text-align:right"><strong>396.5 ns</strong></td>
+<td style="text-align:right"><strong>6.38 ns</strong></td>
+<td style="text-align:right"><strong>5.97 ns</strong></td>
+<td style="text-align:right"><strong>0.0172</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>216 B</strong></td>
+<td style="text-align:right"><strong>320 B</strong></td>
 </tr>
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>large1.json</strong></td>
-<td style="text-align:right"><strong>152,314,521.6 ns</strong></td>
-<td style="text-align:right"><strong>2,978,110.60 ns</strong></td>
-<td style="text-align:right"><strong>6,083,490.76 ns</strong></td>
-<td style="text-align:right"><strong>151,879,600.0 ns</strong></td>
-<td style="text-align:right"><strong>2000.0000</strong></td>
+<td style="text-align:right"><strong>207,799,740.0 ns</strong></td>
+<td style="text-align:right"><strong>4,146,229.02 ns</strong></td>
+<td style="text-align:right"><strong>9,691,676.68 ns</strong></td>
+<td style="text-align:right"><strong>4000.0000</strong></td>
+<td style="text-align:right"><strong>3000.0000</strong></td>
 <td style="text-align:right"><strong>1000.0000</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>43587888 B</strong></td>
+<td style="text-align:right"><strong>63868224 B</strong></td>
 </tr>
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>large2.json</strong></td>
-<td style="text-align:right"><strong>711,453,161.8 ns</strong></td>
-<td style="text-align:right"><strong>13,052,703.77 ns</strong></td>
-<td style="text-align:right"><strong>21,077,683.57 ns</strong></td>
-<td style="text-align:right"><strong>712,338,950.0 ns</strong></td>
-<td style="text-align:right"><strong>11000.0000</strong></td>
-<td style="text-align:right"><strong>10000.0000</strong></td>
-<td style="text-align:right"><strong>2000.0000</strong></td>
-<td style="text-align:right"><strong>176462888 B</strong></td>
+<td style="text-align:right"><strong>851,928,793.6 ns</strong></td>
+<td style="text-align:right"><strong>17,016,304.71 ns</strong></td>
+<td style="text-align:right"><strong>33,188,995.48 ns</strong></td>
+<td style="text-align:right"><strong>16000.0000</strong></td>
+<td style="text-align:right"><strong>15000.0000</strong></td>
+<td style="text-align:right"><strong>3000.0000</strong></td>
+<td style="text-align:right"><strong>242773120 B</strong></td>
 </tr>
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>{&quot;a&quot;:(...)ica&quot;} [55]</strong></td>
-<td style="text-align:right"><strong>1,897.4 ns</strong></td>
-<td style="text-align:right"><strong>20.51 ns</strong></td>
-<td style="text-align:right"><strong>19.19 ns</strong></td>
-<td style="text-align:right"><strong>1,895.1 ns</strong></td>
-<td style="text-align:right"><strong>0.0648</strong></td>
+<td style="text-align:right"><strong>3,031.2 ns</strong></td>
+<td style="text-align:right"><strong>60.18 ns</strong></td>
+<td style="text-align:right"><strong>80.33 ns</strong></td>
+<td style="text-align:right"><strong>0.0954</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>1232 B</strong></td>
+<td style="text-align:right"><strong>1752 B</strong></td>
 </tr>
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>{&quot;cica&quot;: 1986}</strong></td>
-<td style="text-align:right"><strong>895.9 ns</strong></td>
-<td style="text-align:right"><strong>82.93 ns</strong></td>
-<td style="text-align:right"><strong>244.52 ns</strong></td>
-<td style="text-align:right"><strong>780.0 ns</strong></td>
-<td style="text-align:right"><strong>0.0248</strong></td>
+<td style="text-align:right"><strong>819.4 ns</strong></td>
+<td style="text-align:right"><strong>11.63 ns</strong></td>
+<td style="text-align:right"><strong>10.88 ns</strong></td>
+<td style="text-align:right"><strong>0.0305</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>464 B</strong></td>
+<td style="text-align:right"><strong>568 B</strong></td>
 </tr>
 <tr>
 <td><strong>Parse</strong></td>
 <td><strong>{}</strong></td>
-<td style="text-align:right"><strong>190.3 ns</strong></td>
-<td style="text-align:right"><strong>3.52 ns</strong></td>
-<td style="text-align:right"><strong>9.14 ns</strong></td>
-<td style="text-align:right"><strong>188.3 ns</strong></td>
+<td style="text-align:right"><strong>212.5 ns</strong></td>
+<td style="text-align:right"><strong>2.38 ns</strong></td>
+<td style="text-align:right"><strong>2.22 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
