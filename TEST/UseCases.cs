@@ -61,7 +61,7 @@ namespace Solti.Utils.Json.Tests
         [Test]
         public void LoadLargeTypedContent()
         {
-            JsonParser parser = new(JsonParserFlags.CaseInsensitive | JsonParserFlags.ThrowOnUnknownProperty | JsonParserFlags.ThrowOnUnknownProperty);
+            JsonParser parser = new(JsonParserFlags.CaseInsensitive | JsonParserFlags.ThrowOnUnknownProperty | JsonParserFlags.ThrowOnUnknownListItem);
 
             using StreamReader content = new
             (
