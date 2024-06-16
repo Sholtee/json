@@ -450,23 +450,8 @@ namespace Solti.Utils.Json.Contexts.Tests
 #endif
             public object? Prop4 { get; set; }
 
-            [NotNull]
-            public Wrapped? Prop5 { get; set; }
-        }
-
-        private sealed class NotNullAttribute : ValidatorAttribute
-        {
-            public override bool Validate(object? value, string? name, out ICollection<string> errors)
-            {
-                if (value is null)
-                {
-                    errors = [$"value of \"{name}\" cannot be null"];
-                    return false;
-                }
-
-                errors = null!;
-                return true;
-            }
+            [Required]
+            public required Wrapped Prop5 { get; set; }
         }
 
         private sealed class AnyObjectContextFactory : ContextFactory
@@ -555,7 +540,7 @@ namespace Solti.Utils.Json.Contexts.Tests
             StringReader content = new("{\"ToBeIgnored\": 0, \"Alias\": \"kutya\", \"Prop1\": 1986, \"Prop2\": {\"Prop3\": \"cica\"}, \"Prop4\": \"Value1\", \"Prop5\": null }");
 
             JsonParserException ex = Assert.Throws<JsonParserException>(() => parser.Parse(content, Factory.CreateDeserializationContext(typeof(CustomizedParent), null), default))!;
-            Assert.That(ex.Message, Does.Contain("value of \"Prop5\" cannot be null"));
+            Assert.That(ex.Message, Does.Contain("Value of \"Prop5\" cannot be null"));
         }
     }
 
