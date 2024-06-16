@@ -91,15 +91,21 @@ namespace Solti.Utils.Json.Perf
 
         public JsonParser Parser { get; set; } = null!;
 
+        public DeserializationContext DeserializationContext { get; set; } = null!;
+
         [GlobalSetup(Target = nameof(Parse))]
-        public void SetupParse() => Parser = new(JsonParserFlags.None, 256);
+        public void SetupParse()
+        {
+            Parser = new(JsonParserFlags.None, 256);
+            DeserializationContext = DeserializationContext.For(typeof(object));
+        }
 
         [Benchmark]
         public void Parse()
         {
             using TextReader content = Input.CreateReader();
 
-            _ = Parser.Parse(content, DeserializationContext.For(typeof(object)), CancellationToken.None);
+            _ = Parser.Parse(content, DeserializationContext, CancellationToken.None);
         }
     }
 }
