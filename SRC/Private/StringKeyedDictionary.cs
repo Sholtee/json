@@ -9,6 +9,8 @@ using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.Json.Internals
 {
+    using Primitives;
+
     /// <summary>
     /// Simple dictionary that supports <see cref="ReadOnlySpan{char}"/> keys
     /// </summary>
