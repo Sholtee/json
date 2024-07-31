@@ -63,20 +63,20 @@ namespace Solti.Utils.Json.Internals.Tests
         {
             using TextReaderWrapper textReader = new(new StringReader("cicamica"), 2);
 
-            Assert.That(textReader.BufferSize, Is.EqualTo(2));
-            Assert.That(textReader.FreeSpace, Is.EqualTo(2));
+            Assert.That(textReader.BufferSize, Is.GreaterThanOrEqualTo(2));
+            Assert.That(textReader.FreeSpace, Is.GreaterThanOrEqualTo(2));
             Assert.That(textReader.CharsLeft, Is.EqualTo(0));
 
             Assert.That(textReader.PeekText(1).ToString(), Is.EqualTo("c"));
 
-            Assert.That(textReader.BufferSize, Is.EqualTo(2));
-            Assert.That(textReader.FreeSpace, Is.EqualTo(1));
+            Assert.That(textReader.BufferSize, Is.GreaterThanOrEqualTo(2));
+            Assert.That(textReader.FreeSpace, Is.GreaterThanOrEqualTo(1));
             Assert.That(textReader.CharsLeft, Is.EqualTo(1));
 
             Assert.That(textReader.PeekText(3).ToString(), Is.EqualTo("cic"));
 
-            Assert.That(textReader.BufferSize, Is.EqualTo(3));
-            Assert.That(textReader.FreeSpace, Is.EqualTo(0));
+            Assert.That(textReader.BufferSize, Is.GreaterThanOrEqualTo(3));
+            Assert.That(textReader.FreeSpace, Is.GreaterThanOrEqualTo(0));
             Assert.That(textReader.CharsLeft, Is.EqualTo(3));
         }
 
@@ -85,21 +85,21 @@ namespace Solti.Utils.Json.Internals.Tests
         {
             using TextReaderWrapper textReader = new(new StringReader("cicamica"), 4);
 
-            Assert.That(textReader.BufferSize, Is.EqualTo(4));
-            Assert.That(textReader.FreeSpace, Is.EqualTo(4));
+            Assert.That(textReader.BufferSize, Is.GreaterThanOrEqualTo(4));
+            Assert.That(textReader.FreeSpace, Is.GreaterThanOrEqualTo(4));
             Assert.That(textReader.CharsLeft, Is.EqualTo(0));
 
             Assert.That(textReader.PeekText(4).ToString(), Is.EqualTo("cica"));
             textReader.Advance(2);
 
-            Assert.That(textReader.BufferSize, Is.EqualTo(4));
-            Assert.That(textReader.FreeSpace, Is.EqualTo(0));
+            Assert.That(textReader.BufferSize, Is.GreaterThanOrEqualTo(4));
+            Assert.That(textReader.FreeSpace, Is.GreaterThanOrEqualTo(0));
             Assert.That(textReader.CharsLeft, Is.EqualTo(2));
 
             Assert.That(textReader.PeekText(4).ToString(), Is.EqualTo("cami"));
 
-            Assert.That(textReader.BufferSize, Is.EqualTo(4));
-            Assert.That(textReader.FreeSpace, Is.EqualTo(0));
+            Assert.That(textReader.BufferSize, Is.GreaterThanOrEqualTo(4));
+            Assert.That(textReader.FreeSpace, Is.GreaterThanOrEqualTo(0));
             Assert.That(textReader.CharsLeft, Is.EqualTo(4));
         }
 

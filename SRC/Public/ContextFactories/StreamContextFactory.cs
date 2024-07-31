@@ -78,7 +78,7 @@ namespace Solti.Utils.Json
                 ConvertToString = ToString
             };
 
-            static ReadOnlySpan<char> ToString(object? val, ref char[] buffer)
+            static ReadOnlySpan<char> ToString(object? val, Buffer<char> buffer)
             {
                 if (val is null)
                     return Consts.NULL.AsSpan();
@@ -102,15 +102,15 @@ namespace Solti.Utils.Json
                 //
 
                 int requiredLength = (int) (Math.Ceiling((double) memStm.Length / 3) * 4);
-                if (buffer.Length < requiredLength)
-                    buffer = new char[requiredLength];
+                if (buffer.Value.Length < requiredLength)
+                    buffer.Resize(requiredLength);
 
                 //
                 // GetBuffer() does not copy the underlying data
                 //
 
-                int charsWritten = Convert.ToBase64CharArray(content.Array, 0, (int) memStm.Length, buffer, 0);
-                return buffer.AsSpan(0, charsWritten);
+                int charsWritten = Convert.ToBase64CharArray(content.Array, 0, (int) memStm.Length, buffer.Value, 0);
+                return buffer.Value.AsSpan(0, charsWritten);
             }
         }
 

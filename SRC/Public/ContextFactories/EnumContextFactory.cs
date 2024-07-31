@@ -132,7 +132,7 @@ namespace Solti.Utils.Json
                 _ => JsonDataTypes.Unkown
             };
 
-            ReadOnlySpan<char> ToString<T>(object? val, ref char[] buffer) where T: Enum
+            ReadOnlySpan<char> ToString<T>(object? val, Buffer<char> buffer) where T: Enum
             {
                 if (val is null && nullable)
                     return Consts.NULL.AsSpan();

@@ -52,7 +52,7 @@ namespace Solti.Utils.Json
                     null when type == typeof(bool?) => JsonDataTypes.Null,
                     _ => JsonDataTypes.Unkown
                 },
-                ConvertToString = (object? val, ref char[] buffer) => 
+                ConvertToString = (object? val, Buffer<char> buffer) => 
                 (
                     val switch
                     {

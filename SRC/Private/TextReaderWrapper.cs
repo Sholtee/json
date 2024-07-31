@@ -7,14 +7,13 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-using static System.Array;
 using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.Json.Internals
 {
-    internal sealed class TextReaderWrapper(TextReader textReader, int initialBufferSize = -1 /*for testing*/) : IDisposable
-    {
-        private char[] FBuffer = MemoryPool<char>.Get(initialBufferSize);
+    internal sealed class TextReaderWrapper(TextReader textReader, int initialBufferSize = 256) : IDisposable
+    { 
+        private readonly Buffer<char> FBuffer = new(initialBufferSize);
 
         private int
             FPosition,
@@ -41,7 +40,7 @@ namespace Solti.Utils.Json.Internals
             //
 
             if (CharsLeft > 0 && len <= CharsLeft)
-                return FBuffer.AsSpan(FPosition, len);
+                return FBuffer.Value.AsSpan(FPosition, len);
 
             int charsToBeRead = len - CharsLeft;
 
@@ -51,7 +50,7 @@ namespace Solti.Utils.Json.Internals
 
             if (CharsLeft > 0)
             {
-                Copy(FBuffer, FPosition, FBuffer, 0, CharsLeft);
+                Array.Copy(FBuffer.Value, FPosition, FBuffer.Value, 0, CharsLeft);
                 FCharsRead = CharsLeft;
                 FPosition = 0;
             }
@@ -67,7 +66,7 @@ namespace Solti.Utils.Json.Internals
             if (FreeSpace < charsToBeRead)
             {
                 Assert(len > BufferSize, "Cannot downsize the buffer");
-                Resize(ref FBuffer, len);
+                FBuffer.Resize(len);
             }
 
             //
@@ -77,13 +76,13 @@ namespace Solti.Utils.Json.Internals
             int startIndex = FPosition + CharsLeft;
             Assert(BufferSize - startIndex >= charsToBeRead, "Miscalculated parameter(s)");
 
-            FCharsRead = CharsLeft + textReader.Read(FBuffer, startIndex, charsToBeRead);
+            FCharsRead = CharsLeft + textReader.Read(FBuffer.Value, startIndex, charsToBeRead);
 
             //
             // Note that the returned data may be shorter than the requested size
             //
 
-            return FBuffer.AsSpan(FPosition, FCharsRead);
+            return FBuffer.Value.AsSpan(FPosition, FCharsRead);
         }
 
         /// <summary>
@@ -91,7 +90,7 @@ namespace Solti.Utils.Json.Internals
         /// </summary>
         public int PeekChar() => CharsLeft is 0 && PeekText(1).Length is 0
             ? -1
-            : FBuffer[FPosition];
+            : FBuffer.Value[FPosition];
 
         /// <summary>
         /// Advances the reader by <b>exactly</b> <paramref name="len"/> characters or throws if there is no enough charcters left
@@ -118,12 +117,7 @@ namespace Solti.Utils.Json.Internals
         /// </summary>
         public void Dispose()
         {
-            if (FBuffer is not null)
-            {
-                MemoryPool<char>.Return(FBuffer);
-                FBuffer = null!;
-            }
-
+            FBuffer.Dispose();
             FPosition = FCharsRead = 0;
         }
 
@@ -133,7 +127,7 @@ namespace Solti.Utils.Json.Internals
         public int FreeSpace
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => FBuffer.Length - FCharsRead;
+            get => BufferSize - FCharsRead;
         }
 
         /// <summary>
@@ -151,7 +145,7 @@ namespace Solti.Utils.Json.Internals
         public int BufferSize
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => FBuffer.Length;
+            get => FBuffer.Value.Length;
         }
 
         public static implicit operator TextReaderWrapper(TextReader reader) => new(reader);

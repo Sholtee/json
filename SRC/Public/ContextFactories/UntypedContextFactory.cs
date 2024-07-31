@@ -112,7 +112,7 @@ namespace Solti.Utils.Json
 
         private static readonly SerializationContext FUntypedSerialization = new()
         {
-            ConvertToString = static (object? val, ref char[] _) =>
+            ConvertToString = static (object? val, Buffer<char> _) =>
             (
                 val switch
                 {

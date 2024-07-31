@@ -74,7 +74,7 @@ namespace Solti.Utils.Json
             {
                 GetTypeOf = getTypeOf.Value,
                 EnumEntries = enumEntries.Value,
-                ConvertToString = (object? val, ref char[] _) => val is null
+                ConvertToString = (object? val, Buffer<char> _) => val is null
                     ? Consts.NULL.AsSpan()
                     : throw new ArgumentException(INVALID_INSTANCE, nameof(val))
             };

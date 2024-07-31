@@ -48,7 +48,7 @@ namespace Solti.Utils.Json
                     null => JsonDataTypes.Null,
                     _ => JsonDataTypes.Unkown
                 },
-                ConvertToString = static (object? val, ref char[] buffer) => val switch
+                ConvertToString = static (object? val, Buffer<char> buffer) => val switch
                 {
                     string str => str.AsSpan(),
                     null => Consts.NULL.AsSpan(),

@@ -111,7 +111,7 @@ namespace Solti.Utils.Json
                     null when type == typeof(Guid?) => JsonDataTypes.Null,
                     _ => JsonDataTypes.Unkown
                 },
-                ConvertToString = (object? val, ref char[] buffer) => val switch
+                ConvertToString = (object? val, Buffer<char> buffer) => val switch
                 {
                     Guid guid => guid.ToString(format, CultureInfo.InvariantCulture).AsSpan(),
                     null when type == typeof(Guid?) => NULL.AsSpan(),

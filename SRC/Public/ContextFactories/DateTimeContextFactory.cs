@@ -113,7 +113,7 @@ namespace Solti.Utils.Json
                     null when type == typeof(DateTime?) => JsonDataTypes.Null,
                     _ => JsonDataTypes.Unkown
                 },
-                ConvertToString = (object? val, ref char[] buffer) => val switch
+                ConvertToString = (object? val, Buffer<char> buffer) => val switch
                 {
                     DateTime dt => dt.ToString(format, CultureInfo.InvariantCulture).AsSpan(),
                     null when type == typeof(DateTime?) => NULL.AsSpan(),

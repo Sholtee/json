@@ -605,7 +605,7 @@ namespace Solti.Utils.Json.Contexts.Tests
 
             protected override SerializationContext CreateSerializationContextCore(Type type, object? config) => CreateSerializationContextFor(typeof(string)) with
             {
-                ConvertToString = (object? value, ref char[] buffer) => value is Wrapped wrapped
+                ConvertToString = (object? value, Buffer<char> buffer) => value is Wrapped wrapped
                     ? wrapped.Value.AsSpan()
                     : throw new NotSupportedException(),
                 GetTypeOf = val =>
