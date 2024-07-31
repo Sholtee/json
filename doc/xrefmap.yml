@@ -260,6 +260,79 @@ references:
   commentId: Overload:Solti.Utils.Json.BooleanContextFactory.IsSerializationSupported
   fullName: Solti.Utils.Json.BooleanContextFactory.IsSerializationSupported
   nameWithType: BooleanContextFactory.IsSerializationSupported
+- uid: Solti.Utils.Json.Buffer`1
+  name: Buffer<T>
+  href: Solti.Utils.Json.Buffer-1.html
+  commentId: T:Solti.Utils.Json.Buffer`1
+  name.vb: Buffer(Of T)
+  fullName: Solti.Utils.Json.Buffer<T>
+  fullName.vb: Solti.Utils.Json.Buffer(Of T)
+  nameWithType: Buffer<T>
+  nameWithType.vb: Buffer(Of T)
+- uid: Solti.Utils.Json.Buffer`1.#ctor(System.Int32)
+  name: Buffer(Int32)
+  href: Solti.Utils.Json.Buffer-1.html#Solti_Utils_Json_Buffer_1__ctor_System_Int32_
+  commentId: M:Solti.Utils.Json.Buffer`1.#ctor(System.Int32)
+  fullName: Solti.Utils.Json.Buffer<T>.Buffer(System.Int32)
+  fullName.vb: Solti.Utils.Json.Buffer(Of T).Buffer(System.Int32)
+  nameWithType: Buffer<T>.Buffer(Int32)
+  nameWithType.vb: Buffer(Of T).Buffer(Int32)
+- uid: Solti.Utils.Json.Buffer`1.#ctor*
+  name: Buffer
+  href: Solti.Utils.Json.Buffer-1.html#Solti_Utils_Json_Buffer_1__ctor_
+  commentId: Overload:Solti.Utils.Json.Buffer`1.#ctor
+  fullName: Solti.Utils.Json.Buffer<T>.Buffer
+  fullName.vb: Solti.Utils.Json.Buffer(Of T).Buffer
+  nameWithType: Buffer<T>.Buffer
+  nameWithType.vb: Buffer(Of T).Buffer
+- uid: Solti.Utils.Json.Buffer`1.Dispose
+  name: Dispose()
+  href: Solti.Utils.Json.Buffer-1.html#Solti_Utils_Json_Buffer_1_Dispose
+  commentId: M:Solti.Utils.Json.Buffer`1.Dispose
+  fullName: Solti.Utils.Json.Buffer<T>.Dispose()
+  fullName.vb: Solti.Utils.Json.Buffer(Of T).Dispose()
+  nameWithType: Buffer<T>.Dispose()
+  nameWithType.vb: Buffer(Of T).Dispose()
+- uid: Solti.Utils.Json.Buffer`1.Dispose*
+  name: Dispose
+  href: Solti.Utils.Json.Buffer-1.html#Solti_Utils_Json_Buffer_1_Dispose_
+  commentId: Overload:Solti.Utils.Json.Buffer`1.Dispose
+  fullName: Solti.Utils.Json.Buffer<T>.Dispose
+  fullName.vb: Solti.Utils.Json.Buffer(Of T).Dispose
+  nameWithType: Buffer<T>.Dispose
+  nameWithType.vb: Buffer(Of T).Dispose
+- uid: Solti.Utils.Json.Buffer`1.Resize(System.Int32)
+  name: Resize(Int32)
+  href: Solti.Utils.Json.Buffer-1.html#Solti_Utils_Json_Buffer_1_Resize_System_Int32_
+  commentId: M:Solti.Utils.Json.Buffer`1.Resize(System.Int32)
+  fullName: Solti.Utils.Json.Buffer<T>.Resize(System.Int32)
+  fullName.vb: Solti.Utils.Json.Buffer(Of T).Resize(System.Int32)
+  nameWithType: Buffer<T>.Resize(Int32)
+  nameWithType.vb: Buffer(Of T).Resize(Int32)
+- uid: Solti.Utils.Json.Buffer`1.Resize*
+  name: Resize
+  href: Solti.Utils.Json.Buffer-1.html#Solti_Utils_Json_Buffer_1_Resize_
+  commentId: Overload:Solti.Utils.Json.Buffer`1.Resize
+  fullName: Solti.Utils.Json.Buffer<T>.Resize
+  fullName.vb: Solti.Utils.Json.Buffer(Of T).Resize
+  nameWithType: Buffer<T>.Resize
+  nameWithType.vb: Buffer(Of T).Resize
+- uid: Solti.Utils.Json.Buffer`1.Value
+  name: Value
+  href: Solti.Utils.Json.Buffer-1.html#Solti_Utils_Json_Buffer_1_Value
+  commentId: P:Solti.Utils.Json.Buffer`1.Value
+  fullName: Solti.Utils.Json.Buffer<T>.Value
+  fullName.vb: Solti.Utils.Json.Buffer(Of T).Value
+  nameWithType: Buffer<T>.Value
+  nameWithType.vb: Buffer(Of T).Value
+- uid: Solti.Utils.Json.Buffer`1.Value*
+  name: Value
+  href: Solti.Utils.Json.Buffer-1.html#Solti_Utils_Json_Buffer_1_Value_
+  commentId: Overload:Solti.Utils.Json.Buffer`1.Value
+  fullName: Solti.Utils.Json.Buffer<T>.Value
+  fullName.vb: Solti.Utils.Json.Buffer(Of T).Value
+  nameWithType: Buffer<T>.Value
+  nameWithType.vb: Buffer(Of T).Value
 - uid: Solti.Utils.Json.ContextFactory
   name: ContextFactory
   href: Solti.Utils.Json.ContextFactory.html
@@ -2204,45 +2277,42 @@ references:
   commentId: Overload:Solti.Utils.Json.SerializationContext.ToStringDelegate.#ctor
   fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.ToStringDelegate
   nameWithType: SerializationContext.ToStringDelegate.ToStringDelegate
-- uid: Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke(System.Object,System.Char[]@,System.AsyncCallback,System.Object)
-  name: BeginInvoke(Object, ref Char[], AsyncCallback, Object)
-  href: Solti.Utils.Json.SerializationContext.ToStringDelegate.html#Solti_Utils_Json_SerializationContext_ToStringDelegate_BeginInvoke_System_Object_System_Char____System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke(System.Object,System.Char[]@,System.AsyncCallback,System.Object)
-  name.vb: BeginInvoke(Object, ByRef Char(), AsyncCallback, Object)
-  fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke(System.Object, ref System.Char[], System.AsyncCallback, System.Object)
-  fullName.vb: Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke(System.Object, ByRef System.Char(), System.AsyncCallback, System.Object)
-  nameWithType: SerializationContext.ToStringDelegate.BeginInvoke(Object, ref Char[], AsyncCallback, Object)
-  nameWithType.vb: SerializationContext.ToStringDelegate.BeginInvoke(Object, ByRef Char(), AsyncCallback, Object)
+- uid: Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke(System.Object,Solti.Utils.Json.Buffer{System.Char},System.AsyncCallback,System.Object)
+  name: BeginInvoke(Object, Buffer<Char>, AsyncCallback, Object)
+  href: Solti.Utils.Json.SerializationContext.ToStringDelegate.html#Solti_Utils_Json_SerializationContext_ToStringDelegate_BeginInvoke_System_Object_Solti_Utils_Json_Buffer_System_Char__System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke(System.Object,Solti.Utils.Json.Buffer{System.Char},System.AsyncCallback,System.Object)
+  name.vb: BeginInvoke(Object, Buffer(Of Char), AsyncCallback, Object)
+  fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke(System.Object, Solti.Utils.Json.Buffer<System.Char>, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke(System.Object, Solti.Utils.Json.Buffer(Of System.Char), System.AsyncCallback, System.Object)
+  nameWithType: SerializationContext.ToStringDelegate.BeginInvoke(Object, Buffer<Char>, AsyncCallback, Object)
+  nameWithType.vb: SerializationContext.ToStringDelegate.BeginInvoke(Object, Buffer(Of Char), AsyncCallback, Object)
 - uid: Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke*
   name: BeginInvoke
   href: Solti.Utils.Json.SerializationContext.ToStringDelegate.html#Solti_Utils_Json_SerializationContext_ToStringDelegate_BeginInvoke_
   commentId: Overload:Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke
   fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.BeginInvoke
   nameWithType: SerializationContext.ToStringDelegate.BeginInvoke
-- uid: Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke(System.Char[]@,System.IAsyncResult)
-  name: EndInvoke(ref Char[], IAsyncResult)
-  href: Solti.Utils.Json.SerializationContext.ToStringDelegate.html#Solti_Utils_Json_SerializationContext_ToStringDelegate_EndInvoke_System_Char____System_IAsyncResult_
-  commentId: M:Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke(System.Char[]@,System.IAsyncResult)
-  name.vb: EndInvoke(ByRef Char(), IAsyncResult)
-  fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke(ref System.Char[], System.IAsyncResult)
-  fullName.vb: Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke(ByRef System.Char(), System.IAsyncResult)
-  nameWithType: SerializationContext.ToStringDelegate.EndInvoke(ref Char[], IAsyncResult)
-  nameWithType.vb: SerializationContext.ToStringDelegate.EndInvoke(ByRef Char(), IAsyncResult)
+- uid: Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.Json.SerializationContext.ToStringDelegate.html#Solti_Utils_Json_SerializationContext_ToStringDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: SerializationContext.ToStringDelegate.EndInvoke(IAsyncResult)
 - uid: Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke*
   name: EndInvoke
   href: Solti.Utils.Json.SerializationContext.ToStringDelegate.html#Solti_Utils_Json_SerializationContext_ToStringDelegate_EndInvoke_
   commentId: Overload:Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke
   fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.EndInvoke
   nameWithType: SerializationContext.ToStringDelegate.EndInvoke
-- uid: Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke(System.Object,System.Char[]@)
-  name: Invoke(Object, ref Char[])
-  href: Solti.Utils.Json.SerializationContext.ToStringDelegate.html#Solti_Utils_Json_SerializationContext_ToStringDelegate_Invoke_System_Object_System_Char____
-  commentId: M:Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke(System.Object,System.Char[]@)
-  name.vb: Invoke(Object, ByRef Char())
-  fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke(System.Object, ref System.Char[])
-  fullName.vb: Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke(System.Object, ByRef System.Char())
-  nameWithType: SerializationContext.ToStringDelegate.Invoke(Object, ref Char[])
-  nameWithType.vb: SerializationContext.ToStringDelegate.Invoke(Object, ByRef Char())
+- uid: Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke(System.Object,Solti.Utils.Json.Buffer{System.Char})
+  name: Invoke(Object, Buffer<Char>)
+  href: Solti.Utils.Json.SerializationContext.ToStringDelegate.html#Solti_Utils_Json_SerializationContext_ToStringDelegate_Invoke_System_Object_Solti_Utils_Json_Buffer_System_Char__
+  commentId: M:Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke(System.Object,Solti.Utils.Json.Buffer{System.Char})
+  name.vb: Invoke(Object, Buffer(Of Char))
+  fullName: Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke(System.Object, Solti.Utils.Json.Buffer<System.Char>)
+  fullName.vb: Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke(System.Object, Solti.Utils.Json.Buffer(Of System.Char))
+  nameWithType: SerializationContext.ToStringDelegate.Invoke(Object, Buffer<Char>)
+  nameWithType.vb: SerializationContext.ToStringDelegate.Invoke(Object, Buffer(Of Char))
 - uid: Solti.Utils.Json.SerializationContext.ToStringDelegate.Invoke*
   name: Invoke
   href: Solti.Utils.Json.SerializationContext.ToStringDelegate.html#Solti_Utils_Json_SerializationContext_ToStringDelegate_Invoke_
