@@ -16,6 +16,7 @@ using static System.Char;
 namespace Solti.Utils.Json
 {
     using Internals;
+    using Primitives;
 
     using static SerializationContext;
     using static Properties.Resources;
@@ -90,9 +91,11 @@ namespace Solti.Utils.Json
         /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
         internal void WriteString(in Session session, object str, SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
-            ReadOnlySpan<char> s = str is string @string
-                ? @string.AsSpan()
-                : VerifyDelegate(currentContext.ConvertToString)(str, session.Buffer);
+            ReadOnlySpan<char>
+                s = str is string @string
+                    ? @string.AsSpan()
+                    : VerifyDelegate(currentContext.ConvertToString)(str, session.Buffer),
+                commonChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy0123456789-._".AsSpan();
 
             session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             session.Dest.Write('"');
@@ -104,10 +107,10 @@ namespace Solti.Utils.Json
                 int len = Math.Min(charsLeft.Length, maxChunkSize);
 
                 //
-                // TODO: use IndexOfAnyExcept() to skip alphanumeric characters
+                // Skip the most common characters
                 //
 
-                for (int i = 0; i < len; i++)
+                for(int i = Math.Max(0, charsLeft.Slice(0, len).IndexOfAnyExcept(commonChars)); i < len; i++)
                 {
                     switch (charsLeft[i])
                     {
@@ -149,6 +152,10 @@ namespace Solti.Utils.Json
                             else if (i < charsLeft.Length - 1 /*override "len"*/ && IsSurrogatePair(charsLeft[i], charsLeft[i + 1]))
                                 escape = 2;
                             else
+                                //
+                                // TODO: We may skip common chars here as well
+                                //
+
                                 break;
 
                             session.Dest.Write(charsLeft, 0, i);

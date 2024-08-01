@@ -58,7 +58,7 @@ namespace Solti.Utils.Json.Tests
         }
 
         [Test]
-        public void WriteString_ShouldHandleRegularStrings([Values("", "c", "cica", "1986")] string input, [Values(1, 2, 3, 1024)] int maxChunkSize)
+        public void WriteString_ShouldHandleRegularStrings([Values("", "c", "cica", "1986", "Dénes", "cica  ")] string input, [Values(1, 2, 3, 1024)] int maxChunkSize)
         {
             Session session = new(new StringWriter());
 
