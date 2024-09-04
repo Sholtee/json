@@ -19,7 +19,8 @@ namespace Solti.Utils.Json
     using Primitives;
 
     using static DeserializationContext;
-    using static Internals.Consts; 
+    using static Internals.Consts;
+    using static Primitives.MemoryExtensions;
     using static Properties.Resources;
 
     /// <summary>
@@ -29,6 +30,18 @@ namespace Solti.Utils.Json
     public sealed class JsonParser(JsonParserFlags flags = JsonParserFlags.None, int maxDepth = 64)
     {
         #region Private
+        private static readonly ParsedSearchValues
+            FWhiteSpaces,
+            FIntegralNumbers,
+            FFloatingNumbers;
+
+        static JsonParser()
+        {
+            MemoryExtensions.IndexOfAnyExcept(default, " \t\r".AsSpan(), ref FWhiteSpaces);
+            MemoryExtensions.IndexOfAnyExcept(default, INTEGRAL.AsSpan(), ref FIntegralNumbers);
+            MemoryExtensions.IndexOfAnyExcept(default, FLOATING.AsSpan(), ref FFloatingNumbers);
+        }
+
         /// <summary>
         /// Context used to skip unknown values
         /// </summary>
@@ -138,13 +151,15 @@ namespace Solti.Utils.Json
         {
             Assert(bufferSize > 0, "Buffer size must be greater than 0");
 
+            ParsedSearchValues whitespaces = FWhiteSpaces;
+
             for (ReadOnlySpan<char> read; (read = session.Content.PeekText(bufferSize)).Length > 0;)
             {
                 //
                 // According to https://www.json.org/json-en.html we do not need other spaces to check 
                 //
 
-                int firstNonWhiteSpaceOrNewLine = read.IndexOfAnyExcept(" \t\r".AsSpan());
+                int firstNonWhiteSpaceOrNewLine = read.IndexOfAnyExcept(default, ref whitespaces);
                 if (firstNonWhiteSpaceOrNewLine >= 0 && read[firstNonWhiteSpaceOrNewLine] is '\n')
                 {
                     //
@@ -471,6 +486,10 @@ namespace Solti.Utils.Json
             ReadOnlySpan<char> buffer = default;
             bool isFloating = false;
 
+            ParsedSearchValues
+                integralNumbers = FIntegralNumbers,
+                floatingNumbers = FFloatingNumbers;
+
             //
             // Take all the promising chars
             //
@@ -480,14 +499,14 @@ namespace Solti.Utils.Json
             {
                 buffer = session.Content.PeekText(bufferSize);
 
-                firstNonNumeric = buffer.IndexOfAnyExcept(INTEGRAL.AsSpan());
+                firstNonNumeric = buffer.IndexOfAnyExcept(default, ref integralNumbers);
 
                 if (firstNonNumeric >= 0)
                 {
                     if (buffer[firstNonNumeric] is '.' or 'e' or 'E')
                     {
                         isFloating = true;
-                        firstNonNumeric = buffer.IndexOfAnyExcept(FLOATING.AsSpan());
+                        firstNonNumeric = buffer.IndexOfAnyExcept(default, ref floatingNumbers);
                     }
                 }
 
