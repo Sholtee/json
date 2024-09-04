@@ -19,6 +19,7 @@ namespace Solti.Utils.Json
     using Primitives;
 
     using static SerializationContext;
+    using static Primitives.MemoryExtensions;
     using static Properties.Resources;
 
     /// <summary>
@@ -29,6 +30,15 @@ namespace Solti.Utils.Json
     {
         #region Private
         private static readonly char[][] FSpaces = GetAllSpaces(256);
+
+        private static readonly ParsedSearchValues FCommonChars;
+
+        static JsonWriter() => MemoryExtensions.IndexOfAnyExcept
+        (
+            default,
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy0123456789-._".AsSpan(),
+            ref FCommonChars
+        );
 
         private readonly char[] FValueSeparator = indent > 0 ? [' '] : [];
 
@@ -91,11 +101,11 @@ namespace Solti.Utils.Json
         /// <remarks>If the given <paramref name="str"/> is not a <see cref="string"/> this method tries to convert it first.</remarks>
         internal void WriteString(in Session session, object str, SerializationContext currentContext, int currentDepth, char[]? explicitIndent)
         {
-            ReadOnlySpan<char>
-                s = str is string @string
-                    ? @string.AsSpan()
-                    : VerifyDelegate(currentContext.ConvertToString)(str, session.Buffer),
-                commonChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy0123456789-._".AsSpan();
+            ReadOnlySpan<char> s = str is string @string
+                ? @string.AsSpan()
+                : VerifyDelegate(currentContext.ConvertToString)(str, session.Buffer);
+
+            ParsedSearchValues commonChars = FCommonChars;
 
             session.Dest.Write(explicitIndent ?? GetSpaces(currentDepth));
             session.Dest.Write('"');
@@ -110,7 +120,7 @@ namespace Solti.Utils.Json
                 // Skip the most common characters
                 //
 
-                for(int i = Math.Max(0, charsLeft.Slice(0, len).IndexOfAnyExcept(commonChars)); i < len; i++)
+                for(int i = Math.Max(0, charsLeft.Slice(0, len).IndexOfAnyExcept(default, ref commonChars)); i < len; i++)
                 {
                     switch (charsLeft[i])
                     {
